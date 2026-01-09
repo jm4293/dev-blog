@@ -90,7 +90,7 @@ export default function Footer() {
               연락처
             </h3>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              이메일: contact@devblog.kr
+              이메일: dlwoals4293@gmail.com
             </p>
             <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
               도메인: devBlog.kr
