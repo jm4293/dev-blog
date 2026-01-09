@@ -60,10 +60,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ stats })
     }
 
-    console.log(`✅ ${companies.length}개 기업 발견`)
+    const typedCompanies = companies as Array<{ id: string; name: string; rss_url: string }>
+
+    console.log(`✅ ${typedCompanies.length}개 기업 발견`)
 
     // 2. 각 기업의 RSS 피드 파싱 및 저장
-    for (const company of companies) {
+    for (const company of typedCompanies) {
       stats.companiesProcessed++
 
       try {
@@ -107,7 +109,7 @@ export async function POST(request: NextRequest) {
               tags,
               published_at: post.publishedAt,
               scraped_at: new Date().toISOString(),
-            })
+            } as any)
 
             if (insertError) throw insertError
 

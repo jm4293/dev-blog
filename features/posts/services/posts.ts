@@ -152,8 +152,7 @@ export async function savePost(post: Omit<Post, 'id' | 'created_at' | 'updated_a
     return null // 이미 존재함
   }
 
-  const { data: newPost, error } = await supabase
-    .from('posts')
+  const { data: newPost, error } = await (supabase.from('posts') as any)
     .insert([post])
     .select()
     .single()

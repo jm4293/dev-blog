@@ -63,7 +63,7 @@ export async function createCompany(
 
   const { data: newCompany, error } = await supabase
     .from('companies')
-    .insert([company])
+    .insert([company] as any)
     .select()
     .single()
 
@@ -80,8 +80,8 @@ export async function updateCompany(
 ): Promise<Company> {
   const supabase = getSupabaseServerClient()
 
-  const { data: updatedCompany, error } = await supabase
-    .from('companies')
+  const query = supabase.from('companies') as any
+  const { data: updatedCompany, error } = await query
     .update(updates)
     .eq('id', companyId)
     .select()

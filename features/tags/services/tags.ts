@@ -71,8 +71,7 @@ export async function createTag(
 ): Promise<Tag> {
   const supabase = getSupabaseServerClient()
 
-  const { data: tag, error } = await supabase
-    .from('tags')
+  const { data: tag, error } = await (supabase.from('tags') as any)
     .insert([{ name, category }])
     .select()
     .single()
@@ -102,8 +101,7 @@ export async function incrementTagUsage(tagName: string): Promise<void> {
     await createTag(tagName)
   } else {
     // 태그가 있으면 사용 횟수 증가
-    const { error } = await supabase
-      .from('tags')
+    const { error } = await (supabase.from('tags') as any)
       .update({ usage_count: (tag.usage_count || 0) + 1 })
       .eq('id', tag.id)
 

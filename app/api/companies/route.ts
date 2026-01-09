@@ -3,7 +3,7 @@
  * 기업 목록 조회 (활성화된 기업만)
  */
 
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/shared/lib/supabase/server'
 import { Company } from '@/shared/lib/supabase/types'
 
@@ -12,7 +12,7 @@ interface CompaniesResponse {
   total: number
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const supabase = getSupabaseServerClient()
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import SearchBar from '@/components/search/SearchBar'
 import PostList from '@/components/posts/PostList'
@@ -19,9 +19,10 @@ export default function PostsContainer() {
   const tagsParam = searchParams.get('tags') || ''
 
   // 선택된 태그 배열 (usePosts 훅에서는 문자열로 사용)
-  const selectedTags = tagsParam
-    ? tagsParam.split(',').filter((tag) => tag.trim())
-    : []
+  const selectedTags = useMemo(
+    () => (tagsParam ? tagsParam.split(',').filter((tag) => tag.trim()) : []),
+    [tagsParam]
+  )
 
   // 실제 API에서 데이터 페칭 (태그는 문자열로 전달)
   const { posts, totalPages, isLoading, error } = usePosts({
@@ -49,7 +50,7 @@ export default function PostsContainer() {
     (query: string) => {
       updateUrl(1, query, selectedTags)
     },
-    [updateUrl, tagsParam]
+    [updateUrl, selectedTags]
   )
 
   // 태그 변경 시 URL 업데이트 (페이지 리셋)
@@ -65,7 +66,7 @@ export default function PostsContainer() {
     (page: number) => {
       updateUrl(page, searchQuery, selectedTags)
     },
-    [updateUrl, searchQuery, tagsParam]
+    [updateUrl, searchQuery, selectedTags]
   )
 
   return (

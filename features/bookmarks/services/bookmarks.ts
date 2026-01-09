@@ -104,7 +104,7 @@ export async function addBookmark(
 
   const { data: bookmark, error } = await supabase
     .from('bookmarks')
-    .insert([{ user_id: userId, post_id: postId }])
+    .insert([{ user_id: userId, post_id: postId }] as any)
     .select()
     .single()
 

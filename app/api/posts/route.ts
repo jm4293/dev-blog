@@ -12,7 +12,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/shared/lib/supabase/server'
-import { Post, PostWithCompany } from '@/shared/lib/supabase/types'
+import { PostWithCompany } from '@/shared/lib/supabase/types'
 
 interface PostsResponse {
   posts: PostWithCompany[]

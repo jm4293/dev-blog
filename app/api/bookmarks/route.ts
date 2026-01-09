@@ -7,7 +7,6 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient } from '@/shared/lib/supabase/server'
-import { PostWithCompany } from '@/shared/lib/supabase/types'
 
 export async function GET(request: NextRequest) {
   try {
@@ -107,7 +106,7 @@ export async function POST(request: NextRequest) {
     // 북마크 추가
     const { data, error } = await supabase
       .from('bookmarks')
-      .insert([{ user_id: userId, post_id: postId }])
+      .insert([{ user_id: userId, post_id: postId }] as any)
       .select()
 
     if (error) {

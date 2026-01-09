@@ -27,13 +27,15 @@ async function callOpenAI(
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages,
-        temperature: 0.7,
-        max_tokens: 200,
-        timeout: 30000, // 30초 타임아웃
-      })
+      const response = await openai.chat.completions.create(
+        {
+          model: 'gpt-4o-mini',
+          messages,
+          temperature: 0.7,
+          max_tokens: 200,
+        },
+        { timeout: 30000 } // 30초 타임아웃
+      )
 
       const content = response.choices[0]?.message?.content || ''
 
