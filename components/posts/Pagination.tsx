@@ -9,7 +9,7 @@ interface PaginationProps {
   baseUrl: string
   onPageChange?: (page: number) => void
   searchQuery?: string
-  selectedTags?: string[]
+  tagsString?: string
 }
 
 export default function Pagination({
@@ -18,14 +18,14 @@ export default function Pagination({
   baseUrl,
   onPageChange,
   searchQuery,
-  selectedTags,
+  tagsString,
 }: PaginationProps) {
   // URL에 쿼리 파라미터 추가
   const buildUrl = (page: number) => {
     const params = new URLSearchParams()
     if (page > 1) params.set('page', page.toString())
     if (searchQuery) params.set('search', encodeURIComponent(searchQuery))
-    if (selectedTags && selectedTags.length > 0) params.set('tags', selectedTags.join(','))
+    if (tagsString) params.set('tags', tagsString)
 
     return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl
   }

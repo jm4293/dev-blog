@@ -1,6 +1,21 @@
 {
   "name": "dev-blog",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "한국 개발 기업들의 기술 블로그를 한 곳에서 모아보는 플랫폼",
+  "author": "jm4293",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jm4293/dev-blog.git"
+  },
+  "keywords": [
+    "blog",
+    "korea",
+    "tech",
+    "developer",
+    "rss",
+    "ai"
+  ],
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +24,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
+    "cheerio": "^1.1.2",
     "clsx": "^2.0.0",
     "date-fns": "^3.0.0",
     "lucide-react": "^0.263.1",
