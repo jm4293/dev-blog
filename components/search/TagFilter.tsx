@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { X } from 'lucide-react'
+import { X } from 'lucide-react';
 
 interface TagFilterProps {
-  selectedTags: string[]
-  onTagToggle: (tag: string) => void
-  isOpen: boolean
-  onClose: () => void
+  selectedTags: string[];
+  onTagToggle: (tag: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 const ALL_TAGS = [
@@ -14,7 +14,7 @@ const ALL_TAGS = [
   'Backend',
   'Database',
   'DevOps',
-  'AI/ML',
+  'AI',
   'Mobile',
   'Architecture',
   'Performance',
@@ -30,32 +30,22 @@ const ALL_TAGS = [
   'Docker',
   'Kubernetes',
   'AWS',
-]
+];
 
-export default function TagFilter({
-  selectedTags,
-  onTagToggle,
-  isOpen,
-  onClose,
-}: TagFilterProps) {
-  if (!isOpen) return null
+export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }: TagFilterProps) {
+  if (!isOpen) return null;
 
   return (
     <>
       {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/50 z-40"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-auto">
           {/* Header */}
           <div className="sticky top-0 border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between bg-white dark:bg-gray-800">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              태그 선택
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">태그 선택</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -89,7 +79,7 @@ export default function TagFilter({
             <button
               onClick={() => {
                 // Clear all tags
-                selectedTags.forEach((tag) => onTagToggle(tag))
+                selectedTags.forEach((tag) => onTagToggle(tag));
               }}
               className="px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
@@ -105,5 +95,5 @@ export default function TagFilter({
         </div>
       </div>
     </>
-  )
+  );
 }

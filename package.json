@@ -21,7 +21,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fetch-blogs": "curl -X POST http://localhost:3000/api/cron/fetch-blogs -H \"Authorization: Bearer $CRON_SECRET\""
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.90.1",
@@ -47,6 +48,7 @@
     "eslint": "^8",
     "eslint-config-next": "^14.2.0",
     "postcss": "^8.4.31",
+    "prettier": "^3.7.4",
     "tailwindcss": "^3.4.0",
     "typescript": "^5"
   }

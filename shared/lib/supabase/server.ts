@@ -4,24 +4,24 @@
  * - Service Role Key 사용 (고권한)
  */
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-let serverInstance: ReturnType<typeof createClient> | null = null
+let serverInstance: ReturnType<typeof createClient> | null = null;
 
 export function getSupabaseServerClient() {
   if (serverInstance) {
-    return serverInstance
+    return serverInstance;
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('Missing Supabase URL or Service Role Key')
+    throw new Error('Missing Supabase URL or Service Role Key');
   }
 
-  serverInstance = createClient(supabaseUrl, supabaseServiceKey)
-  return serverInstance
+  serverInstance = createClient(supabaseUrl, supabaseServiceKey);
+  return serverInstance;
 }
 
-export default getSupabaseServerClient()
+export default getSupabaseServerClient();

@@ -4,16 +4,16 @@
  * - 토큰 사용량 로깅
  */
 
-import OpenAI from 'openai'
+import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-})
+});
 
 export interface CompletionResult {
-  content: string
-  tokensUsed: number
-  model: string
+  content: string;
+  tokensUsed: number;
+  model: string;
 }
 
 /**
@@ -21,9 +21,9 @@ export interface CompletionResult {
  */
 async function callOpenAI(
   messages: Array<{ role: 'user' | 'system'; content: string }>,
-  maxRetries = 3
+  maxRetries = 3,
 ): Promise<CompletionResult> {
-  let lastError: Error | null = null
+  let lastError: Error | null = null;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -34,28 +34,28 @@ async function callOpenAI(
           temperature: 0.7,
           max_tokens: 200,
         },
-        { timeout: 30000 } // 30초 타임아웃
-      )
+        { timeout: 30000 }, // 30초 타임아웃
+      );
 
-      const content = response.choices[0]?.message?.content || ''
+      const content = response.choices[0]?.message?.content || '';
 
       return {
         content,
         tokensUsed: response.usage?.total_tokens || 0,
         model: response.model,
-      }
+      };
     } catch (error) {
-      lastError = error instanceof Error ? error : new Error(String(error))
-      console.error(`OpenAI API 호출 실패 (시도 ${attempt}/${maxRetries}):`, lastError.message)
+      lastError = error instanceof Error ? error : new Error(String(error));
+      console.error(`OpenAI API 호출 실패 (시도 ${attempt}/${maxRetries}):`, lastError.message);
 
       // 마지막 시도가 아니면 2초 대기 후 재시도
       if (attempt < maxRetries) {
-        await new Promise((resolve) => setTimeout(resolve, 2000))
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     }
   }
 
-  throw new Error(`OpenAI API 호출 실패 (${maxRetries}회 재시도): ${lastError?.message}`)
+  throw new Error(`OpenAI API 호출 실패 (${maxRetries}회 재시도): ${lastError?.message}`);
 }
 
 /**
@@ -71,10 +71,10 @@ export async function generateSummary(title: string, content: string): Promise<s
       role: 'user',
       content: `제목: ${title}\n내용: ${content}\n\n요약:`,
     },
-  ]
+  ];
 
-  const result = await callOpenAI(messages)
-  return result.content.trim()
+  const result = await callOpenAI(messages);
+  return result.content.trim();
 }
 
 /**
@@ -101,17 +101,17 @@ export async function generateTags(title: string, summary: string): Promise<stri
       role: 'user',
       content: `제목: ${title}\n요약: ${summary}\n\n태그:`,
     },
-  ]
+  ];
 
-  const result = await callOpenAI(messages)
-  const tagsString = result.content.trim()
+  const result = await callOpenAI(messages);
+  const tagsString = result.content.trim();
 
   // 쉼표로 구분된 태그 파싱
   const tags = tagsString
     .split(',')
     .map((tag) => tag.trim())
     .filter((tag) => tag.length > 0)
-    .slice(0, 5) // 최대 5개만 반환
+    .slice(0, 5); // 최대 5개만 반환
 
-  return tags
+  return tags;
 }

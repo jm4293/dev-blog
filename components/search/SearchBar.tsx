@@ -1,26 +1,17 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { X, Filter } from 'lucide-react'
-import TagFilter from './TagFilter'
+import { useState, useEffect } from 'react';
+import { X, Filter } from 'lucide-react';
+import TagFilter from './TagFilter';
 
 interface SearchBarProps {
-  onSearchChange?: (query: string) => void
-  onTagsChange?: (tags: string[]) => void
-  initialSearch?: string
-  initialTagsString?: string
+  onSearchChange?: (query: string) => void;
+  onTagsChange?: (tags: string[]) => void;
+  initialSearch?: string;
+  initialTagsString?: string;
 }
 
-const POPULAR_TAGS = [
-  'Frontend',
-  'Backend',
-  'Database',
-  'DevOps',
-  'AI/ML',
-  'Mobile',
-  'Architecture',
-  'Performance',
-]
+const POPULAR_TAGS = ['Frontend', 'Backend', 'Database', 'DevOps', 'AI', 'Mobile', 'Architecture', 'Performance'];
 
 export default function SearchBar({
   onSearchChange,
@@ -28,38 +19,34 @@ export default function SearchBar({
   initialSearch = '',
   initialTagsString = '',
 }: SearchBarProps) {
-  const [searchQuery, setSearchQuery] = useState(initialSearch)
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   // URL 파라미터가 변경되면 내부 상태 동기화
   useEffect(() => {
-    setSearchQuery(initialSearch)
-    const tagsArray = initialTagsString
-      ? initialTagsString.split(',').filter((tag) => tag.trim())
-      : []
-    setSelectedTags(tagsArray)
-  }, [initialSearch, initialTagsString])
-  const [showTagModal, setShowTagModal] = useState(false)
+    setSearchQuery(initialSearch);
+    const tagsArray = initialTagsString ? initialTagsString.split(',').filter((tag) => tag.trim()) : [];
+    setSelectedTags(tagsArray);
+  }, [initialSearch, initialTagsString]);
+  const [showTagModal, setShowTagModal] = useState(false);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setSearchQuery(value)
-    onSearchChange?.(value)
-  }
+    const value = e.target.value;
+    setSearchQuery(value);
+    onSearchChange?.(value);
+  };
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags((prev) => {
-      const newTags = prev.includes(tag)
-        ? prev.filter((t) => t !== tag)
-        : [...prev, tag]
-      onTagsChange?.(newTags)
-      return newTags
-    })
-  }
+      const newTags = prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag];
+      onTagsChange?.(newTags);
+      return newTags;
+    });
+  };
 
   const handleTagRemove = (tag: string) => {
-    handleTagToggle(tag)
-  }
+    handleTagToggle(tag);
+  };
 
   return (
     <div className="mb-8 space-y-4">
@@ -83,9 +70,7 @@ export default function SearchBar({
 
       {/* Popular Tags */}
       <div className="space-y-2">
-        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-          인기 태그
-        </p>
+        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 태그</p>
         <div className="flex flex-wrap gap-2">
           {POPULAR_TAGS.map((tag) => (
             <button
@@ -106,9 +91,7 @@ export default function SearchBar({
       {/* Selected Tags */}
       {selectedTags.length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-            선택된 태그 ({selectedTags.length})
-          </p>
+          <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">선택된 태그 ({selectedTags.length})</p>
           <div className="flex flex-wrap gap-2">
             {selectedTags.map((tag) => (
               <span
@@ -137,5 +120,5 @@ export default function SearchBar({
         onClose={() => setShowTagModal(false)}
       />
     </div>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Link from 'next/link';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PaginationProps {
-  currentPage: number
-  totalPages: number
-  baseUrl: string
-  onPageChange?: (page: number) => void
-  searchQuery?: string
-  tagsString?: string
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+  onPageChange?: (page: number) => void;
+  searchQuery?: string;
+  tagsString?: string;
 }
 
 export default function Pagination({
@@ -22,62 +22,58 @@ export default function Pagination({
 }: PaginationProps) {
   // URL에 쿼리 파라미터 추가
   const buildUrl = (page: number) => {
-    const params = new URLSearchParams()
-    if (page > 1) params.set('page', page.toString())
-    if (searchQuery) params.set('search', encodeURIComponent(searchQuery))
-    if (tagsString) params.set('tags', tagsString)
+    const params = new URLSearchParams();
+    if (page > 1) params.set('page', page.toString());
+    if (searchQuery) params.set('search', encodeURIComponent(searchQuery));
+    if (tagsString) params.set('tags', tagsString);
 
-    return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl
-  }
+    return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+  };
 
   // 페이지 클릭 핸들러
   const handlePageClick = (page: number) => {
     if (onPageChange) {
-      onPageChange(page)
+      onPageChange(page);
     }
-  }
+  };
 
   // 페이지 번호 범위 계산 (현재 페이지 기준 ±2)
   const getPageNumbers = () => {
-    const delta = 2
-    const range = []
-    const rangeWithDots = []
+    const delta = 2;
+    const range = [];
+    const rangeWithDots = [];
 
-    for (
-      let i = Math.max(2, currentPage - delta);
-      i <= Math.min(totalPages - 1, currentPage + delta);
-      i++
-    ) {
-      range.push(i)
+    for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
+      range.push(i);
     }
 
     // 첫 페이지
-    rangeWithDots.push(1)
+    rangeWithDots.push(1);
 
     // 점 추가
     if (range[0] > 2) {
-      rangeWithDots.push('...')
+      rangeWithDots.push('...');
     }
 
     // 범위 페이지
-    rangeWithDots.push(...range)
+    rangeWithDots.push(...range);
 
     // 점 추가
     if (range[range.length - 1] < totalPages - 1) {
-      rangeWithDots.push('...')
+      rangeWithDots.push('...');
     }
 
     // 마지막 페이지
     if (totalPages > 1) {
-      rangeWithDots.push(totalPages)
+      rangeWithDots.push(totalPages);
     }
 
-    return rangeWithDots
-  }
+    return rangeWithDots;
+  };
 
-  const pageNumbers = getPageNumbers()
-  const prevPage = currentPage > 1 ? currentPage - 1 : null
-  const nextPage = currentPage < totalPages ? currentPage + 1 : null
+  const pageNumbers = getPageNumbers();
+  const prevPage = currentPage > 1 ? currentPage - 1 : null;
+  const nextPage = currentPage < totalPages ? currentPage + 1 : null;
 
   return (
     <nav className="flex justify-center items-center gap-2 mt-12">
@@ -104,7 +100,7 @@ export default function Pagination({
           }`}
           onClick={(e) => {
             if (currentPage === 1) {
-              e.preventDefault()
+              e.preventDefault();
             }
           }}
         >
@@ -141,16 +137,13 @@ export default function Pagination({
       {pageNumbers.map((pageNum, index) => {
         if (pageNum === '...') {
           return (
-            <span
-              key={`dots-${index}`}
-              className="px-3 py-2 text-gray-500 dark:text-gray-400"
-            >
+            <span key={`dots-${index}`} className="px-3 py-2 text-gray-500 dark:text-gray-400">
               ...
             </span>
-          )
+          );
         }
 
-        const isCurrentPage = pageNum === currentPage
+        const isCurrentPage = pageNum === currentPage;
 
         return onPageChange ? (
           <button
@@ -176,7 +169,7 @@ export default function Pagination({
           >
             {pageNum}
           </Link>
-        )
+        );
       })}
 
       {/* 다음 */}
@@ -227,7 +220,7 @@ export default function Pagination({
           }`}
           onClick={(e) => {
             if (currentPage === totalPages) {
-              e.preventDefault()
+              e.preventDefault();
             }
           }}
         >
@@ -235,5 +228,5 @@ export default function Pagination({
         </Link>
       )}
     </nav>
-  )
+  );
 }

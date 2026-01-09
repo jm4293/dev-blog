@@ -10,41 +10,39 @@
  * - limit: 페이지당 게시글 수 (기본값: 20)
  */
 
-import { NextRequest, NextResponse } from 'next/server'
-import { getSupabaseServerClient } from '@/shared/lib/supabase/server'
-import { PostWithCompany } from '@/shared/lib/supabase/types'
+import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseServerClient } from '@/shared/lib/supabase/server';
+import { PostWithCompany } from '@/shared/lib/supabase/types';
 
 interface PostsResponse {
-  posts: PostWithCompany[]
-  total: number
-  page: number
-  totalPages: number
-  hasNextPage: boolean
-  hasPrevPage: boolean
+  posts: PostWithCompany[];
+  total: number;
+  page: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabaseServerClient()
+    const supabase = getSupabaseServerClient();
 
     // Query 파라미터 파싱
-    const searchParams = request.nextUrl.searchParams
-    const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10))
-    const search = searchParams.get('search') || ''
-    const tagsParam = searchParams.get('tags') || ''
-    const companyId = searchParams.get('company') || ''
-    const limit = Math.min(100, parseInt(searchParams.get('limit') || '20', 10))
+    const searchParams = request.nextUrl.searchParams;
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
+    const search = searchParams.get('search') || '';
+    const tagsParam = searchParams.get('tags') || '';
+    const companyId = searchParams.get('company') || '';
+    const limit = Math.min(100, parseInt(searchParams.get('limit') || '20', 10));
 
-    const offset = (page - 1) * limit
+    const offset = (page - 1) * limit;
     const tags = tagsParam
       .split(',')
       .map((t) => t.trim())
-      .filter((t) => t.length > 0)
+      .filter((t) => t.length > 0);
 
     // 1. 전체 게시글 수 조회
-    let countQuery = supabase
-      .from('posts')
-      .select('id', { count: 'exact', head: true })
+    let countQuery = supabase.from('posts').select('id', { count: 'exact', head: true });
 
     // 2. 게시글 목록 조회 (정렬: 최신순)
     let postsQuery = supabase
@@ -64,15 +62,15 @@ export async function GET(request: NextRequest) {
         created_at,
         updated_at,
         company:companies(*)
-      `
+      `,
       )
-      .order('published_at', { ascending: false })
+      .order('published_at', { ascending: false });
 
     // 검색 필터 (제목 기반)
     if (search) {
-      const searchTerm = `%${search}%`
-      countQuery = countQuery.ilike('title', searchTerm)
-      postsQuery = postsQuery.ilike('title', searchTerm)
+      const searchTerm = `%${search}%`;
+      countQuery = countQuery.ilike('title', searchTerm);
+      postsQuery = postsQuery.ilike('title', searchTerm);
     }
 
     // 태그 필터 (OR 조건: 하나 이상의 태그 포함)
@@ -81,36 +79,33 @@ export async function GET(request: NextRequest) {
       // 또는 하나라도 포함되어야 함 (OR 조건)
       // Supabase의 GIN 배열 필터를 사용하려면 복잡한 쿼리가 필요
       // 일단 첫 번째 태그로 필터링 (추후 개선 가능)
-      countQuery = countQuery.contains('tags', tags)
-      postsQuery = postsQuery.contains('tags', tags)
+      countQuery = countQuery.contains('tags', tags);
+      postsQuery = postsQuery.contains('tags', tags);
     }
 
     // 기업 필터
     if (companyId) {
-      countQuery = countQuery.eq('company_id', companyId)
-      postsQuery = postsQuery.eq('company_id', companyId)
+      countQuery = countQuery.eq('company_id', companyId);
+      postsQuery = postsQuery.eq('company_id', companyId);
     }
 
     // 전체 개수 조회
-    const { count, error: countError } = await countQuery
+    const { count, error: countError } = await countQuery;
 
     if (countError) {
-      console.error('Count query error:', countError)
-      throw countError
+      console.error('Count query error:', countError);
+      throw countError;
     }
 
-    const total = count || 0
-    const totalPages = Math.ceil(total / limit)
+    const total = count || 0;
+    const totalPages = Math.ceil(total / limit);
 
     // 페이지네이션 적용
-    const { data: posts, error: postsError } = await postsQuery.range(
-      offset,
-      offset + limit - 1
-    )
+    const { data: posts, error: postsError } = await postsQuery.range(offset, offset + limit - 1);
 
     if (postsError) {
-      console.error('Posts query error:', postsError)
-      throw postsError
+      console.error('Posts query error:', postsError);
+      throw postsError;
     }
 
     // 응답 형식 변환
@@ -121,16 +116,13 @@ export async function GET(request: NextRequest) {
       totalPages,
       hasNextPage: page < totalPages,
       hasPrevPage: page > 1,
-    }
+    };
 
-    return NextResponse.json(response)
+    return NextResponse.json(response);
   } catch (error) {
-    const errorMsg = error instanceof Error ? error.message : String(error)
-    console.error('Posts API error:', errorMsg)
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error('Posts API error:', errorMsg);
 
-    return NextResponse.json(
-      { error: 'Failed to fetch posts', details: errorMsg },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to fetch posts', details: errorMsg }, { status: 500 });
   }
 }

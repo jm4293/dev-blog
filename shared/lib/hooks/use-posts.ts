@@ -1,24 +1,24 @@
-'use client'
+'use client';
 
-import { useEffect, useState, useCallback } from 'react'
-import { PostWithCompany } from '@/shared/lib/supabase/types'
+import { useEffect, useState, useCallback } from 'react';
+import { PostWithCompany } from '@/shared/lib/supabase/types';
 
 interface UsePosts {
-  page: number
-  search: string
-  tagsString: string
-  companyId?: string
+  page: number;
+  search: string;
+  tagsString: string;
+  companyId?: string;
 }
 
 interface PostsData {
-  posts: PostWithCompany[]
-  total: number
-  page: number
-  totalPages: number
-  hasNextPage: boolean
-  hasPrevPage: boolean
-  isLoading: boolean
-  error: string | null
+  posts: PostWithCompany[];
+  total: number;
+  page: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  isLoading: boolean;
+  error: string | null;
 }
 
 export function usePosts({
@@ -36,25 +36,25 @@ export function usePosts({
     hasPrevPage: false,
     isLoading: true,
     error: null,
-  })
+  });
 
   const fetchPosts = useCallback(async () => {
-    setData((prev) => ({ ...prev, isLoading: true, error: null }))
+    setData((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const params = new URLSearchParams()
-      params.set('page', page.toString())
-      if (search) params.set('search', search)
-      if (tagsString) params.set('tags', tagsString)
-      if (companyId) params.set('company', companyId)
+      const params = new URLSearchParams();
+      params.set('page', page.toString());
+      if (search) params.set('search', search);
+      if (tagsString) params.set('tags', tagsString);
+      if (companyId) params.set('company', companyId);
 
-      const response = await fetch(`/api/posts?${params.toString()}`)
+      const response = await fetch(`/api/posts?${params.toString()}`);
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`)
+        throw new Error(`API error: ${response.status}`);
       }
 
-      const result = await response.json()
+      const result = await response.json();
       setData({
         posts: result.posts,
         total: result.total,
@@ -64,21 +64,21 @@ export function usePosts({
         hasPrevPage: result.hasPrevPage,
         isLoading: false,
         error: null,
-      })
+      });
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : 'Unknown error'
+      const errorMsg = err instanceof Error ? err.message : 'Unknown error';
       setData((prev) => ({
         ...prev,
         isLoading: false,
         error: errorMsg,
         posts: [],
-      }))
+      }));
     }
-  }, [page, search, tagsString, companyId])
+  }, [page, search, tagsString, companyId]);
 
   useEffect(() => {
-    fetchPosts()
-  }, [fetchPosts])
+    fetchPosts();
+  }, [fetchPosts]);
 
-  return data
+  return data;
 }

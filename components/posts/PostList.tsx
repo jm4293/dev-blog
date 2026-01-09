@@ -1,9 +1,9 @@
-import { PostWithCompany } from '@/types/post'
-import PostCard from './PostCard'
+import { PostWithCompany } from '@/types/post';
+import PostCard from './PostCard';
 
 interface PostListProps {
-  posts: PostWithCompany[]
-  isLoading?: boolean
+  posts: PostWithCompany[];
+  isLoading?: boolean;
 }
 
 export default function PostList({ posts, isLoading }: PostListProps) {
@@ -34,17 +34,15 @@ export default function PostList({ posts, isLoading }: PostListProps) {
           </div>
         ))}
       </div>
-    )
+    );
   }
 
   if (posts.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600 dark:text-gray-400 text-lg">
-          게시글이 없습니다.
-        </p>
+        <p className="text-gray-600 dark:text-gray-400 text-lg">게시글이 없습니다.</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -53,5 +51,5 @@ export default function PostList({ posts, isLoading }: PostListProps) {
         <PostCard key={post.id} post={post} />
       ))}
     </div>
-  )
+  );
 }

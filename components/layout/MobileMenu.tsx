@@ -1,46 +1,43 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { useEffect } from 'react'
-import { X } from 'lucide-react'
-import ThemeToggle from '../theme/ThemeToggle'
+import Link from 'next/link';
+import { useEffect } from 'react';
+import { X } from 'lucide-react';
+import ThemeToggle from '../theme/ThemeToggle';
 
 interface MobileMenuProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
-      // Handle browser back button
-      window.history.pushState(null, '', window.location.href)
+      document.body.style.overflow = 'hidden';
+
+      window.history.pushState(null, '', window.location.href);
       const handlePopState = () => {
-        onClose()
-      }
-      window.addEventListener('popstate', handlePopState)
+        onClose();
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
       return () => {
-        window.removeEventListener('popstate', handlePopState)
-      }
+        window.removeEventListener('popstate', handlePopState);
+      };
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen, onClose])
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
 
   return (
     <>
       {/* Backdrop */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-30"
-          onClick={onClose}
-        />
-      )}
+      {isOpen && <div className="fixed inset-0 bg-black/50 z-30" onClick={onClose} />}
 
       {/* Slide Menu */}
       <div
@@ -97,5 +94,5 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         </nav>
       </div>
     </>
-  )
+  );
 }
