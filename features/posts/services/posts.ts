@@ -3,8 +3,8 @@
  * 게시글 관련 비즈니스 로직
  */
 
-import { getSupabaseServerClient } from '@/shared/lib/supabase/server';
-import { PostWithCompany, Post } from '@/shared/lib/supabase/types';
+import { getSupabaseServerClient } from '@/supabase/server';
+import { PostWithCompany, Post } from '@/supabase/types';
 
 export interface FetchPostsOptions {
   page?: number;

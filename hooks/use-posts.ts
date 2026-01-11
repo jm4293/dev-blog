@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { PostWithCompany } from '@/shared/lib/supabase/types';
+import { PostWithCompany } from '@/supabase/types';
 
 interface UsePosts {
   page: number;

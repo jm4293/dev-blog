@@ -3,8 +3,8 @@
  * 태그 관련 비즈니스 로직
  */
 
-import { getSupabaseServerClient } from '@/shared/lib/supabase/server';
-import { Tag } from '@/shared/lib/supabase/types';
+import { getSupabaseServerClient } from '@/supabase/server';
+import { Tag } from '@/supabase/types';
 
 /**
  * 모든 태그 조회

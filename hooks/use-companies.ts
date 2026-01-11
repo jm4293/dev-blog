@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Company } from '@/shared/lib/supabase/types';
+import { Company } from '@/supabase/types';
 
 interface CompaniesData {
   companies: Company[];

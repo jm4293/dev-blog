@@ -1,19 +1,26 @@
 /**
  * Cron Job: 블로그 자동 수집
  *
- * 실행 주기: 3시간마다 (Vercel Cron Jobs)
+ * 실행 주기: 매일 자정 (00:00 KST) - Vercel Cron Jobs
+ * 스케줄: 0 0 * * * (vercel.json 참조)
+ *
  * 프로세스:
  * 1. 활성화된 기업 목록 조회
  * 2. 각 기업의 RSS 피드 파싱
  * 3. 중복 제거 (URL 기반)
- * 4. OpenAI로 요약 & 태그 생성
+ * 4. OpenAI로 요약 & 태그 생성 (선택사항)
  * 5. Supabase에 저장
+ *
+ * 보안:
+ * - Cron Secret 인증 필수 (Authorization 헤더)
+ * - GET: 테스트용 (수동 실행)
+ * - POST: Vercel 자동 호출
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/shared/lib/supabase';
-import { parseRssFeed } from '@/features/blogs/services/rss-parser';
+import { getSupabaseServerClient } from '@/supabase';
 import { generateSummary, generateTags } from '@/features/ai/services/openai';
+import { parseRssFeed } from '@/features/posts';
 
 /**
  * Cron Secret 검증
@@ -26,7 +33,7 @@ function verifyCronSecret(request: NextRequest): boolean {
 }
 
 /**
- * POST /api/cron/fetch-blogs
+ * POST /api/cron/fetch-posts
  * Vercel Cron Jobs에서 호출됨
  */
 export async function POST(request: NextRequest) {
@@ -170,7 +177,7 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * GET /api/cron/fetch-blogs
+ * GET /api/cron/fetch-posts
  * 테스트용 (수동 실행)
  */
 export async function GET(request: NextRequest) {

@@ -12,14 +12,14 @@ interface PaginationProps {
   tagsString?: string;
 }
 
-export default function Pagination({
+export const Pagination = ({
   currentPage,
   totalPages,
   baseUrl,
   onPageChange,
   searchQuery,
   tagsString,
-}: PaginationProps) {
+}: PaginationProps) => {
   // URL에 쿼리 파라미터 추가
   const buildUrl = (page: number) => {
     const params = new URLSearchParams();
@@ -86,8 +86,7 @@ export default function Pagination({
             currentPage === 1
               ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
               : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-          }`}
-        >
+          }`}>
           처음
         </button>
       ) : (
@@ -102,8 +101,7 @@ export default function Pagination({
             if (currentPage === 1) {
               e.preventDefault();
             }
-          }}
-        >
+          }}>
           처음
         </Link>
       )}
@@ -113,22 +111,19 @@ export default function Pagination({
         <button
           onClick={() => prevPage && handlePageClick(prevPage)}
           disabled={!prevPage}
-          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:text-gray-400 dark:disabled:text-gray-600 disabled:cursor-not-allowed"
-        >
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:text-gray-400 dark:disabled:text-gray-600 disabled:cursor-not-allowed">
           <ChevronLeft className="w-5 h-5" />
         </button>
       ) : prevPage ? (
         <Link
           href={buildUrl(prevPage)}
-          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
           <ChevronLeft className="w-5 h-5" />
         </Link>
       ) : (
         <button
           disabled
-          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-600 cursor-not-allowed"
-        >
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-600 cursor-not-allowed">
           <ChevronLeft className="w-5 h-5" />
         </button>
       )}
@@ -153,8 +148,7 @@ export default function Pagination({
               isCurrentPage
                 ? 'bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600'
                 : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
-          >
+            }`}>
             {pageNum}
           </button>
         ) : (
@@ -165,8 +159,7 @@ export default function Pagination({
               isCurrentPage
                 ? 'bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600'
                 : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
-          >
+            }`}>
             {pageNum}
           </Link>
         );
@@ -177,22 +170,19 @@ export default function Pagination({
         <button
           onClick={() => nextPage && handlePageClick(nextPage)}
           disabled={!nextPage}
-          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:text-gray-400 dark:disabled:text-gray-600 disabled:cursor-not-allowed"
-        >
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:text-gray-400 dark:disabled:text-gray-600 disabled:cursor-not-allowed">
           <ChevronRight className="w-5 h-5" />
         </button>
       ) : nextPage ? (
         <Link
           href={buildUrl(nextPage)}
-          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
           <ChevronRight className="w-5 h-5" />
         </Link>
       ) : (
         <button
           disabled
-          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-600 cursor-not-allowed"
-        >
+          className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-600 cursor-not-allowed">
           <ChevronRight className="w-5 h-5" />
         </button>
       )}
@@ -206,8 +196,7 @@ export default function Pagination({
             currentPage === totalPages
               ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
               : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-          }`}
-        >
+          }`}>
           마지막
         </button>
       ) : (
@@ -222,11 +211,10 @@ export default function Pagination({
             if (currentPage === totalPages) {
               e.preventDefault();
             }
-          }}
-        >
+          }}>
           마지막
         </Link>
       )}
     </nav>
   );
-}
+};

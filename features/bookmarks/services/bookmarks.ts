@@ -3,8 +3,8 @@
  * 사용자 즐겨찾기 관련 비즈니스 로직
  */
 
-import { getSupabaseServerClient } from '@/shared/lib/supabase/server';
-import { Bookmark, PostWithCompany } from '@/shared/lib/supabase/types';
+import { getSupabaseServerClient } from '@/supabase/server';
+import { Bookmark, PostWithCompany } from '@/supabase/types';
 
 export interface BookmarksResult {
   posts: PostWithCompany[];

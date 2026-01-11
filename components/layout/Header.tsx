@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
-import MobileMenu from './MobileMenu';
-import Navigation from './Navigation';
-import ThemeToggle from '../theme/ThemeToggle';
 
-export default function Header() {
+import ThemeToggle from '../theme/ThemeToggle';
+import { Navigation } from './Navigation';
+import { MobileMenu } from './MobileMenu';
+
+export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -36,8 +37,7 @@ export default function Header() {
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-            >
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
@@ -48,4 +48,4 @@ export default function Header() {
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
     </>
   );
-}
+};

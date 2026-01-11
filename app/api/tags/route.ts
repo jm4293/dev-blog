@@ -8,8 +8,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/shared/lib/supabase/server';
-import { Tag } from '@/shared/lib/supabase/types';
+import { getSupabaseServerClient } from '@/supabase/server';
+import { Tag } from '@/supabase/types';
 
 interface TagsResponse {
   tags: Tag[];

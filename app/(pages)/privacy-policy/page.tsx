@@ -62,8 +62,8 @@ export default function PrivacyPolicyPage() {
             </p>
             <ul className="list-disc list-inside text-gray-700 space-y-2">
               <li>회원 가입 정보: 회원 탈퇴 시까지</li>
-              <li>서비스 이용 기록: 1년</li>
-              <li>문의 및 불만 처리 기록: 1년</li>
+              <li>서비스 이용 기록: 3년 (통신비밀보호법)</li>
+              <li>문의 및 불만 처리 기록: 3년 (전자상거래법)</li>
             </ul>
             <p className="text-gray-700 mt-4">
               다만, 다음의 사유에 해당하는 경우에는 해당 사유 종료 시까지 보유합니다:

@@ -2,12 +2,11 @@
 
 import { useCallback, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import SearchBar from '@/components/search/SearchBar';
-import PostList from '@/components/posts/PostList';
-import Pagination from '@/components/posts/Pagination';
-import { usePosts } from '@/shared/lib/hooks';
+import { usePosts } from '@/hooks';
+import { PostList, SearchBar } from '@/features/posts';
+import { Pagination } from '@/components/pagination/Pagination';
 
-export default function PostsContainer() {
+export const PostsContainer = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -122,4 +121,4 @@ export default function PostsContainer() {
       )}
     </>
   );
-}
+};

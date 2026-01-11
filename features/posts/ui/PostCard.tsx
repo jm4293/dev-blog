@@ -7,7 +7,7 @@ interface PostCardProps {
   post: PostWithCompany;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export const PostCard = ({ post }: PostCardProps) => {
   const relativeTime = formatDistanceToNow(new Date(post.published_at), {
     addSuffix: true,
     locale: ko,
@@ -42,8 +42,7 @@ export default function PostCard({ post }: PostCardProps) {
           {post.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full"
-            >
+              className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full">
               {tag}
             </span>
           ))}
@@ -60,10 +59,9 @@ export default function PostCard({ post }: PostCardProps) {
         href={post.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-semibold transition-colors"
-      >
+        className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-semibold transition-colors">
         전체 읽기 →
       </Link>
     </article>
   );
-}
+};
