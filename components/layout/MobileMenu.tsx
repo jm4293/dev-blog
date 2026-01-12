@@ -54,9 +54,11 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <button className="px-3 py-1.5 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
-              로그인
-            </button>
+            <Link href="/login">
+              <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
+                로그인
+              </button>
+            </Link>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
