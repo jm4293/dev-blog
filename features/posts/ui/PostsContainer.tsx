@@ -14,24 +14,28 @@ export const PostsContainer = () => {
   const currentPage = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
   const searchQuery = searchParams.get('search') ? decodeURIComponent(searchParams.get('search')!) : '';
   const tagsParam = searchParams.get('tags') || '';
+  const companiesParam = searchParams.get('companies') || '';
 
-  // 선택된 태그 배열 (usePosts 훅에서는 문자열로 사용)
+  // 선택된 태그/회사 배열 (usePosts 훅에서는 문자열로 사용)
   const selectedTags = useMemo(() => (tagsParam ? tagsParam.split(',').filter((tag) => tag.trim()) : []), [tagsParam]);
+  const selectedCompanyNames = useMemo(() => (companiesParam ? companiesParam.split(',').filter((name) => name.trim()) : []), [companiesParam]);
 
   // 실제 API에서 데이터 페칭 (태그는 문자열로 전달)
   const { posts, totalPages, isLoading, error } = usePosts({
     page: currentPage,
     search: searchQuery,
     tagsString: tagsParam,
+    companiesString: companiesParam,
   });
 
   // URL 업데이트 함수 (useCallback으로 메모이제이션)
   const updateUrl = useCallback(
-    (page: number, search: string, tags: string[]) => {
+    (page: number, search: string, tags: string[], companies: string[]) => {
       const params = new URLSearchParams();
       if (page > 1) params.set('page', page.toString());
       if (search) params.set('search', encodeURIComponent(search));
       if (tags.length > 0) params.set('tags', tags.join(','));
+      if (companies.length > 0) params.set('companies', companies.join(','));
 
       const newUrl = params.toString() ? `/?${params.toString()}` : '/';
       router.push(newUrl);
@@ -42,25 +46,33 @@ export const PostsContainer = () => {
   // 검색어 변경 시 URL 업데이트
   const handleSearchChange = useCallback(
     (query: string) => {
-      updateUrl(1, query, selectedTags);
+      updateUrl(1, query, selectedTags, selectedCompanyNames);
     },
-    [updateUrl, selectedTags],
+    [updateUrl, selectedTags, selectedCompanyNames],
   );
 
   // 태그 변경 시 URL 업데이트 (페이지 리셋)
   const handleTagsChange = useCallback(
     (tags: string[]) => {
-      updateUrl(1, searchQuery, tags);
+      updateUrl(1, searchQuery, tags, selectedCompanyNames);
     },
-    [updateUrl, searchQuery],
+    [updateUrl, searchQuery, selectedCompanyNames],
+  );
+
+  // 회사 변경 시 URL 업데이트 (페이지 리셋)
+  const handleCompaniesChange = useCallback(
+    (companies: string[]) => {
+      updateUrl(1, searchQuery, selectedTags, companies);
+    },
+    [updateUrl, searchQuery, selectedTags],
   );
 
   // 페이지 변경 시 URL 업데이트
   const handlePageChange = useCallback(
     (page: number) => {
-      updateUrl(page, searchQuery, selectedTags);
+      updateUrl(page, searchQuery, selectedTags, selectedCompanyNames);
     },
-    [updateUrl, searchQuery, selectedTags],
+    [updateUrl, searchQuery, selectedTags, selectedCompanyNames],
   );
 
   return (
@@ -68,8 +80,10 @@ export const PostsContainer = () => {
       <SearchBar
         onSearchChange={handleSearchChange}
         onTagsChange={handleTagsChange}
+        onCompaniesChange={handleCompaniesChange}
         initialSearch={searchQuery}
         initialTagsString={tagsParam}
+        initialCompaniesString={companiesParam}
       />
 
       {/* Loading State */}

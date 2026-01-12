@@ -75,12 +75,6 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             포스트
           </Link>
           <Link
-            href="/blogs"
-            className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={onClose}>
-            블로그
-          </Link>
-          <Link
             href="/bookmarks"
             className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             onClick={onClose}>

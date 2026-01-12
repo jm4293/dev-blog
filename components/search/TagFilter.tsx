@@ -10,27 +10,27 @@ interface TagFilterProps {
 }
 
 const ALL_TAGS = [
-  'Frontend',
+  'AI/ML',
+  'Architecture',
+  'AWS',
   'Backend',
   'Database',
   'DevOps',
-  'AI',
+  'Docker',
+  'Frontend',
+  'Java',
+  'Kubernetes',
   'Mobile',
-  'Architecture',
+  'Next.js',
+  'Node.js',
   'Performance',
+  'Python',
+  'React',
   'Security',
   'Testing',
-  'React',
-  'Vue',
-  'Next.js',
   'TypeScript',
-  'Node.js',
-  'Python',
-  'Java',
-  'Docker',
-  'Kubernetes',
-  'AWS',
-];
+  'Vue',
+].sort();
 
 export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }: TagFilterProps) {
   if (!isOpen) return null;
@@ -49,8 +49,7 @@ export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              aria-label="Close modal"
-            >
+              aria-label="Close modal">
               <X className="w-6 h-6 text-gray-600 dark:text-gray-400" />
             </button>
           </div>
@@ -66,8 +65,7 @@ export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }
                     selectedTags.includes(tag)
                       ? 'bg-purple-600 text-white dark:bg-purple-500'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                >
+                  }`}>
                   {tag}
                 </button>
               ))}
@@ -81,14 +79,12 @@ export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }
                 // Clear all tags
                 selectedTags.forEach((tag) => onTagToggle(tag));
               }}
-              className="px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            >
+              className="px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
               초기화
             </button>
             <button
               onClick={onClose}
-              className="px-6 py-2 rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition-colors"
-            >
+              className="px-6 py-2 rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition-colors">
               완료
             </button>
           </div>

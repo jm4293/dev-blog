@@ -39,18 +39,13 @@ export const PostCard = ({ post }: PostCardProps) => {
       {/* Tags */}
       {post.tags && post.tags.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
-          {post.tags.slice(0, 3).map((tag) => (
+          {[...post.tags].sort().map((tag) => (
             <span
               key={tag}
               className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full">
               {tag}
             </span>
           ))}
-          {post.tags.length > 3 && (
-            <span className="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium rounded-full">
-              +{post.tags.length - 3}
-            </span>
-          )}
         </div>
       )}
 

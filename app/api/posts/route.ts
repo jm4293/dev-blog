@@ -6,8 +6,13 @@
  * - page: 페이지 번호 (기본값: 1)
  * - search: 검색어 (제목 기반)
  * - tags: 태그 필터 (쉼표로 구분, OR 조건)
- * - company: 기업 ID 필터
+ * - company: 기업 ID 필터 (단일)
+ * - companies: 기업 ID 필터 (쉼표로 구분, 다중, OR 조건)
  * - limit: 페이지당 게시글 수 (기본값: 20)
+ *
+ * 예시:
+ * - /api/posts?page=1&search=react
+ * - /api/posts?tags=Frontend,Backend&companies=toss,kakao
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -33,6 +38,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || '';
     const tagsParam = searchParams.get('tags') || '';
     const companyId = searchParams.get('company') || '';
+    const companiesParam = searchParams.get('companies') || '';
     const limit = Math.min(100, parseInt(searchParams.get('limit') || '20', 10));
 
     const offset = (page - 1) * limit;
@@ -40,6 +46,10 @@ export async function GET(request: NextRequest) {
       .split(',')
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
+    const companies = companiesParam
+      .split(',')
+      .map((c) => c.trim())
+      .filter((c) => c.length > 0);
 
     // 1. 전체 게시글 수 조회
     let countQuery = supabase.from('posts').select('id', { count: 'exact', head: true });
@@ -83,10 +93,29 @@ export async function GET(request: NextRequest) {
       postsQuery = postsQuery.contains('tags', tags);
     }
 
-    // 기업 필터
+    // 기업 필터 (단일 또는 다중)
     if (companyId) {
+      // 단일 기업 필터
       countQuery = countQuery.eq('company_id', companyId);
       postsQuery = postsQuery.eq('company_id', companyId);
+    } else if (companies.length > 0) {
+      // 다중 기업 필터 (OR 조건: company name으로 필터링)
+      // companies 배열에는 company name이 들어옴
+      // 먼저 해당 company name들의 ID를 조회
+      const { data: companiesData, error: companiesError } = await supabase
+        .from('companies')
+        .select('id')
+        .in('name', companies);
+
+      if (companiesError) {
+        throw companiesError;
+      }
+
+      const companyIds = companiesData?.map((c: { id: string }) => c.id) || [];
+      if (companyIds.length > 0) {
+        countQuery = countQuery.in('company_id', companyIds);
+        postsQuery = postsQuery.in('company_id', companyIds);
+      }
     }
 
     // 전체 개수 조회

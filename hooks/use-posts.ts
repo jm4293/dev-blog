@@ -7,6 +7,7 @@ interface UsePosts {
   page: number;
   search: string;
   tagsString: string;
+  companiesString?: string;
   companyId?: string;
 }
 
@@ -25,6 +26,7 @@ export function usePosts({
   page = 1,
   search = '',
   tagsString = '',
+  companiesString = '',
   companyId = '',
 }: Partial<UsePosts> = {}): PostsData {
   const [data, setData] = useState<PostsData>({
@@ -46,6 +48,7 @@ export function usePosts({
       params.set('page', page.toString());
       if (search) params.set('search', search);
       if (tagsString) params.set('tags', tagsString);
+      if (companiesString) params.set('companies', companiesString);
       if (companyId) params.set('company', companyId);
 
       const response = await fetch(`/api/posts?${params.toString()}`);
@@ -74,7 +77,7 @@ export function usePosts({
         posts: [],
       }));
     }
-  }, [page, search, tagsString, companyId]);
+  }, [page, search, tagsString, companiesString, companyId]);
 
   useEffect(() => {
     fetchPosts();
