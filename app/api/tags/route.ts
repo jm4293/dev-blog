@@ -1,10 +1,11 @@
 /**
  * GET /api/tags
- * 모든 태그 목록 조회
+ * 태그 목록 조회
  *
  * Query Parameters:
+ * - featured: "true" - 인기 태그만 조회 (is_featured=true)
  * - category: 특정 카테고리의 태그만 조회
- * - sort: 정렬 방식 (name|usage, 기본값: usage)
+ * - sort: 정렬 방식 (name|usage|featured, 기본값: usage)
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -21,11 +22,18 @@ export async function GET(request: NextRequest) {
     const supabase = getSupabaseServerClient();
 
     const searchParams = request.nextUrl.searchParams;
+    const featured = searchParams.get('featured') === 'true';
     const category = searchParams.get('category') || '';
     const sort = searchParams.get('sort') || 'usage';
 
     let query = supabase.from('tags').select('*');
 
+    // 인기 태그 필터
+    if (featured) {
+      query = query.eq('is_featured', true);
+    }
+
+    // 카테고리 필터
     if (category) {
       query = query.eq('category', category);
     }
@@ -33,6 +41,8 @@ export async function GET(request: NextRequest) {
     // 정렬
     if (sort === 'name') {
       query = query.order('name', { ascending: true });
+    } else if (sort === 'featured') {
+      query = query.order('is_featured', { ascending: false }).order('usage_count', { ascending: false });
     } else {
       query = query.order('usage_count', { ascending: false });
     }

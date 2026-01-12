@@ -15,7 +15,7 @@ interface SearchBarProps {
   initialCompaniesString?: string;
 }
 
-const POPULAR_TAGS = ['Frontend', 'Backend', 'Database', 'DevOps', 'AI/ML', 'Mobile', 'Architecture', 'Performance'].sort();
+// POPULAR_TAGS는 더 이상 하드코딩하지 않음 - /api/tags?featured=true 에서 동적 로드
 
 export const SearchBar = ({
   onSearchChange,
@@ -30,7 +30,9 @@ export const SearchBar = ({
   const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>([]);
   const [allCompanies, setAllCompanies] = useState<Company[]>([]);
   const [featuredCompanies, setFeaturedCompanies] = useState<Company[]>([]);
+  const [popularTags, setPopularTags] = useState<string[]>([]);
   const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
+  const [isLoadingTags, setIsLoadingTags] = useState(false);
 
   // URL 파라미터가 변경되면 내부 상태 동기화
   useEffect(() => {
@@ -41,27 +43,33 @@ export const SearchBar = ({
     setSelectedCompanyNames(companiesArray);
   }, [initialSearch, initialTagsString, initialCompaniesString]);
 
-  // 모든 회사 및 인기 회사 조회
+  // 모든 회사, 인기 회사, 인기 태그 조회
   useEffect(() => {
-    const fetchCompanies = async () => {
+    const fetchData = async () => {
       setIsLoadingCompanies(true);
+      setIsLoadingTags(true);
       try {
-        const [allResponse, featuredResponse] = await Promise.all([
+        const [allCompaniesRes, featuredCompaniesRes, popularTagsRes] = await Promise.all([
           fetch('/api/companies'),
           fetch('/api/companies?featured=true'),
+          fetch('/api/tags?featured=true'),
         ]);
-        const allData = await allResponse.json();
-        const featuredData = await featuredResponse.json();
-        setAllCompanies(allData.companies || []);
-        setFeaturedCompanies(featuredData.companies || []);
+        const allCompaniesData = await allCompaniesRes.json();
+        const featuredCompaniesData = await featuredCompaniesRes.json();
+        const popularTagsData = await popularTagsRes.json();
+
+        setAllCompanies(allCompaniesData.companies || []);
+        setFeaturedCompanies(featuredCompaniesData.companies || []);
+        setPopularTags((popularTagsData.tags || []).map((tag: any) => tag.name));
       } catch (error) {
-        console.error('Failed to fetch companies:', error);
+        console.error('Failed to fetch data:', error);
       } finally {
         setIsLoadingCompanies(false);
+        setIsLoadingTags(false);
       }
     };
 
-    fetchCompanies();
+    fetchData();
   }, []);
 
   const [showTagModal, setShowTagModal] = useState(false);
@@ -152,23 +160,29 @@ export const SearchBar = ({
       )}
 
       {/* Popular Tags */}
-      <div className="space-y-2">
-        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 태그</p>
-        <div className="flex flex-wrap gap-2">
-          {POPULAR_TAGS.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => handleTagToggle(tag)}
-              className={`px-4 py-2 rounded-full font-medium transition-all ${
-                selectedTags.includes(tag)
-                  ? 'bg-blue-600 text-white dark:bg-blue-500'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
-              }`}>
-              {tag}
-            </button>
-          ))}
+      {popularTags.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 태그</p>
+          <div className="flex flex-wrap gap-2">
+            {isLoadingTags ? (
+              <p className="text-sm text-gray-500 dark:text-gray-400">로딩 중...</p>
+            ) : (
+              popularTags.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => handleTagToggle(tag)}
+                  className={`px-4 py-2 rounded-full font-medium transition-all ${
+                    selectedTags.includes(tag)
+                      ? 'bg-blue-600 text-white dark:bg-blue-500'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
+                  }`}>
+                  {tag}
+                </button>
+              ))
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Selected Companies & Tags */}
       <div className="space-y-2">

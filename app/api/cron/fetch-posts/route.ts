@@ -19,7 +19,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseServerClient } from '@/supabase';
-import { generateTags } from '@/features/ai/services/openai';
+import { selectTagsFromDatabase } from '@/features/ai/services/tag-selector';
 import { parseRssFeed } from '@/features/posts';
 
 function verifyCronSecret(request: NextRequest): boolean {
@@ -89,10 +89,9 @@ export async function POST(request: NextRequest) {
               continue;
             }
 
-            // 내용 요약은 AI로 안할꺼고 태그 생성만 AI로 할꺼야
-
+            // tags 테이블에서 적절한 태그 선택
             let tags: string[] | null = null;
-            tags = await generateTags(post.title, post.content || '');
+            tags = await selectTagsFromDatabase(post.title, post.content || '', supabase);
 
             // 게시글 저장
             const { error: insertError } = await supabase.from('posts').insert({

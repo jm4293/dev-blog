@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 interface TagFilterProps {
@@ -9,30 +10,34 @@ interface TagFilterProps {
   onClose: () => void;
 }
 
-const ALL_TAGS = [
-  'AI/ML',
-  'Architecture',
-  'AWS',
-  'Backend',
-  'Database',
-  'DevOps',
-  'Docker',
-  'Frontend',
-  'Java',
-  'Kubernetes',
-  'Mobile',
-  'Next.js',
-  'Node.js',
-  'Performance',
-  'Python',
-  'React',
-  'Security',
-  'Testing',
-  'TypeScript',
-  'Vue',
-].sort();
+interface Tag {
+  id: string;
+  name: string;
+}
 
 export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }: TagFilterProps) {
+  const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const fetchTags = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/tags?sort=name');
+        const data = await response.json();
+        setAllTags(data.tags || []);
+      } catch (error) {
+        console.error('Failed to fetch tags:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTags();
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -56,20 +61,30 @@ export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }
 
           {/* Tags Grid */}
           <div className="p-6">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {ALL_TAGS.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => onTagToggle(tag)}
-                  className={`p-4 rounded-lg font-semibold transition-all ${
-                    selectedTags.includes(tag)
-                      ? 'bg-blue-600 text-white dark:bg-blue-500'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}>
-                  {tag}
-                </button>
-              ))}
-            </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <p className="text-gray-600 dark:text-gray-400">로딩 중...</p>
+              </div>
+            ) : allTags.length === 0 ? (
+              <div className="flex items-center justify-center py-8">
+                <p className="text-gray-600 dark:text-gray-400">태그가 없습니다.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {allTags.map((tag) => (
+                  <button
+                    key={tag.id}
+                    onClick={() => onTagToggle(tag.name)}
+                    className={`p-4 rounded-lg font-semibold transition-all ${
+                      selectedTags.includes(tag.name)
+                        ? 'bg-blue-600 text-white dark:bg-blue-500'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}>
+                    {tag.name}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Footer */}

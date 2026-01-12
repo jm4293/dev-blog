@@ -1,4 +1,4 @@
-import { Company } from '@/types/database';
+import { Company } from '@/supabase';
 
 /**
  * 인기 회사 필터링 (is_featured = true)
@@ -17,10 +17,7 @@ export const getActiveCompanies = (companies: Company[]): Company[] => {
 /**
  * 회사를 이름으로 검색
  */
-export const searchCompanies = (
-  companies: Company[],
-  searchQuery: string
-): Company[] => {
+export const searchCompanies = (companies: Company[], searchQuery: string): Company[] => {
   if (!searchQuery.trim()) {
     return companies;
   }
@@ -28,8 +25,7 @@ export const searchCompanies = (
   const query = searchQuery.toLowerCase();
   return companies.filter(
     (company) =>
-      company.name.toLowerCase().includes(query) ||
-      (company.name_en && company.name_en.toLowerCase().includes(query))
+      company.name.toLowerCase().includes(query) || (company.name_en && company.name_en.toLowerCase().includes(query)),
   );
 };
 
@@ -45,10 +41,7 @@ export const sortCompaniesByName = (companies: Company[]): Company[] => {
  * @param companyIds 쉼표로 구분된 회사 ID 문자열 (e.g., "toss,kakao")
  * @param companies 전체 회사 배열
  */
-export const getCompaniesByIds = (
-  companyIds: string[],
-  companies: Company[]
-): Company[] => {
+export const getCompaniesByIds = (companyIds: string[], companies: Company[]): Company[] => {
   if (!companyIds.length) {
     return [];
   }
