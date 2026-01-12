@@ -3,8 +3,8 @@
  * 기업 블로그 관련 비즈니스 로직
  */
 
-import { getSupabaseServerClient } from '@/supabase/server';
-import { Company } from '@/supabase/types';
+import { getSupabaseServerClient } from '@/supabase/server.supabase';
+import { Company } from '@/supabase/types.supabase';
 
 /**
  * 활성화된 기업 목록 조회

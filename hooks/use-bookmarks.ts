@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { PostWithCompany } from '@/supabase/types';
+import { PostWithCompany } from '@/supabase/types.supabase';
 
 interface BookmarksData {
   posts: PostWithCompany[];

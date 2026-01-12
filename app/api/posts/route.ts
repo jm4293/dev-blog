@@ -11,8 +11,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/supabase/server';
-import { PostWithCompany } from '@/supabase/types';
+import { getSupabaseServerClient } from '@/supabase/server.supabase';
+import { PostWithCompany } from '@/supabase/types.supabase';
 
 interface PostsResponse {
   posts: PostWithCompany[];

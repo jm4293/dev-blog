@@ -1,7 +1,7 @@
+import { PostWithCompany } from '@/supabase';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Link from 'next/link';
-import { PostWithCompany } from '@/types/post';
 
 interface PostCardProps {
   post: PostWithCompany;

@@ -25,15 +25,17 @@ export interface ParsedPost {
 }
 
 /**
- * HTML에서 텍스트 추출 (처음 500자)
+ * HTML에서 텍스트 추출 (처음 250자)
  */
 function extractTextFromHtml(html: string | undefined): string {
-  if (!html) return '';
+  if (!html) {
+    return '';
+  }
 
   try {
     const $ = cheerio.load(html);
     const text = $('body').text().replace(/\s+/g, ' ').trim();
-    return text.substring(0, 500);
+    return text.substring(0, 250);
   } catch (error) {
     return '';
   }
@@ -47,7 +49,6 @@ export async function parseRssFeed(rssUrl: string): Promise<ParsedPost[]> {
     const feed = await parser.parseURL(rssUrl);
 
     if (!feed.items || feed.items.length === 0) {
-      console.log(`No items found in RSS feed: ${rssUrl}`);
       return [];
     }
 
@@ -66,7 +67,6 @@ export async function parseRssFeed(rssUrl: string): Promise<ParsedPost[]> {
     return posts;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`Failed to parse RSS feed (${rssUrl}):`, errorMessage);
     throw new Error(`RSS 파싱 실패: ${errorMessage}`);
   }
 }
@@ -74,19 +74,19 @@ export async function parseRssFeed(rssUrl: string): Promise<ParsedPost[]> {
 /**
  * 여러 RSS 피드 동시 파싱
  */
-export async function parseMultipleFeeds(rssUrls: string[]): Promise<Map<string, ParsedPost[]>> {
-  const results = new Map<string, ParsedPost[]>();
+// export async function parseMultipleFeeds(rssUrls: string[]): Promise<Map<string, ParsedPost[]>> {
+//   const results = new Map<string, ParsedPost[]>();
 
-  const promises = rssUrls.map(async (url) => {
-    try {
-      const posts = await parseRssFeed(url);
-      results.set(url, posts);
-    } catch (error) {
-      results.set(url, []);
-      console.error(`Failed to parse ${url}`, error);
-    }
-  });
+//   const promises = rssUrls.map(async (url) => {
+//     try {
+//       const posts = await parseRssFeed(url);
+//       results.set(url, posts);
+//     } catch (error) {
+//       results.set(url, []);
+//       console.error(`Failed to parse ${url}`, error);
+//     }
+//   });
 
-  await Promise.all(promises);
-  return results;
-}
+//   await Promise.all(promises);
+//   return results;
+// }

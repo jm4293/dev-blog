@@ -1,4 +1,4 @@
-import { PostWithCompany } from '@/types/post';
+import { PostWithCompany } from '@/supabase';
 import { PostCard } from './PostCard';
 
 interface PostListProps {

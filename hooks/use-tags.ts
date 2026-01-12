@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Tag } from '@/supabase/types';
+import { Tag } from '@/supabase/types.supabase';
 
 interface TagsData {
   tags: Tag[];

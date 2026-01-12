@@ -4,8 +4,8 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/supabase/server';
-import { Company } from '@/supabase/types';
+import { getSupabaseServerClient } from '@/supabase/server.supabase';
+import { Company } from '@/supabase/types.supabase';
 
 interface CompaniesResponse {
   companies: Company[];

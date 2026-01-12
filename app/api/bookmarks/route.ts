@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/supabase/server';
+import { getSupabaseServerClient } from '@/supabase/server.supabase';
 
 export async function GET(request: NextRequest) {
   try {
