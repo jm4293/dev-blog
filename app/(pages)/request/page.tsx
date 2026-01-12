@@ -1,0 +1,266 @@
+'use client';
+
+import { useState } from 'react';
+import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+
+type RequestType = 'company' | 'tag' | 'other';
+
+interface FormData {
+  type: RequestType;
+  companyName: string;
+  tagName: string;
+  blogUrl: string;
+  message: string;
+  email: string;
+}
+
+export default function RequestPage() {
+  const [formData, setFormData] = useState<FormData>({
+    type: 'company',
+    companyName: '',
+    tagName: '',
+    blogUrl: '',
+    message: '',
+    email: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const response = await fetch('/api/request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          type: 'company',
+          companyName: '',
+          tagName: '',
+          blogUrl: '',
+          message: '',
+          email: '',
+        });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4">
+      <div className="max-w-2xl mx-auto">
+        {/* 헤더 */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">요청하기</h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            새로운 회사나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.
+          </p>
+        </div>
+
+        {/* 폼 */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* 요청 유형 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">요청 유형</label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <label className="relative">
+                  <input
+                    type="radio"
+                    name="type"
+                    value="company"
+                    checked={formData.type === 'company'}
+                    onChange={(e) => handleInputChange('type', e.target.value as RequestType)}
+                    className="sr-only peer"
+                  />
+                  <div className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">🏢</div>
+                      <div className="font-medium text-gray-900 dark:text-white">회사 추가</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">새로운 회사를 추가해달라</div>
+                    </div>
+                  </div>
+                </label>
+
+                <label className="relative">
+                  <input
+                    type="radio"
+                    name="type"
+                    value="tag"
+                    checked={formData.type === 'tag'}
+                    onChange={(e) => handleInputChange('type', e.target.value as RequestType)}
+                    className="sr-only peer"
+                  />
+                  <div className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">🏷️</div>
+                      <div className="font-medium text-gray-900 dark:text-white">태그 추가</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">새로운 태그를 추가해달라</div>
+                    </div>
+                  </div>
+                </label>
+
+                <label className="relative">
+                  <input
+                    type="radio"
+                    name="type"
+                    value="other"
+                    checked={formData.type === 'other'}
+                    onChange={(e) => handleInputChange('type', e.target.value as RequestType)}
+                    className="sr-only peer"
+                  />
+                  <div className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">💬</div>
+                      <div className="font-medium text-gray-900 dark:text-white">기타 문의</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">기타 문의사항</div>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            {/* 회사 추가 필드 */}
+            {formData.type === 'company' && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    요청하는 회사명 *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.companyName}
+                    onChange={(e) => handleInputChange('companyName', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="예: 토스, 카카오, 네이버"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    요청하는 블로그 URL *
+                  </label>
+                  <input
+                    type="url"
+                    required
+                    value={formData.blogUrl}
+                    onChange={(e) => handleInputChange('blogUrl', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    placeholder="https://tech.kakao.com"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* 태그 추가 필드 */}
+            {formData.type === 'tag' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  요청하는 태그명 *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.tagName}
+                  onChange={(e) => handleInputChange('tagName', e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  placeholder="예: React, TypeScript, DevOps"
+                />
+              </div>
+            )}
+
+            {/* 메시지 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">메시지 *</label>
+              <textarea
+                required
+                value={formData.message}
+                onChange={(e) => handleInputChange('message', e.target.value)}
+                rows={4}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
+                placeholder="추가 요청에 대한 자세한 설명이나 이유를 적어주세요."
+              />
+            </div>
+
+            {/* 이메일 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                이메일 (선택사항)
+              </label>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                placeholder="답변을 받을 이메일 주소"
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">답변을 받으려면 이메일을 입력해주세요.</p>
+            </div>
+
+            {/* 제출 버튼 */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed">
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  전송 중...
+                </>
+              ) : (
+                <>
+                  <Send size={18} />
+                  요청 보내기
+                </>
+              )}
+            </button>
+
+            {/* 상태 메시지 */}
+            {submitStatus === 'success' && (
+              <div className="flex items-center gap-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                <CheckCircle size={20} />
+                <span>요청이 성공적으로 전송되었습니다! 검토 후 연락드리겠습니다.</span>
+              </div>
+            )}
+
+            {submitStatus === 'error' && (
+              <div className="flex items-center gap-2 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+                <AlertCircle size={20} />
+                <span>요청 전송에 실패했습니다. 다시 시도해주세요.</span>
+              </div>
+            )}
+          </form>
+        </div>
+
+        {/* 안내사항 */}
+        <div className="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+          <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-2">📋 요청 처리 안내</h3>
+          <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+            <li>• 요청은 검토 후 최대 3-5일 이내에 처리됩니다.</li>
+            <li>• 모든 요청이 승인되는 것은 아닙니다.</li>
+            <li>• 승인되지 않은 경우 별도 안내를 드립니다.</li>
+            <li>• 이메일을 입력하시면 처리 결과를 알려드립니다.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}

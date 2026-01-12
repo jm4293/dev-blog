@@ -47,3 +47,17 @@ export interface Tag {
   created_at: string;
   updated_at: string;
 }
+
+export interface Request {
+  id: string;
+  type: 'company' | 'tag' | 'other';
+  company_name?: string;
+  tag_name?: string;
+  blog_url?: string;
+  message: string;
+  email?: string;
+  status: 'pending' | 'approved' | 'rejected' | 'completed';
+  admin_notes?: string;
+  created_at: string;
+  updated_at: string;
+}

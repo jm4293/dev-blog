@@ -82,6 +82,12 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             onClick={onClose}>
             즐겨찾기
           </Link>
+          <Link
+            href="/request"
+            className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            onClick={onClose}>
+            요청하기
+          </Link>
         </nav>
       </div>
     </>

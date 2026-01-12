@@ -13,6 +13,11 @@ export const Navigation = () => {
         className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
         즐겨찾기
       </Link>
+      <Link
+        href="/request"
+        className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+        요청하기
+      </Link>
     </nav>
   );
 };
