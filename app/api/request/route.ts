@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseServerClient } from '@/supabase/server.supabase';
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,10 +10,10 @@ export async function POST(request: NextRequest) {
     // 입력 데이터 sanitize
     const sanitizedData = {
       type: typeof type === 'string' ? type.trim() : '',
-      companyName: typeof companyName === 'string' ? DOMPurify.sanitize(companyName.trim()) : '',
-      tagName: typeof tagName === 'string' ? DOMPurify.sanitize(tagName.trim()) : '',
+      companyName: typeof companyName === 'string' ? sanitizeHtml(companyName.trim()) : '',
+      tagName: typeof tagName === 'string' ? sanitizeHtml(tagName.trim()) : '',
       blogUrl: typeof blogUrl === 'string' ? blogUrl.trim() : '',
-      message: typeof message === 'string' ? DOMPurify.sanitize(message.trim()) : '',
+      message: typeof message === 'string' ? sanitizeHtml(message.trim()) : '',
       email: typeof email === 'string' ? email.trim() : '',
     };
 
