@@ -146,7 +146,7 @@ export const Pagination = ({
             onClick={() => handlePageClick(pageNum as number)}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
               isCurrentPage
-                ? 'bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600'
+                ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
                 : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
             }`}>
             {pageNum}
@@ -157,7 +157,7 @@ export const Pagination = ({
             href={buildUrl(pageNum as number)}
             className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
               isCurrentPage
-                ? 'bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600'
+                ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
                 : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
             }`}>
             {pageNum}

@@ -47,14 +47,14 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         {/* Menu Header */}
         <div className="h-16 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg" onClick={onClose}>
-            <div className="w-6 h-6 rounded-lg bg-purple-600 dark:bg-purple-500 flex items-center justify-center text-white text-xs">
+            <div className="w-6 h-6 rounded-lg bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white text-xs">
               D
             </div>
             <span>devBlog</span>
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <button className="px-3 py-1.5 text-sm rounded-lg bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition-colors">
+            <button className="px-3 py-1.5 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
               로그인
             </button>
             <button

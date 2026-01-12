@@ -106,17 +106,17 @@ export const SearchBar = ({
           placeholder="게시글 검색..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           onClick={() => setShowCompanyModal(true)}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition-colors whitespace-nowrap">
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap">
           <Filter className="w-5 h-5" />
           회사 필터
         </button>
         <button
           onClick={() => setShowTagModal(true)}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition-colors whitespace-nowrap">
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap">
           <Filter className="w-5 h-5" />
           태그 필터
         </button>
@@ -161,7 +161,7 @@ export const SearchBar = ({
               onClick={() => handleTagToggle(tag)}
               className={`px-4 py-2 rounded-full font-medium transition-all ${
                 selectedTags.includes(tag)
-                  ? 'bg-purple-600 text-white dark:bg-purple-500'
+                  ? 'bg-blue-600 text-white dark:bg-blue-500'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}>
               {tag}
@@ -204,11 +204,11 @@ export const SearchBar = ({
               {[...selectedTags].sort().map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
                   {tag}
                   <button
                     onClick={() => handleTagRemove(tag)}
-                    className="hover:bg-purple-200 dark:hover:bg-purple-800 rounded-full p-0.5 transition-colors"
+                    className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
                     aria-label={`Remove ${tag} tag`}>
                     <X className="w-4 h-4" />
                   </button>

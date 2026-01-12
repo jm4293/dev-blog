@@ -10,21 +10,21 @@ export const Footer = () => {
             <li>
               <a
                 href="https://github.com/jm4293/dev-blog"
-                className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 GitHub
               </a>
             </li>
             <li>
               <Link
                 href="/terms"
-                className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 이용약관
               </Link>
             </li>
             <li>
               <Link
                 href="/privacy-policy"
-                className="text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 개인정보 처리방침
               </Link>
             </li>

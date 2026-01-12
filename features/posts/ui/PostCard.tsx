@@ -28,7 +28,7 @@ export const PostCard = ({ post }: PostCardProps) => {
 
       {/* Title */}
       <Link href={post.url} target="_blank" rel="noopener noreferrer">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
           {post.title}
         </h3>
       </Link>
@@ -42,7 +42,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           {[...post.tags].sort().map((tag) => (
             <span
               key={tag}
-              className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-medium rounded-full">
+              className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-full">
               {tag}
             </span>
           ))}
@@ -54,7 +54,7 @@ export const PostCard = ({ post }: PostCardProps) => {
         href={post.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-semibold transition-colors">
+        className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-semibold transition-colors">
         전체 읽기 →
       </Link>
     </article>

@@ -79,7 +79,7 @@ export const CompanyFilter = ({
                     onClick={() => onCompanyToggle(company.name)}
                     className={`p-4 rounded-lg transition-all flex flex-col items-center gap-2 ${
                       selectedCompanyNames.includes(company.name)
-                        ? 'bg-purple-600 dark:bg-purple-500'
+                        ? 'bg-blue-600 dark:bg-blue-500'
                         : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -119,7 +119,7 @@ export const CompanyFilter = ({
             </button>
             <button
               onClick={onClose}
-              className="px-6 py-2 rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition-colors"
+              className="px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
             >
               완료
             </button>

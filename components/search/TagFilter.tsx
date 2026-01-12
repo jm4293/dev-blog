@@ -63,7 +63,7 @@ export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }
                   onClick={() => onTagToggle(tag)}
                   className={`p-4 rounded-lg font-semibold transition-all ${
                     selectedTags.includes(tag)
-                      ? 'bg-purple-600 text-white dark:bg-purple-500'
+                      ? 'bg-blue-600 text-white dark:bg-blue-500'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}>
                   {tag}
@@ -84,7 +84,7 @@ export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }
             </button>
             <button
               onClick={onClose}
-              className="px-6 py-2 rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 transition-colors">
+              className="px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
               완료
             </button>
           </div>
