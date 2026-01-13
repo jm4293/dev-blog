@@ -1,1 +1,2 @@
-export { useGitHubLogin } from './useGitHubLogin';
+export * from './useGitHubLogin';
+export * from './useLogout';

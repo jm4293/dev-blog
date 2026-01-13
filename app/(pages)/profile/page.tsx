@@ -1,7 +1,32 @@
-export default function ProfilePage() {
+import { getCurrentUser } from '@/supabase/getCurrentUser';
+import { ProfileClient } from '@/features/profile/ui/ProfileClient';
+import Link from 'next/link';
+
+export const metadata = {
+  title: '내 정보',
+  description: '프로필 및 계정 설정',
+};
+
+export default async function ProfilePage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <h1 className="text-3xl font-bold mb-4">내 정보</h1>
+        <p className="mb-8">내 정보를 보려면 로그인해야 합니다.</p>
+        <Link href="/" className="mr-4 text-blue-600 hover:underline">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">로그인하러 가기</button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white">프로필 페이지</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">내 정보</h1>
+
+      <ProfileClient user={user} />
     </div>
   );
 }

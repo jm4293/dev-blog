@@ -2,9 +2,9 @@
 
 import { useCallback, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { usePosts } from '@/hooks';
 import { PostList, SearchBar } from '@/features/posts';
 import { Pagination } from '@/components/pagination/Pagination';
+import { usePosts } from '../hooks';
 
 export const PostsContainer = () => {
   const router = useRouter();
@@ -18,7 +18,10 @@ export const PostsContainer = () => {
 
   // 선택된 태그/회사 배열 (usePosts 훅에서는 문자열로 사용)
   const selectedTags = useMemo(() => (tagsParam ? tagsParam.split(',').filter((tag) => tag.trim()) : []), [tagsParam]);
-  const selectedCompanyNames = useMemo(() => (companiesParam ? companiesParam.split(',').filter((name) => name.trim()) : []), [companiesParam]);
+  const selectedCompanyNames = useMemo(
+    () => (companiesParam ? companiesParam.split(',').filter((name) => name.trim()) : []),
+    [companiesParam],
+  );
 
   // 실제 API에서 데이터 페칭 (태그는 문자열로 전달)
   const { posts, totalPages, isLoading, error } = usePosts({
