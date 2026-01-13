@@ -16,7 +16,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/supabase/server.supabase';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { PostWithCompany } from '@/supabase/types.supabase';
 
 interface PostsResponse {
@@ -30,7 +30,7 @@ interface PostsResponse {
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabaseServerClient();
+    const supabase = await createSupabaseServerClient();
 
     // Query 파라미터 파싱
     const searchParams = request.nextUrl.searchParams;
@@ -139,7 +139,7 @@ export async function GET(request: NextRequest) {
 
     // 응답 형식 변환
     const response: PostsResponse = {
-      posts: (posts as PostWithCompany[]) || [],
+      posts: (posts as []) || [],
       total,
       page,
       totalPages,

@@ -9,7 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/supabase/server.supabase';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { Tag } from '@/supabase/types.supabase';
 
 interface TagsResponse {
@@ -19,7 +19,7 @@ interface TagsResponse {
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabaseServerClient();
+    const supabase = await createSupabaseServerClient();
 
     const searchParams = request.nextUrl.searchParams;
     const featured = searchParams.get('featured') === 'true';

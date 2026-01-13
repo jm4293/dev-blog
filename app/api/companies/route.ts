@@ -13,7 +13,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/supabase/server.supabase';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { Company } from '@/supabase/types.supabase';
 
 interface CompaniesResponse {
@@ -23,7 +23,7 @@ interface CompaniesResponse {
 
 export async function GET(request: Request) {
   try {
-    const supabase = getSupabaseServerClient();
+    const supabase = await createSupabaseServerClient();
     const { searchParams } = new URL(request.url);
 
     const featured = searchParams.get('featured') === 'true';
@@ -54,9 +54,6 @@ export async function GET(request: Request) {
     const errorMsg = error instanceof Error ? error.message : String(error);
     console.error('Companies API error:', errorMsg);
 
-    return NextResponse.json(
-      { error: 'Failed to fetch companies', details: errorMsg },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch companies', details: errorMsg }, { status: 500 });
   }
 }

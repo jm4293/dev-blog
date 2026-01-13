@@ -18,7 +18,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/supabase';
+import { createSupabaseServerClient } from '@/supabase';
 import { selectTagsFromDatabase } from '@/features/ai/services/tag-selector';
 import { parseRssFeed } from '@/features/posts';
 
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
   };
 
   try {
-    const supabase = getSupabaseServerClient();
+    const supabase = await createSupabaseServerClient();
 
     // 1. 활성화된 기업 목록 조회
     const { data: companies, error: companiesError } = await supabase
