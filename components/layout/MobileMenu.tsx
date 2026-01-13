@@ -4,20 +4,19 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
 import ThemeToggle from '../theme/ThemeToggle';
+import { useAtom } from 'jotai';
+import { toggleMobileMenuAtom } from '@/atoms';
 
-interface MobileMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
+  const [isOpen, toggle] = useAtom(toggleMobileMenuAtom);
 
-export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
 
       window.history.pushState(null, '', window.location.href);
       const handlePopState = () => {
-        onClose();
+        toggle();
       };
 
       window.addEventListener('popstate', handlePopState);
@@ -32,21 +31,18 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   return (
     <>
-      {/* Backdrop */}
-      {isOpen && <div className="fixed inset-0 bg-black/50 z-30" onClick={onClose} />}
+      {isOpen && <div className="fixed inset-0 bg-black/50 z-30" onClick={toggle} />}
 
-      {/* Slide Menu */}
       <div
         className={`fixed top-0 left-0 h-screen w-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transform transition-transform duration-300 ease-in-out z-50 flex flex-col ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
-        {/* Menu Header */}
         <div className="h-16 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg" onClick={onClose}>
+          <Link href="/" className="flex items-center gap-2 font-bold text-lg" onClick={toggle}>
             <div className="w-6 h-6 rounded-lg bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white text-xs">
               D
             </div>
@@ -54,13 +50,15 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Link href="/auth/login">
-              <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
-                로그인
-              </button>
-            </Link>
+            {!isLoggedIn && (
+              <Link href="/auth/login">
+                <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
+                  로그인
+                </button>
+              </Link>
+            )}
             <button
-              onClick={onClose}
+              onClick={toggle}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
               aria-label="Close menu">
               <X className="w-5 h-5" />
@@ -73,23 +71,31 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           <Link
             href="/"
             className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={onClose}>
+            onClick={toggle}>
             포스트
           </Link>
           <Link
             href="/bookmarks"
             className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={onClose}>
+            onClick={toggle}>
             즐겨찾기
           </Link>
           <Link
             href="/request"
             className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={onClose}>
+            onClick={toggle}>
             요청하기
           </Link>
+          {isLoggedIn && (
+            <Link
+              href="/profile"
+              className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              onClick={toggle}>
+              프로필
+            </Link>
+          )}
         </nav>
       </div>
     </>
   );
-};
+}

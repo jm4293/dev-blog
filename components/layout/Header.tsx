@@ -1,13 +1,11 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
 import ThemeToggle from '../theme/ThemeToggle';
 import { MobileMenu } from './MobileMenu';
+import { MobileHamburger } from './MobileHamburger';
+import { getCurrentUser } from '@/supabase';
 
-export const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export async function Header() {
+  const user = await getCurrentUser();
 
   return (
     <>
@@ -38,30 +36,31 @@ export const Header = () => {
                 className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
                 요청하기
               </Link>
-            </nav>
-            <div className="flex items-center gap-2">
+              {!!user && (
+                <Link
+                  href="/profile"
+                  className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+                  프로필
+                </Link>
+              )}
               <ThemeToggle />
-              <Link href="/auth/login">
-                <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
-                  로그인
-                </button>
-              </Link>
-            </div>
+              {!user && (
+                <Link href="/auth/login">
+                  <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
+                    로그인
+                  </button>
+                </Link>
+              )}
+            </nav>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            <MobileHamburger />
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu */}
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileMenu isLoggedIn={!!user} />
     </>
   );
-};
+}
