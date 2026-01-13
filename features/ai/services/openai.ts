@@ -61,21 +61,21 @@ async function callOpenAI(
 /**
  * 게시글 요약 생성 (1-2줄)
  */
-// export async function generateSummary(title: string, content: string): Promise<string> {
-//   const messages: Array<{ role: 'user' | 'system'; content: string }> = [
-//     {
-//       role: 'system',
-//       content: `당신은 기술 블로그 게시글 요약 전문가입니다. 주어진 제목과 내용을 바탕으로 1-2줄의 핵심 요약을 한국어로 작성해주세요.`,
-//     },
-//     {
-//       role: 'user',
-//       content: `제목: ${title}\n내용: ${content}\n\n요약:`,
-//     },
-//   ];
+export async function generateSummary(title: string, content: string): Promise<string> {
+  const messages: Array<{ role: 'user' | 'system'; content: string }> = [
+    {
+      role: 'system',
+      content: `당신은 기술 블로그 게시글 요약 전문가입니다. 주어진 제목과 내용을 바탕으로 1-2줄의 핵심 요약을 한국어로 작성해주세요.`,
+    },
+    {
+      role: 'user',
+      content: `제목: ${title}\n내용: ${content}\n\n요약:`,
+    },
+  ];
 
-//   const result = await callOpenAI(messages);
-//   return result.content.trim();
-// }
+  const result = await callOpenAI(messages);
+  return result.content.trim();
+}
 
 /**
  * 게시글 태그 생성 (3-5개)
