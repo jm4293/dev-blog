@@ -2,12 +2,19 @@
 
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { X } from 'lucide-react';
 import ThemeToggle from '../theme/ThemeToggle';
 import { useAtom } from 'jotai';
 import { toggleMobileMenuAtom } from '@/atoms';
 
+interface MenuItem {
+  href: string;
+  label: string;
+}
+
 export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
+  const pathname = usePathname();
   const [isOpen, toggle] = useAtom(toggleMobileMenuAtom);
 
   useEffect(() => {
@@ -32,6 +39,20 @@ export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
+
+  const isActive = (href: string): boolean => {
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(href);
+  };
+
+  const menuItems: MenuItem[] = [
+    { href: '/', label: '포스트' },
+    { href: '/bookmarks', label: '즐겨찾기' },
+    { href: '/profile', label: '프로필' },
+    { href: '/request', label: '요청하기' },
+  ];
 
   return (
     <>
@@ -66,34 +87,20 @@ export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
           </div>
         </div>
 
-        {/* Menu Items */}
-        <nav className="flex-1 px-4 py-6 space-y-4 pt-4">
-          <Link
-            href="/"
-            className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={toggle}>
-            포스트
-          </Link>
-          <Link
-            href="/bookmarks"
-            className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={toggle}>
-            즐겨찾기
-          </Link>
-          <Link
-            href="/request"
-            className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            onClick={toggle}>
-            요청하기
-          </Link>
-          {isLoggedIn && (
+        <nav className="flex-1 px-4 py-6 space-y-2 pt-4">
+          {menuItems.map((item) => (
             <Link
-              href="/profile"
-              className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              key={item.href}
+              href={item.href}
+              className={`block px-4 py-3 rounded-lg transition-colors ${
+                isActive(item.href)
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white font-semibold'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white'
+              }`}
               onClick={toggle}>
-              프로필
+              {item.label}
             </Link>
-          )}
+          ))}
         </nav>
       </div>
     </>

@@ -1,0 +1,189 @@
+/**
+ * GET /api/bookmarks
+ * 현재 사용자의 즐겨찾기 조회
+ *
+ * POST /api/bookmarks
+ * 게시글을 즐겨찾기에 추가
+ * Body: { post_id: string }
+ *
+ * DELETE /api/bookmarks?postId=xxx
+ * 즐겨찾기 삭제
+ */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import { PostWithCompany, Bookmark } from '@/supabase/types.supabase';
+
+interface BookmarksResponse {
+  bookmarks: (Bookmark & { post: PostWithCompany })[];
+}
+
+interface AddBookmarkRequest {
+  post_id: string;
+}
+
+// GET - 사용자의 즐겨찾기 조회
+export async function GET(request: NextRequest) {
+  try {
+    const supabase = await createSupabaseServerClient();
+
+    // 현재 로그인한 사용자 확인
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // 사용자의 즐겨찾기 조회
+    const { data: bookmarks, error } = await supabase
+      .from('bookmarks')
+      .select(
+        `
+        id,
+        user_id,
+        post_id,
+        created_at,
+        post:posts(
+          id,
+          company_id,
+          title,
+          url,
+          content,
+          summary,
+          author,
+          tags,
+          published_at,
+          scraped_at,
+          created_at,
+          updated_at,
+          company:companies(*)
+        )
+      `,
+      )
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Bookmarks query error:', error);
+      throw error;
+    }
+
+    const response: BookmarksResponse = {
+      bookmarks: (bookmarks as []) || [],
+    };
+
+    return NextResponse.json(response);
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error('Bookmarks API error:', errorMsg);
+
+    return NextResponse.json(
+      { error: 'Failed to fetch bookmarks', details: errorMsg },
+      { status: 500 },
+    );
+  }
+}
+
+// POST - 즐겨찾기 추가
+export async function POST(request: NextRequest) {
+  try {
+    const supabase = await createSupabaseServerClient();
+
+    // 현재 로그인한 사용자 확인
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = (await request.json()) as AddBookmarkRequest;
+    const { post_id } = body;
+
+    if (!post_id) {
+      return NextResponse.json({ error: 'post_id is required' }, { status: 400 });
+    }
+
+    // 즐겨찾기 추가
+    const { data: bookmark, error } = await supabase
+      .from('bookmarks')
+      .insert({
+        user_id: user.id,
+        post_id,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      if (error.code === '23505') {
+        // Unique constraint violation - already bookmarked
+        return NextResponse.json(
+          { error: 'Already bookmarked', details: error.message },
+          { status: 409 },
+        );
+      }
+      console.error('Bookmark insert error:', error);
+      throw error;
+    }
+
+    return NextResponse.json(bookmark, { status: 201 });
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error('Bookmarks API error:', errorMsg);
+
+    return NextResponse.json(
+      { error: 'Failed to add bookmark', details: errorMsg },
+      { status: 500 },
+    );
+  }
+}
+
+// DELETE - 즐겨찾기 삭제
+export async function DELETE(request: NextRequest) {
+  try {
+    const supabase = await createSupabaseServerClient();
+
+    // 현재 로그인한 사용자 확인
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const postId = request.nextUrl.searchParams.get('postId');
+
+    if (!postId) {
+      return NextResponse.json({ error: 'postId is required' }, { status: 400 });
+    }
+
+    // 즐겨찾기 삭제
+    const { error } = await supabase
+      .from('bookmarks')
+      .delete()
+      .eq('user_id', user.id)
+      .eq('post_id', postId);
+
+    if (error) {
+      console.error('Bookmark delete error:', error);
+      throw error;
+    }
+
+    return NextResponse.json({ message: 'Bookmark removed' });
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error('Bookmarks API error:', errorMsg);
+
+    return NextResponse.json(
+      { error: 'Failed to remove bookmark', details: errorMsg },
+      { status: 500 },
+    );
+  }
+}

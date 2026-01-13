@@ -1,21 +1,39 @@
+'use client';
+
 import { PostWithCompany } from '@/supabase';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Link from 'next/link';
+import { Heart } from 'lucide-react';
+import { useBookmarks } from '@/features/bookmarks';
 
 interface PostCardProps {
   post: PostWithCompany;
 }
 
 export const PostCard = ({ post }: PostCardProps) => {
+  const { isBookmarked, addBookmark, removeBookmark, isAdding, isRemoving } = useBookmarks();
+  const bookmarked = isBookmarked(post.id);
+  const isLoading = isAdding || isRemoving;
+
   const relativeTime = formatDistanceToNow(new Date(post.published_at), {
     addSuffix: true,
     locale: ko,
   });
 
+  const handleBookmarkToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    if (bookmarked) {
+      removeBookmark(post.id);
+    } else {
+      addBookmark(post.id);
+    }
+  };
+
   return (
     <article className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg dark:hover:shadow-xl transition-shadow hover:-translate-y-1 transform duration-300">
-      {/* Company Info */}
+      {/* Company Info & Bookmark Button */}
       <div className="flex items-center gap-3 mb-4">
         {post.company.logo_url && (
           <img src={post.company.logo_url} alt={post.company.name} className="w-10 h-10 rounded-lg object-cover" />
@@ -24,6 +42,17 @@ export const PostCard = ({ post }: PostCardProps) => {
           <p className="text-sm font-semibold text-gray-900 dark:text-white">{post.company.name}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">{relativeTime}</p>
         </div>
+        <button
+          onClick={handleBookmarkToggle}
+          disabled={isLoading}
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
+          title={bookmarked ? '즐겨찾기 제거' : '즐겨찾기 추가'}>
+          <Heart
+            className={`w-5 h-5 transition-colors ${
+              bookmarked ? 'fill-red-500 text-red-500' : 'text-gray-400 dark:text-gray-500'
+            }`}
+          />
+        </button>
       </div>
 
       {/* Title */}

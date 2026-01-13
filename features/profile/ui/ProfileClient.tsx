@@ -12,7 +12,6 @@ interface ProfileClientProps {
 export const ProfileClient = ({ user }: ProfileClientProps) => {
   const { mutate: logout, isPending } = useLogout();
 
-  // 이거 꼭 있어야해?
   const handleLogout = () => {
     if (confirm('로그아웃 하시겠습니까?')) {
       logout();
@@ -21,16 +20,13 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      {/* 사용자 정보 카드 */}
       <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-8 mb-6">
         <div className="space-y-6">
-          {/* 이메일 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">이메일</label>
             <p className="text-gray-900 dark:text-white">{user.email}</p>
           </div>
 
-          {/* GitHub 정보 */}
           {user.user_metadata?.name && (
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">이름</label>
@@ -38,7 +34,6 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
             </div>
           )}
 
-          {/* GitHub 사용자명 */}
           {user.user_metadata?.user_name && (
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">GitHub 사용자명</label>
@@ -46,15 +41,6 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
             </div>
           )}
 
-          {/* 아바타 */}
-          {user.user_metadata?.avatar_url && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">프로필 사진</label>
-              <img src={user.user_metadata.avatar_url} alt="Profile Avatar" className="w-24 h-24 rounded-full" />
-            </div>
-          )}
-
-          {/* 가입 날짜 */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">가입 날짜</label>
             <p className="text-gray-900 dark:text-white">
@@ -64,7 +50,6 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
         </div>
       </div>
 
-      {/* 로그아웃 버튼 */}
       <div className="flex gap-4">
         <button
           onClick={handleLogout}
