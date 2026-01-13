@@ -1,6 +1,6 @@
 'use server';
 
-import { getSupabaseServerClient } from '@/supabase/server.supabase';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import sanitizeHtml from 'sanitize-html';
 
 export interface RequestFormData {
@@ -12,7 +12,7 @@ export interface RequestFormData {
   email: string;
 }
 
-export async function submitRequest(formData: RequestFormData) {
+export const submitRequestAction = async (formData: RequestFormData) => {
   try {
     const { type, companyName, tagName, blogUrl, message, email } = formData;
 
@@ -69,8 +69,7 @@ export async function submitRequest(formData: RequestFormData) {
       throw new Error('유효하지 않은 이메일 주소입니다.');
     }
 
-    // Supabase 클라이언트 생성
-    const supabase = getSupabaseServerClient();
+    const supabase = await createSupabaseServerClient();
 
     // 최근 요청 수 확인 (Rate Limiting)
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
@@ -121,4 +120,4 @@ export async function submitRequest(formData: RequestFormData) {
     console.error('Request submission error:', errorMessage);
     throw error;
   }
-}
+};

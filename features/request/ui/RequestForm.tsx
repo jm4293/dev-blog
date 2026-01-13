@@ -27,8 +27,8 @@ export const RequestForm = () => {
 
   const mutation = useSubmitRequest(reset);
 
-  const onSubmit = async (data: RequestFormData) => {
-    await mutation.mutateAsync(data);
+  const onSubmit = (data: RequestFormData) => {
+    mutation.mutate(data);
   };
 
   return (

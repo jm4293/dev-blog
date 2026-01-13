@@ -54,7 +54,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Link href="/login">
+            <Link href="/auth/login">
               <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
                 로그인
               </button>

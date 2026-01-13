@@ -3,9 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
-
 import ThemeToggle from '../theme/ThemeToggle';
-import { Navigation } from './Navigation';
 import { MobileMenu } from './MobileMenu';
 
 export const Header = () => {
@@ -24,10 +22,26 @@ export const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <Navigation />
+            <nav className="flex items-center gap-8">
+              <Link
+                href="/"
+                className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+                포스트
+              </Link>
+              <Link
+                href="/bookmarks"
+                className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+                즐겨찾기
+              </Link>
+              <Link
+                href="/request"
+                className="text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors">
+                요청하기
+              </Link>
+            </nav>
             <div className="flex items-center gap-2">
               <ThemeToggle />
-              <Link href="/login">
+              <Link href="/auth/login">
                 <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
                   로그인
                 </button>
