@@ -22,6 +22,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "analyze": "ANALYZE=true next build",
     "fetch-blogs": "curl -X POST http://localhost:3000/api/cron/fetch-blogs -H \"Authorization: Bearer $CRON_SECRET\""
   },
   "dependencies": {

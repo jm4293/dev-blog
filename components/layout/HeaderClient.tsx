@@ -37,47 +37,31 @@ export function HeaderClient({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white">
-              D
-            </div>
-            devBlog
-          </Link>
+      <div className="hidden md:flex items-center gap-8">
+        <nav className="flex items-center gap-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`transition-colors ${
+                item.active
+                  ? 'text-blue-600 dark:text-blue-400 font-semibold'
+                  : 'text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400'
+              }`}>
+              {item.label}
+            </Link>
+          ))}
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            <nav className="flex items-center gap-8">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`transition-colors ${
-                    item.active
-                      ? 'text-blue-600 dark:text-blue-400 font-semibold'
-                      : 'text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400'
-                  }`}>
-                  {item.label}
-                </Link>
-              ))}
-
-              <ThemeToggle />
-              {!isLoggedIn && (
-                <Link href="/auth/login">
-                  <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
-                    로그인
-                  </button>
-                </Link>
-              )}
-            </nav>
-          </div>
-
-          <div className="md:hidden">
-            <MobileHamburger />
-          </div>
-        </div>
-      </header>
+          <ThemeToggle />
+          {!isLoggedIn && (
+            <Link href="/auth/login">
+              <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
+                로그인
+              </button>
+            </Link>
+          )}
+        </nav>
+      </div>
 
       <MobileMenu isLoggedIn={isLoggedIn} />
     </>

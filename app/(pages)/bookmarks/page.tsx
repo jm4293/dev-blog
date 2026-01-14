@@ -5,7 +5,12 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: '내 즐겨찾기 | devBlog.kr',
-  description: '저장한 게시글을 한눈에 관리하세요.',
+  description: 'GitHub 로그인으로 저장한 기술 블로그 게시글을 한눈에 관리하고 정리하세요.',
+  openGraph: {
+    title: '내 즐겨찾기 | devBlog.kr',
+    description: 'GitHub 로그인으로 저장한 기술 블로그 게시글을 한눈에 관리하세요.',
+    type: 'website',
+  },
 };
 
 export default async function BookmarksPage() {

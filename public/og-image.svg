@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#ffffff"/>
+
+  <!-- Gradient overlay -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#2563EB;stop-opacity:0.2" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#gradient)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="100" cy="100" r="80" fill="#3B82F6" opacity="0.1"/>
+  <circle cx="1100" cy="530" r="100" fill="#2563EB" opacity="0.1"/>
+
+  <!-- Main text -->
+  <text x="600" y="200" font-family="Arial, sans-serif" font-size="72" font-weight="bold" text-anchor="middle" fill="#1F2937">
+    devBlog.kr
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="300" font-family="Arial, sans-serif" font-size="36" text-anchor="middle" fill="#4B5563">
+    한국 개발 기업 블로그 모음
+  </text>
+
+  <!-- Description -->
+  <text x="600" y="380" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="#6B7280">
+    최신 기술 블로그를 한 곳에서 만나보세요
+  </text>
+
+  <!-- Tags example -->
+  <g>
+    <!-- Frontend tag -->
+    <rect x="200" y="450" width="120" height="40" rx="20" fill="#3B82F6" opacity="0.2"/>
+    <text x="260" y="475" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1F2937">Frontend</text>
+
+    <!-- Backend tag -->
+    <rect x="400" y="450" width="120" height="40" rx="20" fill="#10B981" opacity="0.2"/>
+    <text x="460" y="475" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1F2937">Backend</text>
+
+    <!-- DevOps tag -->
+    <rect x="600" y="450" width="120" height="40" rx="20" fill="#F59E0B" opacity="0.2"/>
+    <text x="660" y="475" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1F2937">DevOps</text>
+
+    <!-- Database tag -->
+    <rect x="800" y="450" width="120" height="40" rx="20" fill="#8B5CF6" opacity="0.2"/>
+    <text x="860" y="475" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1F2937">Database</text>
+  </g>
+</svg>

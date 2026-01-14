@@ -4,8 +4,12 @@ import { ProfileClient } from '@/features/profile/ui/ProfileClient';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '내 정보 | devBlog.kr',
-  description: '프로필 정보 및 계정 설정',
+  title: '프로필 | devBlog.kr',
+  description: 'GitHub 계정으로 연동된 프로필 정보와 계정 설정을 관리하세요.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function ProfilePage() {
