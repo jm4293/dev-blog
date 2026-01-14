@@ -20,7 +20,7 @@ export const BookmarkList = ({ bookmarks }: BookmarkListProps) => {
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {bookmarks.map((bookmark) => (
         <PostCard key={bookmark.post.id} post={bookmark.post} />
       ))}

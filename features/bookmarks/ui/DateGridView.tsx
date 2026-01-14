@@ -71,7 +71,7 @@ export const DateGridView = ({ bookmarks }: DateGridViewProps) => {
             </div>
 
             {/* 날짜별 게시글 그리드 */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {dayBookmarks.map((bookmark) => (
                 <PostCard key={bookmark.post.id} post={bookmark.post} />
               ))}
