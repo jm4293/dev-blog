@@ -5,16 +5,19 @@ import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
-import { useBookmarks } from '@/features/bookmarks';
+import { useAddBookmark, useRemoveBookmark, useIsBookmarked } from '@/features/bookmarks';
 
 interface PostCardProps {
   post: PostWithCompany;
 }
 
-export const PostCard = ({ post }: PostCardProps) => {
-  const { isBookmarked, addBookmark, removeBookmark, isAdding, isRemoving } = useBookmarks();
-  const bookmarked = isBookmarked(post.id);
-  const isLoading = isAdding || isRemoving;
+export function PostCard({ post }: PostCardProps) {
+  const addBookmarkMutation = useAddBookmark();
+  const removeBookmarkMutation = useRemoveBookmark();
+  const isBookmarkedFn = useIsBookmarked();
+
+  const bookmarked = isBookmarkedFn(post.id);
+  const isLoading = addBookmarkMutation.isPending || removeBookmarkMutation.isPending;
 
   const relativeTime = formatDistanceToNow(new Date(post.published_at), {
     addSuffix: true,
@@ -25,9 +28,9 @@ export const PostCard = ({ post }: PostCardProps) => {
     e.preventDefault();
 
     if (bookmarked) {
-      removeBookmark(post.id);
+      removeBookmarkMutation.mutate(post.id);
     } else {
-      addBookmark(post.id);
+      addBookmarkMutation.mutate(post.id);
     }
   };
 
@@ -88,4 +91,4 @@ export const PostCard = ({ post }: PostCardProps) => {
       </Link>
     </article>
   );
-};
+}

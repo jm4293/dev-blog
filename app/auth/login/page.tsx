@@ -22,16 +22,6 @@ export default function LoginPage() {
 
           <div className="text-center text-sm text-gray-600 dark:text-gray-400">
             <p>로그인하면 devBlog.kr의 모든 기능을 사용할 수 있습니다.</p>
-            <p className="mt-2">
-              아직 계정이 없으신가요?{' '}
-              <a
-                href="https://github.com/join"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 dark:text-blue-400 hover:underline">
-                GitHub 가입하기
-              </a>
-            </p>
           </div>
         </div>
       </div>

@@ -17,7 +17,8 @@ export const useGitHubLogin = () => {
         throw new Error(error.message);
       }
     },
-    onSuccess: () => {},
-    onError: (error) => {},
+    onError: (error: Error) => {
+      throw error;
+    },
   });
 };

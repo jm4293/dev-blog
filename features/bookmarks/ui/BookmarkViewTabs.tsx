@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { BookmarkWithPost } from '../services/types';
 import { BookmarkList } from './BookmarkList';
 import { DateGridView } from './DateGridView';
 import { LayoutGrid, Calendar } from 'lucide-react';
+import { BookmarkWithPost } from '@/supabase';
 
 interface BookmarkViewTabsProps {
   bookmarks: BookmarkWithPost[];

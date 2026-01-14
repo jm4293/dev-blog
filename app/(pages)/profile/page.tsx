@@ -1,10 +1,11 @@
+import { Metadata } from 'next';
 import { getCurrentUser } from '@/supabase/getCurrentUser';
 import { ProfileClient } from '@/features/profile/ui/ProfileClient';
 import Link from 'next/link';
 
-export const metadata = {
-  title: '내 정보',
-  description: '프로필 및 계정 설정',
+export const metadata: Metadata = {
+  title: '내 정보 | devBlog.kr',
+  description: '프로필 정보 및 계정 설정',
 };
 
 export default async function ProfilePage() {

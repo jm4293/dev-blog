@@ -1,7 +1,7 @@
 'use client';
 
-import { BookmarkWithPost } from '../services/types';
 import { PostCard } from '@/features/posts';
+import { BookmarkWithPost } from '@/supabase';
 
 interface DateGridViewProps {
   bookmarks: BookmarkWithPost[];

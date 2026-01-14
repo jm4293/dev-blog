@@ -6,7 +6,7 @@ interface PostListProps {
   isLoading?: boolean;
 }
 
-export const PostList = ({ posts, isLoading }: PostListProps) => {
+export function PostList({ posts, isLoading }: PostListProps) {
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -51,4 +51,4 @@ export const PostList = ({ posts, isLoading }: PostListProps) => {
       ))}
     </div>
   );
-};
+}

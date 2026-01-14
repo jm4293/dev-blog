@@ -1,11 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useGitHubLogin } from '@/features/auth/hooks/useGitHubLogin';
+import { useGitHubLogin } from '../hooks';
 
-export const LoginCard = () => {
+export function LoginCard() {
   const router = useRouter();
-  const { mutate: handleGitHubLogin, isPending, error } = useGitHubLogin();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const { mutate, error } = useGitHubLogin();
+
+  const handleLogin = () => {
+    setIsLoading(true);
+    mutate();
+  };
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8">
@@ -19,10 +27,10 @@ export const LoginCard = () => {
       )}
 
       <button
-        onClick={() => handleGitHubLogin()}
-        disabled={isPending}
+        onClick={handleLogin}
+        disabled={isLoading}
         className="w-full mb-4 px-4 py-3 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-        {isPending ? (
+        {isLoading ? (
           <>
             <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             로그인 중...
@@ -48,4 +56,4 @@ export const LoginCard = () => {
       </button>
     </div>
   );
-};
+}

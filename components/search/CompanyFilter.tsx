@@ -11,12 +11,7 @@ interface CompanyFilterProps {
   onClose: () => void;
 }
 
-export const CompanyFilter = ({
-  selectedCompanyNames,
-  onCompanyToggle,
-  isOpen,
-  onClose,
-}: CompanyFilterProps) => {
+export function CompanyFilter({ selectedCompanyNames, onCompanyToggle, isOpen, onClose }: CompanyFilterProps) {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,8 +50,7 @@ export const CompanyFilter = ({
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              aria-label="Close modal"
-            >
+              aria-label="Close modal">
               <X className="w-6 h-6 text-gray-600 dark:text-gray-400" />
             </button>
           </div>
@@ -81,24 +75,16 @@ export const CompanyFilter = ({
                       selectedCompanyNames.includes(company.name)
                         ? 'bg-blue-600 dark:bg-blue-500'
                         : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}
-                  >
+                    }`}>
                     {/* Company Logo */}
                     {company.logo_url && (
-                      <img
-                        src={company.logo_url}
-                        alt={company.name}
-                        className="w-10 h-10 object-contain"
-                      />
+                      <img src={company.logo_url} alt={company.name} className="w-10 h-10 object-contain" />
                     )}
                     {/* Company Name */}
                     <span
                       className={`text-sm font-semibold text-center ${
-                        selectedCompanyNames.includes(company.name)
-                          ? 'text-white'
-                          : 'text-gray-900 dark:text-white'
-                      }`}
-                    >
+                        selectedCompanyNames.includes(company.name) ? 'text-white' : 'text-gray-900 dark:text-white'
+                      }`}>
                       {company.name}
                     </span>
                   </button>
@@ -113,14 +99,12 @@ export const CompanyFilter = ({
               onClick={() => {
                 selectedCompanyNames.forEach((companyName) => onCompanyToggle(companyName));
               }}
-              className="px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            >
+              className="px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
               초기화
             </button>
             <button
               onClick={onClose}
-              className="px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
-            >
+              className="px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
               완료
             </button>
           </div>
@@ -128,4 +112,4 @@ export const CompanyFilter = ({
       </div>
     </>
   );
-};
+}

@@ -5,7 +5,7 @@ import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { useSubmitRequest } from '../hooks';
 import { RequestFormData } from '../actions';
 
-export const RequestForm = () => {
+export function RequestForm() {
   const {
     register,
     handleSubmit,
@@ -232,4 +232,4 @@ export const RequestForm = () => {
       </form>
     </div>
   );
-};
+}

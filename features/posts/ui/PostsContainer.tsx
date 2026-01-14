@@ -6,7 +6,7 @@ import { PostList, SearchBar } from '@/features/posts';
 import { Pagination } from '@/components/pagination/Pagination';
 import { usePosts } from '../hooks';
 
-export const PostsContainer = () => {
+export function PostsContainer() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -89,7 +89,6 @@ export const PostsContainer = () => {
         initialCompaniesString={companiesParam}
       />
 
-      {/* Loading State */}
       {isLoading && (
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
@@ -101,14 +100,12 @@ export const PostsContainer = () => {
         </div>
       )}
 
-      {/* Error State */}
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-6 dark:border-red-900 dark:bg-red-950">
           <p className="text-red-800 dark:text-red-200">오류가 발생했습니다: {error}</p>
         </div>
       )}
 
-      {/* Empty State */}
       {!isLoading && !error && posts.length === 0 && (
         <div className="flex flex-col items-center justify-center py-12">
           <div className="text-center">
@@ -122,10 +119,8 @@ export const PostsContainer = () => {
         </div>
       )}
 
-      {/* Posts Grid */}
       {!isLoading && posts.length > 0 && <PostList posts={posts} />}
 
-      {/* Pagination */}
       {!isLoading && posts.length > 0 && (
         <Pagination
           currentPage={currentPage}
@@ -138,4 +133,4 @@ export const PostsContainer = () => {
       )}
     </>
   );
-};
+}

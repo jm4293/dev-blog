@@ -15,7 +15,7 @@ interface Tag {
   name: string;
 }
 
-export default function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }: TagFilterProps) {
+export function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }: TagFilterProps) {
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

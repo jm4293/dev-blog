@@ -41,14 +41,15 @@ export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
   }, [isOpen]);
 
   const isActive = (href: string): boolean => {
-    if (href === '/') {
-      return pathname === '/';
+    if (href === '/posts') {
+      return pathname === '/' || pathname === '/posts';
     }
+
     return pathname.startsWith(href);
   };
 
   const menuItems: MenuItem[] = [
-    { href: '/', label: '포스트' },
+    { href: '/posts', label: '포스트' },
     { href: '/bookmarks', label: '즐겨찾기' },
     { href: '/profile', label: '프로필' },
     { href: '/request', label: '요청하기' },
@@ -94,7 +95,7 @@ export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
               href={item.href}
               className={`block px-4 py-3 rounded-lg transition-colors ${
                 isActive(item.href)
-                  ? 'bg-blue-600 dark:bg-blue-500 text-white font-semibold'
+                  ? 'text-blue-600 dark:text-blue-400 font-semibold'
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white'
               }`}
               onClick={toggle}>

@@ -38,6 +38,10 @@ export interface Bookmark {
   created_at: string;
 }
 
+export interface BookmarkWithPost extends Bookmark {
+  post: PostWithCompany;
+}
+
 export interface Tag {
   id: string;
   name: string;

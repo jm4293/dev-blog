@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { X, Filter } from 'lucide-react';
-import TagFilter from '../../../components/search/TagFilter';
-import { CompanyFilter } from '../../../components/search/CompanyFilter';
 import { Company } from '@/supabase/types.supabase';
+import { CompanyFilter, TagFilter } from '@/components/search';
 
 interface SearchBarProps {
   onSearchChange?: (query: string) => void;
@@ -15,16 +14,14 @@ interface SearchBarProps {
   initialCompaniesString?: string;
 }
 
-// POPULAR_TAGS는 더 이상 하드코딩하지 않음 - /api/tags?featured=true 에서 동적 로드
-
-export const SearchBar = ({
+export function SearchBar({
   onSearchChange,
   onTagsChange,
   onCompaniesChange,
   initialSearch = '',
   initialTagsString = '',
   initialCompaniesString = '',
-}: SearchBarProps) => {
+}: SearchBarProps) {
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>([]);
@@ -39,7 +36,9 @@ export const SearchBar = ({
     setSearchQuery(initialSearch);
     const tagsArray = initialTagsString ? initialTagsString.split(',').filter((tag) => tag.trim()) : [];
     setSelectedTags(tagsArray);
-    const companiesArray = initialCompaniesString ? initialCompaniesString.split(',').filter((name) => name.trim()) : [];
+    const companiesArray = initialCompaniesString
+      ? initialCompaniesString.split(',').filter((name) => name.trim())
+      : [];
     setSelectedCompanyNames(companiesArray);
   }, [initialSearch, initialTagsString, initialCompaniesString]);
 
@@ -95,7 +94,9 @@ export const SearchBar = ({
 
   const handleCompanyToggle = (companyName: string) => {
     setSelectedCompanyNames((prev) => {
-      const newCompanies = prev.includes(companyName) ? prev.filter((name) => name !== companyName) : [...prev, companyName];
+      const newCompanies = prev.includes(companyName)
+        ? prev.filter((name) => name !== companyName)
+        : [...prev, companyName];
       onCompaniesChange?.(newCompanies);
       return newCompanies;
     });
@@ -107,7 +108,6 @@ export const SearchBar = ({
 
   return (
     <div className="mb-8 space-y-4">
-      {/* Search Input & Filter Buttons */}
       <div className="flex flex-col md:flex-row gap-4">
         <input
           type="text"
@@ -131,7 +131,7 @@ export const SearchBar = ({
       </div>
 
       {/* Popular Companies */}
-      {featuredCompanies.length > 0 && (
+      {/* {featuredCompanies.length > 0 && (
         <div className="space-y-2">
           <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 회사</p>
           <div className="flex flex-wrap gap-2">
@@ -157,7 +157,7 @@ export const SearchBar = ({
             )}
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Popular Tags */}
       {popularTags.length > 0 && (
@@ -250,4 +250,4 @@ export const SearchBar = ({
       />
     </div>
   );
-};
+}

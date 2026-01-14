@@ -17,10 +17,14 @@ interface NavItem {
   active: boolean;
 }
 
-export const HeaderClient = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+export function HeaderClient({ isLoggedIn }: { isLoggedIn: boolean }) {
   const pathname = usePathname();
 
   const isActive = (href: string): boolean => {
+    if (href === '/posts') {
+      return pathname === '/' || pathname === '/posts';
+    }
+
     return pathname.startsWith(href);
   };
 
@@ -78,4 +82,4 @@ export const HeaderClient = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       <MobileMenu isLoggedIn={isLoggedIn} />
     </>
   );
-};
+}

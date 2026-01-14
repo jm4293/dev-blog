@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 interface PaginationProps {
   currentPage: number;
@@ -12,14 +12,14 @@ interface PaginationProps {
   tagsString?: string;
 }
 
-export const Pagination = ({
+export function Pagination({
   currentPage,
   totalPages,
   baseUrl,
   onPageChange,
   searchQuery,
   tagsString,
-}: PaginationProps) => {
+}: PaginationProps) {
   // URL에 쿼리 파라미터 추가
   const buildUrl = (page: number) => {
     const params = new URLSearchParams();
@@ -87,7 +87,7 @@ export const Pagination = ({
               ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
               : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
           }`}>
-          처음
+          <ChevronsLeft className="w-5 h-5" />
         </button>
       ) : (
         <Link
@@ -102,7 +102,7 @@ export const Pagination = ({
               e.preventDefault();
             }
           }}>
-          처음
+          <ChevronsLeft className="w-5 h-5" />
         </Link>
       )}
 
@@ -197,7 +197,7 @@ export const Pagination = ({
               ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
               : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
           }`}>
-          마지막
+          <ChevronsRight className="w-5 h-5" />
         </button>
       ) : (
         <Link
@@ -212,9 +212,9 @@ export const Pagination = ({
               e.preventDefault();
             }
           }}>
-          마지막
+          <ChevronsRight className="w-5 h-5" />
         </Link>
       )}
     </nav>
   );
-};
+}

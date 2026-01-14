@@ -1,3 +1,2 @@
-export * from './hooks/useBookmarks';
-export * from './services/types';
+export * from './hooks';
 export * from './ui';
