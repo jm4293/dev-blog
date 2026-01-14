@@ -1,39 +1,26 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
-import { Company } from '@/supabase/types.supabase';
+import type { Company } from '@/supabase/types.supabase';
 
 interface CompanyFilterProps {
+  companies: Company[];
   selectedCompanyNames: string[];
   onCompanyToggle: (companyName: string) => void;
   isOpen: boolean;
   onClose: () => void;
+  isLoading?: boolean;
 }
 
-export function CompanyFilter({ selectedCompanyNames, onCompanyToggle, isOpen, onClose }: CompanyFilterProps) {
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const fetchCompanies = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch('/api/companies');
-        const data = await response.json();
-        setCompanies(data.companies || []);
-      } catch (error) {
-        console.error('Failed to fetch companies:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCompanies();
-  }, [isOpen]);
+export function CompanyFilter({
+  companies,
+  selectedCompanyNames,
+  onCompanyToggle,
+  isOpen,
+  onClose,
+  isLoading = false,
+}: CompanyFilterProps) {
 
   if (!isOpen) return null;
 

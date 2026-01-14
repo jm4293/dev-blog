@@ -1,7 +1,7 @@
 'use client';
 
 import { PostWithCompany } from '@/supabase';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
@@ -19,10 +19,13 @@ export function PostCard({ post }: PostCardProps) {
   const bookmarked = isBookmarkedFn(post.id);
   const isLoading = addBookmarkMutation.isPending || removeBookmarkMutation.isPending;
 
-  const relativeTime = formatDistanceToNow(new Date(post.published_at), {
+  const publishedDate = new Date(post.published_at);
+  const formattedDate = format(publishedDate, 'yyyy-MM-dd');
+  const relativeTime = formatDistanceToNow(publishedDate, {
     addSuffix: true,
     locale: ko,
   });
+  const timeDisplay = `${formattedDate} · ${relativeTime}`;
 
   const handleBookmarkToggle = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -43,7 +46,7 @@ export function PostCard({ post }: PostCardProps) {
         )}
         <div className="flex-1">
           <p className="text-sm font-semibold text-gray-900 dark:text-white">{post.company.name}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{relativeTime}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{timeDisplay}</p>
         </div>
         <button
           onClick={handleBookmarkToggle}

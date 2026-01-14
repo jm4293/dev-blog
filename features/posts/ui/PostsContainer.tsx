@@ -24,12 +24,15 @@ export function PostsContainer() {
   );
 
   // 실제 API에서 데이터 페칭 (태그는 문자열로 전달)
-  const { posts, totalPages, isLoading, error } = usePosts({
+  const { data, isLoading, error } = usePosts({
     page: currentPage,
     search: searchQuery,
     tagsString: tagsParam,
     companiesString: companiesParam,
   });
+
+  const posts = data?.posts || [];
+  const totalPages = data?.totalPages || 0;
 
   // URL 업데이트 함수 (useCallback으로 메모이제이션)
   const updateUrl = useCallback(
@@ -102,7 +105,9 @@ export function PostsContainer() {
 
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-6 dark:border-red-900 dark:bg-red-950">
-          <p className="text-red-800 dark:text-red-200">오류가 발생했습니다: {error}</p>
+          <p className="text-red-800 dark:text-red-200">
+            오류가 발생했습니다: {error instanceof Error ? error.message : '알 수 없는 오류'}
+          </p>
         </div>
       )}
 

@@ -82,6 +82,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko" suppressHydrationWarning>
       <head>
         <GoogleAnalytics />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="alternate icon" href="/favicon.svg" />
       </head>
       <body className="min-h-screen bg-white dark:bg-gray-950">
         <ToastContainer />

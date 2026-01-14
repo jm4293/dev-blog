@@ -1,4 +1,6 @@
 /**
+ * Bookmarks API Routes
+ *
  * GET /api/bookmarks
  * 현재 사용자의 즐겨찾기 조회
  *
@@ -12,7 +14,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import { PostWithCompany, Bookmark } from '@/supabase/types.supabase';
+import type { PostWithCompany, Bookmark } from '@/supabase/types.supabase';
 
 interface BookmarksResponse {
   bookmarks: (Bookmark & { post: PostWithCompany })[];
@@ -20,6 +22,11 @@ interface BookmarksResponse {
 
 interface AddBookmarkRequest {
   post_id: string;
+}
+
+interface ErrorResponse {
+  error: string;
+  details?: string;
 }
 
 // GET - 사용자의 즐겨찾기 조회
@@ -92,7 +99,6 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createSupabaseServerClient();
 
-    // 현재 로그인한 사용자 확인
     const {
       data: { user },
       error: userError,
@@ -106,10 +112,12 @@ export async function POST(request: NextRequest) {
     const { post_id } = body;
 
     if (!post_id) {
-      return NextResponse.json({ error: 'post_id is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'post_id is required' } as ErrorResponse,
+        { status: 400 },
+      );
     }
 
-    // 즐겨찾기 추가
     const { data: bookmark, error } = await supabase
       .from('bookmarks')
       .insert({
@@ -121,9 +129,8 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       if (error.code === '23505') {
-        // Unique constraint violation - already bookmarked
         return NextResponse.json(
-          { error: 'Already bookmarked', details: error.message },
+          { error: 'Already bookmarked', details: error.message } as ErrorResponse,
           { status: 409 },
         );
       }
@@ -137,7 +144,7 @@ export async function POST(request: NextRequest) {
     console.error('Bookmarks API error:', errorMsg);
 
     return NextResponse.json(
-      { error: 'Failed to add bookmark', details: errorMsg },
+      { error: 'Failed to add bookmark', details: errorMsg } as ErrorResponse,
       { status: 500 },
     );
   }
@@ -148,7 +155,6 @@ export async function DELETE(request: NextRequest) {
   try {
     const supabase = await createSupabaseServerClient();
 
-    // 현재 로그인한 사용자 확인
     const {
       data: { user },
       error: userError,
@@ -161,10 +167,12 @@ export async function DELETE(request: NextRequest) {
     const postId = request.nextUrl.searchParams.get('postId');
 
     if (!postId) {
-      return NextResponse.json({ error: 'postId is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'postId is required' } as ErrorResponse,
+        { status: 400 },
+      );
     }
 
-    // 즐겨찾기 삭제
     const { error } = await supabase
       .from('bookmarks')
       .delete()
@@ -182,7 +190,7 @@ export async function DELETE(request: NextRequest) {
     console.error('Bookmarks API error:', errorMsg);
 
     return NextResponse.json(
-      { error: 'Failed to remove bookmark', details: errorMsg },
+      { error: 'Failed to remove bookmark', details: errorMsg } as ErrorResponse,
       { status: 500 },
     );
   }

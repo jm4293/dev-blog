@@ -1,42 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import type { Tag } from '@/supabase/types.supabase';
 
 interface TagFilterProps {
+  tags: Tag[];
   selectedTags: string[];
   onTagToggle: (tag: string) => void;
   isOpen: boolean;
   onClose: () => void;
+  isLoading?: boolean;
 }
 
-interface Tag {
-  id: string;
-  name: string;
-}
-
-export function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }: TagFilterProps) {
-  const [allTags, setAllTags] = useState<Tag[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const fetchTags = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch('/api/tags?sort=name');
-        const data = await response.json();
-        setAllTags(data.tags || []);
-      } catch (error) {
-        console.error('Failed to fetch tags:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTags();
-  }, [isOpen]);
+export function TagFilter({
+  tags,
+  selectedTags,
+  onTagToggle,
+  isOpen,
+  onClose,
+  isLoading = false,
+}: TagFilterProps) {
 
   if (!isOpen) return null;
 
@@ -65,13 +48,13 @@ export function TagFilter({ selectedTags, onTagToggle, isOpen, onClose }: TagFil
               <div className="flex items-center justify-center py-8">
                 <p className="text-gray-600 dark:text-gray-400">로딩 중...</p>
               </div>
-            ) : allTags.length === 0 ? (
+            ) : tags.length === 0 ? (
               <div className="flex items-center justify-center py-8">
                 <p className="text-gray-600 dark:text-gray-400">태그가 없습니다.</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {allTags.map((tag) => (
+                {tags.map((tag) => (
                   <button
                     key={tag.id}
                     onClick={() => onTagToggle(tag.name)}

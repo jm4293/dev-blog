@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { X, Filter } from 'lucide-react';
-import { Company } from '@/supabase/types.supabase';
 import { CompanyFilter, TagFilter } from '@/components/search';
+import { useCompanies, useTags } from '../hooks';
 
 interface SearchBarProps {
   onSearchChange?: (query: string) => void;
@@ -25,11 +25,17 @@ export function SearchBar({
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>([]);
-  const [allCompanies, setAllCompanies] = useState<Company[]>([]);
-  const [featuredCompanies, setFeaturedCompanies] = useState<Company[]>([]);
-  const [popularTags, setPopularTags] = useState<string[]>([]);
-  const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
-  const [isLoadingTags, setIsLoadingTags] = useState(false);
+
+  // useQuery를 통한 캐싱된 데이터 조회
+  const { data: allCompaniesData, isLoading: isLoadingAllCompanies } = useCompanies();
+  const { data: popularTagsData, isLoading: isLoadingPopularTags } = useTags({ featured: true });
+  const { data: allTagsData, isLoading: isLoadingAllTags } = useTags({ sort: 'name' });
+
+  const allCompanies = allCompaniesData?.companies || [];
+  const popularTags = (popularTagsData?.tags || []).map((tag) => tag.name);
+  const allTags = allTagsData?.tags || [];
+  const isLoadingCompanies = isLoadingAllCompanies;
+  const isLoadingTags = isLoadingPopularTags || isLoadingAllTags;
 
   // URL 파라미터가 변경되면 내부 상태 동기화
   useEffect(() => {
@@ -41,35 +47,6 @@ export function SearchBar({
       : [];
     setSelectedCompanyNames(companiesArray);
   }, [initialSearch, initialTagsString, initialCompaniesString]);
-
-  // 모든 회사, 인기 회사, 인기 태그 조회
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoadingCompanies(true);
-      setIsLoadingTags(true);
-      try {
-        const [allCompaniesRes, featuredCompaniesRes, popularTagsRes] = await Promise.all([
-          fetch('/api/companies'),
-          fetch('/api/companies?featured=true'),
-          fetch('/api/tags?featured=true'),
-        ]);
-        const allCompaniesData = await allCompaniesRes.json();
-        const featuredCompaniesData = await featuredCompaniesRes.json();
-        const popularTagsData = await popularTagsRes.json();
-
-        setAllCompanies(allCompaniesData.companies || []);
-        setFeaturedCompanies(featuredCompaniesData.companies || []);
-        setPopularTags((popularTagsData.tags || []).map((tag: any) => tag.name));
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      } finally {
-        setIsLoadingCompanies(false);
-        setIsLoadingTags(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const [showTagModal, setShowTagModal] = useState(false);
   const [showCompanyModal, setShowCompanyModal] = useState(false);
@@ -235,18 +212,22 @@ export function SearchBar({
 
       {/* Company Filter Modal */}
       <CompanyFilter
+        companies={allCompanies}
         selectedCompanyNames={selectedCompanyNames}
         onCompanyToggle={handleCompanyToggle}
         isOpen={showCompanyModal}
         onClose={() => setShowCompanyModal(false)}
+        isLoading={isLoadingCompanies}
       />
 
       {/* Tag Filter Modal */}
       <TagFilter
+        tags={allTags}
         selectedTags={selectedTags}
         onTagToggle={handleTagToggle}
         isOpen={showTagModal}
         onClose={() => setShowTagModal(false)}
+        isLoading={isLoadingTags}
       />
     </div>
   );

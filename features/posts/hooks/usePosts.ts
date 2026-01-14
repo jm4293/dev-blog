@@ -1,25 +1,23 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
-import { PostWithCompany } from '@/supabase/types.supabase';
+import { useQuery } from '@tanstack/react-query';
+import type { PostWithCompany } from '@/supabase/types.supabase';
 
-interface UsePosts {
-  page: number;
-  search: string;
-  tagsString: string;
+interface PostsParams {
+  page?: number;
+  search?: string;
+  tagsString?: string;
   companiesString?: string;
   companyId?: string;
 }
 
-interface PostsData {
+interface PostsResponse {
   posts: PostWithCompany[];
   total: number;
   page: number;
   totalPages: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
-  isLoading: boolean;
-  error: string | null;
 }
 
 export function usePosts({
@@ -28,22 +26,10 @@ export function usePosts({
   tagsString = '',
   companiesString = '',
   companyId = '',
-}: Partial<UsePosts> = {}): PostsData {
-  const [data, setData] = useState<PostsData>({
-    posts: [],
-    total: 0,
-    page: 1,
-    totalPages: 0,
-    hasNextPage: false,
-    hasPrevPage: false,
-    isLoading: true,
-    error: null,
-  });
-
-  const fetchPosts = useCallback(async () => {
-    setData((prev) => ({ ...prev, isLoading: true, error: null }));
-
-    try {
+}: PostsParams = {}) {
+  return useQuery<PostsResponse>({
+    queryKey: ['posts', page, search, tagsString, companiesString, companyId],
+    queryFn: async () => {
       const params = new URLSearchParams();
       params.set('page', page.toString());
       if (search) params.set('search', search);
@@ -54,34 +40,12 @@ export function usePosts({
       const response = await fetch(`/api/posts?${params.toString()}`);
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        throw new Error(`Failed to fetch posts: ${response.status}`);
       }
 
-      const result = await response.json();
-      setData({
-        posts: result.posts,
-        total: result.total,
-        page: result.page,
-        totalPages: result.totalPages,
-        hasNextPage: result.hasNextPage,
-        hasPrevPage: result.hasPrevPage,
-        isLoading: false,
-        error: null,
-      });
-    } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : 'Unknown error';
-      setData((prev) => ({
-        ...prev,
-        isLoading: false,
-        error: errorMsg,
-        posts: [],
-      }));
-    }
-  }, [page, search, tagsString, companiesString, companyId]);
-
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
-
-  return data;
+      return response.json();
+    },
+    staleTime: 5 * 60 * 1000, // 5분
+    gcTime: 30 * 60 * 1000, // 30분
+  });
 }
