@@ -24,3 +24,23 @@ export async function createSupabaseServerClient() {
     },
   });
 }
+
+export async function createSupabaseAdminClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseServiceRoleKey) {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set');
+  }
+
+  return createServerClient(supabaseUrl!, supabaseServiceRoleKey!, {
+    cookies: {
+      getAll() {
+        return [];
+      },
+      setAll() {
+        // Admin client doesn't need cookie handling
+      },
+    },
+  });
+}
