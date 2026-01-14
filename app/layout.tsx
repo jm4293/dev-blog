@@ -1,9 +1,16 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { QueryProvider } from './providers/QueryProvider';
 import { ToastContainer } from '@/components/toast';
+import { GoogleAnalytics } from './GoogleAnalytics';
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   title: 'devBlog.kr - 한국 개발 기업 블로그 모음',
@@ -62,11 +69,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
   icons: {
     icon: '/favicon.svg',
     shortcut: '/favicon.svg',
@@ -77,6 +79,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" suppressHydrationWarning>
+      <head>
+        <GoogleAnalytics />
+      </head>
       <body className="min-h-screen bg-white dark:bg-gray-950">
         <ToastContainer />
         <QueryProvider>{children}</QueryProvider>

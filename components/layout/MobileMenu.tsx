@@ -38,7 +38,7 @@ export function MobileMenu({ isLoggedIn }: { isLoggedIn: boolean }) {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen]);
+  }, [isOpen, toggle]);
 
   const isActive = (href: string): boolean => {
     if (href === '/posts') {

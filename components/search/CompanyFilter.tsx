@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { Company } from '@/supabase/types.supabase';
@@ -78,7 +79,7 @@ export function CompanyFilter({ selectedCompanyNames, onCompanyToggle, isOpen, o
                     }`}>
                     {/* Company Logo */}
                     {company.logo_url && (
-                      <img src={company.logo_url} alt={company.name} className="w-10 h-10 object-contain" />
+                      <Image src={company.logo_url} alt={company.name} width={40} height={40} className="object-contain" />
                     )}
                     {/* Company Name */}
                     <span
