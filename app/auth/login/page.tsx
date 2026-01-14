@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { AnimatedBackground, LoginCard } from '@/features/auth';
 
 export const metadata: Metadata = {
-  title: '로그인 | devBlog.kr',
+  title: '로그인 | devBlog',
   description: 'GitHub OAuth를 통해 devBlog.kr에 로그인하세요.',
 };
 

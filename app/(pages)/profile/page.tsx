@@ -4,7 +4,7 @@ import { ProfileClient } from '@/features/profile/ui/ProfileClient';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '프로필 | devBlog.kr',
+  title: '프로필 | devBlog',
   description: 'GitHub 계정으로 연동된 프로필 정보와 계정 설정을 관리하세요.',
   robots: {
     index: false,

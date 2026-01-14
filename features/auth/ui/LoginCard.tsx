@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useGitHubLogin } from '../hooks';
+import Link from 'next/link';
 
 export function LoginCard() {
-  const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(false);
   const { mutate, error } = useGitHubLogin();
 
@@ -49,11 +47,11 @@ export function LoginCard() {
         )}
       </button>
 
-      <button
-        onClick={() => router.back()}
-        className="w-full px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
+      <Link
+        href="/posts"
+        className="w-full px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-colors block text-center">
         뒤로가기
-      </button>
+      </Link>
     </div>
   );
 }

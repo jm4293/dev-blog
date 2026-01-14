@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { RequestForm } from '@/features/request';
 
 export const metadata: Metadata = {
-  title: '요청하기 | devBlog.kr',
+  title: '요청하기 | devBlog',
   description: '새로운 회사나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
 };
 

@@ -13,8 +13,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'devBlog.kr - 한국 개발 기업 블로그 모음',
-  description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그를 한 곳에서 모아보세요. 최신 개발 트렌드와 기술 정보를 태그와 검색으로 쉽게 찾아보세요.',
+  title: 'devBlog',
+  description:
+    '토스, 카카오 등 한국 IT 기업들의 기술 블로그를 한 곳에서 모아보세요. 최신 개발 트렌드와 기술 정보를 태그와 검색으로 쉽게 찾아보세요.',
   keywords: [
     '개발 블로그',
     '기술 블로그',
