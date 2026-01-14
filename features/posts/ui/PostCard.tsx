@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { PostWithCompany } from '@/supabase';
 import { formatDistanceToNow, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -16,8 +17,16 @@ export function PostCard({ post }: PostCardProps) {
   const removeBookmarkMutation = useRemoveBookmark();
   const isBookmarkedFn = useIsBookmarked();
 
-  const bookmarked = isBookmarkedFn(post.id);
+  const serverBookmarked = isBookmarkedFn(post.id);
   const isLoading = addBookmarkMutation.isPending || removeBookmarkMutation.isPending;
+
+  // 낙관적 상태: 로컬 상태로 UI 즉시 업데이트
+  const [optimisticBookmarked, setOptimisticBookmarked] = useState(serverBookmarked);
+
+  // 서버 상태가 변경되면 낙관적 상태 동기화
+  useEffect(() => {
+    setOptimisticBookmarked(serverBookmarked);
+  }, [serverBookmarked]);
 
   const publishedDate = new Date(post.published_at);
   const formattedDate = format(publishedDate, 'yyyy-MM-dd');
@@ -30,10 +39,24 @@ export function PostCard({ post }: PostCardProps) {
   const handleBookmarkToggle = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    if (bookmarked) {
-      removeBookmarkMutation.mutate(post.id);
+    // 낙관적 업데이트: 즉시 UI 변경
+    setOptimisticBookmarked(!optimisticBookmarked);
+
+    // 서버 요청
+    if (optimisticBookmarked) {
+      removeBookmarkMutation.mutate(post.id, {
+        onError: () => {
+          // 에러 발생 시 낙관적 상태 되돌리기
+          setOptimisticBookmarked(!optimisticBookmarked);
+        },
+      });
     } else {
-      addBookmarkMutation.mutate(post.id);
+      addBookmarkMutation.mutate(post.id, {
+        onError: () => {
+          // 에러 발생 시 낙관적 상태 되돌리기
+          setOptimisticBookmarked(!optimisticBookmarked);
+        },
+      });
     }
   };
 
@@ -52,10 +75,10 @@ export function PostCard({ post }: PostCardProps) {
           onClick={handleBookmarkToggle}
           disabled={isLoading}
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
-          title={bookmarked ? '즐겨찾기 제거' : '즐겨찾기 추가'}>
+          title={optimisticBookmarked ? '즐겨찾기 제거' : '즐겨찾기 추가'}>
           <Heart
             className={`w-5 h-5 transition-colors ${
-              bookmarked ? 'fill-red-500 text-red-500' : 'text-gray-400 dark:text-gray-500'
+              optimisticBookmarked ? 'fill-red-500 text-red-500' : 'text-gray-400 dark:text-gray-500'
             }`}
           />
         </button>
