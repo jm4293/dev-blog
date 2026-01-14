@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow ad-related files
+Disallow: /ads.txt
+Disallow: /app-ads.txt
+Disallow: /sellers.json
+Disallow: /favicon.ico
