@@ -41,3 +41,7 @@ supabase/migrations
 .idea
 *.swp
 *.swo
+
+# 
+.claude
+.github
