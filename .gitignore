@@ -42,6 +42,13 @@ supabase/migrations
 *.swp
 *.swo
 
-# 
+# markdown documentation
+ANALYTICS.md
+CLAUDE.md
+DEPLOYMENT.md
+GA_SETUP.md
+PERFORMANCE.md
+
+#
 .claude
 .github
