@@ -21,7 +21,6 @@ devBlog.kr은 다양한 한국 IT 기업들의 기술 블로그 게시글을 자
 - **Framework**: Next.js 14+ (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui (라이트/다크 모드 지원)
 - **State Management**: Jotai (전역 상태 관리)
 - **Data Fetching**: TanStack Query (React Query)
 
@@ -49,8 +48,8 @@ devBlog.kr은 다양한 한국 IT 기업들의 기술 블로그 게시글을 자
 
 ### 1. 블로그 자동 수집 스케줄러
 
-- **실행 주기**: 하루 8번 (3시간 간격)
-- **스케줄**: 00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 (KST)
+- **실행 주기**: 하루 1번 (매일 00시)
+- **스케줄**: 00:00 (KST)
 - **방법**: Vercel Cron Jobs + Next.js API Route
 - **블로그 관리**:
   - 데이터베이스 기반 관리 (관리자 페이지에서 추가/수정/삭제)
@@ -618,6 +617,7 @@ export default function RequestPage() {
 ```
 
 **특징:**
+
 - ✅ Server Action (submitRequest)과 Client Hook (useSubmitRequest) 분리
 - ✅ react-hook-form + TanStack Query 조합
 - ✅ 메모리 효율적 (필요한 훅만 호출)
@@ -673,6 +673,7 @@ export default function LoginPage() {
 ```
 
 **특징:**
+
 - ✅ page.tsx는 서버 컴포넌트 (메타데이터 설정 가능)
 - ✅ UI 로직은 features/login/ui에 클라이언트 컴포넌트로 분리
 - ✅ 클라이언트 훅(useRouter) 필요한 것만 사용
@@ -767,6 +768,7 @@ export function HeaderClient() {
 ```
 
 **특징:**
+
 - ✅ 최소한의 보일러플레이트
 - ✅ 가볍고 빠른 성능
 - ✅ TypeScript 완벽 지원
@@ -1064,7 +1066,7 @@ const TAGGING_PROMPT = `
 
 **2-2. Cron Job & 블로그 수집**
 
-- [x] `vercel.json` 설정 (0 */3 * * *)
+- [x] `vercel.json` 설정 (0 _/3 _ \* \*)
 - [x] CRON_SECRET 인증
 - [x] `app/api/cron/fetch-blogs/route.ts` 구현
 - [x] RSS 피드 파싱 (rss-parser)
@@ -1309,6 +1311,7 @@ export * from './hooks';
 ```
 
 **사용:**
+
 ```typescript
 // 이전 (복잡한 경로)
 import { PostCard } from '@/components/posts/PostCard';
@@ -1417,6 +1420,7 @@ export default function RequestPage() {
 ### 작동 방식
 
 **1. 초기 로드 (서버)**
+
 ```
 사용자 접속 → Header (서버 컴포넌트)
   → getCurrentUser() (Supabase 서버 클라이언트)
@@ -1424,6 +1428,7 @@ export default function RequestPage() {
 ```
 
 **2. 상태 관리 (클라이언트)**
+
 ```
 HeaderClient (클라이언트 컴포넌트)
   → userAtom 업데이트 (Jotai)
@@ -1432,6 +1437,7 @@ HeaderClient (클라이언트 컴포넌트)
 ```
 
 **3. 로그아웃 (서버)**
+
 ```
 로그아웃 버튼 클릭
   → useLogout() Hook 호출 (TanStack Query mutation)
@@ -1496,17 +1502,20 @@ export async function POST() {
 ### Jotai 사용 패턴
 
 **패턴 1: 값 읽기만**
+
 ```typescript
 const [user] = useAtom(userAtom);
 ```
 
 **패턴 2: 값 수정**
+
 ```typescript
 const [user, setUser] = useAtom(userAtom);
 setUser(newUser);
 ```
 
 **패턴 3: 파생 상태 (derived atom)**
+
 ```typescript
 // 콜백으로 전달: 화살표 함수
 export const isLoggedInAtom = atom((get) => {
