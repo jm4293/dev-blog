@@ -91,14 +91,17 @@ export async function GET(request: NextRequest) {
       postsQuery = postsQuery.ilike('title', searchTerm);
     }
 
+    // 기업 필터 promise 즉시 시작 (waterfall 방지)
+    let companiesPromise: any = null;
+    if (companies.length > 0 && !companyId) {
+      companiesPromise = supabase.from('companies').select('id').in('name', companies);
+    }
+
     // 태그 필터 (OR 조건: 하나 이상의 태그 포함)
     if (tags.length > 0) {
-      // tags 배열에 모든 검색 태그가 포함되어야 함 (AND 조건)
-      // 또는 하나라도 포함되어야 함 (OR 조건)
-      // Supabase의 GIN 배열 필터를 사용하려면 복잡한 쿼리가 필요
-      // 일단 첫 번째 태그로 필터링 (추후 개선 가능)
-      countQuery = countQuery.contains('tags', tags);
-      postsQuery = postsQuery.contains('tags', tags);
+      // tags 배열에 하나라도 포함되어야 함 (OR 조건)
+      countQuery = countQuery.overlaps('tags', tags);
+      postsQuery = postsQuery.overlaps('tags', tags);
     }
 
     // 기업 필터 (단일 또는 다중)
@@ -109,20 +112,19 @@ export async function GET(request: NextRequest) {
     } else if (companies.length > 0) {
       // 다중 기업 필터 (OR 조건: company name으로 필터링)
       // companies 배열에는 company name이 들어옴
-      // 먼저 해당 company name들의 ID를 조회
-      const { data: companiesData, error: companiesError } = await supabase
-        .from('companies')
-        .select('id')
-        .in('name', companies);
+      // promise 결과 대기
+      if (companiesPromise) {
+        const { data: companiesData, error: companiesError } = await companiesPromise;
 
-      if (companiesError) {
-        throw companiesError;
-      }
+        if (companiesError) {
+          throw companiesError;
+        }
 
-      const companyIds = companiesData?.map((c: { id: string }) => c.id) || [];
-      if (companyIds.length > 0) {
-        countQuery = countQuery.in('company_id', companyIds);
-        postsQuery = postsQuery.in('company_id', companyIds);
+        const companyIds = companiesData?.map((c: { id: string }) => c.id) || [];
+        if (companyIds.length > 0) {
+          countQuery = countQuery.in('company_id', companyIds);
+          postsQuery = postsQuery.in('company_id', companyIds);
+        }
       }
     }
 
@@ -144,8 +146,12 @@ export async function GET(request: NextRequest) {
     }
 
     // 응답 형식 변환
+    const typedPosts: PostWithCompany[] = (posts || []).map((post: any) => ({
+      ...post,
+      company: post.company || ({} as any),
+    }));
     const response: PostsResponse = {
-      posts: (posts as []) || [],
+      posts: typedPosts,
       total,
       page,
       totalPages,
@@ -156,7 +162,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response);
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
+    const isDev = process.env.NODE_ENV === 'development';
 
-    return NextResponse.json({ error: 'Failed to fetch posts', details: errorMsg }, { status: 500 });
+    // 프로덕션 환경에서는 상세 정보 숨김
+    return NextResponse.json(
+      {
+        error: 'Failed to fetch posts',
+        ...(isDev && { details: errorMsg }),
+      },
+      { status: 500 },
+    );
   }
 }
