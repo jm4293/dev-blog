@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그를 한 곳에서 모아보세요.',
     images: [
       {
-        url: `${baseUrl}/og-image.png`,
+        url: `${baseUrl}/og-image.svg`,
         width: 1200,
         height: 630,
         alt: 'devBlog.kr',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'devBlog.kr - 한국 개발 기업 블로그 모음',
     description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그를 한 곳에서 모아보세요.',
-    images: [`${baseUrl}/og-image.png`],
+    images: [`${baseUrl}/og-image.svg`],
   },
   robots: {
     index: true,
@@ -71,9 +71,13 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon-32.png',
+    apple: '/favicon-192.png',
   },
 };
 
@@ -82,8 +86,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko" suppressHydrationWarning>
       <head>
         <GoogleAnalytics />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="alternate icon" href="/favicon.svg" />
+        <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+        <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon-192.png" />
       </head>
       <body className="min-h-screen bg-white dark:bg-gray-950">
         <ToastContainer />
