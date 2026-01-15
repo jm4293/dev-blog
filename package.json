@@ -1,12 +1,16 @@
 {
   "name": "dev-blog",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "한국 개발 기업들의 기술 블로그를 한 곳에서 모아보는 플랫폼",
   "author": "jm4293",
   "license": "MIT",
+  "homepage": "https://devblog.kr",
   "repository": {
     "type": "git",
     "url": "https://github.com/jm4293/dev-blog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jm4293/dev-blog/issues"
   },
   "keywords": [
     "blog",
@@ -17,13 +21,16 @@
     "ai"
   ],
   "private": true,
+  "engines": {
+    "node": ">=18.17.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "analyze": "ANALYZE=true next build",
-    "fetch-blogs": "curl -X POST http://localhost:3000/api/cron/fetch-blogs -H \"Authorization: Bearer $CRON_SECRET\"",
     "prepare": "husky install",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
