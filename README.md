@@ -88,31 +88,31 @@ vercel deploy
 
 ### Frontend
 
-| 항목 | 설명 |
-|------|------|
-| **Next.js 14** | React 기반 풀스택 프레임워크 (App Router) |
-| **TypeScript** | 타입 안정성 |
-| **Tailwind CSS** | 유틸리티 CSS 프레임워크 |
-| **shadcn/ui** | 고급 UI 컴포넌트 |
-| **Jotai** | 가벼운 전역 상태 관리 |
-| **TanStack Query** | 서버 상태 관리 |
-| **React Hook Form** | 폼 상태 관리 |
+| 항목                | 설명                                      |
+| ------------------- | ----------------------------------------- |
+| **Next.js 14**      | React 기반 풀스택 프레임워크 (App Router) |
+| **TypeScript**      | 타입 안정성                               |
+| **Tailwind CSS**    | 유틸리티 CSS 프레임워크                   |
+| **shadcn/ui**       | 고급 UI 컴포넌트                          |
+| **Jotai**           | 가벼운 전역 상태 관리                     |
+| **TanStack Query**  | 서버 상태 관리                            |
+| **React Hook Form** | 폼 상태 관리                              |
 
 ### Backend & Infrastructure
 
-| 항목 | 설명 |
-|------|------|
-| **Supabase** | PostgreSQL 데이터베이스 & GitHub OAuth |
-| **Vercel** | 배포 및 Cron Jobs |
-| **rss-parser** | RSS 피드 파싱 |
+| 항목           | 설명                                   |
+| -------------- | -------------------------------------- |
+| **Supabase**   | PostgreSQL 데이터베이스 & GitHub OAuth |
+| **Vercel**     | 배포 및 Cron Jobs                      |
+| **rss-parser** | RSS 피드 파싱                          |
 
 ### Development Tools
 
-| 항목 | 설명 |
-|------|------|
-| **TypeScript** | 타입 체킹 |
-| **ESLint** | 코드 품질 |
-| **Prettier** | 코드 포맷팅 |
+| 항목           | 설명        |
+| -------------- | ----------- |
+| **TypeScript** | 타입 체킹   |
+| **ESLint**     | 코드 품질   |
+| **Prettier**   | 코드 포맷팅 |
 
 ---
 
@@ -164,6 +164,7 @@ dev-blog/
 ### 파일 구조 및 Export 방식
 
 **app/ 경로 (페이지, 레이아웃, API):**
+
 ```typescript
 export default function Home() {
   // ...
@@ -175,6 +176,7 @@ export async function GET(request: Request) {
 ```
 
 **components/, features/ (공유 코드):**
+
 ```typescript
 export function PostCard({ post }: PostCardProps) {
   // ...
@@ -183,6 +185,42 @@ export function PostCard({ post }: PostCardProps) {
 export async function fetchPosts(page: number) {
   // ...
 }
+```
+
+### 코드 품질 관리 (Husky)
+
+커밋 및 푸시 시 자동으로 코드 품질을 검사합니다.
+
+**Pre-commit 검사 (커밋 전):**
+
+- 🔍 **Console 문장 검사**: `console.log()`, `console.error()` 등이 있으면 커밋 차단
+- 🎨 **ESLint + Prettier**: 코드 스타일 자동 수정
+- ✅ **TypeScript**: 타입 검사
+
+**Pre-push 검사 (푸시 전):**
+
+- 🔍 **전체 ESLint 검사**: 모든 파일의 코드 품질 검증
+- ✅ **TypeScript**: 전체 타입 검사
+- 🔨 **빌드 검증**: 빌드 성공 여부 확인
+
+**Husky 설정 완료 후:**
+
+```bash
+# 의존성 설치 시 자동으로 husky 설정됨
+npm install
+
+# 수동으로 설정하고 싶으면
+npm run prepare
+```
+
+**검사 우회 (권장하지 않음):**
+
+```bash
+# Pre-commit 검사 스킵
+git commit --no-verify
+
+# Pre-push 검사 스킵
+git push --no-verify
 ```
 
 ### 커밋 메시지 규칙
@@ -268,6 +306,7 @@ NEXT_PUBLIC_SITE_URL=https://devblog.kr
 ### 버그 리포트
 
 GitHub Issues에서 다음 정보를 포함해 리포트해주세요:
+
 - 재현 단계
 - 예상 결과
 - 실제 결과

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+echo "🚀 푸시 전 검사를 시작합니다..."
+
+# 1. 전체 린트 검사
+echo "🔍 ESLint 검사 중..."
+npx next lint
+
+if [ $? -ne 0 ]; then
+  echo "❌ ESLint 검사 실패!"
+  exit 1
+fi
+
+# 2. TypeScript 타입 체크
+echo "✅ TypeScript 타입 검사 중..."
+npx tsc --noEmit
+
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript 검사 실패!"
+  exit 1
+fi
+
+# 3. 빌드 검증
+echo "🔨 빌드 검증 중..."
+npm run build
+
+if [ $? -ne 0 ]; then
+  echo "❌ 빌드 실패!"
+  exit 1
+fi
+
+echo "✨ 푸시 전 검사가 완료되었습니다!"

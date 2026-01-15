@@ -1,0 +1,38 @@
+#!/bin/sh
+
+echo "🔍 커밋 전 검사를 시작합니다..."
+
+# 1. Console 체크 (console.log, console.error 등이 있으면 커밋 방지)
+echo "📋 콘솔 문장 검사 중..."
+CONSOLE_CHECK=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' | while read file; do
+  grep -n 'console\.' "$file" 2>/dev/null | sed "s|^|$file:|"
+done)
+
+if [ -n "$CONSOLE_CHECK" ]; then
+  echo "❌ 에러: 스테이징된 파일에서 console 문장을 찾았습니다!"
+  echo "커밋하기 전에 모든 console.log, console.error 등을 제거해주세요."
+  echo ""
+  echo "📍 console 문장이 있는 파일 위치:"
+  echo "$CONSOLE_CHECK" | head -20
+  exit 1
+fi
+
+# 2. Lint-staged (ESLint + Prettier)
+echo "🎨 Lint-staged 실행 중..."
+npx lint-staged
+
+if [ $? -ne 0 ]; then
+  echo "❌ Lint-staged 검사 실패!"
+  exit 1
+fi
+
+# 3. TypeScript 타입 체크
+echo "✅ TypeScript 타입 검사 중..."
+npx tsc --noEmit
+
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript 검사 실패!"
+  exit 1
+fi
+
+echo "✨ 커밋 전 검사가 완료되었습니다!"
