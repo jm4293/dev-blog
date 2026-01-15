@@ -1,0 +1,33 @@
+{
+  "name": "dev-blog-extension",
+  "version": "1.0.0",
+  "description": "devBlog.kr Chrome Extension - 한국 개발 블로그 읽기",
+  "private": true,
+  "scripts": {
+    "dev": "webpack watch --mode development",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "clean": "rm -rf dist",
+    "watch": "webpack watch"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.234",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.16",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "postcss": "^8.4.31",
+    "postcss-loader": "^7.3.3",
+    "style-loader": "^3.3.3",
+    "tailwindcss": "^3.4.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5",
+    "webpack-cli": "^6.0.1"
+  }
+}

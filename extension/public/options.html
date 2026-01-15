@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>devBlog.kr - 설정</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+        background: #f5f5f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #2563eb;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+      }
+
+      .setting {
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .setting:last-child {
+        border-bottom: none;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .description {
+        font-size: 12px;
+        color: #999;
+        margin-top: 4px;
+      }
+
+      input[type='checkbox'],
+      input[type='number'],
+      select {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      input[type='checkbox'] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      button {
+        background: #2563eb;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      button:hover {
+        background: #1d4ed8;
+      }
+
+      .status {
+        margin-top: 12px;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 12px;
+        display: none;
+      }
+
+      .status.success {
+        background: #dcfce7;
+        color: #166534;
+        display: block;
+      }
+
+      .status.error {
+        background: #fee2e2;
+        color: #991b1b;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>devBlog.kr</h1>
+      <p class="subtitle">확장플러그인 설정</p>
+
+      <div class="setting">
+        <label class="checkbox-label">
+          <input type="checkbox" id="enableBadge" />
+          <span>배지 표시 (새 게시글 수)</span>
+        </label>
+        <p class="description">
+          확장 아이콘에 최신 게시글 수를 표시합니다.
+        </p>
+      </div>
+
+      <div class="setting">
+        <label for="refreshInterval">새로고침 간격 (분)</label>
+        <input
+          type="number"
+          id="refreshInterval"
+          min="5"
+          max="1440"
+          value="60"
+        />
+        <p class="description">
+          배지를 업데이트하는 간격입니다. (최소 5분, 최대 24시간)
+        </p>
+      </div>
+
+      <button id="saveBtn">저장</button>
+      <div id="status" class="status"></div>
+    </div>
+
+    <script>
+      // 저장된 설정 불러오기
+      chrome.storage.sync.get(['enableBadge', 'refreshInterval'], (items) => {
+        document.getElementById('enableBadge').checked =
+          items.enableBadge !== false; // 기본값: true
+        document.getElementById('refreshInterval').value =
+          items.refreshInterval || 60;
+      });
+
+      // 저장 버튼
+      document.getElementById('saveBtn').addEventListener('click', () => {
+        const enableBadge = document.getElementById('enableBadge').checked;
+        const refreshInterval = parseInt(
+          document.getElementById('refreshInterval').value
+        );
+
+        chrome.storage.sync.set(
+          { enableBadge, refreshInterval },
+          () => {
+            const status = document.getElementById('status');
+            status.className = 'status success';
+            status.textContent = '설정이 저장되었습니다!';
+
+            setTimeout(() => {
+              status.className = 'status';
+            }, 3000);
+          }
+        );
+      });
+    </script>
+  </body>
+</html>
