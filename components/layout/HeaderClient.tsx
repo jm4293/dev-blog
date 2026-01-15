@@ -5,7 +5,6 @@ import type { User } from '@supabase/auth-js';
 import Link from 'next/link';
 import ThemeToggle from '../theme/ThemeToggle';
 import { MobileMenu } from './MobileMenu';
-import { MobileHamburger } from './MobileHamburger';
 
 interface HeaderClientProps {
   user: User | null;
