@@ -32,6 +32,7 @@ export function HeaderClient({ isLoggedIn }: { isLoggedIn: boolean }) {
     { href: '/posts', label: '포스트', active: isActive('/posts') },
     { href: '/bookmarks', label: '즐겨찾기', active: isActive('/bookmarks') },
     { href: '/profile', label: '프로필', active: isActive('/profile') },
+    { href: '/announcements', label: '새로운 소식', active: isActive('/announcements') },
     { href: '/request', label: '요청하기', active: isActive('/request') },
   ];
 
@@ -47,7 +48,8 @@ export function HeaderClient({ isLoggedIn }: { isLoggedIn: boolean }) {
                 item.active
                   ? 'text-blue-600 dark:text-blue-400 font-semibold'
                   : 'text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400'
-              }`}>
+              }`}
+            >
               {item.label}
             </Link>
           ))}

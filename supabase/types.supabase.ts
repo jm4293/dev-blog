@@ -65,3 +65,24 @@ export interface Request {
   created_at: string;
   updated_at: string;
 }
+
+export type AnnouncementType = 'bug_fix' | 'new_feature' | 'new_company' | 'new_tag' | 'update' | 'maintenance';
+
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  type: AnnouncementType;
+  emoji: string;
+  is_pinned: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AnnouncementsResponse {
+  announcements: Announcement[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
