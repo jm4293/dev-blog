@@ -15,6 +15,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import type { PostWithCompany, Bookmark } from '@/supabase/types.supabase';
+import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 
 interface BookmarksResponse {
   bookmarks: (Bookmark & { post: PostWithCompany })[];
@@ -32,6 +33,14 @@ interface ErrorResponse {
 // GET - 사용자의 즐겨찾기 조회
 export async function GET(request: NextRequest) {
   try {
+    // Rate Limiting (인증 필요 API)
+    const ip = extractIP(request);
+    const isAllowed = checkRateLimit(ip, RATE_LIMIT_CONFIG.AUTHENTICATED);
+
+    if (!isAllowed) {
+      return createRateLimitResponse('Too many requests. Rate limit: 1000 requests per hour');
+    }
+
     const supabase = await createSupabaseServerClient();
 
     // 현재 로그인한 사용자 확인
@@ -97,6 +106,14 @@ export async function GET(request: NextRequest) {
 // POST - 즐겨찾기 추가
 export async function POST(request: NextRequest) {
   try {
+    // Rate Limiting (인증 필요 API)
+    const ip = extractIP(request);
+    const isAllowed = checkRateLimit(ip, RATE_LIMIT_CONFIG.AUTHENTICATED);
+
+    if (!isAllowed) {
+      return createRateLimitResponse('Too many requests. Rate limit: 1000 requests per hour');
+    }
+
     const supabase = await createSupabaseServerClient();
 
     const {
@@ -153,6 +170,14 @@ export async function POST(request: NextRequest) {
 // DELETE - 즐겨찾기 삭제
 export async function DELETE(request: NextRequest) {
   try {
+    // Rate Limiting (인증 필요 API)
+    const ip = extractIP(request);
+    const isAllowed = checkRateLimit(ip, RATE_LIMIT_CONFIG.AUTHENTICATED);
+
+    if (!isAllowed) {
+      return createRateLimitResponse('Too many requests. Rate limit: 1000 requests per hour');
+    }
+
     const supabase = await createSupabaseServerClient();
 
     const {

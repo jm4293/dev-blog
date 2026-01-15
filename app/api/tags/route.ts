@@ -11,6 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { Tag } from '@/supabase/types.supabase';
+import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 
 interface TagsResponse {
   tags: Tag[];
@@ -19,6 +20,14 @@ interface TagsResponse {
 
 export async function GET(request: NextRequest) {
   try {
+    // Rate Limiting (공개 API)
+    const ip = extractIP(request);
+    const isAllowed = checkRateLimit(ip, RATE_LIMIT_CONFIG.PUBLIC);
+
+    if (!isAllowed) {
+      return createRateLimitResponse('Too many requests. Rate limit: 100 requests per hour');
+    }
+
     const supabase = await createSupabaseServerClient();
 
     const searchParams = request.nextUrl.searchParams;

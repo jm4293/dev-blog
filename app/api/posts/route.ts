@@ -16,8 +16,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import { PostWithCompany } from '@/supabase/types.supabase';
+import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils';
+import { createSupabaseServerClient, PostWithCompany } from '@/supabase';
 
 interface PostsResponse {
   posts: PostWithCompany[];
@@ -30,6 +30,14 @@ interface PostsResponse {
 
 export async function GET(request: NextRequest) {
   try {
+    // Rate Limiting (공개 API)
+    const ip = extractIP(request);
+    const isAllowed = checkRateLimit(ip, RATE_LIMIT_CONFIG.PUBLIC);
+
+    if (!isAllowed) {
+      return createRateLimitResponse('Too many requests. Rate limit: 100 requests per hour');
+    }
+
     const supabase = await createSupabaseServerClient();
 
     // Query 파라미터 파싱
