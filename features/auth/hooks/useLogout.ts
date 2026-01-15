@@ -17,8 +17,5 @@ export const useLogout = () => {
       queryClient.clear();
       router.push('/posts');
     },
-    onError: (error) => {
-      console.error('Logout error:', error);
-    },
   });
 };

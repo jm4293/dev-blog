@@ -130,7 +130,6 @@ export async function GET(request: NextRequest) {
     const { count, error: countError } = await countQuery;
 
     if (countError) {
-      console.error('Count query error:', countError);
       throw countError;
     }
 
@@ -141,7 +140,6 @@ export async function GET(request: NextRequest) {
     const { data: posts, error: postsError } = await postsQuery.range(offset, offset + limit - 1);
 
     if (postsError) {
-      console.error('Posts query error:', postsError);
       throw postsError;
     }
 
@@ -158,7 +156,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response);
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error('Posts API error:', errorMsg);
 
     return NextResponse.json({ error: 'Failed to fetch posts', details: errorMsg }, { status: 500 });
   }

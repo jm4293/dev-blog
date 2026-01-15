@@ -46,7 +46,6 @@ async function callOpenAI(
       };
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
-      console.error(`OpenAI API 호출 실패 (시도 ${attempt}/${maxRetries}):`, lastError.message);
 
       // 마지막 시도가 아니면 2초 대기 후 재시도
       if (attempt < maxRetries) {

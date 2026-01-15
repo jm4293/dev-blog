@@ -61,7 +61,6 @@ export async function GET(request: Request) {
     return NextResponse.json(response);
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error('Companies API error:', errorMsg);
 
     return NextResponse.json({ error: 'Failed to fetch companies', details: errorMsg }, { status: 500 });
   }

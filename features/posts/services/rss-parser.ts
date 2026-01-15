@@ -74,19 +74,18 @@ export async function parseRssFeed(rssUrl: string): Promise<ParsedPost[]> {
 /**
  * 여러 RSS 피드 동시 파싱
  */
-// export async function parseMultipleFeeds(rssUrls: string[]): Promise<Map<string, ParsedPost[]>> {
-//   const results = new Map<string, ParsedPost[]>();
+export async function parseMultipleFeeds(rssUrls: string[]): Promise<Map<string, ParsedPost[]>> {
+  const results = new Map<string, ParsedPost[]>();
 
-//   const promises = rssUrls.map(async (url) => {
-//     try {
-//       const posts = await parseRssFeed(url);
-//       results.set(url, posts);
-//     } catch (error) {
-//       results.set(url, []);
-//       console.error(`Failed to parse ${url}`, error);
-//     }
-//   });
+  const promises = rssUrls.map(async (url) => {
+    try {
+      const posts = await parseRssFeed(url);
+      results.set(url, posts);
+    } catch (error) {
+      results.set(url, []);
+    }
+  });
 
-//   await Promise.all(promises);
-//   return results;
-// }
+  await Promise.all(promises);
+  return results;
+}

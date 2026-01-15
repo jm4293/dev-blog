@@ -79,7 +79,6 @@ export const submitRequestAction = async (formData: RequestFormData) => {
       .gte('created_at', oneHourAgo);
 
     if (countError) {
-      console.error('Rate limit check error:', countError);
     } else if (recentRequests && recentRequests.length >= 10) {
       throw new Error('너무 많은 요청이 접수되었습니다. 1시간 후에 다시 시도해주세요.');
     }
@@ -93,7 +92,6 @@ export const submitRequestAction = async (formData: RequestFormData) => {
       .gte('created_at', fiveMinutesAgo);
 
     if (duplicateError) {
-      console.error('Duplicate check error:', duplicateError);
     } else if (duplicateRequests && duplicateRequests.length > 0) {
       throw new Error('같은 내용의 요청이 최근에 접수되었습니다. 잠시 후에 다시 시도해주세요.');
     }
@@ -110,14 +108,12 @@ export const submitRequestAction = async (formData: RequestFormData) => {
     } as any);
 
     if (error) {
-      console.error('Database error:', error);
       throw new Error('요청 저장에 실패했습니다.');
     }
 
     return { success: true };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
-    console.error('Request submission error:', errorMessage);
     throw error;
   }
 };

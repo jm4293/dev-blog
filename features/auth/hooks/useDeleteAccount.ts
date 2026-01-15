@@ -18,8 +18,5 @@ export const useDeleteAccount = () => {
       // 회원탈퇴 완료 후 메인 페이지로 이동
       router.push('/posts');
     },
-    onError: (error) => {
-      console.error('Delete account error:', error);
-    },
   });
 };

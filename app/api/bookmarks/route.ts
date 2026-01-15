@@ -83,7 +83,6 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Bookmarks query error:', error);
       throw error;
     }
 
@@ -94,12 +93,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response);
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error('Bookmarks API error:', errorMsg);
 
-    return NextResponse.json(
-      { error: 'Failed to fetch bookmarks', details: errorMsg },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Failed to fetch bookmarks', details: errorMsg }, { status: 500 });
   }
 }
 
@@ -129,10 +124,7 @@ export async function POST(request: NextRequest) {
     const { post_id } = body;
 
     if (!post_id) {
-      return NextResponse.json(
-        { error: 'post_id is required' } as ErrorResponse,
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'post_id is required' } as ErrorResponse, { status: 400 });
     }
 
     const { data: bookmark, error } = await supabase
@@ -146,24 +138,18 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       if (error.code === '23505') {
-        return NextResponse.json(
-          { error: 'Already bookmarked', details: error.message } as ErrorResponse,
-          { status: 409 },
-        );
+        return NextResponse.json({ error: 'Already bookmarked', details: error.message } as ErrorResponse, {
+          status: 409,
+        });
       }
-      console.error('Bookmark insert error:', error);
       throw error;
     }
 
     return NextResponse.json(bookmark, { status: 201 });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error('Bookmarks API error:', errorMsg);
 
-    return NextResponse.json(
-      { error: 'Failed to add bookmark', details: errorMsg } as ErrorResponse,
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Failed to add bookmark', details: errorMsg } as ErrorResponse, { status: 500 });
   }
 }
 
@@ -192,31 +178,21 @@ export async function DELETE(request: NextRequest) {
     const postId = request.nextUrl.searchParams.get('postId');
 
     if (!postId) {
-      return NextResponse.json(
-        { error: 'postId is required' } as ErrorResponse,
-        { status: 400 },
-      );
+      return NextResponse.json({ error: 'postId is required' } as ErrorResponse, { status: 400 });
     }
 
-    const { error } = await supabase
-      .from('bookmarks')
-      .delete()
-      .eq('user_id', user.id)
-      .eq('post_id', postId);
+    const { error } = await supabase.from('bookmarks').delete().eq('user_id', user.id).eq('post_id', postId);
 
     if (error) {
-      console.error('Bookmark delete error:', error);
       throw error;
     }
 
     return NextResponse.json({ message: 'Bookmark removed' });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error('Bookmarks API error:', errorMsg);
 
-    return NextResponse.json(
-      { error: 'Failed to remove bookmark', details: errorMsg } as ErrorResponse,
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Failed to remove bookmark', details: errorMsg } as ErrorResponse, {
+      status: 500,
+    });
   }
 }

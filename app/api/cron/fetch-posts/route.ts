@@ -115,14 +115,12 @@ export async function POST(request: NextRequest) {
             stats.errors++;
             const errorMsg = error instanceof Error ? error.message : String(error);
             // 계속 진행 (한 게시글 실패가 전체를 중단하지 않음)
-            console.error(`❌ ${company.name} 게시글 저장 중 오류 발생 (URL: ${post.url}):`, errorMsg);
           }
         }
       } catch (error) {
         stats.errors++;
         const errorMsg = error instanceof Error ? error.message : String(error);
         // 계속 진행 (한 기업 실패가 전체를 중단하지 않음)
-        console.error(`❌ ${company.name} 블로그 수집 중 오류 발생:`, errorMsg);
       }
     }
 
@@ -131,7 +129,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, stats });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error('❌ 블로그 수집 중 오류 발생:', errorMsg);
 
     stats.duration = Date.now() - startTime;
 

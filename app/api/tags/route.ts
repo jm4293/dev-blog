@@ -70,7 +70,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response);
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error('Tags API error:', errorMsg);
 
     return NextResponse.json({ error: 'Failed to fetch tags', details: errorMsg }, { status: 500 });
   }

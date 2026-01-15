@@ -22,7 +22,6 @@ export const useSubmitRequest = (reset: UseFormReset<RequestFormData>, options?:
       options?.onSuccess?.();
     },
     onError: (error) => {
-      console.error('Request submission failed:', error);
       options?.onError?.(error as Error);
     },
   });

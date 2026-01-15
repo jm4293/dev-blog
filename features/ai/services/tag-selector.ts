@@ -23,7 +23,7 @@ interface TagMatch {
 export async function selectTagsFromDatabase(
   title: string,
   content: string,
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
 ): Promise<string[]> {
   try {
     // 1. 모든 활성 태그 조회
@@ -33,7 +33,6 @@ export async function selectTagsFromDatabase(
       .order('name', { ascending: true });
 
     if (tagsError || !allTags || allTags.length === 0) {
-      console.error('Failed to fetch tags:', tagsError);
       return [];
     }
 
@@ -69,9 +68,7 @@ export async function selectTagsFromDatabase(
     });
 
     // 4. 점수가 높은 순서대로 정렬
-    const sortedTags = tagMatches
-      .filter((tag) => tag.score > 0)
-      .sort((a, b) => b.score - a.score);
+    const sortedTags = tagMatches.filter((tag) => tag.score > 0).sort((a, b) => b.score - a.score);
 
     // 5. 상위 3-5개 태그 선택
     const selectedCount = Math.min(Math.max(3, sortedTags.length), 5);
@@ -79,7 +76,6 @@ export async function selectTagsFromDatabase(
 
     return selectedTags.length > 0 ? selectedTags : [];
   } catch (error) {
-    console.error('Error selecting tags:', error);
     return [];
   }
 }

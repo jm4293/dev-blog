@@ -49,12 +49,8 @@ export async function GET() {
     });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error('RSS feed generation error:', errorMsg);
 
-    return NextResponse.json(
-      { error: 'Failed to generate RSS feed', details: errorMsg },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Failed to generate RSS feed', details: errorMsg }, { status: 500 });
   }
 }
 
@@ -74,8 +70,7 @@ interface RSSPost {
 
 function generateRSS(posts: RSSPost[], baseUrl: string): string {
   const lastBuildDate = new Date().toUTCString();
-  const lastPostDate =
-    posts.length > 0 ? new Date(posts[0].published_at).toUTCString() : lastBuildDate;
+  const lastPostDate = posts.length > 0 ? new Date(posts[0].published_at).toUTCString() : lastBuildDate;
 
   const itemsXml = posts
     .map((post) => {
