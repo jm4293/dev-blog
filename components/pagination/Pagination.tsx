@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 interface PaginationProps {
   currentPage: number;
@@ -22,6 +23,8 @@ export function Pagination({
   searchQuery,
   tagsString,
 }: PaginationProps) {
+  const isMobile = useIsMobile();
+
   // URL에 쿼리 파라미터 추가
   const buildUrl = (page: number) => {
     const params = new URLSearchParams();
@@ -39,12 +42,11 @@ export function Pagination({
     }
   };
 
-  // 페이지 번호 범위 계산 (항상 5개의 페이지 번호 표시)
+  // 페이지 번호 범위 계산 (반응형)
   const getPageNumbers = () => {
-    const pageCount = 5; // 표시할 페이지 번호 개수
+    const pageCount = isMobile ? 3 : 5; // 모바일 3개, 데스크탑 5개
     const range = [];
 
-    // 5개씩 묶음으로 계산 (0-4, 5-9, 10-14, ...)
     // 현재 페이지가 속한 묶음의 시작 페이지
     let startPage = Math.floor((currentPage - 1) / pageCount) * pageCount + 1;
     let endPage = Math.min(startPage + pageCount - 1, totalPages);
@@ -58,14 +60,14 @@ export function Pagination({
 
   const pageNumbers = getPageNumbers();
 
-  // 5개씩 묶음으로 이동
-  const pageCount = 5;
+  // 묶음으로 이동 (모바일 3개, 데스크탑 5개)
+  const pageCount = isMobile ? 3 : 5;
   const firstPageInRange = pageNumbers[0];
   const lastPageInRange = pageNumbers[pageNumbers.length - 1];
 
-  // 이전 범위의 첫 번째 페이지 (현재 범위의 첫 번째 - 1)
+  // 이전 범위의 첫 번째 페이지
   const prevPage = firstPageInRange > 1 ? Math.max(1, firstPageInRange - pageCount) : null;
-  // 다음 범위의 첫 번째 페이지 (현재 범위의 마지막 + 1)
+  // 다음 범위의 첫 번째 페이지
   const nextPage = lastPageInRange < totalPages ? lastPageInRange + 1 : null;
 
   return (
