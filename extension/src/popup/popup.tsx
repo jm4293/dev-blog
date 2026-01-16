@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPosts, fetchCompanies, fetchTags, formatDate } from '../api/client';
 import type { Post, Company, Tag } from '../types';
+import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from 'lucide-react';
 
 interface PopupState {
   posts: Post[];
@@ -272,7 +273,7 @@ export function PopupApp() {
       {/* 페이지네이션 */}
       {!state.loading && state.pages > 1 && (
         <div className="flex-shrink-0 flex flex-col items-center gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex justify-center items-center gap-1 flex-wrap">
+          <div className="flex justify-center items-center gap-2 flex-wrap">
             {/* 처음 */}
             <button
               onClick={() =>
@@ -282,9 +283,10 @@ export function PopupApp() {
                 }))
               }
               disabled={state.page === 1}
-              className="px-2 py-1 rounded text-xs border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="p-1 rounded border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800"
+              title="처음"
             >
-              처음
+              <ChevronsLeft className="w-4 h-4" />
             </button>
 
             {/* 이전 */}
@@ -296,9 +298,10 @@ export function PopupApp() {
                 }))
               }
               disabled={state.page === 1}
-              className="px-2 py-1 rounded text-xs border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="p-1 rounded border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800"
+              title="이전"
             >
-              이전
+              <ChevronLeft className="w-4 h-4" />
             </button>
 
             {/* 페이지 번호 */}
@@ -312,16 +315,7 @@ export function PopupApp() {
 
                 const pages = [];
 
-                // 시작 그룹 이전에 생략 표시
-                if (startPage > 1) {
-                  pages.push(
-                    <span key="ellipsis-start" className="px-1 text-xs text-gray-500">
-                      ...
-                    </span>,
-                  );
-                }
-
-                // 현재 그룹의 페이지 번호 표시
+                // 현재 그룹의 페이지 번호 표시 ('...' 제거)
                 for (let i = startPage; i <= endPage; i++) {
                   pages.push(
                     <button
@@ -343,15 +337,6 @@ export function PopupApp() {
                   );
                 }
 
-                // 마지막 그룹 이후에 생략 표시
-                if (endPage < state.pages) {
-                  pages.push(
-                    <span key="ellipsis-end" className="px-1 text-xs text-gray-500">
-                      ...
-                    </span>,
-                  );
-                }
-
                 return pages;
               })()}
             </div>
@@ -365,9 +350,10 @@ export function PopupApp() {
                 }))
               }
               disabled={state.page >= state.pages}
-              className="px-2 py-1 rounded text-xs border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="p-1 rounded border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800"
+              title="다음"
             >
-              다음
+              <ChevronRight className="w-4 h-4" />
             </button>
 
             {/* 마지막 */}
@@ -379,9 +365,10 @@ export function PopupApp() {
                 }))
               }
               disabled={state.page >= state.pages}
-              className="px-2 py-1 rounded text-xs border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="p-1 rounded border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-800"
+              title="마지막"
             >
-              마지막
+              <ChevronsRight className="w-4 h-4" />
             </button>
           </div>
 
