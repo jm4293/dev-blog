@@ -142,6 +142,7 @@ export function PostsContainer() {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
+          totalCount={data?.total}
           baseUrl="/"
           onPageChange={handlePageChange}
           searchQuery={searchQuery}
