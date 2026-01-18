@@ -5,6 +5,7 @@
  */
 
 import OpenAI from 'openai';
+import { Tag } from './tag-selector';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -78,22 +79,29 @@ export async function generateSummary(title: string, content: string): Promise<s
 
 /**
  * 게시글 태그 생성 (3-5개)
+ * tags 테이블에 있는 태그 중에서만 선택합니다.
+ *
+ * @param title - 게시글 제목
+ * @param summary - 게시글 요약
+ * @param availableTags - tags 테이블에서 조회한 사용 가능한 태그 목록
  */
-export async function generateTags(title: string, summary: string): Promise<string[]> {
+export async function generateTags(title: string, summary: string, availableTags: Tag[]): Promise<string[]> {
+  if (!availableTags || availableTags.length === 0) {
+    return [];
+  }
+
+  // 사용 가능한 태그 목록을 문자열로 변환
+  const tagList = availableTags.map((tag) => tag.name).join(', ');
+
   const messages: Array<{ role: 'user' | 'system'; content: string }> = [
     {
       role: 'system',
-      content: `당신은 기술 블로그 게시글 태깅 전문가입니다. 주어진 제목과 요약을 분석하여 가장 관련성 높은 기술 태그를 3-5개 제시해주세요.
+      content: `당신은 기술 블로그 게시글 태깅 전문가입니다. 주어진 제목과 요약을 분석하여 아래 태그 목록에서 가장 관련성 높은 태그를 3-5개 선택해주세요.
 
-가능한 태그 카테고리:
-- Frontend: React, Vue, Next.js, TypeScript, CSS, HTML, Angular
-- Backend: Node.js, Java, Spring, Python, Django, Go, Kotlin, PHP, Express
-- Database: PostgreSQL, MongoDB, MySQL, Redis, Elasticsearch, Firebase
-- DevOps: Docker, Kubernetes, AWS, GCP, Azure, CI/CD, GitHub Actions, Jenkins
-- Mobile: React Native, Flutter, iOS, Android, Swift, Kotlin
-- AI/ML: Machine Learning, Deep Learning, NLP, Computer Vision, LLM, PyTorch, TensorFlow
-- 기타: Architecture, Performance, Security, Testing, Agile, WebAssembly
+사용 가능한 태그 목록:
+${tagList}
 
+중요: 반드시 위 목록에 있는 태그만 사용하세요.
 응답 형식: 태그1,태그2,태그3 (쉼표로 구분, 공백 없음)`,
     },
     {
@@ -106,11 +114,23 @@ export async function generateTags(title: string, summary: string): Promise<stri
   const tagsString = result.content.trim();
 
   // 쉼표로 구분된 태그 파싱
-  const tags = tagsString
+  const selectedTags = tagsString
     .split(',')
     .map((tag) => tag.trim())
-    .filter((tag) => tag.length > 0)
+    .filter((tag) => tag.length > 0);
+
+  // tags 테이블에 있는 태그만 필터링 (대소문자 무시)
+  const availableTagNames = availableTags.map((tag) => tag.name.toLowerCase());
+  const validTags = selectedTags.filter((tag) => availableTagNames.includes(tag.toLowerCase()));
+
+  // availableTags에서 원본 이름 찾기 (대소문자 보존)
+  const finalTags = validTags
+    .map((tag) => {
+      const found = availableTags.find((t) => t.name.toLowerCase() === tag.toLowerCase());
+      return found ? found.name : null;
+    })
+    .filter((tag): tag is string => tag !== null)
     .slice(0, 5); // 최대 5개만 반환
 
-  return tags;
+  return finalTags;
 }

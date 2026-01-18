@@ -19,11 +19,12 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase';
-import { selectTagsFromDatabase } from '@/features/ai/services/tag-selector';
+import { getAllTagsFromDatabase } from '@/features/ai/services/tag-selector';
+import { generateTags } from '@/features/ai/services/openai';
 import { parseRssFeed } from '@/features/posts';
 
 function verifyCronSecret(request: NextRequest): boolean {
-  const authHeader = `Bearer ${request.headers.get('authorization')}`;
+  const authHeader = request.headers.get('authorization');
   const expectedSecret = `Bearer ${process.env.CRON_SECRET}`;
 
   return authHeader === expectedSecret;
@@ -66,7 +67,10 @@ export async function POST(request: NextRequest) {
       rss_url: string;
     }>;
 
-    // 2. 각 기업의 RSS 피드 파싱 및 저장
+    // 2. 태그 목록을 한 번만 조회
+    const allTags = await getAllTagsFromDatabase(supabase);
+
+    // 3. 각 기업의 RSS 피드 파싱 및 저장
     for (const company of typedCompanies) {
       stats.companiesProcessed++;
 
@@ -79,7 +83,7 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // 3. 각 게시글 처리
+        // 4. 각 게시글 처리
         for (const post of posts) {
           try {
             // 중복 체크 (URL 기반)
@@ -89,9 +93,8 @@ export async function POST(request: NextRequest) {
               continue;
             }
 
-            // tags 테이블에서 적절한 태그 선택
-            let tags: string[] | null = null;
-            tags = await selectTagsFromDatabase(post.title, post.content || '', supabase);
+            // 미리 조회된 태그 목록에서 적절한 태그 선택 (OpenAI 사용)
+            const tags = await generateTags(post.title, post.summary || post.content?.substring(0, 500) || '', allTags);
 
             // 게시글 저장
             const { error: insertError } = await supabase.from('posts').insert({
@@ -114,12 +117,14 @@ export async function POST(request: NextRequest) {
           } catch (error) {
             stats.errors++;
             const errorMsg = error instanceof Error ? error.message : String(error);
+
             // 계속 진행 (한 게시글 실패가 전체를 중단하지 않음)
           }
         }
       } catch (error) {
         stats.errors++;
         const errorMsg = error instanceof Error ? error.message : String(error);
+
         // 계속 진행 (한 기업 실패가 전체를 중단하지 않음)
       }
     }
