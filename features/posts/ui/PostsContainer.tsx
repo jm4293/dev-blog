@@ -7,13 +7,30 @@ import { Pagination } from '@/components/pagination/Pagination';
 import { usePosts } from '../hooks';
 
 const LoadingSpinner = () => (
-  <div className="flex items-center justify-center py-12">
-    <div className="text-center">
-      <div className="mb-4 inline-block">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {Array.from({ length: 8 }).map((_, i) => (
+      <div
+        key={i}
+        className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 animate-pulse"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-lg bg-gray-300 dark:bg-gray-600" />
+          <div className="flex-1">
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-24 mb-2" />
+            <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-16" />
+          </div>
+        </div>
+        <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mb-4" />
+        <div className="space-y-2 mb-4">
+          <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded" />
+          <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6" />
+        </div>
+        <div className="flex gap-2 mb-4">
+          <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded-full w-16" />
+          <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded-full w-16" />
+        </div>
       </div>
-      <p className="text-gray-600 dark:text-gray-400">게시글을 불러오는 중입니다...</p>
-    </div>
+    ))}
   </div>
 );
 
