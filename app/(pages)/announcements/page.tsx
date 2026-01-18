@@ -2,7 +2,7 @@ import { AnnouncementsContainer } from '@/features/announcements';
 
 export const metadata = {
   title: '새로운 소식 | devBlog.kr',
-  description: '최신 기능 업데이트, 새로운 회사 추가, 버그 수정 등 devBlog.kr의 소식을 확인하세요.',
+  description: '최신 기능 업데이트, 새로운 기업 추가, 버그 수정 등 devBlog.kr의 소식을 확인하세요.',
 };
 
 export default function AnnouncementsPage() {

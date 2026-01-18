@@ -84,7 +84,7 @@ export const ANNOUNCEMENTS = {
     },
     new_company: {
       emoji: '🏢',
-      label: '신규 회사',
+      label: '신규 기업',
       bgColor: 'bg-green-100 dark:bg-green-900/30',
       textColor: 'text-green-700 dark:text-green-400',
       borderColor: 'border-l-green-500',

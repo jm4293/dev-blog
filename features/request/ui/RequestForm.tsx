@@ -38,14 +38,14 @@ export function RequestForm() {
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">요청 유형</label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {/* 회사 추가 옵션 */}
+            {/* 기업 추가 옵션 */}
             <label className="relative">
               <input type="radio" value="company" {...register('type')} className="sr-only peer" />
               <div className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
                 <div className="text-center">
                   <div className="text-2xl mb-2">🏢</div>
-                  <div className="font-medium text-gray-900 dark:text-white">회사 추가</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">새로운 회사를 추가해달라</div>
+                  <div className="font-medium text-gray-900 dark:text-white">기업 추가</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">새로운 기업를 추가해달라</div>
                 </div>
               </div>
             </label>
@@ -76,20 +76,20 @@ export function RequestForm() {
           </div>
         </div>
 
-        {/* 회사 추가 필드 */}
+        {/* 기업 추가 필드 */}
         {requestType === 'company' && (
           <div className="space-y-4">
-            {/* 회사명 */}
+            {/* 기업명 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                요청하는 회사명 *
+                요청하는 기업명 *
               </label>
               <input
                 type="text"
                 {...register('companyName', {
                   validate: (value) => {
                     if (requestType === 'company' && !value.trim()) {
-                      return '회사명은 필수입니다.';
+                      return '기업명은 필수입니다.';
                     }
                     return true;
                   },
@@ -196,7 +196,8 @@ export function RequestForm() {
         <button
           type="submit"
           disabled={isSubmitting || mutation.isPending}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed">
+          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:cursor-not-allowed"
+        >
           {isSubmitting || mutation.isPending ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

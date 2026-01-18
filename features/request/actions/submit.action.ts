@@ -54,9 +54,9 @@ export const submitRequestAction = async (formData: RequestFormData) => {
       throw new Error('스팸으로 의심되는 내용이 포함되어 있습니다.');
     }
 
-    // 회사 추가 요청 시 필수 필드 확인
+    // 기업 추가 요청 시 필수 필드 확인
     if (sanitizedData.type === 'company' && (!sanitizedData.companyName || !sanitizedData.blogUrl)) {
-      throw new Error('회사명과 블로그 URL은 필수입니다.');
+      throw new Error('기업명과 블로그 URL은 필수입니다.');
     }
 
     // 태그 추가 요청 시 필수 필드 확인

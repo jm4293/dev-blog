@@ -6,7 +6,6 @@ import { PostList, SearchBar } from '@/features/posts';
 import { Pagination } from '@/components/pagination/Pagination';
 import { usePosts } from '../hooks';
 
-// 정적 JSX 호이스팅: 매 렌더링마다 재생성되지 않도록
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center py-12">
     <div className="text-center">
@@ -39,13 +38,13 @@ export function PostsContainer() {
   const searchParams = useSearchParams();
 
   // URL 파라미터에서 현재 상태 추출
-  // URLSearchParams는 자동으로 인코딩/디코딩을 처리하므로 수동 처리 불필요
+  // URLSearchParams는 자동으로 인코딩/디코딩를 처리하므로 수동 처리 불필요
   const currentPage = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
   const searchQuery = searchParams.get('search') || '';
   const tagsParam = searchParams.get('tags') || '';
   const companiesParam = searchParams.get('companies') || '';
 
-  // 선택된 태그/회사 배열 (usePosts 훅에서는 문자열로 사용)
+  // 선택된 태그/기업 배열 (usePosts 훅에서는 문자열로 사용)
   const selectedTags = useMemo(() => (tagsParam ? tagsParam.split(',').filter((tag) => tag.trim()) : []), [tagsParam]);
   const selectedCompanyNames = useMemo(
     () => (companiesParam ? companiesParam.split(',').filter((name) => name.trim()) : []),
@@ -95,7 +94,7 @@ export function PostsContainer() {
     [updateUrl, searchQuery, selectedCompanyNames],
   );
 
-  // 회사 변경 시 URL 업데이트 (페이지 리셋)
+  // 기업 변경 시 URL 업데이트 (페이지 리셋)
   const handleCompaniesChange = useCallback(
     (companies: string[]) => {
       updateUrl(1, searchQuery, selectedTags, companies);

@@ -29,10 +29,12 @@ export function SearchBar({
   // useQuery를 통한 캐싱된 데이터 조회
   const { data: allCompaniesData, isLoading: isLoadingAllCompanies } = useCompanies();
   const { data: popularTagsData, isLoading: isLoadingPopularTags } = useTags({ featured: true });
+  const { data: popularCompaniesData } = useCompanies({ featured: true });
   const { data: allTagsData, isLoading: isLoadingAllTags } = useTags({ sort: 'name' });
 
   const allCompanies = allCompaniesData?.companies || [];
   const popularTags = (popularTagsData?.tags || []).map((tag) => tag.name);
+  const popularCompanies = popularCompaniesData?.companies || [];
   const allTags = allTagsData?.tags || [];
   const isLoadingCompanies = isLoadingAllCompanies;
   const isLoadingTags = isLoadingPopularTags || isLoadingAllTags;
@@ -95,27 +97,29 @@ export function SearchBar({
         />
         <button
           onClick={() => setShowCompanyModal(true)}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap">
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap"
+        >
           <Filter className="w-5 h-5" />
-          회사 필터
+          기업 필터
         </button>
         <button
           onClick={() => setShowTagModal(true)}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap">
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap"
+        >
           <Filter className="w-5 h-5" />
           태그 필터
         </button>
       </div>
 
       {/* Popular Companies */}
-      {/* {featuredCompanies.length > 0 && (
+      {popularCompanies.length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 회사</p>
+          <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 기업</p>
           <div className="flex flex-wrap gap-2">
             {isLoadingCompanies ? (
               <p className="text-sm text-gray-500 dark:text-gray-400">로딩 중...</p>
             ) : (
-              featuredCompanies.map((company) => (
+              popularCompanies.map((company) => (
                 <button
                   key={company.id}
                   onClick={() => handleCompanyToggle(company.name)}
@@ -124,7 +128,8 @@ export function SearchBar({
                       ? 'bg-blue-600 text-white dark:bg-blue-500'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
-                  title={company.name}>
+                  title={company.name}
+                >
                   {company.logo_url && (
                     <img src={company.logo_url} alt={company.name} className="w-5 h-5 object-contain" />
                   )}
@@ -134,7 +139,7 @@ export function SearchBar({
             )}
           </div>
         </div>
-      )} */}
+      )}
 
       {/* Popular Tags */}
       {popularTags.length > 0 && (
@@ -152,7 +157,8 @@ export function SearchBar({
                     selectedTags.includes(tag)
                       ? 'bg-blue-600 text-white dark:bg-blue-500'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
-                  }`}>
+                  }`}
+                >
                   {tag}
                 </button>
               ))
@@ -166,18 +172,20 @@ export function SearchBar({
         {selectedCompanyNames.length > 0 && (
           <div className="space-y-2">
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              선택된 회사 ({selectedCompanyNames.length})
+              선택된 기업 ({selectedCompanyNames.length})
             </p>
             <div className="flex flex-wrap gap-2">
               {[...selectedCompanyNames].sort().map((companyName) => (
                 <span
                   key={companyName}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium"
+                >
                   {companyName}
                   <button
                     onClick={() => handleCompanyRemove(companyName)}
                     className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
-                    aria-label={`Remove ${companyName} company`}>
+                    aria-label={`Remove ${companyName} company`}
+                  >
                     <X className="w-4 h-4" />
                   </button>
                 </span>
@@ -195,12 +203,14 @@ export function SearchBar({
               {[...selectedTags].sort().map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium"
+                >
                   {tag}
                   <button
                     onClick={() => handleTagRemove(tag)}
                     className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
-                    aria-label={`Remove ${tag} tag`}>
+                    aria-label={`Remove ${tag} tag`}
+                  >
                     <X className="w-4 h-4" />
                   </button>
                 </span>

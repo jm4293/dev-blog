@@ -3,7 +3,7 @@ import { RequestForm } from '@/features/request';
 
 export const metadata: Metadata = {
   title: '요청하기 | devBlog',
-  description: '새로운 회사나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
+  description: '새로운 기업나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
 };
 
 export default function RequestPage() {
@@ -13,7 +13,7 @@ export default function RequestPage() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">요청하기</h1>
           <p className="text-gray-600 dark:text-gray-400">
-            새로운 회사나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.
+            새로운 기업나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.
           </p>
         </div>
 
