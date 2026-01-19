@@ -9,6 +9,7 @@ interface PostsParams {
   tagsString?: string;
   companiesString?: string;
   companyId?: string;
+  sort?: 'newest' | 'oldest';
 }
 
 interface PostsResponse {
@@ -26,9 +27,10 @@ export function usePosts({
   tagsString = '',
   companiesString = '',
   companyId = '',
+  sort = 'newest',
 }: PostsParams = {}) {
   return useQuery<PostsResponse>({
-    queryKey: ['posts', page, search, tagsString, companiesString, companyId],
+    queryKey: ['posts', page, search, tagsString, companiesString, companyId, sort],
     queryFn: async () => {
       const params = new URLSearchParams();
       params.set('page', page.toString());
@@ -36,6 +38,7 @@ export function usePosts({
       if (tagsString) params.set('tags', tagsString);
       if (companiesString) params.set('companies', companiesString);
       if (companyId) params.set('company', companyId);
+      if (sort !== 'newest') params.set('sort', sort);
 
       const response = await fetch(`/api/posts?${params.toString()}`);
 

@@ -60,6 +60,7 @@ export function PostsContainer() {
   const searchQuery = searchParams.get('search') || '';
   const tagsParam = searchParams.get('tags') || '';
   const companiesParam = searchParams.get('companies') || '';
+  const sortParam = (searchParams.get('sort') || 'newest') as 'newest' | 'oldest';
 
   // 선택된 태그/기업 배열 (usePosts 훅에서는 문자열로 사용)
   const selectedTags = useMemo(() => (tagsParam ? tagsParam.split(',').filter((tag) => tag.trim()) : []), [tagsParam]);
@@ -74,6 +75,7 @@ export function PostsContainer() {
     search: searchQuery,
     tagsString: tagsParam,
     companiesString: companiesParam,
+    sort: sortParam,
   });
 
   const posts = data?.posts || [];
@@ -81,13 +83,14 @@ export function PostsContainer() {
 
   // URL 업데이트 함수 (useCallback으로 메모이제이션)
   const updateUrl = useCallback(
-    (page: number, search: string, tags: string[], companies: string[]) => {
+    (page: number, search: string, tags: string[], companies: string[], sort: 'newest' | 'oldest') => {
       const params = new URLSearchParams();
       if (page > 1) params.set('page', page.toString());
       // URLSearchParams가 자동으로 인코딩하므로 추가 인코딩 불필요
       if (search) params.set('search', search);
       if (tags.length > 0) params.set('tags', tags.join(','));
       if (companies.length > 0) params.set('companies', companies.join(','));
+      if (sort !== 'newest') params.set('sort', sort);
 
       const newUrl = params.toString() ? `/?${params.toString()}` : '/';
       router.push(newUrl);
@@ -98,23 +101,31 @@ export function PostsContainer() {
   // 검색어 변경 시 URL 업데이트
   const handleSearchChange = useCallback(
     (query: string) => {
-      updateUrl(1, query, selectedTags, selectedCompanyNames);
+      updateUrl(1, query, selectedTags, selectedCompanyNames, sortParam);
     },
-    [updateUrl, selectedTags, selectedCompanyNames],
+    [updateUrl, selectedTags, selectedCompanyNames, sortParam],
   );
 
   // 태그 변경 시 URL 업데이트 (페이지 리셋)
   const handleTagsChange = useCallback(
     (tags: string[]) => {
-      updateUrl(1, searchQuery, tags, selectedCompanyNames);
+      updateUrl(1, searchQuery, tags, selectedCompanyNames, sortParam);
     },
-    [updateUrl, searchQuery, selectedCompanyNames],
+    [updateUrl, searchQuery, selectedCompanyNames, sortParam],
   );
 
   // 기업 변경 시 URL 업데이트 (페이지 리셋)
   const handleCompaniesChange = useCallback(
     (companies: string[]) => {
-      updateUrl(1, searchQuery, selectedTags, companies);
+      updateUrl(1, searchQuery, selectedTags, companies, sortParam);
+    },
+    [updateUrl, searchQuery, selectedTags, sortParam],
+  );
+
+  // 정렬 변경 시 URL 업데이트 (페이지 리셋)
+  const handleSortChange = useCallback(
+    (sort: 'newest' | 'oldest') => {
+      updateUrl(1, searchQuery, selectedTags, selectedCompanyNames, sort);
     },
     [updateUrl, searchQuery, selectedTags, selectedCompanyNames],
   );
@@ -122,9 +133,9 @@ export function PostsContainer() {
   // 페이지 변경 시 URL 업데이트
   const handlePageChange = useCallback(
     (page: number) => {
-      updateUrl(page, searchQuery, selectedTags, selectedCompanyNames);
+      updateUrl(page, searchQuery, selectedTags, selectedCompanyNames, sortParam);
     },
-    [updateUrl, searchQuery, selectedTags, selectedCompanyNames],
+    [updateUrl, searchQuery, selectedTags, selectedCompanyNames, sortParam],
   );
 
   return (
@@ -133,9 +144,11 @@ export function PostsContainer() {
         onSearchChange={handleSearchChange}
         onTagsChange={handleTagsChange}
         onCompaniesChange={handleCompaniesChange}
+        onSortChange={handleSortChange}
         initialSearch={searchQuery}
         initialTagsString={tagsParam}
         initialCompaniesString={companiesParam}
+        initialSort={sortParam}
       />
 
       {isLoading && <LoadingSpinner />}

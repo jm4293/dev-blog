@@ -8,11 +8,12 @@
  * - tags: 태그 필터 (쉼표로 구분, OR 조건)
  * - company: 기업 ID 필터 (단일)
  * - companies: 기업 ID 필터 (쉼표로 구분, 다중, OR 조건)
+ * - sort: 정렬 방식 (newest, oldest, 기본값: newest)
  * - limit: 페이지당 게시글 수 (기본값: 20)
  *
  * 예시:
  * - /api/posts?page=1&search=react
- * - /api/posts?tags=Frontend,Backend&companies=toss,kakao
+ * - /api/posts?tags=Frontend,Backend&companies=toss,kakao&sort=oldest
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -47,6 +48,7 @@ export async function GET(request: NextRequest) {
     const tagsParam = searchParams.get('tags') || '';
     const companyId = searchParams.get('company') || '';
     const companiesParam = searchParams.get('companies') || '';
+    const sortParam = searchParams.get('sort') || 'newest';
     const limit = Math.min(100, parseInt(searchParams.get('limit') || '20', 10));
 
     const offset = (page - 1) * limit;
@@ -62,7 +64,8 @@ export async function GET(request: NextRequest) {
     // 1. 전체 게시글 수 조회
     let countQuery = supabase.from('posts').select('id', { count: 'exact', head: true });
 
-    // 2. 게시글 목록 조회 (정렬: 최신순)
+    // 2. 게시글 목록 조회 (정렬: 기본값은 최신순)
+    const isAscending = sortParam === 'oldest';
     let postsQuery = supabase
       .from('posts')
       .select(
@@ -82,7 +85,7 @@ export async function GET(request: NextRequest) {
         company:companies(*)
       `,
       )
-      .order('published_at', { ascending: false });
+      .order('published_at', { ascending: isAscending });
 
     // 검색 필터 (제목 기반)
     if (search) {

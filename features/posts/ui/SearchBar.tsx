@@ -3,28 +3,34 @@
 import { useState, useEffect } from 'react';
 import { X, Filter } from 'lucide-react';
 import { CompanyFilter, TagFilter } from '@/components/search';
+import { SortButton } from '@/components/search/SortButton';
 import { useCompanies, useTags } from '../hooks';
 
 interface SearchBarProps {
   onSearchChange?: (query: string) => void;
   onTagsChange?: (tags: string[]) => void;
   onCompaniesChange?: (companies: string[]) => void;
+  onSortChange?: (sort: 'newest' | 'oldest') => void;
   initialSearch?: string;
   initialTagsString?: string;
   initialCompaniesString?: string;
+  initialSort?: 'newest' | 'oldest';
 }
 
 export function SearchBar({
   onSearchChange,
   onTagsChange,
   onCompaniesChange,
+  onSortChange,
   initialSearch = '',
   initialTagsString = '',
   initialCompaniesString = '',
+  initialSort = 'newest',
 }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>([]);
+  const [currentSort, setCurrentSort] = useState<'newest' | 'oldest'>(initialSort);
 
   // useQuery를 통한 캐싱된 데이터 조회
   const { data: allCompaniesData, isLoading: isLoadingAllCompanies } = useCompanies();
@@ -48,7 +54,8 @@ export function SearchBar({
       ? initialCompaniesString.split(',').filter((name) => name.trim())
       : [];
     setSelectedCompanyNames(companiesArray);
-  }, [initialSearch, initialTagsString, initialCompaniesString]);
+    setCurrentSort(initialSort);
+  }, [initialSearch, initialTagsString, initialCompaniesString, initialSort]);
 
   const [showTagModal, setShowTagModal] = useState(false);
   const [showCompanyModal, setShowCompanyModal] = useState(false);
@@ -85,9 +92,16 @@ export function SearchBar({
     handleCompanyToggle(companyName);
   };
 
+  const handleSortChange = (sort: 'newest' | 'oldest') => {
+    setCurrentSort(sort);
+    onSortChange?.(sort);
+  };
+
   return (
     <div className="mb-8 space-y-4">
-      <div className="flex flex-col md:flex-row gap-4">
+      {/* Desktop: 정렬, 검색, 기업 필터, 태그 필터 (한 줄) */}
+      <div className="hidden md:flex gap-4">
+        <SortButton currentSort={currentSort} onSortChange={handleSortChange} />
         <input
           type="text"
           placeholder="게시글 검색..."
@@ -105,6 +119,37 @@ export function SearchBar({
         <button
           onClick={() => setShowTagModal(true)}
           className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap"
+        >
+          <Filter className="w-5 h-5" />
+          태그 필터
+        </button>
+      </div>
+
+      {/* Mobile: 정렬 + 검색 / 기업 필터 / 태그 필터 (여러 줄) */}
+      <div className="md:hidden space-y-3">
+        {/* Row 1: 정렬 + 검색 */}
+        <div className="flex gap-3">
+          <SortButton currentSort={currentSort} onSortChange={handleSortChange} />
+          <input
+            type="text"
+            placeholder="게시글 검색..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        {/* Row 2: 기업 필터 */}
+        <button
+          onClick={() => setShowCompanyModal(true)}
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
+        >
+          <Filter className="w-5 h-5" />
+          기업 필터
+        </button>
+        {/* Row 3: 태그 필터 */}
+        <button
+          onClick={() => setShowTagModal(true)}
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
         >
           <Filter className="w-5 h-5" />
           태그 필터
