@@ -16,6 +16,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import type { PostWithCompany, Bookmark } from '@/supabase/types.supabase';
 import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
+import { captureException } from '@/sentry.config';
 
 interface BookmarksResponse {
   bookmarks: (Bookmark & { post: PostWithCompany })[];
@@ -98,6 +99,12 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
 
+    captureException(error, {
+      method: 'GET',
+      endpoint: '/api/bookmarks',
+      errorMessage: errorMsg,
+    });
+
     return NextResponse.json({ error: 'Failed to fetch bookmarks', details: errorMsg }, { status: 500 });
   }
 }
@@ -153,6 +160,12 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
 
+    captureException(error, {
+      method: 'POST',
+      endpoint: '/api/bookmarks',
+      errorMessage: errorMsg,
+    });
+
     return NextResponse.json({ error: 'Failed to add bookmark', details: errorMsg } as ErrorResponse, { status: 500 });
   }
 }
@@ -194,6 +207,12 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ message: 'Bookmark removed' });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
+
+    captureException(error, {
+      method: 'DELETE',
+      endpoint: '/api/bookmarks',
+      errorMessage: errorMsg,
+    });
 
     return NextResponse.json({ error: 'Failed to remove bookmark', details: errorMsg } as ErrorResponse, {
       status: 500,

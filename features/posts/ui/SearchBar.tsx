@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { X, Filter } from 'lucide-react';
+import { X, Building2, Tag } from 'lucide-react';
 import { CompanyFilter, TagFilter } from '@/components/search';
 import { SortButton } from '@/components/search/SortButton';
 import { useCompanies, useTags } from '../hooks';
@@ -109,21 +109,21 @@ export function SearchBar() {
         />
         <button
           onClick={() => setShowCompanyModal(true)}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-900 font-semibold rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition-colors whitespace-nowrap"
         >
-          <Filter className="w-5 h-5" />
+          <Building2 className="w-5 h-5" />
           기업 필터
         </button>
         <button
           onClick={() => setShowTagModal(true)}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-900 font-semibold rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition-colors whitespace-nowrap"
         >
-          <Filter className="w-5 h-5" />
+          <Tag className="w-5 h-5" />
           태그 필터
         </button>
       </div>
 
-      {/* Mobile: 정렬 + 검색 / 기업 필터 / 태그 필터 (여러 줄) */}
+      {/* Mobile: 정렬 + 검색 / 기업 필터 + 태그 필터 (한 줄) */}
       <div className="md:hidden space-y-3">
         {/* Row 1: 정렬 + 검색 */}
         <div className="flex gap-3">
@@ -136,22 +136,23 @@ export function SearchBar() {
             className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        {/* Row 2: 기업 필터 */}
-        <button
-          onClick={() => setShowCompanyModal(true)}
-          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
-        >
-          <Filter className="w-5 h-5" />
-          기업 필터
-        </button>
-        {/* Row 3: 태그 필터 */}
-        <button
-          onClick={() => setShowTagModal(true)}
-          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
-        >
-          <Filter className="w-5 h-5" />
-          태그 필터
-        </button>
+        {/* Row 2: 기업 필터 + 태그 필터 (가로) */}
+        <div className="flex gap-3">
+          <button
+            onClick={() => setShowCompanyModal(true)}
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-900 font-semibold rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition-colors"
+          >
+            <Building2 className="w-5 h-5" />
+            기업 필터
+          </button>
+          <button
+            onClick={() => setShowTagModal(true)}
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-200 text-gray-900 font-semibold rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition-colors"
+          >
+            <Tag className="w-5 h-5" />
+            태그 필터
+          </button>
+        </div>
       </div>
 
       {/* Popular Companies */}

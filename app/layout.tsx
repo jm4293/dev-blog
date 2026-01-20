@@ -3,6 +3,10 @@ import './globals.css';
 import { QueryProvider } from './providers/QueryProvider';
 import { ToastContainer } from '@/components/toast';
 import { GoogleAnalytics } from './GoogleAnalytics';
+import { initSentry } from '@/sentry.config';
+
+// Sentry 초기화 (프로덕션 환경에서만)
+initSentry();
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr';
 
