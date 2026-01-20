@@ -49,8 +49,12 @@ export async function GET(request: NextRequest) {
       error: userError,
     } = await supabase.auth.getUser();
 
+    // 로그인하지 않은 사용자는 빈 배열 반환 (200 OK)
     if (userError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      const response: BookmarksResponse = {
+        bookmarks: [],
+      };
+      return NextResponse.json(response);
     }
 
     // 사용자의 즐겨찾기 조회
