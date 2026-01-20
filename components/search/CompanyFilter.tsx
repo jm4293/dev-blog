@@ -1,8 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { X } from 'lucide-react';
 import type { Company } from '@/supabase/types.supabase';
+import { FilterModal } from '../ui';
 
 interface CompanyFilterProps {
   companies: Company[];
@@ -21,93 +22,79 @@ export function CompanyFilter({
   onClose,
   isLoading = false,
 }: CompanyFilterProps) {
-  if (!isOpen) return null;
+  // 모달 내 임시 상태 (모달이 열릴 때 초기화)
+  const [tempSelectedCompanies, setTempSelectedCompanies] = useState<string[]>(selectedCompanyNames);
+
+  // 모달이 열릴 때 현재 선택상태로 임시상태 초기화
+  useEffect(() => {
+    if (isOpen) {
+      setTempSelectedCompanies(selectedCompanyNames);
+    }
+  }, [isOpen, selectedCompanyNames]);
+
+  const handleTempToggle = (companyName: string) => {
+    setTempSelectedCompanies((prev) =>
+      prev.includes(companyName) ? prev.filter((name) => name !== companyName) : [...prev, companyName],
+    );
+  };
+
+  const handleReset = () => {
+    setTempSelectedCompanies([]);
+  };
+
+  const handleComplete = () => {
+    // 변경된 항목들만 toggle 호출
+    selectedCompanyNames.forEach((name) => {
+      if (!tempSelectedCompanies.includes(name)) {
+        onCompanyToggle(name);
+      }
+    });
+    tempSelectedCompanies.forEach((name) => {
+      if (!selectedCompanyNames.includes(name)) {
+        onCompanyToggle(name);
+      }
+    });
+    onClose();
+  };
 
   return (
-    <>
-      {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
-
-      {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-auto">
-          {/* Header */}
-          <div className="sticky top-0 border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between bg-white dark:bg-gray-800">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">기업 선택</h2>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              aria-label="Close modal"
-            >
-              <X className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-            </button>
-          </div>
-
-          {/* Companies Grid */}
-          <div className="p-6">
-            {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <div className="text-gray-600 dark:text-gray-400">로딩 중...</div>
-              </div>
-            ) : companies.length === 0 ? (
-              <div className="flex items-center justify-center py-8">
-                <div className="text-gray-600 dark:text-gray-400">기업 정보가 없습니다.</div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {companies.map((company) => (
-                  <button
-                    key={company.id}
-                    onClick={() => onCompanyToggle(company.name)}
-                    className={`p-4 rounded-lg transition-all flex flex-col items-center gap-2 ${
-                      selectedCompanyNames.includes(company.name)
-                        ? 'bg-blue-600 dark:bg-blue-500'
-                        : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    {/* Company Logo */}
-                    {company.logo_url && (
-                      <Image
-                        src={company.logo_url}
-                        alt={company.name}
-                        width={40}
-                        height={40}
-                        className="object-contain"
-                      />
-                    )}
-                    {/* Company Name */}
-                    <span
-                      className={`text-sm font-semibold text-center ${
-                        selectedCompanyNames.includes(company.name) ? 'text-white' : 'text-gray-900 dark:text-white'
-                      }`}
-                    >
-                      {company.name}
-                    </span>
-                  </button>
-                ))}
-              </div>
+    <FilterModal
+      title="기업 선택"
+      isOpen={isOpen}
+      onClose={onClose}
+      onReset={handleReset}
+      onComplete={handleComplete}
+      isLoading={isLoading}
+      isEmpty={companies.length === 0}
+      emptyMessage="기업 정보가 없습니다."
+    >
+      {/* Companies Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        {companies.map((company) => (
+          <button
+            key={company.id}
+            onClick={() => handleTempToggle(company.name)}
+            className={`p-4 rounded-lg transition-all flex flex-col items-center gap-2 ${
+              tempSelectedCompanies.includes(company.name)
+                ? 'bg-blue-600 dark:bg-blue-500'
+                : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
+            }`}
+          >
+            {/* Company Logo */}
+            {company.logo_url && (
+              <Image src={company.logo_url} alt={company.name} width={40} height={40} className="object-contain" />
             )}
-          </div>
-
-          {/* Footer */}
-          <div className="border-t border-gray-200 dark:border-gray-700 p-6 flex justify-end gap-3">
-            <button
-              onClick={() => {
-                selectedCompanyNames.forEach((companyName) => onCompanyToggle(companyName));
-              }}
-              className="px-6 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            {/* Company Name */}
+            <span
+              className={`text-sm font-semibold text-center ${
+                tempSelectedCompanies.includes(company.name) ? 'text-white' : 'text-gray-900 dark:text-white'
+              }`}
             >
-              초기화
-            </button>
-            <button
-              onClick={onClose}
-              className="px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
-            >
-              완료
-            </button>
-          </div>
-        </div>
+              {company.name}
+            </span>
+          </button>
+        ))}
       </div>
-    </>
+    </FilterModal>
   );
 }
