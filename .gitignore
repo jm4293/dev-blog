@@ -57,3 +57,4 @@ PERFORMANCE.md
 .claude
 .github
 *.md
+*.tsbuildinfo

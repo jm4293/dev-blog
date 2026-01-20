@@ -1,36 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { X, Filter } from 'lucide-react';
 import { CompanyFilter, TagFilter } from '@/components/search';
 import { SortButton } from '@/components/search/SortButton';
 import { useCompanies, useTags } from '../hooks';
 
-interface SearchBarProps {
-  onSearchChange?: (query: string) => void;
-  onTagsChange?: (tags: string[]) => void;
-  onCompaniesChange?: (companies: string[]) => void;
-  onSortChange?: (sort: 'newest' | 'oldest') => void;
-  initialSearch?: string;
-  initialTagsString?: string;
-  initialCompaniesString?: string;
-  initialSort?: 'newest' | 'oldest';
-}
+export function SearchBar() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-export function SearchBar({
-  onSearchChange,
-  onTagsChange,
-  onCompaniesChange,
-  onSortChange,
-  initialSearch = '',
-  initialTagsString = '',
-  initialCompaniesString = '',
-  initialSort = 'newest',
-}: SearchBarProps) {
-  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  // URL 파라미터에서 현재 상태 추출
+  const searchQuery = searchParams.get('search') || '';
+  const tagsParam = searchParams.get('tags') || '';
+  const companiesParam = searchParams.get('companies') || '';
+  const sortParam = (searchParams.get('sort') || 'newest') as 'newest' | 'oldest';
+
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>([]);
-  const [currentSort, setCurrentSort] = useState<'newest' | 'oldest'>(initialSort);
 
   // useQuery를 통한 캐싱된 데이터 조회
   const { data: allCompaniesData, isLoading: isLoadingAllCompanies } = useCompanies();
@@ -47,29 +35,40 @@ export function SearchBar({
 
   // URL 파라미터가 변경되면 내부 상태 동기화
   useEffect(() => {
-    setSearchQuery(initialSearch);
-    const tagsArray = initialTagsString ? initialTagsString.split(',').filter((tag) => tag.trim()) : [];
+    const tagsArray = tagsParam ? tagsParam.split(',').filter((tag) => tag.trim()) : [];
     setSelectedTags(tagsArray);
-    const companiesArray = initialCompaniesString
-      ? initialCompaniesString.split(',').filter((name) => name.trim())
-      : [];
+    const companiesArray = companiesParam ? companiesParam.split(',').filter((name) => name.trim()) : [];
     setSelectedCompanyNames(companiesArray);
-    setCurrentSort(initialSort);
-  }, [initialSearch, initialTagsString, initialCompaniesString, initialSort]);
+  }, [tagsParam, companiesParam]);
 
   const [showTagModal, setShowTagModal] = useState(false);
   const [showCompanyModal, setShowCompanyModal] = useState(false);
 
+  // URL 업데이트 함수
+  const updateUrl = useCallback(
+    (page: number, search: string, tags: string[], companies: string[], sort: 'newest' | 'oldest') => {
+      const params = new URLSearchParams();
+      if (page > 1) params.set('page', page.toString());
+      if (search) params.set('search', search);
+      if (tags.length > 0) params.set('tags', tags.join(','));
+      if (companies.length > 0) params.set('companies', companies.join(','));
+      if (sort !== 'newest') params.set('sort', sort);
+
+      const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+      router.push(newUrl);
+    },
+    [router],
+  );
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearchQuery(value);
-    onSearchChange?.(value);
+    updateUrl(1, value, selectedTags, selectedCompanyNames, sortParam);
   };
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags((prev) => {
       const newTags = prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag];
-      onTagsChange?.(newTags);
+      updateUrl(1, searchQuery, newTags, selectedCompanyNames, sortParam);
       return newTags;
     });
   };
@@ -83,7 +82,7 @@ export function SearchBar({
       const newCompanies = prev.includes(companyName)
         ? prev.filter((name) => name !== companyName)
         : [...prev, companyName];
-      onCompaniesChange?.(newCompanies);
+      updateUrl(1, searchQuery, selectedTags, newCompanies, sortParam);
       return newCompanies;
     });
   };
@@ -93,15 +92,14 @@ export function SearchBar({
   };
 
   const handleSortChange = (sort: 'newest' | 'oldest') => {
-    setCurrentSort(sort);
-    onSortChange?.(sort);
+    updateUrl(1, searchQuery, selectedTags, selectedCompanyNames, sort);
   };
 
   return (
     <div className="mb-8 space-y-4">
       {/* Desktop: 정렬, 검색, 기업 필터, 태그 필터 (한 줄) */}
       <div className="hidden md:flex gap-4">
-        <SortButton currentSort={currentSort} onSortChange={handleSortChange} />
+        <SortButton currentSort={sortParam} onSortChange={handleSortChange} />
         <input
           type="text"
           placeholder="게시글 검색..."
@@ -129,7 +127,7 @@ export function SearchBar({
       <div className="md:hidden space-y-3">
         {/* Row 1: 정렬 + 검색 */}
         <div className="flex gap-3">
-          <SortButton currentSort={currentSort} onSortChange={handleSortChange} />
+          <SortButton currentSort={sortParam} onSortChange={handleSortChange} />
           <input
             type="text"
             placeholder="게시글 검색..."

@@ -1,5 +1,6 @@
 'use client';
 
+import { SimpleSkeleton } from '@/components/skeleton';
 import { AnnouncementCard } from './AnnouncementCard';
 import type { Announcement } from '@/supabase';
 
@@ -10,13 +11,7 @@ interface AnnouncementListProps {
 
 export function AnnouncementList({ announcements, isLoading }: AnnouncementListProps) {
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="h-40 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
-        ))}
-      </div>
-    );
+    return <SimpleSkeleton count={3} height="h-40" />;
   }
 
   if (announcements.length === 0) {

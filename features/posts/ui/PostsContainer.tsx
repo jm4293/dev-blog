@@ -4,35 +4,8 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { PostList, SearchBar } from '@/features/posts';
 import { Pagination } from '@/components/pagination/Pagination';
+import { GridSkeleton } from '@/components/skeleton';
 import { usePosts } from '../hooks';
-
-const LoadingSpinner = () => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    {Array.from({ length: 8 }).map((_, i) => (
-      <div
-        key={i}
-        className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 animate-pulse"
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg bg-gray-300 dark:bg-gray-600" />
-          <div className="flex-1">
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-24 mb-2" />
-            <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-16" />
-          </div>
-        </div>
-        <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mb-4" />
-        <div className="space-y-2 mb-4">
-          <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded" />
-          <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6" />
-        </div>
-        <div className="flex gap-2 mb-4">
-          <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded-full w-16" />
-          <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded-full w-16" />
-        </div>
-      </div>
-    ))}
-  </div>
-);
 
 interface NoPostsProps {
   searchQuery: string;
@@ -81,77 +54,27 @@ export function PostsContainer() {
   const posts = data?.posts || [];
   const totalPages = data?.totalPages || 0;
 
-  // URL 업데이트 함수 (useCallback으로 메모이제이션)
-  const updateUrl = useCallback(
-    (page: number, search: string, tags: string[], companies: string[], sort: 'newest' | 'oldest') => {
+  // 페이지 변경 시 URL 업데이트
+  const handlePageChange = useCallback(
+    (page: number) => {
       const params = new URLSearchParams();
       if (page > 1) params.set('page', page.toString());
-      // URLSearchParams가 자동으로 인코딩하므로 추가 인코딩 불필요
-      if (search) params.set('search', search);
-      if (tags.length > 0) params.set('tags', tags.join(','));
-      if (companies.length > 0) params.set('companies', companies.join(','));
-      if (sort !== 'newest') params.set('sort', sort);
+      if (searchQuery) params.set('search', searchQuery);
+      if (selectedTags.length > 0) params.set('tags', selectedTags.join(','));
+      if (selectedCompanyNames.length > 0) params.set('companies', selectedCompanyNames.join(','));
+      if (sortParam !== 'newest') params.set('sort', sortParam);
 
       const newUrl = params.toString() ? `/?${params.toString()}` : '/';
       router.push(newUrl);
     },
-    [router],
-  );
-
-  // 검색어 변경 시 URL 업데이트
-  const handleSearchChange = useCallback(
-    (query: string) => {
-      updateUrl(1, query, selectedTags, selectedCompanyNames, sortParam);
-    },
-    [updateUrl, selectedTags, selectedCompanyNames, sortParam],
-  );
-
-  // 태그 변경 시 URL 업데이트 (페이지 리셋)
-  const handleTagsChange = useCallback(
-    (tags: string[]) => {
-      updateUrl(1, searchQuery, tags, selectedCompanyNames, sortParam);
-    },
-    [updateUrl, searchQuery, selectedCompanyNames, sortParam],
-  );
-
-  // 기업 변경 시 URL 업데이트 (페이지 리셋)
-  const handleCompaniesChange = useCallback(
-    (companies: string[]) => {
-      updateUrl(1, searchQuery, selectedTags, companies, sortParam);
-    },
-    [updateUrl, searchQuery, selectedTags, sortParam],
-  );
-
-  // 정렬 변경 시 URL 업데이트 (페이지 리셋)
-  const handleSortChange = useCallback(
-    (sort: 'newest' | 'oldest') => {
-      updateUrl(1, searchQuery, selectedTags, selectedCompanyNames, sort);
-    },
-    [updateUrl, searchQuery, selectedTags, selectedCompanyNames],
-  );
-
-  // 페이지 변경 시 URL 업데이트
-  const handlePageChange = useCallback(
-    (page: number) => {
-      updateUrl(page, searchQuery, selectedTags, selectedCompanyNames, sortParam);
-    },
-    [updateUrl, searchQuery, selectedTags, selectedCompanyNames, sortParam],
+    [router, searchQuery, selectedTags, selectedCompanyNames, sortParam],
   );
 
   return (
     <>
-      <SearchBar
-        onSearchChange={handleSearchChange}
-        onTagsChange={handleTagsChange}
-        onCompaniesChange={handleCompaniesChange}
-        onSortChange={handleSortChange}
-        initialSearch={searchQuery}
-        initialTagsString={tagsParam}
-        initialCompaniesString={companiesParam}
-        initialSort={sortParam}
-      />
+      <SearchBar />
 
-      {isLoading && <LoadingSpinner />}
+      {isLoading && <GridSkeleton />}
 
       {error && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-6 dark:border-red-900 dark:bg-red-950">
