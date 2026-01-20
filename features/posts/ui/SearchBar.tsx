@@ -211,6 +211,32 @@ export function SearchBar() {
       )}
 
       {/* Selected Companies & Tags */}
+      {(selectedCompanyNames.length > 0 || selectedTags.length > 0 || searchQuery) && (
+        <div className="flex items-center justify-between px-4 py-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <div>
+            <p className="text-sm font-semibold text-gray-900 dark:text-white">필터링된 결과</p>
+            {searchQuery && (
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                검색: <span className="font-medium text-blue-600 dark:text-blue-400">{searchQuery}</span>
+              </p>
+            )}
+            {(selectedCompanyNames.length > 0 || selectedTags.length > 0) && (
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                기업 {selectedCompanyNames.length}개, 태그 {selectedTags.length}개 선택됨
+              </p>
+            )}
+          </div>
+          <button
+            onClick={() => {
+              updateUrl(1, '', [], [], 'newest');
+            }}
+            className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors whitespace-nowrap ml-4"
+          >
+            초기화
+          </button>
+        </div>
+      )}
+
       <div className="space-y-2">
         {selectedCompanyNames.length > 0 && (
           <div className="space-y-2">
