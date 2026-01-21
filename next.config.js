@@ -20,8 +20,8 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/:path*',
-        destination: 'https://devblog.kr/:path*',
+        source: '/:path((?!sitemap\\.xml|robots\\.txt).*)',
+        destination: 'https://devblog.kr/:path',
         basePath: false,
         permanent: true,
         has: [
