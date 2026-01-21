@@ -19,9 +19,22 @@ const nextConfig = {
   // WWW to non-WWW redirect for SEO
   async redirects() {
     return [
+      // sitemap.xml은 리다이렉트하지 않음
       {
-        source: '/:path((?!sitemap\\.xml|robots\\.txt).*)',
-        destination: 'https://devblog.kr/:path',
+        source: '/sitemap.xml',
+        destination: '/sitemap.xml',
+        permanent: true,
+      },
+      // robots.txt도 리다이렉트하지 않음
+      {
+        source: '/robots.txt',
+        destination: '/robots.txt',
+        permanent: true,
+      },
+      // 나머지 모든 요청은 www에서 비-www로 리다이렉트
+      {
+        source: '/:path*',
+        destination: 'https://devblog.kr/:path*',
         basePath: false,
         permanent: true,
         has: [
