@@ -90,7 +90,6 @@ export const metadata: Metadata = {
     shortcut: '/favicon-32.png',
     apple: '/favicon-192.png',
   },
-  // Google Search Console 인증: 필요시 아래 주석을 해제하고 Google이 제공하는 verification code를 입력하세요
   // verification: {
   //   google: 'Google이 제공하는 고유 verification code',
   // },

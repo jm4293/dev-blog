@@ -37,7 +37,7 @@ export function FilterModal({
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose} />
 
       {/* Modal: Flexbox로 Header/Content/Footer 구조 (Footer는 항상 고정) */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

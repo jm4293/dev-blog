@@ -96,7 +96,7 @@ export function SearchBar() {
   };
 
   return (
-    <div className="mb-8 space-y-4">
+    <div className="mb-8">
       {/* Desktop: 정렬, 검색, 기업 필터, 태그 필터 (한 줄) */}
       <div className="hidden md:flex gap-4">
         <SortButton currentSort={sortParam} onSortChange={handleSortChange} />
