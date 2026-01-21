@@ -79,7 +79,7 @@ export function Pagination({
           <button
             onClick={() => handlePageClick(1)}
             disabled={currentPage === 1}
-            className={`px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 font-semibold transition-colors ${
+            className={`p-2 rounded-lg border border-gray-300 dark:border-gray-600 font-semibold transition-colors ${
               currentPage === 1
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                 : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -90,7 +90,7 @@ export function Pagination({
         ) : (
           <Link
             href={`${baseUrl}?page=1`}
-            className={`px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 font-semibold transition-colors ${
+            className={`p-2 rounded-lg border border-gray-300 dark:border-gray-600 font-semibold transition-colors ${
               currentPage === 1
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                 : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -191,7 +191,7 @@ export function Pagination({
           <button
             onClick={() => handlePageClick(totalPages)}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 font-semibold transition-colors ${
+            className={`p-2 rounded-lg border border-gray-300 dark:border-gray-600 font-semibold transition-colors ${
               currentPage === totalPages
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                 : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -202,7 +202,7 @@ export function Pagination({
         ) : (
           <Link
             href={`${baseUrl}?page=${totalPages}`}
-            className={`px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 font-semibold transition-colors ${
+            className={`p-2 rounded-lg border border-gray-300 dark:border-gray-600 font-semibold transition-colors ${
               currentPage === totalPages
                 ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                 : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
