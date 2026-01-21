@@ -16,10 +16,6 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
-  // WWW to non-WWW redirect for SEO (Vercel에서 처리하므로 비활성화)
-  // redirects() {
-  //   return [];
-  // },
 };
 
 // Sentry 설정 (프로덕션 환경에서만 활성화)

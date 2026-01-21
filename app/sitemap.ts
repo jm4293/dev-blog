@@ -13,16 +13,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/blogs`,
+      url: `${baseUrl}/posts`,
       lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.8,
+      changeFrequency: 'hourly',
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/bookmarks`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/announcements`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/request`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.5,
     },
   ];
 
@@ -38,16 +50,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       for (let page = 2; page <= maxPages; page++) {
         paginationPages.push({
-          url: `${baseUrl}/?page=${page}`,
+          url: `${baseUrl}/posts?page=${page}`,
           lastModified: new Date(),
           changeFrequency: 'daily',
           priority: 0.7,
         });
       }
     }
-  } catch {
-    // Sitemap 페이지네이션 추가 실패 - 정적 페이지만 사용
-  }
+  } catch {}
 
   return [...staticPages, ...paginationPages];
 }
