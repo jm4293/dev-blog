@@ -16,6 +16,23 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
+  // WWW to non-WWW redirect for SEO
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        destination: 'https://devblog.kr/:path*',
+        basePath: false,
+        permanent: true,
+        has: [
+          {
+            type: 'host',
+            value: 'www.devblog.kr',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 // Sentry 설정 (프로덕션 환경에서만 활성화)
@@ -27,6 +44,4 @@ const sentryWebpackPluginOptions = {
 };
 
 module.exports =
-  process.env.NODE_ENV === 'production'
-    ? withSentryConfig(nextConfig, sentryWebpackPluginOptions)
-    : nextConfig;
+  process.env.NODE_ENV === 'production' ? withSentryConfig(nextConfig, sentryWebpackPluginOptions) : nextConfig;

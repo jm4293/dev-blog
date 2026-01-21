@@ -2,8 +2,15 @@ import { Metadata } from 'next';
 import { RequestForm } from '@/features/request';
 
 export const metadata: Metadata = {
-  title: '요청하기 | devBlog',
-  description: '새로운 기업나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
+  title: '요청하기 | 기업 / 태그 추가 요청 - devBlog.kr',
+  description:
+    '새로운 기업이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다. devBlog.kr을 더 나은 개발 블로그 플랫폼으로 만들어보세요.',
+  keywords: ['요청', '기업 추가', '태그 추가', '피드백', '문의'],
+  openGraph: {
+    title: '요청하기 | 기업 / 태그 추가 요청 - devBlog.kr',
+    description: '새로운 기업이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
+    type: 'website',
+  },
 };
 
 export default function RequestPage() {

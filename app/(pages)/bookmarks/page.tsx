@@ -4,9 +4,12 @@ import { getCurrentUser } from '@/supabase';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: '내 즐겨찾기 | devBlog',
-  description: 'GitHub 로그인으로 저장한 기술 블로그 게시글을 한눈에 관리하고 정리하세요.',
+  title: '즐겨찾기 | 개발 블로그 저장 관리 - devBlog.kr',
+  description:
+    'GitHub 로그인으로 저장한 기술 블로그 게시글을 한눈에 관리하고 정리하세요. 토스, 카카오 등 한국 IT 기업의 개발 블로그를 북마크 하세요.',
+  keywords: ['즐겨찾기', '북마크', '개발 블로그', '기술 블로그', '저장'],
   openGraph: {
+    title: '즐겨찾기 | 개발 블로그 저장 관리 - devBlog.kr',
     description: 'GitHub 로그인으로 저장한 기술 블로그 게시글을 한눈에 관리하세요.',
     type: 'website',
   },

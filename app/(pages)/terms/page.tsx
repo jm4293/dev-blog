@@ -1,8 +1,12 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '이용약관 | devBlog',
-  description: 'devBlog의 이용약관을 확인하세요.',
+  title: '이용약관 | devBlog.kr',
+  description: 'devBlog.kr의 이용약관을 확인하세요. 서비스 이용 시 준수해야 할 규정을 안내합니다.',
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function TermsPage() {
@@ -46,9 +50,7 @@ export default function TermsPage() {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">제3조 (약관의 효력과 변경)</h2>
-            <p className="mb-4">
-              ① 이 약관은 서비스를 이용하고자 하는 모든 이용자에 대하여 그 효력을 발생합니다.
-            </p>
+            <p className="mb-4">① 이 약관은 서비스를 이용하고자 하는 모든 이용자에 대하여 그 효력을 발생합니다.</p>
             <p className="mb-4">
               ② 서비스는 필요한 경우 관련 법령을 위배하지 않는 범위에서 이 약관을 변경할 수 있습니다.
             </p>
@@ -75,9 +77,7 @@ export default function TermsPage() {
             <p className="mb-4">
               ① 회원가입은 GitHub OAuth를 통해 진행되며, 사용자의 GitHub 계정 정보로 자동 인증됩니다.
             </p>
-            <p>
-              ② 서비스는 다음 각 호에 해당하지 않는 한 회원 가입을 승인합니다:
-            </p>
+            <p>② 서비스는 다음 각 호에 해당하지 않는 한 회원 가입을 승인합니다:</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>GitHub 계정이 부정한 목적으로 생성된 것으로 판단되는 경우</li>
               <li>회원 가입이 서비스의 기술상 현저히 지장을 줄 수 있다고 판단되는 경우</li>
@@ -85,11 +85,15 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">제6조 (회원 탈퇴 및 자격 상실)</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+              제6조 (회원 탈퇴 및 자격 상실)
+            </h2>
             <p className="mb-4">
               ① 회원은 언제든지 서비스 내 프로필 설정에서 탈퇴를 요청할 수 있으며 서비스는 즉시 회원탈퇴를 처리합니다.
             </p>
-            <p className="mb-4">② 회원이 다음 각 호의 사유에 해당하는 경우, 서비스는 회원자격을 제한 및 정지시킬 수 있습니다:</p>
+            <p className="mb-4">
+              ② 회원이 다음 각 호의 사유에 해당하는 경우, 서비스는 회원자격을 제한 및 정지시킬 수 있습니다:
+            </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>서비스를 이용하여 법령 또는 이 약관이 금지하거나 공서양속에 반하는 행위를 하는 경우</li>
               <li>타 이용자의 서비스 이용을 방해하는 행위를 하는 경우</li>
@@ -110,7 +114,9 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">제8조 (서비스 콘텐츠의 저작권)</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+              제8조 (서비스 콘텐츠의 저작권)
+            </h2>
             <p className="mb-4">
               ① devBlog가 제공하는 콘텐츠(기술 블로그 게시글 포함)는 각 기업의 저작물입니다. 해당 콘텐츠의 저작권은 각
               기업에 귀속됩니다.
@@ -120,8 +126,8 @@ export default function TermsPage() {
               devBlog에 귀속됩니다.
             </p>
             <p>
-              ③ 이용자는 서비스를 통해 얻은 콘텐츠를 서비스의 사전 승낙 없이 복제, 배포, 전송, 편집, 영리목적으로
-              이용할 수 없습니다.
+              ③ 이용자는 서비스를 통해 얻은 콘텐츠를 서비스의 사전 승낙 없이 복제, 배포, 전송, 편집, 영리목적으로 이용할
+              수 없습니다.
             </p>
           </section>
 
@@ -163,16 +169,14 @@ export default function TermsPage() {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">제12조 (분쟁해결)</h2>
-            <p>
-              서비스 이용으로 발생한 분쟁에 대해 소송이 제기될 경우 관할 법원은 민사소송법에 따라 정합니다.
-            </p>
+            <p>서비스 이용으로 발생한 분쟁에 대해 소송이 제기될 경우 관할 법원은 민사소송법에 따라 정합니다.</p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">제13조 (서비스 이용 약관 동의)</h2>
-            <p>
-              이용자가 서비스를 이용함으로써 본 약관의 내용을 모두 읽었으며 이에 동의하는 것으로 간주됩니다.
-            </p>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+              제13조 (서비스 이용 약관 동의)
+            </h2>
+            <p>이용자가 서비스를 이용함으로써 본 약관의 내용을 모두 읽었으며 이에 동의하는 것으로 간주됩니다.</p>
           </section>
         </div>
 

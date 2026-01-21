@@ -6,3 +6,9 @@ Disallow: /ads.txt
 Disallow: /app-ads.txt
 Disallow: /sellers.json
 Disallow: /favicon.ico
+
+# Sitemap
+Sitemap: https://devblog.kr/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

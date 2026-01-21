@@ -1,8 +1,15 @@
+import type { Metadata } from 'next';
 import { AnnouncementsContainer } from '@/features/announcements';
 
-export const metadata = {
-  title: '새로운 소식 | devBlog.kr',
-  description: '최신 기능 업데이트, 새로운 기업 추가, 버그 수정 등 devBlog.kr의 소식을 확인하세요.',
+export const metadata: Metadata = {
+  title: '공지사항 | devBlog.kr 업데이트 소식',
+  description: '최신 기능 업데이트, 새로운 기업 추가, 버그 수정 등 devBlog.kr의 공지사항과 소식을 확인하세요.',
+  keywords: ['공지사항', 'devBlog', '업데이트', '새로운 기능', '개발 블로그'],
+  openGraph: {
+    title: '공지사항 | devBlog.kr 업데이트 소식',
+    description: '최신 기능 업데이트, 새로운 기업 추가, 버그 수정 등 devBlog.kr의 소식을 확인하세요.',
+    type: 'website',
+  },
 };
 
 export default function AnnouncementsPage() {

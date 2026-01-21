@@ -1,8 +1,12 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '개인정보 처리방침 | devBlog',
-  description: 'devBlog의 개인정보 처리방침을 확인하세요.',
+  title: '개인정보 처리방침 | devBlog.kr',
+  description: 'devBlog.kr의 개인정보 처리방침을 확인하세요. 이용자의 개인정보 보호를 위한 정책을 안내합니다.',
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function PrivacyPolicyPage() {
@@ -19,7 +23,9 @@ export default function PrivacyPolicyPage() {
 
         <div className="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">1. 개인정보의 수집 및 이용 목적</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+              1. 개인정보의 수집 및 이용 목적
+            </h2>
             <p className="mb-4">
               devBlog는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는
               이용되지 않으며, 이용 목적이 변경되는 경우에는 개인정보 보호법 제18조에 따라 별도의 동의를 받는 등 필요한
@@ -36,9 +42,7 @@ export default function PrivacyPolicyPage() {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">2. 수집하는 개인정보의 항목</h2>
-            <p className="mb-4">
-              devBlog는 회원가입 및 서비스 이용 과정에서 아래와 같은 개인정보를 수집합니다.
-            </p>
+            <p className="mb-4">devBlog는 회원가입 및 서비스 이용 과정에서 아래와 같은 개인정보를 수집합니다.</p>
             <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg mb-4">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">필수 항목 (GitHub OAuth를 통해 수집)</h3>
               <ul className="list-disc list-inside text-gray-700 dark:text-gray-300">
@@ -59,7 +63,9 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">3. 개인정보의 보유 및 이용 기간</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+              3. 개인정보의 보유 및 이용 기간
+            </h2>
             <p className="mb-4">
               devBlog는 법령에 따른 개인정보 보유·이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의받은 개인정보
               보유·이용기간 내에서 개인정보를 처리·보유합니다.
@@ -70,9 +76,7 @@ export default function PrivacyPolicyPage() {
               <li>요청 및 문의 기록: 1년</li>
               <li>즐겨찾기 정보: 회원 탈퇴 시까지</li>
             </ul>
-            <p className="mb-4">
-              다만, 다음의 사유에 해당하는 경우에는 해당 사유 종료 시까지 보유합니다:
-            </p>
+            <p className="mb-4">다만, 다음의 사유에 해당하는 경우에는 해당 사유 종료 시까지 보유합니다:</p>
             <ul className="list-disc list-inside space-y-2">
               <li>관계 법령 위반에 따른 수사·조사 등이 진행 중인 경우</li>
               <li>서비스 이용과 관련된 분쟁이 진행 중인 경우</li>
@@ -80,7 +84,9 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">4. 개인정보의 파기 절차 및 방법</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+              4. 개인정보의 파기 절차 및 방법
+            </h2>
             <p className="mb-4">
               devBlog는 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체없이 해당
               개인정보를 파기합니다.
@@ -159,13 +165,9 @@ export default function PrivacyPolicyPage() {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">8. 개인정보 보호를 위한 조치</h2>
-            <p className="mb-4">
-              devBlog는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.
-            </p>
+            <p className="mb-4">devBlog는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.</p>
             <ul className="list-disc list-inside space-y-2">
-              <li>
-                기술적 조치: 개인정보처리시스템의 접근권한 관리, 개인정보의 암호화, 보안프로그램 설치 및 운영
-              </li>
+              <li>기술적 조치: 개인정보처리시스템의 접근권한 관리, 개인정보의 암호화, 보안프로그램 설치 및 운영</li>
               <li>관리적 조치: 개인정보 처리자 지정 및 교육, 접근 권한 관리</li>
               <li>물리적 조치: Supabase, Vercel 등 보안이 검증된 클라우드 서비스 이용</li>
             </ul>
@@ -187,7 +189,9 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">10. 개인정보 유출 등 사고 발생 시 조치</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+              10. 개인정보 유출 등 사고 발생 시 조치
+            </h2>
             <p className="mb-4">
               개인정보 유출 등 사고 발생 시 개인정보 보호법 제34조에 따라 다음과 같이 조치하겠습니다.
             </p>
@@ -200,9 +204,7 @@ export default function PrivacyPolicyPage() {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">11. 개인정보 침해 신고</h2>
-            <p className="mb-4">
-              개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.
-            </p>
+            <p className="mb-4">개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.</p>
             <ul className="list-disc list-inside space-y-2">
               <li>개인정보침해신고센터: privacy.kisa.or.kr (국번없이 118)</li>
               <li>대검찰청 사이버범죄수사단: www.spo.go.kr (02-3480-3573)</li>
