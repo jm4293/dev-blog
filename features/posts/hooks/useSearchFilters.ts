@@ -11,11 +11,13 @@ export function useSearchFilters() {
 
   // URL 파라미터에서 현재 상태 추출
   const {
+    page: currentPage,
     search: searchQuery,
     tags: tagsParam,
     companies: companiesParam,
     sort: sortParam,
   } = parseSearchParams(searchParams, {
+    page: { default: 1, parse: (v) => Math.max(1, parseInt(v, 10)) },
     search: { default: '' },
     tags: { default: '' },
     companies: { default: '' },
@@ -93,11 +95,18 @@ export function useSearchFilters() {
     updateUrl(1, '', [], [], 'newest');
   };
 
+  const handlePageChange = (page: number) => {
+    updateUrl(page, searchQuery, selectedTags, selectedCompanyNames, sortParam);
+  };
+
   return {
     // 상태
+    currentPage,
     inputValue,
     debouncedSearchQuery,
     searchQuery,
+    tagsParam,
+    companiesParam,
     selectedTags,
     selectedCompanyNames,
     sortParam,
@@ -112,5 +121,6 @@ export function useSearchFilters() {
     handleCompanyToggle,
     handleSortChange,
     handleReset,
+    handlePageChange,
   };
 }
