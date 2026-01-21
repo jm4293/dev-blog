@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { GridSkeleton } from '@/components/skeleton';
 import { PostsContainer } from '@/features/posts';
+import { getCurrentUser } from '@/supabase/getCurrentUser';
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr';
 
@@ -33,7 +34,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PostPage() {
+export default async function PostPage() {
+  const user = await getCurrentUser();
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-12">
@@ -42,7 +45,7 @@ export default function PostPage() {
       </div>
 
       <Suspense fallback={<GridSkeleton />}>
-        <PostsContainer />
+        <PostsContainer isLoggedIn={!!user} />
       </Suspense>
     </div>
   );

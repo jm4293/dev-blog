@@ -5,9 +5,10 @@ import { BookmarkWithPost } from '@/supabase';
 
 interface BookmarkListProps {
   bookmarks: BookmarkWithPost[];
+  isLoggedIn: boolean;
 }
 
-export const BookmarkList = ({ bookmarks }: BookmarkListProps) => {
+export const BookmarkList = ({ bookmarks, isLoggedIn }: BookmarkListProps) => {
   if (bookmarks.length === 0) {
     return (
       <div className="text-center py-12">
@@ -22,7 +23,7 @@ export const BookmarkList = ({ bookmarks }: BookmarkListProps) => {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       {bookmarks.map((bookmark) => (
-        <PostCard key={bookmark.post.id} post={bookmark.post} />
+        <PostCard key={bookmark.post.id} post={bookmark.post} isLoggedIn={isLoggedIn} />
       ))}
     </div>
   );

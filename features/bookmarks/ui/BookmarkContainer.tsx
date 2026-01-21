@@ -4,7 +4,7 @@ import { GridSkeleton } from '@/components/skeleton';
 import { useBookmarksList } from '../hooks/useBookmarksList';
 import { BookmarkViewTabs } from './BookmarkViewTabs';
 
-export function BookmarkContainer() {
+export function BookmarkContainer({ isLoggedIn }: { isLoggedIn: boolean }) {
   const { data, isLoading, error } = useBookmarksList();
   const bookmarks = data?.bookmarks || [];
 
@@ -25,7 +25,7 @@ export function BookmarkContainer() {
         </div>
       )}
 
-      {isLoading ? <GridSkeleton /> : <BookmarkViewTabs bookmarks={bookmarks} />}
+      {isLoading ? <GridSkeleton /> : <BookmarkViewTabs bookmarks={bookmarks} isLoggedIn={isLoggedIn} />}
     </>
   );
 }

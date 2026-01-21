@@ -8,10 +8,11 @@ import { BookmarkButton, PostCardHeader, PostCardTags } from '@/features/posts/c
 
 interface PostCardProps {
   post: PostWithCompany;
+  isLoggedIn: boolean;
 }
 
-export function PostCard({ post }: PostCardProps) {
-  const { isBookmarked, isLoading, toggleBookmark } = useBookmarkToggle(post.id);
+export function PostCard({ post, isLoggedIn }: PostCardProps) {
+  const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip } = useBookmarkToggle(post.id, isLoggedIn);
   const timeDisplay = formatPostDate(post.published_at);
 
   return (
@@ -20,7 +21,14 @@ export function PostCard({ post }: PostCardProps) {
         logoUrl={post.company.logo_url}
         companyName={post.company.name}
         timeDisplay={timeDisplay}
-        bookmarkButton={<BookmarkButton isBookmarked={isBookmarked} isLoading={isLoading} onToggle={toggleBookmark} />}
+        bookmarkButton={
+          <BookmarkButton
+            isBookmarked={isBookmarked}
+            isLoading={isLoading}
+            onToggle={toggleBookmark}
+            showLoginTooltip={showLoginTooltip}
+          />
+        }
       />
 
       {/* Title */}

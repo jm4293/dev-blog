@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAddBookmark, useRemoveBookmark, useIsBookmarked } from './index';
 
-export function useBookmarkToggle(postId: string) {
+export function useBookmarkToggle(postId: string, isLoggedIn: boolean) {
   const addBookmarkMutation = useAddBookmark();
   const removeBookmarkMutation = useRemoveBookmark();
   const isBookmarkedFn = useIsBookmarked();
@@ -13,6 +13,7 @@ export function useBookmarkToggle(postId: string) {
 
   // 낙관적 상태: 로컬 상태로 UI 즉시 업데이트
   const [optimisticBookmarked, setOptimisticBookmarked] = useState(serverBookmarked);
+  const [showLoginTooltip, setShowLoginTooltip] = useState(false);
 
   // 서버 상태가 변경되면 낙관적 상태 동기화
   useEffect(() => {
@@ -20,6 +21,13 @@ export function useBookmarkToggle(postId: string) {
   }, [serverBookmarked]);
 
   const toggleBookmark = () => {
+    // 비로그인 시 툴팁 표시하고 API 호출 차단
+    if (!isLoggedIn) {
+      setShowLoginTooltip(true);
+      setTimeout(() => setShowLoginTooltip(false), 2000);
+      return;
+    }
+
     // 낙관적 업데이트: 즉시 UI 변경
     setOptimisticBookmarked(!optimisticBookmarked);
 
@@ -45,5 +53,6 @@ export function useBookmarkToggle(postId: string) {
     isBookmarked: optimisticBookmarked,
     isLoading,
     toggleBookmark,
+    showLoginTooltip,
   };
 }

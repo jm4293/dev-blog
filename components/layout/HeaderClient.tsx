@@ -6,10 +6,6 @@ import Link from 'next/link';
 import ThemeToggle from '../theme/ThemeToggle';
 import { MobileMenu } from './MobileMenu';
 
-interface HeaderClientProps {
-  user: User | null;
-}
-
 interface NavItem {
   href: string;
   label: string;

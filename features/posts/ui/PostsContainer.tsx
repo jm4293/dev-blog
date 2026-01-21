@@ -6,7 +6,11 @@ import { GridSkeleton } from '@/components/skeleton';
 import { usePosts, useSearchFilters } from '../hooks';
 import { NoPostsMessage, ErrorMessage } from '../components';
 
-export function PostsContainer() {
+interface PostsContainerProps {
+  isLoggedIn: boolean;
+}
+
+export function PostsContainer({ isLoggedIn }: PostsContainerProps) {
   const filters = useSearchFilters();
 
   // 실제 API에서 데이터 페칭
@@ -37,7 +41,7 @@ export function PostsContainer() {
         />
       )}
 
-      {!isLoading && posts.length > 0 && <PostList posts={posts} />}
+      {!isLoading && posts.length > 0 && <PostList posts={posts} isLoggedIn={isLoggedIn} />}
 
       {!isLoading && posts.length > 0 && (
         <Pagination

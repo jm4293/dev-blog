@@ -5,13 +5,14 @@ import { BookmarkWithPost } from '@/supabase';
 
 interface DateGridViewProps {
   bookmarks: BookmarkWithPost[];
+  isLoggedIn: boolean;
 }
 
 interface BookmarksByDate {
   [date: string]: BookmarkWithPost[];
 }
 
-export const DateGridView = ({ bookmarks }: DateGridViewProps) => {
+export const DateGridView = ({ bookmarks, isLoggedIn }: DateGridViewProps) => {
   // 날짜별로 북마크를 그룹화 (YYYY-MM-DD)
   const groupedByDate: BookmarksByDate = {};
   bookmarks.forEach((bookmark) => {
@@ -49,7 +50,6 @@ export const DateGridView = ({ bookmarks }: DateGridViewProps) => {
 
         return (
           <div key={date} className="space-y-4">
-            {/* 날짜 헤더 */}
             <div className="sticky top-0 bg-white dark:bg-gray-900 z-10 py-3 px-4 rounded-lg border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -73,7 +73,7 @@ export const DateGridView = ({ bookmarks }: DateGridViewProps) => {
             {/* 날짜별 게시글 그리드 */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               {dayBookmarks.map((bookmark) => (
-                <PostCard key={bookmark.post.id} post={bookmark.post} />
+                <PostCard key={bookmark.post.id} post={bookmark.post} isLoggedIn={isLoggedIn} />
               ))}
             </div>
           </div>

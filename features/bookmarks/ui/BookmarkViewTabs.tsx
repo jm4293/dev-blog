@@ -8,11 +8,11 @@ import { BookmarkWithPost } from '@/supabase';
 
 interface BookmarkViewTabsProps {
   bookmarks: BookmarkWithPost[];
+  isLoggedIn: boolean;
 }
-
 type ViewType = 'card' | 'date';
 
-export const BookmarkViewTabs = ({ bookmarks }: BookmarkViewTabsProps) => {
+export const BookmarkViewTabs = ({ bookmarks, isLoggedIn }: BookmarkViewTabsProps & { isLoggedIn: boolean }) => {
   const [view, setView] = useState<ViewType>('card');
 
   return (
@@ -25,7 +25,8 @@ export const BookmarkViewTabs = ({ bookmarks }: BookmarkViewTabsProps) => {
             view === 'card'
               ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400'
               : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-          }`}>
+          }`}
+        >
           <LayoutGrid className="w-5 h-5" />
           <span>전체</span>
         </button>
@@ -36,7 +37,8 @@ export const BookmarkViewTabs = ({ bookmarks }: BookmarkViewTabsProps) => {
             view === 'date'
               ? 'border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400'
               : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-          }`}>
+          }`}
+        >
           <Calendar className="w-5 h-5" />
           <span>날짜별</span>
         </button>
@@ -44,8 +46,8 @@ export const BookmarkViewTabs = ({ bookmarks }: BookmarkViewTabsProps) => {
 
       {/* 탭 콘텐츠 */}
       <div>
-        {view === 'card' && <BookmarkList bookmarks={bookmarks} />}
-        {view === 'date' && <DateGridView bookmarks={bookmarks} />}
+        {view === 'card' && <BookmarkList bookmarks={bookmarks} isLoggedIn={isLoggedIn} />}
+        {view === 'date' && <DateGridView bookmarks={bookmarks} isLoggedIn={isLoggedIn} />}
       </div>
     </div>
   );
