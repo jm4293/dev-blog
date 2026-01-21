@@ -153,7 +153,7 @@ export function SearchBar() {
 
       {/* Popular Companies */}
       {popularCompanies.length > 0 && (
-        <div className="space-y-2">
+        <div className="mt-4 space-y-2">
           <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 기업</p>
           <div className="flex flex-wrap gap-2">
             {isLoadingCompanies ? (
@@ -187,7 +187,7 @@ export function SearchBar() {
 
       {/* Popular Tags */}
       {popularTags.length > 0 && (
-        <div className="space-y-2">
+        <div className="mt-4 space-y-2">
           <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 태그</p>
           <div className="flex flex-wrap gap-2">
             {isLoadingTags ? (
@@ -213,7 +213,7 @@ export function SearchBar() {
 
       {/* Selected Companies & Tags */}
       {(selectedCompanyNames.length > 0 || selectedTags.length > 0 || searchQuery) && (
-        <div className="flex items-center justify-between px-4 py-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+        <div className="mt-4 flex items-center justify-between px-4 py-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
           <div>
             <p className="text-sm font-semibold text-gray-900 dark:text-white">필터링된 결과</p>
             {searchQuery && (
@@ -238,7 +238,7 @@ export function SearchBar() {
         </div>
       )}
 
-      <div className="space-y-2">
+      <div className="mt-4 space-y-2">
         {selectedCompanyNames.length > 0 && (
           <div className="space-y-2">
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
