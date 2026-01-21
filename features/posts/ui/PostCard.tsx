@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { PostWithCompany } from '@/supabase';
 import { formatDistanceToNow, format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import { useAddBookmark, useRemoveBookmark, useIsBookmarked } from '@/features/bookmarks';
+import { CompanyLogoImage } from '@/components/image';
 
 interface PostCardProps {
   post: PostWithCompany;
@@ -63,19 +63,16 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <article className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg dark:hover:shadow-xl transition-shadow hover:-translate-y-1 transform duration-300">
-      {/* Company Info & Bookmark Button */}
       <div className="flex items-center gap-3 mb-4">
-        {post.company.logo_url && (
-          <Image
-            src={post.company.logo_url}
-            alt={`${post.company.name} 로고`}
-            width={40}
-            height={40}
-            className="rounded-lg object-cover"
-            title={post.company.name}
-            priority={false}
-          />
-        )}
+        <CompanyLogoImage
+          logoUrl={post.company.logo_url}
+          companyName={post.company.name}
+          width={32}
+          height={32}
+          className="rounded-lg object-cover"
+          title={post.company.name}
+          priority={false}
+        />
         <div className="flex-1">
           <p className="text-sm font-semibold text-gray-900 dark:text-white">{post.company.name}</p>
           <p className="text-xs text-gray-500 dark:text-gray-400">{timeDisplay}</p>

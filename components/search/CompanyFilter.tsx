@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import type { Company } from '@/supabase/types.supabase';
 import { FilterModal } from '../ui';
+import { CompanyLogoImage } from '../image';
 
 interface CompanyFilterProps {
   companies: Company[];
@@ -80,10 +80,13 @@ export function CompanyFilter({
                 : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
-            {/* Company Logo */}
-            {company.logo_url && (
-              <Image src={company.logo_url} alt={company.name} width={40} height={40} className="object-contain" />
-            )}
+            <CompanyLogoImage
+              logoUrl={company.logo_url}
+              companyName={company.name}
+              width={32}
+              height={32}
+              className="object-contain"
+            />
             {/* Company Name */}
             <span
               className={`text-sm font-semibold text-center ${

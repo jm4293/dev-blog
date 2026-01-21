@@ -3,9 +3,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { X, Building2, Tag } from 'lucide-react';
-import { CompanyFilter, TagFilter } from '@/components/search';
-import { SortButton } from '@/components/search/SortButton';
+import { CompanyFilter, SortButton, TagFilter } from '@/components/search';
 import { useCompanies, useTags } from '../hooks';
+import { CompanyLogoImage } from '@/components/image';
 
 export function SearchBar() {
   const router = useRouter();
@@ -97,7 +97,6 @@ export function SearchBar() {
 
   return (
     <div className="mb-8">
-      {/* Desktop: 정렬, 검색, 기업 필터, 태그 필터 (한 줄) */}
       <div className="hidden md:flex gap-4">
         <SortButton currentSort={sortParam} onSortChange={handleSortChange} />
         <input
@@ -123,9 +122,7 @@ export function SearchBar() {
         </button>
       </div>
 
-      {/* Mobile: 정렬 + 검색 / 기업 필터 + 태그 필터 (한 줄) */}
       <div className="md:hidden space-y-3">
-        {/* Row 1: 정렬 + 검색 */}
         <div className="flex gap-3">
           <SortButton currentSort={sortParam} onSortChange={handleSortChange} />
           <input
@@ -136,7 +133,6 @@ export function SearchBar() {
             className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        {/* Row 2: 기업 필터 + 태그 필터 (가로) */}
         <div className="flex gap-3">
           <button
             onClick={() => setShowCompanyModal(true)}
@@ -174,9 +170,13 @@ export function SearchBar() {
                   }`}
                   title={company.name}
                 >
-                  {company.logo_url && (
-                    <img src={company.logo_url} alt={company.name} className="w-5 h-5 object-contain" />
-                  )}
+                  <CompanyLogoImage
+                    logoUrl={company.logo_url}
+                    companyName={company.name}
+                    width={20}
+                    height={20}
+                    className="w-5 h-5 object-contain"
+                  />
                   <span className="text-xs sm:text-sm">{company.name}</span>
                 </button>
               ))

@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
     type: 'website',
     url: baseUrl,
+    locale: 'ko_KR',
   },
 };
 
