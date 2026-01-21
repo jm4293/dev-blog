@@ -1,3 +1,3 @@
-export * from './CompanyFilter';
+export * from './CompanyFilterModal';
 export * from './SortButton';
-export * from './TagFilter';
+export * from './TagFilterModal';

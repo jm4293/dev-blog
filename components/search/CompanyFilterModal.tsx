@@ -5,7 +5,7 @@ import type { Company } from '@/supabase/types.supabase';
 import { FilterModal } from '../ui';
 import { CompanyLogoImage } from '../image';
 
-interface CompanyFilterProps {
+interface CompanyFilterModalProps {
   companies: Company[];
   selectedCompanyNames: string[];
   onCompanyToggle: (companyName: string) => void;
@@ -14,14 +14,14 @@ interface CompanyFilterProps {
   isLoading?: boolean;
 }
 
-export function CompanyFilter({
+export function CompanyFilterModal({
   companies,
   selectedCompanyNames,
   onCompanyToggle,
   isOpen,
   onClose,
   isLoading = false,
-}: CompanyFilterProps) {
+}: CompanyFilterModalProps) {
   // 모달 내 임시 상태 (모달이 열릴 때 초기화)
   const [tempSelectedCompanies, setTempSelectedCompanies] = useState<string[]>(selectedCompanyNames);
 

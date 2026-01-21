@@ -6,6 +6,7 @@ import { PostList, SearchBar } from '@/features/posts';
 import { Pagination } from '@/components/pagination/Pagination';
 import { GridSkeleton } from '@/components/skeleton';
 import { usePosts } from '../hooks';
+import { parseSearchParams } from '@/utils';
 
 interface NoPostsProps {
   searchQuery: string;
@@ -28,12 +29,19 @@ export function PostsContainer() {
   const searchParams = useSearchParams();
 
   // URL 파라미터에서 현재 상태 추출
-  // URLSearchParams는 자동으로 인코딩/디코딩를 처리하므로 수동 처리 불필요
-  const currentPage = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
-  const searchQuery = searchParams.get('search') || '';
-  const tagsParam = searchParams.get('tags') || '';
-  const companiesParam = searchParams.get('companies') || '';
-  const sortParam = (searchParams.get('sort') || 'newest') as 'newest' | 'oldest';
+  const {
+    page: currentPage,
+    search: searchQuery,
+    tags: tagsParam,
+    companies: companiesParam,
+    sort: sortParam,
+  } = parseSearchParams(searchParams, {
+    page: { default: 1, parse: (v) => Math.max(1, parseInt(v, 10)) },
+    search: { default: '' },
+    tags: { default: '' },
+    companies: { default: '' },
+    sort: { default: 'newest' as 'newest' | 'oldest' },
+  });
 
   // 선택된 태그/기업 배열 (usePosts 훅에서는 문자열로 사용)
   const selectedTags = useMemo(() => (tagsParam ? tagsParam.split(',').filter((tag) => tag.trim()) : []), [tagsParam]);

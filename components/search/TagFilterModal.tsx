@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Tag } from '@/supabase/types.supabase';
 import { FilterModal } from '../ui';
 
-interface TagFilterProps {
+interface TagFilterModalProps {
   tags: Tag[];
   selectedTags: string[];
   onTagToggle: (tag: string) => void;
@@ -13,7 +13,14 @@ interface TagFilterProps {
   isLoading?: boolean;
 }
 
-export function TagFilter({ tags, selectedTags, onTagToggle, isOpen, onClose, isLoading = false }: TagFilterProps) {
+export function TagFilterModal({
+  tags,
+  selectedTags,
+  onTagToggle,
+  isOpen,
+  onClose,
+  isLoading = false,
+}: TagFilterModalProps) {
   // 모달 내 임시 상태 (모달이 열릴 때 초기화)
   const [tempSelectedTags, setTempSelectedTags] = useState<string[]>(selectedTags);
 

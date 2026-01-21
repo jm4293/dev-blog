@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import type { PostWithCompany } from '@/supabase/types.supabase';
+import { buildQueryParams } from '@/utils';
 
 interface PostsParams {
   page?: number;
@@ -31,16 +32,19 @@ export function usePosts({
 }: PostsParams = {}) {
   return useQuery<PostsResponse>({
     queryKey: ['posts', page, search, tagsString, companiesString, companyId, sort],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      params.set('page', page.toString());
-      if (search) params.set('search', search);
-      if (tagsString) params.set('tags', tagsString);
-      if (companiesString) params.set('companies', companiesString);
-      if (companyId) params.set('company', companyId);
-      if (sort !== 'newest') params.set('sort', sort);
+    queryFn: async ({ signal }) => {
+      const params = buildQueryParams({
+        page,
+        search,
+        tags: tagsString,
+        companies: companiesString,
+        company: companyId,
+        sort: sort !== 'newest' ? sort : undefined,
+      });
 
-      const response = await fetch(`/api/posts?${params.toString()}`);
+      const response = await fetch(`/api/posts?${params.toString()}`, {
+        signal,
+      });
 
       if (!response.ok) {
         throw new Error(`Failed to fetch posts: ${response.status}`);
