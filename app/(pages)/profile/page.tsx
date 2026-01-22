@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getCurrentUser } from '@/supabase/getCurrentUser';
 import { ProfileClient } from '@/features/profile/ui/ProfileClient';
+import { ActivityHeatmap } from '@/components/profile/ActivityHeatmap';
 import Link from 'next/link';
 import { User, ArrowRight, UserIcon, Mail, Github, Calendar } from 'lucide-react';
 import Image from 'next/image';
@@ -118,6 +119,8 @@ export default async function ProfilePage() {
             </div>
           </div>
         </div>
+
+        <ActivityHeatmap />
 
         <ProfileClient user={user} />
       </div>
