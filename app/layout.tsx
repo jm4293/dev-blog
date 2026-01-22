@@ -93,6 +93,9 @@ export const metadata: Metadata = {
   // verification: {
   //   google: 'Google이 제공하는 고유 verification code',
   // },
+  other: {
+    'naver-site-verification': '7f789ada98f40ecd34a513b77f53acd408b08300',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
