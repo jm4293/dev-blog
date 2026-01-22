@@ -70,7 +70,6 @@ export const DateGridView = ({ bookmarks, isLoggedIn }: DateGridViewProps) => {
               </div>
             </div>
 
-            {/* 날짜별 게시글 그리드 */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               {dayBookmarks.map((bookmark) => (
                 <PostCard key={bookmark.post.id} post={bookmark.post} isLoggedIn={isLoggedIn} />

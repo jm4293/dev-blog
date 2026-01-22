@@ -27,7 +27,8 @@ export function LoginCard() {
       <button
         onClick={handleLogin}
         disabled={isLoading}
-        className="w-full mb-4 px-4 py-3 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+        className="w-full mb-4 px-4 py-3 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+      >
         {isLoading ? (
           <>
             <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -46,12 +47,6 @@ export function LoginCard() {
           </>
         )}
       </button>
-
-      <Link
-        href="/posts"
-        className="w-full px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-semibold rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-colors block text-center">
-        뒤로가기
-      </Link>
     </div>
   );
 }

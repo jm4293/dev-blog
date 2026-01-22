@@ -75,9 +75,7 @@ export function Pagination({
 
   return (
     <div className="flex flex-col items-center gap-6 mt-12">
-      {/* 페이지네이션 네비게이션 */}
       <nav className="flex justify-center items-center gap-2">
-        {/* 처음 */}
         <PaginationButton
           page={1}
           isDisabled={currentPage === 1}
@@ -87,7 +85,6 @@ export function Pagination({
           <ChevronsLeft className="w-5 h-5" />
         </PaginationButton>
 
-        {/* 이전 */}
         <PaginationButton
           page={prevPage}
           isDisabled={!prevPage}
@@ -97,7 +94,6 @@ export function Pagination({
           <ChevronLeft className="w-5 h-5" />
         </PaginationButton>
 
-        {/* 페이지 번호 */}
         {pageNumbers.map((pageNum) => (
           <PaginationPageNumber
             key={pageNum}
@@ -108,7 +104,6 @@ export function Pagination({
           />
         ))}
 
-        {/* 다음 */}
         <PaginationButton
           page={nextPage}
           isDisabled={!nextPage}
@@ -118,7 +113,6 @@ export function Pagination({
           <ChevronRight className="w-5 h-5" />
         </PaginationButton>
 
-        {/* 마지막 */}
         <PaginationButton
           page={totalPages}
           isDisabled={currentPage === totalPages}
@@ -129,7 +123,6 @@ export function Pagination({
         </PaginationButton>
       </nav>
 
-      {/* 페이지 정보 표시 */}
       {totalPages > 0 && (
         <p className="text-sm text-gray-600 dark:text-gray-400">
           페이지 {currentPage} / {totalPages} {totalCount > 0 && `(총 ${totalCount}개)`}

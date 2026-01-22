@@ -23,24 +23,15 @@ export default async function ProfilePage() {
     return (
       <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">
         <div className="max-w-lg w-full">
-          {/* 메인 카드 */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 md:p-12 text-center shadow-lg">
-            {/* 아이콘 */}
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 mb-6 shadow-lg">
-              <User className="w-10 h-10 text-white" />
-            </div>
-
-            {/* 제목 */}
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">프로필</h1>
 
-            {/* 설명 */}
             <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
               GitHub 계정으로 로그인하고
               <br />
               나만의 개발 공간을 만들어보세요
             </p>
 
-            {/* 로그인 버튼 */}
             <Link href="/auth/login">
               <button className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
                 로그인하러 가기
@@ -49,7 +40,6 @@ export default async function ProfilePage() {
             </Link>
           </div>
 
-          {/* 추가 정보 */}
           <div className="mt-6 text-center">
             <Link
               href="/posts"
@@ -69,13 +59,13 @@ export default async function ProfilePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">프로필</h1>
+      <div className="mb-12">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">프로필</h1>
+      </div>
 
       <div className="max-w-3xl mx-auto">
-        {/* 프로필 헤더 */}
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 mb-6">
           <div className="flex items-center gap-6 mb-8">
-            {/* 아바타 */}
             <div className="relative">
               {avatarUrl ? (
                 <Image
@@ -92,16 +82,13 @@ export default async function ProfilePage() {
               )}
             </div>
 
-            {/* 사용자 정보 */}
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{displayName}</h2>
               <p className="text-gray-600 dark:text-gray-400">devBlog.kr 회원</p>
             </div>
           </div>
 
-          {/* 정보 그리드 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* 이메일 */}
             <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-900/50">
               <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
               <div className="flex-1 min-w-0">
@@ -110,7 +97,6 @@ export default async function ProfilePage() {
               </div>
             </div>
 
-            {/* GitHub 사용자명 */}
             {user.user_metadata?.user_name && (
               <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-900/50">
                 <Github className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
@@ -121,7 +107,6 @@ export default async function ProfilePage() {
               </div>
             )}
 
-            {/* 가입 날짜 */}
             <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-900/50">
               <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
               <div className="flex-1 min-w-0">

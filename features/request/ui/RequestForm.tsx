@@ -34,11 +34,9 @@ export function RequestForm() {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* 요청 유형 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">요청 유형</label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {/* 기업 추가 옵션 */}
             <label className="relative">
               <input type="radio" value="company" {...register('type')} className="sr-only peer" />
               <div className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
@@ -50,7 +48,6 @@ export function RequestForm() {
               </div>
             </label>
 
-            {/* 태그 추가 옵션 */}
             <label className="relative">
               <input type="radio" value="tag" {...register('type')} className="sr-only peer" />
               <div className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
@@ -62,7 +59,6 @@ export function RequestForm() {
               </div>
             </label>
 
-            {/* 기타 옵션 */}
             <label className="relative">
               <input type="radio" value="other" {...register('type')} className="sr-only peer" />
               <div className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
@@ -76,10 +72,8 @@ export function RequestForm() {
           </div>
         </div>
 
-        {/* 기업 추가 필드 */}
         {requestType === 'company' && (
           <div className="space-y-4">
-            {/* 기업명 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 요청하는 기업명 *
@@ -104,7 +98,6 @@ export function RequestForm() {
               )}
             </div>
 
-            {/* 블로그 URL */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 요청하는 블로그 URL *
@@ -131,7 +124,6 @@ export function RequestForm() {
           </div>
         )}
 
-        {/* 태그 추가 필드 */}
         {requestType === 'tag' && (
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">요청하는 태그명 *</label>
@@ -154,7 +146,6 @@ export function RequestForm() {
           </div>
         )}
 
-        {/* 메시지 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">메시지 *</label>
           <textarea
@@ -172,7 +163,6 @@ export function RequestForm() {
           {errors.message && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.message.message}</p>}
         </div>
 
-        {/* 이메일 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">이메일 (선택사항)</label>
           <input
@@ -192,7 +182,6 @@ export function RequestForm() {
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">답변을 받으려면 이메일을 입력해주세요.</p>
         </div>
 
-        {/* 제출 버튼 */}
         <button
           type="submit"
           disabled={isSubmitting || mutation.isPending}
@@ -211,7 +200,6 @@ export function RequestForm() {
           )}
         </button>
 
-        {/* 성공 메시지 */}
         {mutation.isSuccess && (
           <div className="flex items-center gap-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
             <CheckCircle size={20} />
@@ -219,7 +207,6 @@ export function RequestForm() {
           </div>
         )}
 
-        {/* 에러 메시지 */}
         {mutation.isError && (
           <div className="flex items-center gap-2 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
             <AlertCircle size={20} />

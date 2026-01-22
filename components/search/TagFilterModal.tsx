@@ -65,7 +65,6 @@ export function TagFilterModal({
       isEmpty={tags.length === 0}
       emptyMessage="태그가 없습니다."
     >
-      {/* Tags Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {tags.map((tag) => (
           <button

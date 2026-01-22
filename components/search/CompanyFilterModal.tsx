@@ -68,7 +68,6 @@ export function CompanyFilterModal({
       isEmpty={companies.length === 0}
       emptyMessage="기업 정보가 없습니다."
     >
-      {/* Companies Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {companies.map((company) => (
           <button
@@ -87,7 +86,6 @@ export function CompanyFilterModal({
               height={32}
               className="object-contain"
             />
-            {/* Company Name */}
             <span
               className={`text-sm font-semibold text-center ${
                 tempSelectedCompanies.includes(company.name) ? 'text-white' : 'text-gray-900 dark:text-white'

@@ -36,13 +36,10 @@ export function FilterModal({
 
   return (
     <>
-      {/* Backdrop */}
       <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose} />
 
-      {/* Modal: Flexbox로 Header/Content/Footer 구조 (Footer는 항상 고정) */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col">
-          {/* Header (고정) */}
           <div className="border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between flex-shrink-0 bg-white dark:bg-gray-800">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{title}</h2>
             <button
@@ -54,7 +51,6 @@ export function FilterModal({
             </button>
           </div>
 
-          {/* Content (스크롤 가능) */}
           <div className="flex-1 overflow-y-auto p-6">
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
@@ -69,7 +65,6 @@ export function FilterModal({
             )}
           </div>
 
-          {/* Footer (고정, 항상 보임) */}
           <div className="border-t border-gray-200 dark:border-gray-700 p-6 flex justify-end gap-3 flex-shrink-0 bg-white dark:bg-gray-800">
             <button
               onClick={onReset}

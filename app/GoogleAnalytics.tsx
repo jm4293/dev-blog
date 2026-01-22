@@ -9,14 +9,12 @@ export function GoogleAnalytics() {
 
   return (
     <>
-      {/* Google Tag Manager (noscript) */}
       <noscript
         dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${gaId}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
         }}
       />
 
-      {/* Google Tag Manager */}
       <Script
         id="gtag-init"
         strategy="afterInteractive"
@@ -32,7 +30,6 @@ export function GoogleAnalytics() {
         }}
       />
 
-      {/* Google Tag Manager Script */}
       <Script
         id="gtm-script"
         strategy="afterInteractive"

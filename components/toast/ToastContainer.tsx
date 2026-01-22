@@ -31,8 +31,8 @@ export const ToastContainer = () => {
                     ? 'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800'
                     : 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800'
               }
-            `}>
-            {/* 아이콘 */}
+            `}
+          >
             <div
               className={`
                 flex-shrink-0
@@ -43,13 +43,13 @@ export const ToastContainer = () => {
                       ? 'text-red-600 dark:text-red-400'
                       : 'text-blue-600 dark:text-blue-400'
                 }
-              `}>
+              `}
+            >
               {toast.type === 'success' && <CheckCircle size={20} />}
               {toast.type === 'error' && <AlertCircle size={20} />}
               {toast.type === 'info' && <Info size={20} />}
             </div>
 
-            {/* 메시지 */}
             <p
               className={`
                 flex-1 text-sm font-medium
@@ -60,11 +60,11 @@ export const ToastContainer = () => {
                       ? 'text-red-800 dark:text-red-200'
                       : 'text-blue-800 dark:text-blue-200'
                 }
-              `}>
+              `}
+            >
               {toast.message}
             </p>
 
-            {/* 닫기 버튼 */}
             <button
               onClick={() => removeToast(toast.id)}
               className={`
@@ -76,7 +76,8 @@ export const ToastContainer = () => {
                       ? 'text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300'
                       : 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300'
                 }
-              `}>
+              `}
+            >
               <X size={18} />
             </button>
           </div>

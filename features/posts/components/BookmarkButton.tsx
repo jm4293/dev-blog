@@ -23,7 +23,6 @@ export function BookmarkButton({ isBookmarked, isLoading, onToggle, showLoginToo
         />
       </button>
 
-      {/* 로그인 필요 툴팁 */}
       {showLoginTooltip && (
         <div className="absolute top-full right-0 mt-2 px-3 py-2 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg shadow-lg whitespace-nowrap z-10 animate-fade-in">
           로그인 후 즐겨찾기가 가능합니다

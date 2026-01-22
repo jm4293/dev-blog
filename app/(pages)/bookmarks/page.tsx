@@ -24,10 +24,6 @@ export default async function BookmarksPage() {
       <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">
         <div className="max-w-lg w-full">
           <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 md:p-12 text-center shadow-lg">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-red-500 to-pink-500 mb-6 shadow-lg">
-              <Heart className="w-10 h-10 text-white fill-white" />
-            </div>
-
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">즐겨찾기</h1>
 
             <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
@@ -59,14 +55,13 @@ export default async function BookmarksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">내 즐겨찾기</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">저장한 게시글을 확인해보세요.</p>
-        <div className="mb-8"></div>
-
-        <BookmarkContainer isLoggedIn={!!user} />
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-12">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">즐겨찾기</h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400">저장한 게시글을 확인해보세요.</p>
       </div>
+
+      <BookmarkContainer isLoggedIn={!!user} />
     </div>
   );
 }

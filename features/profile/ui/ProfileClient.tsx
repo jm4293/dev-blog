@@ -22,12 +22,10 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
   };
 
   const handleDeleteAccount = () => {
-    // 첫 번째 확인
     if (!confirm('정말로 회원탈퇴 하시겠습니까?\n계정과 모든 북마크가 삭제되며 복구할 수 없습니다.')) {
       return;
     }
 
-    // 두 번째 확인 모달 표시
     setShowDeleteConfirm(true);
   };
 
@@ -36,12 +34,8 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
     setShowDeleteConfirm(false);
   };
 
-  const avatarUrl = user.user_metadata?.avatar_url;
-  const displayName = user.user_metadata?.name || user.user_metadata?.user_name || '사용자';
-
   return (
     <>
-      {/* 로그아웃 버튼 */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
         <button
           onClick={handleLogout}
@@ -53,8 +47,7 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
         </button>
       </div>
 
-      {/* 위험 영역 */}
-      <div className="border border-red-200 dark:border-red-800 rounded-xl p-6 bg-red-50/50 dark:bg-red-900/10">
+      <div className="border rounded-xl p-6 ">
         <div className="flex items-start gap-3 mb-4">
           <UserX className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
           <div>
@@ -73,7 +66,6 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
         </button>
       </div>
 
-      {/* 회원탈퇴 최종 확인 모달 */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-6 w-full max-w-md">
