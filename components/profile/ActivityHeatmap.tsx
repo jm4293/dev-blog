@@ -175,37 +175,43 @@ export function ActivityHeatmap() {
     <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6 overflow-visible">
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-baseline gap-2">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">즐겨찾기 활동</h3>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSelectedYear((prev) => prev - 1)}
-              disabled={!canGoPrev}
-              className={`p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
-                !canGoPrev ? 'opacity-30 cursor-not-allowed' : ''
-              }`}
-              title="이전 년도"
-            >
-              <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-            </button>
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[60px] text-center">
-              {selectedYear}년
-            </span>
-            <button
-              onClick={() => setSelectedYear((prev) => prev + 1)}
-              disabled={!canGoNext}
-              className={`p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
-                !canGoNext ? 'opacity-30 cursor-not-allowed' : ''
-              }`}
-              title="다음 년도"
-            >
-              <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-            </button>
-          </div>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            총 <span className="font-medium text-emerald-600 dark:text-emerald-400">{stats.total}</span>개
+          </span>
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          <span className="font-semibold text-emerald-600 dark:text-emerald-400">{stats.total}</span> 개의 즐겨찾기
-        </p>
+        <div className="flex items-center gap-1 ">
+          <button
+            onClick={() => setSelectedYear((prev) => prev - 1)}
+            disabled={!canGoPrev}
+            className={`p-1.5 rounded-md transition-colors ${
+              !canGoPrev
+                ? 'opacity-30 cursor-not-allowed'
+                : 'hover:bg-white dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+            }`}
+            title="이전 년도"
+            aria-label="이전 년도"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 min-w-[60px] text-center px-2">
+            {selectedYear}년
+          </span>
+          <button
+            onClick={() => setSelectedYear((prev) => prev + 1)}
+            disabled={!canGoNext}
+            className={`p-1.5 rounded-md transition-colors ${
+              !canGoNext
+                ? 'opacity-30 cursor-not-allowed'
+                : 'hover:bg-white dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+            }`}
+            title="다음 년도"
+            aria-label="다음 년도"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* 히트맵 */}
