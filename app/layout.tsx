@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
     images: [
       {
-        url: `${baseUrl}/og-image.svg`,
+        url: `${baseUrl}/og-image.png`,
         width: 1200,
         height: 630,
         alt: '개발 블로그 | 기술 블로그 모음 플랫폼',
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '개발 블로그 | 기술 블로그 모음 - devBlog.kr',
     description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
-    images: [`${baseUrl}/og-image.svg`],
+    images: [`${baseUrl}/og-image.png`],
   },
   robots: {
     index: true,
