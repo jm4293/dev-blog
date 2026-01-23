@@ -41,7 +41,7 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
         </button>
       </div>
 
-      <div className="border rounded-xl p-6 ">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
         <div className="mb-4">
           <p className="text-sm text-red-700 dark:text-red-400">
             회원탈퇴 시 모든 데이터가 영구 삭제되며 복구할 수 없습니다.
