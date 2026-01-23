@@ -11,8 +11,12 @@ export async function GET(request: Request) {
       error: authError,
     } = await supabase.auth.getUser();
 
+    // 비로그인 사용자는 빈 통계 반환
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({
+        stats: {},
+        total: 0,
+      });
     }
 
     // URL에서 year 파라미터 가져오기
