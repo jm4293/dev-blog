@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import type { PostWithCompany } from '@/supabase/types.supabase';
 import { buildQueryParams } from '@/utils';
+import { queryKeys } from '@/lib/query-keys';
 
 interface PostsParams {
   page?: number;
@@ -31,7 +32,14 @@ export function usePosts({
   sort = 'newest',
 }: PostsParams = {}) {
   return useQuery<PostsResponse>({
-    queryKey: ['posts', page, search, tagsString, companiesString, companyId, sort],
+    queryKey: queryKeys.posts.list({
+      page,
+      search,
+      tags: tagsString ? tagsString.split(',') : [],
+      companies: companiesString ? companiesString.split(',') : [],
+      companyId,
+      sort,
+    }),
     queryFn: async ({ signal }) => {
       const params = buildQueryParams({
         page,

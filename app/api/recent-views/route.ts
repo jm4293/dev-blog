@@ -1,25 +1,22 @@
 /**
- * Bookmarks API Routes
+ * Recent Views API Routes
  *
- * GET /api/bookmarks
- * 현재 사용자의 즐겨찾기 조회
- *
- * Note: POST, DELETE 메서드는 Server Actions로 마이그레이션됨
- * - addBookmark: features/bookmarks/actions/add.ts
- * - removeBookmark: features/bookmarks/actions/remove.ts
+ * GET /api/recent-views
+ * 현재 사용자의 최근 본 글 조회
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import type { PostWithCompany, Bookmark } from '@/supabase/types.supabase';
+import type { RecentViewsResponse } from '@/supabase/types.supabase';
 import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 import { captureException } from '@/sentry.config';
 
-interface BookmarksResponse {
-  bookmarks: (Bookmark & { post: PostWithCompany })[];
+interface ErrorResponse {
+  error: string;
+  details?: string;
 }
 
-// GET - 사용자의 즐겨찾기 조회
+// GET - 사용자의 최근 본 글 조회
 export async function GET(request: NextRequest) {
   try {
     // Rate Limiting (인증 필요 API)
@@ -40,21 +37,21 @@ export async function GET(request: NextRequest) {
 
     // 로그인하지 않은 사용자는 빈 배열 반환 (200 OK)
     if (userError || !user) {
-      const response: BookmarksResponse = {
-        bookmarks: [],
+      const response: RecentViewsResponse = {
+        recentViews: [],
       };
       return NextResponse.json(response);
     }
 
-    // 사용자의 즐겨찾기 조회
-    const { data: bookmarks, error } = await supabase
-      .from('bookmarks')
+    // 사용자의 최근 본 글 조회 (최신순)
+    const { data: recentViews, error } = await supabase
+      .from('recent_views')
       .select(
         `
         id,
         user_id,
         post_id,
-        created_at,
+        viewed_at,
         post:posts(
           id,
           company_id,
@@ -73,14 +70,15 @@ export async function GET(request: NextRequest) {
       `,
       )
       .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
+      .order('viewed_at', { ascending: false })
+      .limit(50); // 최대 50개
 
     if (error) {
       throw error;
     }
 
-    const response: BookmarksResponse = {
-      bookmarks: (bookmarks as []) || [],
+    const response: RecentViewsResponse = {
+      recentViews: (recentViews as []) || [],
     };
 
     return NextResponse.json(response);
@@ -89,10 +87,12 @@ export async function GET(request: NextRequest) {
 
     captureException(error, {
       method: 'GET',
-      endpoint: '/api/bookmarks',
+      endpoint: '/api/recent-views',
       errorMessage: errorMsg,
     });
 
-    return NextResponse.json({ error: 'Failed to fetch bookmarks', details: errorMsg }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch recent views', details: errorMsg } as ErrorResponse, {
+      status: 500,
+    });
   }
 }

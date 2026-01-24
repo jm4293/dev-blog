@@ -3,34 +3,36 @@ import type { Metadata } from 'next';
 import { GridSkeleton } from '@/components/skeleton';
 import { PostsContainer } from '@/features/posts';
 import { getCurrentUser } from '@/supabase/getCurrentUser';
-
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr';
+import { APP } from '@/utils/constants';
 
 export const metadata: Metadata = {
   title: '개발 블로그 | 기술 블로그 - devBlog.kr',
   description:
     '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요. React, TypeScript, 백엔드, DevOps 등 최신 개발 정보를 태그와 검색으로 쉽게 찾아보세요.',
-  keywords: [
-    '개발 블로그',
-    '개발블로그',
-    '기술 블로그',
-    '기술블로그',
-    '포스트',
-    'React',
-    'TypeScript',
-    '백엔드',
-    'DevOps',
-    'Database',
-  ],
   alternates: {
-    canonical: baseUrl,
+    canonical: APP.URL,
   },
   openGraph: {
     title: '개발 블로그 | 기술 블로그 - devBlog.kr',
     description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
+    url: APP.URL,
+    siteName: 'devBlog.kr',
     type: 'website',
-    url: baseUrl,
     locale: 'ko_KR',
+    images: [
+      {
+        url: `${APP.URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: '개발 블로그 | 기술 블로그 모음 플랫폼',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '개발 블로그 | 기술 블로그 - devBlog.kr',
+    description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
+    images: [`${APP.URL}/og-image.png`],
   },
 };
 

@@ -2,7 +2,6 @@
 
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 export async function logoutAction() {
   try {

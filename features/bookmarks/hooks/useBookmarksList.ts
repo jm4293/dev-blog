@@ -2,10 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { BookmarkWithPost } from '@/supabase';
+import { queryKeys } from '@/lib/query-keys';
 
 export const useBookmarksList = () => {
   return useQuery({
-    queryKey: ['bookmarks'],
+    queryKey: queryKeys.bookmarks.list(),
     queryFn: async () => {
       const response = await fetch('/api/bookmarks');
 

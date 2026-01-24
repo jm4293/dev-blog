@@ -1,10 +1,10 @@
 'use client';
 
 import { PostList, SearchBar } from '@/features/posts';
-import { Pagination } from '@/components/pagination/Pagination';
 import { GridSkeleton } from '@/components/skeleton';
 import { usePosts, useSearchFilters } from '../hooks';
 import { NoPostsMessage, ErrorMessage } from '../components';
+import { Pagination } from '@/components/pagination';
 
 interface PostsContainerProps {
   isLoggedIn: boolean;
@@ -13,7 +13,6 @@ interface PostsContainerProps {
 export function PostsContainer({ isLoggedIn }: PostsContainerProps) {
   const filters = useSearchFilters();
 
-  // 실제 API에서 데이터 페칭
   const { data, isLoading, error } = usePosts({
     page: filters.currentPage,
     search: filters.searchQuery,

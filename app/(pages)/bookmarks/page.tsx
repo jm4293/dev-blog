@@ -1,16 +1,36 @@
 import { Metadata } from 'next';
 import { BookmarkContainer } from '@/features/bookmarks';
 import { getCurrentUser } from '@/supabase';
+import { APP } from '@/utils/constants';
 
 export const metadata: Metadata = {
   title: '즐겨찾기 | 개발 블로그 저장 관리 - devBlog.kr',
   description:
     'GitHub 로그인으로 저장한 기술 블로그 게시글을 한눈에 관리하고 정리하세요. 토스, 카카오 등 한국 IT 기업의 개발 블로그를 북마크 하세요.',
-  keywords: ['즐겨찾기', '북마크', '개발 블로그', '기술 블로그', '저장'],
+  alternates: {
+    canonical: `${APP.URL}/bookmarks`,
+  },
   openGraph: {
     title: '즐겨찾기 | 개발 블로그 저장 관리 - devBlog.kr',
     description: 'GitHub 로그인으로 저장한 기술 블로그 게시글을 한눈에 관리하세요.',
+    url: `${APP.URL}/bookmarks`,
+    siteName: 'devBlog.kr',
     type: 'website',
+    locale: 'ko_KR',
+    images: [
+      {
+        url: `${APP.URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: '즐겨찾기 | devBlog.kr',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '즐겨찾기 | 개발 블로그 저장 관리 - devBlog.kr',
+    description: 'GitHub 로그인으로 저장한 기술 블로그 게시글을 한눈에 관리하세요.',
+    images: [`${APP.URL}/og-image.png`],
   },
 };
 

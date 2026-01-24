@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import type { Tag } from '@/supabase/types.supabase';
+import { queryKeys } from '@/lib/query-keys';
 
 interface TagsResponse {
   tags: Tag[];
@@ -14,22 +15,16 @@ interface UseTagsOptions {
   sort?: 'name' | 'usage' | 'featured';
 }
 
-export function useTags({
-  featured = false,
-  category = '',
-  sort = 'usage',
-}: UseTagsOptions = {}) {
+export function useTags({ featured = false, category = '', sort = 'usage' }: UseTagsOptions = {}) {
   return useQuery<TagsResponse>({
-    queryKey: ['tags', featured, category, sort],
+    queryKey: queryKeys.tags.list({ featured, category, sort }),
     queryFn: async () => {
       const params = new URLSearchParams();
       if (featured) params.set('featured', 'true');
       if (category) params.set('category', category);
       if (sort) params.set('sort', sort);
 
-      const response = await fetch(
-        `/api/tags${params.toString() ? `?${params.toString()}` : ''}`
-      );
+      const response = await fetch(`/api/tags${params.toString() ? `?${params.toString()}` : ''}`);
 
       if (!response.ok) {
         throw new Error(`Failed to fetch tags: ${response.status}`);

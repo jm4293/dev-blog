@@ -11,7 +11,7 @@ interface AnnouncementListProps {
 
 export function AnnouncementList({ announcements, isLoading }: AnnouncementListProps) {
   if (isLoading) {
-    return <SimpleSkeleton count={3} height="h-40" />;
+    return <SimpleSkeleton count={3} height="h-20" />;
   }
 
   if (announcements.length === 0) {

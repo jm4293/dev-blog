@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import type { Company } from '@/supabase/types.supabase';
+import { queryKeys } from '@/lib/query-keys';
 
 interface CompaniesResponse {
   companies: Company[];
@@ -15,15 +16,13 @@ interface UseCompaniesOptions {
 
 export function useCompanies({ featured = false, all = false }: UseCompaniesOptions = {}) {
   return useQuery<CompaniesResponse>({
-    queryKey: ['companies', featured, all],
+    queryKey: queryKeys.companies.list({ featured, all }),
     queryFn: async () => {
       const params = new URLSearchParams();
       if (featured) params.set('featured', 'true');
       if (all) params.set('all', 'true');
 
-      const response = await fetch(
-        `/api/companies${params.toString() ? `?${params.toString()}` : ''}`
-      );
+      const response = await fetch(`/api/companies${params.toString() ? `?${params.toString()}` : ''}`);
 
       if (!response.ok) {
         throw new Error(`Failed to fetch companies: ${response.status}`);

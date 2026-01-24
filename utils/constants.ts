@@ -5,7 +5,7 @@
 export const APP = {
   NAME: 'devBlog.kr',
   DESCRIPTION: '한국 개발 기업들의 기술 블로그를 한 곳에서 모아보세요.',
-  URL: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+  URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr',
 };
 
 export const PAGINATION = {

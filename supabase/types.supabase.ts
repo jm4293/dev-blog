@@ -42,6 +42,21 @@ export interface BookmarkWithPost extends Bookmark {
   post: PostWithCompany;
 }
 
+export interface RecentView {
+  id: string;
+  user_id: string;
+  post_id: string;
+  viewed_at: string;
+}
+
+export interface RecentViewWithPost extends RecentView {
+  post: PostWithCompany;
+}
+
+export interface RecentViewsResponse {
+  recentViews: RecentViewWithPost[];
+}
+
 export interface Tag {
   id: string;
   name: string;

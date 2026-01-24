@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { ANNOUNCEMENTS } from '@/utils/constants';
 import type { AnnouncementsResponse } from '@/supabase';
+import { queryKeys } from '@/lib/query-keys';
 
 interface UseAnnouncementsOptions {
   page?: number;
@@ -14,7 +15,7 @@ interface UseAnnouncementsOptions {
  */
 export function useAnnouncements({ page = 1, limit = ANNOUNCEMENTS.ITEMS_PER_PAGE }: UseAnnouncementsOptions = {}) {
   return useQuery({
-    queryKey: ['announcements', page, limit],
+    queryKey: queryKeys.announcements.list({ page, limit }),
     queryFn: async () => {
       const params = new URLSearchParams({
         page: String(page),

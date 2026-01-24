@@ -1,8 +1,34 @@
 import { Metadata } from 'next';
+import { APP } from '@/utils/constants';
 
 export const metadata: Metadata = {
   title: '개인정보 처리방침 | devBlog.kr',
   description: 'devBlog.kr의 개인정보 처리방침을 확인하세요. 이용자의 개인정보 보호를 위한 정책을 안내합니다.',
+  alternates: {
+    canonical: `${APP.URL}/privacy-policy`,
+  },
+  openGraph: {
+    title: '개인정보 처리방침 | devBlog.kr',
+    description: 'devBlog.kr의 개인정보 처리방침을 확인하세요. 이용자의 개인정보 보호를 위한 정책을 안내합니다.',
+    url: `${APP.URL}/privacy-policy`,
+    siteName: 'devBlog.kr',
+    type: 'website',
+    locale: 'ko_KR',
+    images: [
+      {
+        url: `${APP.URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: '개인정보 처리방침 | devBlog.kr',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '개인정보 처리방침 | devBlog.kr',
+    description: 'devBlog.kr의 개인정보 처리방침을 확인하세요.',
+    images: [`${APP.URL}/og-image.png`],
+  },
   robots: {
     index: true,
     follow: true,
