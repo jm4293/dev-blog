@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Clock } from 'lucide-react';
 import { SortButton } from '@/components/search';
 
 interface SearchInputProps {
@@ -35,7 +34,6 @@ export function SearchInput({
           href="/recent-views"
           className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors whitespace-nowrap"
         >
-          <Clock className="w-5 h-5" />
           <span className="hidden lg:inline">최근 본 글</span>
         </Link>
         <button
@@ -69,7 +67,6 @@ export function SearchInput({
             href="/recent-views"
             className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
           >
-            <Clock className="w-5 h-5" />
             최근 본 글
           </Link>
           <button
