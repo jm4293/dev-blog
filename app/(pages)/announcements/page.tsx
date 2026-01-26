@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { AnnouncementsContainer } from '@/features/announcements';
+import { fetchAnnouncements } from '@/features/announcements/services';
 import { APP } from '@/utils/constants';
+import { Suspense } from 'react';
+import { SimpleSkeleton } from '@/components/skeleton';
 
 export const metadata: Metadata = {
   title: '공지사항 | devBlog.kr 업데이트 소식',
@@ -32,7 +35,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AnnouncementsPage() {
+interface AnnouncementsPageProps {
+  searchParams: Promise<{ page?: string }>;
+}
+
+export default async function AnnouncementsPage({ searchParams }: AnnouncementsPageProps) {
+  const params = await searchParams;
+  const page = Math.max(1, parseInt(params.page || '1', 10));
+
+  const data = fetchAnnouncements({ page });
+
   return (
     <div className="container mx-auto px-4 py-8">
       <section className="mb-12">
@@ -42,7 +54,9 @@ export default function AnnouncementsPage() {
         </p>
       </section>
 
-      <AnnouncementsContainer />
+      <Suspense fallback={<SimpleSkeleton />}>
+        <AnnouncementsContainer data={data} />
+      </Suspense>
     </div>
   );
 }

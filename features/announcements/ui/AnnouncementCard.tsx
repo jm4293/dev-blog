@@ -1,5 +1,3 @@
-'use client';
-
 import { format } from 'date-fns';
 import { TypeBadge } from './TypeBadge';
 import type { Announcement } from '@/supabase';

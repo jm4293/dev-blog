@@ -31,7 +31,8 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-blue-200 dark:border-blue-900/50 p-6 mb-6">
+        <h3 className="text-sm font-semibold text-blue-700 dark:text-blue-400 mb-3">로그아웃</h3>
         <button
           onClick={handleLogout}
           disabled={isPending}
@@ -41,7 +42,8 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-red-200 dark:border-red-900/50 p-6 mb-6">
+        <h3 className="text-sm font-semibold text-red-700 dark:text-red-400 mb-3">회원 탈퇴</h3>
         <div className="mb-4">
           <p className="text-sm text-red-700 dark:text-red-400">
             회원탈퇴 시 모든 데이터가 영구 삭제되며 복구할 수 없습니다.
@@ -51,7 +53,7 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
         <button
           onClick={handleDeleteAccount}
           disabled={isDeleting || showDeleteConfirm}
-          className="w-full px-4 py-2.5 rounded-lg border-2 border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+          className="w-full px-4 py-2.5 rounded-lg border-2 border-red-600 dark:border-red-700 text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
         >
           {isDeleting ? '회원탈퇴 중...' : '회원탈퇴'}
         </button>

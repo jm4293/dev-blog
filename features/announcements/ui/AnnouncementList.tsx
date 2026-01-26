@@ -1,19 +1,11 @@
-'use client';
-
-import { SimpleSkeleton } from '@/components/skeleton';
 import { AnnouncementCard } from './AnnouncementCard';
 import type { Announcement } from '@/supabase';
 
 interface AnnouncementListProps {
   announcements: Announcement[];
-  isLoading?: boolean;
 }
 
-export function AnnouncementList({ announcements, isLoading }: AnnouncementListProps) {
-  if (isLoading) {
-    return <SimpleSkeleton count={3} height="h-20" />;
-  }
-
+export function AnnouncementList({ announcements }: AnnouncementListProps) {
   if (announcements.length === 0) {
     return (
       <div className="text-center py-12">
