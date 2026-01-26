@@ -1,25 +1,90 @@
-'use client';
+import { use, useMemo } from 'react';
+import { PostCard } from '@/features/posts';
+import { BookmarkWithPost } from '@/supabase';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Heart } from 'lucide-react';
+import { BookmarksResponse } from '../services';
 
-import { BookmarkSkeleton } from '@/components/skeleton';
-import { useBookmarksList } from '../hooks/useBookmarksList';
-import { DateGridView } from './DateGridView';
+interface BookmarkContainerProps {
+  data: Promise<BookmarksResponse>;
+  isLoggedIn: boolean;
+}
 
-export function BookmarkContainer({ isLoggedIn }: { isLoggedIn: boolean }) {
-  const { data, isLoading, error } = useBookmarksList();
-  const bookmarks = data?.bookmarks || [];
+interface BookmarksByDate {
+  [date: string]: BookmarkWithPost[];
+}
 
-  if (isLoading) {
-    return <BookmarkSkeleton />;
-  }
+export function BookmarkContainer({ data, isLoggedIn }: BookmarkContainerProps) {
+  const { bookmarks } = use(data);
 
-  if (error) {
+  // 날짜별로 북마크를 그룹화하고 정렬 (useMemo로 최적화)
+  const { groupedByDate, sortedDates } = useMemo(() => {
+    const grouped: BookmarksByDate = {};
+    bookmarks.forEach((bookmark) => {
+      const date = new Date(bookmark.created_at).toISOString().split('T')[0];
+      if (!grouped[date]) {
+        grouped[date] = [];
+      }
+      grouped[date].push(bookmark);
+    });
+
+    return {
+      groupedByDate: grouped,
+      sortedDates: Object.keys(grouped).sort().reverse(),
+    };
+  }, [bookmarks]);
+
+  if (sortedDates.length === 0) {
     return (
-      <div className="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-800 dark:text-red-300 rounded-lg">
-        <p className="font-semibold">오류가 발생했습니다</p>
-        <p className="text-sm mt-1">{error.message}</p>
-      </div>
+      <EmptyState
+        icon={Heart}
+        title="아직 북마크가 없습니다"
+        description="마음에 드는 게시글에 하트 버튼을 클릭하여 저장하세요."
+      />
     );
   }
 
-  return <DateGridView bookmarks={bookmarks} isLoggedIn={isLoggedIn} />;
+  return (
+    <div className="space-y-8">
+      {sortedDates.map((date) => {
+        const dateObj = new Date(date + 'T00:00:00');
+        const year = dateObj.getFullYear();
+        const month = dateObj.getMonth() + 1;
+        const day = dateObj.getDate();
+        const dayName = dateObj.toLocaleDateString('ko-KR', { weekday: 'short' });
+
+        const dayBookmarks = groupedByDate[date];
+
+        return (
+          <section key={date} className="space-y-4">
+            <header className="sticky top-0 bg-white dark:bg-gray-900 z-10 py-3 px-4 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-gray-900 dark:text-white">{year}년</span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-white">{month}월</span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-white">{day}일</span>
+                      <span className="text-lg font-semibold text-blue-600 dark:text-blue-400">({dayName})</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-bold text-sm">
+                    {dayBookmarks.length}
+                  </span>
+                </div>
+              </div>
+            </header>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {dayBookmarks.map((bookmark) => (
+                <PostCard key={bookmark.post.id} post={bookmark.post} isLoggedIn={isLoggedIn} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  );
 }

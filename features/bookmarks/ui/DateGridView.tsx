@@ -4,7 +4,6 @@ import { useMemo } from 'react';
 import { PostCard } from '@/features/posts';
 import { BookmarkWithPost } from '@/supabase';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { EmptyLoginState } from './EmptyLoginState';
 import { Heart } from 'lucide-react';
 
 interface DateGridViewProps {
@@ -35,12 +34,6 @@ export const DateGridView = ({ bookmarks, isLoggedIn }: DateGridViewProps) => {
   }, [bookmarks]);
 
   if (sortedDates.length === 0) {
-    // 비로그인 상태일 때 - 날짜 헤더와 함께 빈 상태 표시
-    if (!isLoggedIn) {
-      return <EmptyLoginState />;
-    }
-
-    // 로그인 상태일 때
     return (
       <EmptyState
         icon={Heart}
