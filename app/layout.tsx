@@ -42,6 +42,14 @@ export const metadata: Metadata = {
   authors: [{ name: 'jm4293' }],
   creator: 'jm4293',
   publisher: 'devBlog.kr',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   metadataBase: new URL(baseUrl),
   alternates: {
     canonical: baseUrl,
@@ -67,19 +75,6 @@ export const metadata: Metadata = {
     title: '개발 블로그 | 기술 블로그 모음 - devBlog.kr',
     description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
     images: [`${baseUrl}/og-image.png`],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
-      index: true,
-      follow: true,
-      noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
   },
   icons: {
     icon: [

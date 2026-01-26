@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   description:
     '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요. React, TypeScript, 백엔드, DevOps 등 최신 개발 정보를 태그와 검색으로 쉽게 찾아보세요.',
   alternates: {
-    canonical: APP.URL,
+    canonical: `${APP.URL}/posts`,
   },
   openGraph: {
     title: '개발 블로그 | 기술 블로그 - devBlog.kr',
     description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
-    url: APP.URL,
+    url: `${APP.URL}/posts`,
     siteName: 'devBlog.kr',
     type: 'website',
     locale: 'ko_KR',
