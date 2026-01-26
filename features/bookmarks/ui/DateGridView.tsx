@@ -62,8 +62,8 @@ export const DateGridView = ({ bookmarks, isLoggedIn }: DateGridViewProps) => {
         const dayBookmarks = groupedByDate[date];
 
         return (
-          <div key={date} className="space-y-4">
-            <div className="sticky top-0 bg-white dark:bg-gray-900 z-10 py-3 px-4 rounded-lg border border-gray-200 dark:border-gray-700">
+          <section key={date} className="space-y-4">
+            <header className="sticky top-0 bg-white dark:bg-gray-900 z-10 py-3 px-4 rounded-lg border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div>
@@ -81,14 +81,14 @@ export const DateGridView = ({ bookmarks, isLoggedIn }: DateGridViewProps) => {
                   </span>
                 </div>
               </div>
-            </div>
+            </header>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               {dayBookmarks.map((bookmark) => (
                 <PostCard key={bookmark.post.id} post={bookmark.post} isLoggedIn={isLoggedIn} />
               ))}
             </div>
-          </div>
+          </section>
         );
       })}
     </div>

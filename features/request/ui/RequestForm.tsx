@@ -34,8 +34,8 @@ export function RequestForm() {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">요청 유형</label>
+        <fieldset>
+          <legend className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">요청 유형</legend>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <label className="relative">
               <input type="radio" value="company" {...register('type')} className="sr-only peer" />
@@ -70,7 +70,7 @@ export function RequestForm() {
               </div>
             </label>
           </div>
-        </div>
+        </fieldset>
 
         {requestType === 'company' && (
           <div className="space-y-4">

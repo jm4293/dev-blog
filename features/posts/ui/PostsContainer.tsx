@@ -24,35 +24,39 @@ export function PostsContainer({ isLoggedIn }: PostsContainerProps) {
   const posts = data?.posts || [];
   const totalPages = data?.totalPages || 0;
 
+  if (isLoading) {
+    return <GridSkeleton />;
+  }
+
+  if (error) {
+    return <ErrorMessage error={error} />;
+  }
+
+  if (!isLoading && !error && posts.length === 0) {
+    return (
+      <NoPostsMessage
+        searchQuery={filters.debouncedSearchQuery}
+        selectedTagsLength={filters.selectedTags.length}
+        selectedCompaniesLength={filters.selectedCompanyNames.length}
+      />
+    );
+  }
+
   return (
     <>
       <SearchBar />
 
-      {isLoading && <GridSkeleton />}
+      <PostList posts={posts} isLoggedIn={isLoggedIn} />
 
-      {error && <ErrorMessage error={error} />}
-
-      {!isLoading && !error && posts.length === 0 && (
-        <NoPostsMessage
-          searchQuery={filters.debouncedSearchQuery}
-          selectedTagsLength={filters.selectedTags.length}
-          selectedCompaniesLength={filters.selectedCompanyNames.length}
-        />
-      )}
-
-      {!isLoading && posts.length > 0 && <PostList posts={posts} isLoggedIn={isLoggedIn} />}
-
-      {!isLoading && posts.length > 0 && (
-        <Pagination
-          currentPage={filters.currentPage}
-          totalPages={totalPages}
-          totalCount={data?.total}
-          baseUrl="/"
-          onPageChange={filters.handlePageChange}
-          searchQuery={filters.searchQuery}
-          tagsString={filters.tagsParam}
-        />
-      )}
+      <Pagination
+        currentPage={filters.currentPage}
+        totalPages={totalPages}
+        totalCount={data?.total}
+        baseUrl="/"
+        onPageChange={filters.handlePageChange}
+        searchQuery={filters.searchQuery}
+        tagsString={filters.tagsParam}
+      />
     </>
   );
 }

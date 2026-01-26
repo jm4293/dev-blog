@@ -84,7 +84,7 @@ export function RecentViewsList({ isLoggedIn }: RecentViewsListProps) {
       </p>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {views.map((view) => (
           <RecentViewPostCard
             key={view.post_id}
@@ -95,7 +95,7 @@ export function RecentViewsList({ isLoggedIn }: RecentViewsListProps) {
             onSelect={handleSelect}
           />
         ))}
-      </div>
+      </section>
     </div>
   );
 }

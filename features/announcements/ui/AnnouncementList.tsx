@@ -23,10 +23,10 @@ export function AnnouncementList({ announcements, isLoading }: AnnouncementListP
   }
 
   return (
-    <div className="space-y-4">
+    <section className="space-y-4">
       {announcements.map((announcement) => (
         <AnnouncementCard key={announcement.id} announcement={announcement} />
       ))}
-    </div>
+    </section>
   );
 }

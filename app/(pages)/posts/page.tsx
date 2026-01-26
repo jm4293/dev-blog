@@ -41,10 +41,10 @@ export default async function PostPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-12">
+      <section className="mb-12">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">devBlog.kr</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">한국 기업들의 기술 블로그를 한 곳에서 모아보세요.</p>
-      </div>
+      </section>
 
       <Suspense fallback={<GridSkeleton />}>
         <PostsContainer isLoggedIn={!!user} />

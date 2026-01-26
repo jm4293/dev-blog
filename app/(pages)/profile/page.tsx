@@ -44,17 +44,17 @@ export default async function ProfilePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-12">
+      <section className="mb-12">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">프로필</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
           {user ? '내 정보를 확인하고 관리하세요.' : '로그인하고 프로필 정보를 확인하세요.'}
         </p>
-      </div>
+      </section>
 
       <div className="max-w-3xl mx-auto">
         {!user ? (
           <>
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 mb-6">
+            <article className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 mb-6">
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">로그인이 필요합니다</h2>
                 <p className="text-gray-600 dark:text-gray-400">프로필 정보를 확인하려면 로그인하세요</p>
@@ -65,11 +65,11 @@ export default async function ProfilePage() {
                 <ProfileInfoCard icon={Github} label="GitHub" value="로그인 후 확인 가능" />
                 <ProfileInfoCard icon={Calendar} label="가입일" value="로그인 후 확인 가능" />
               </div>
-            </div>
+            </article>
           </>
         ) : (
           <>
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 mb-6">
+            <article className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 mb-6">
               <div className="flex items-center gap-6 mb-8">
                 <div className="relative">
                   {user.user_metadata?.avatar_url ? (
@@ -111,7 +111,7 @@ export default async function ProfilePage() {
                   isActive
                 />
               </div>
-            </div>
+            </article>
 
             <ActivityHeatmap />
 

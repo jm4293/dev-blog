@@ -21,7 +21,7 @@ export function SearchBar() {
   const isLoadingTags = isLoadingPopularTags || isLoadingAllTags;
 
   return (
-    <div className="mb-8">
+    <section className="mb-8">
       {/* Search Input & Filter Buttons */}
       <SearchInput
         value={filters.inputValue}
@@ -83,6 +83,6 @@ export function SearchBar() {
         onClose={() => filters.setShowTagModal(false)}
         isLoading={isLoadingTags}
       />
-    </div>
+    </section>
   );
 }

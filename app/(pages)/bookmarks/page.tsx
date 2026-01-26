@@ -39,12 +39,12 @@ export default async function BookmarksPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-12">
+      <section className="mb-12">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">즐겨찾기</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
           {user ? '저장한 게시글을 확인해보세요.' : '로그인하고 관심있는 게시글을 저장하세요.'}
         </p>
-      </div>
+      </section>
 
       <BookmarkContainer isLoggedIn={!!user} />
     </div>
