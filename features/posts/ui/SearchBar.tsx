@@ -4,8 +4,20 @@ import { CompanyFilterModal, TagFilterModal } from '@/components/search';
 import { useCompanies, useTags, useSearchFilters } from '../hooks';
 import { SearchInput, PopularCompanies, PopularTags, ActiveFilters, SelectedBadges } from '../components';
 
-export function SearchBar() {
-  const filters = useSearchFilters();
+interface InitialFilters {
+  page: number;
+  search: string;
+  tags: string;
+  companies: string;
+  sort: 'newest' | 'oldest';
+}
+
+interface SearchBarProps {
+  initialFilters?: InitialFilters;
+}
+
+export function SearchBar({ initialFilters }: SearchBarProps) {
+  const filters = useSearchFilters(initialFilters);
 
   // useQuery를 통한 캐싱된 데이터 조회
   const { data: allCompaniesData, isLoading: isLoadingAllCompanies } = useCompanies();

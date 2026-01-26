@@ -1,8 +1,7 @@
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { GridSkeleton } from '@/components/skeleton';
 import { PostsContainer } from '@/features/posts';
-import { getCurrentUser } from '@/supabase/getCurrentUser';
+import { getPosts } from '@/features/posts/actions';
+import { getUser } from '@/features/auth';
 import { APP } from '@/utils/constants';
 
 export const metadata: Metadata = {
@@ -36,8 +35,28 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function PostPage() {
-  const user = await getCurrentUser();
+interface PageProps {
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    tags?: string;
+    companies?: string;
+    sort?: string;
+  }>;
+}
+
+export default async function PostPage({ searchParams }: PageProps) {
+  const params = await searchParams;
+
+  // URL 쿼리 파라미터 파싱
+  const page = Math.max(1, parseInt(params.page || '1', 10));
+  const search = params.search || '';
+  const tags = params.tags || '';
+  const companies = params.companies || '';
+  const sort = (params.sort as 'newest' | 'oldest') || 'newest';
+
+  // 서버에서 데이터 페칭 (병렬 실행)
+  const [user, postsData] = await Promise.all([getUser(), getPosts({ page, search, tags, companies, sort })]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -46,9 +65,11 @@ export default async function PostPage() {
         <p className="text-lg text-gray-600 dark:text-gray-400">한국 기업들의 기술 블로그를 한 곳에서 모아보세요.</p>
       </section>
 
-      <Suspense fallback={<GridSkeleton />}>
-        <PostsContainer isLoggedIn={!!user} />
-      </Suspense>
+      <PostsContainer
+        isLoggedIn={!!user}
+        initialData={postsData}
+        initialFilters={{ page, search, tags, companies, sort }}
+      />
     </div>
   );
 }

@@ -1,2 +1,2 @@
-export * from './add';
-export * from './remove';
+export * from './createBookmark.action';
+export * from './deleteBookmark.action';

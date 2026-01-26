@@ -1,5 +1,5 @@
 import { RecentViewsList } from '@/features/recent-views/ui';
-import { getCurrentUser } from '@/supabase';
+import { getUser } from '@/features/auth';
 import { APP } from '@/utils/constants';
 
 export const metadata = {
@@ -33,7 +33,7 @@ export const metadata = {
 };
 
 export default async function RecentViewsPage() {
-  const user = await getCurrentUser();
+  const user = await getUser();
 
   return (
     <div className="container mx-auto px-4 py-8">

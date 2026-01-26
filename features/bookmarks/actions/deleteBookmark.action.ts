@@ -15,7 +15,7 @@ interface RemoveBookmarkResult {
  * @param postId - 게시글 ID
  * @returns RemoveBookmarkResult
  */
-export async function removeBookmark(postId: string): Promise<RemoveBookmarkResult> {
+export async function deleteBookmarkAction(postId: string): Promise<RemoveBookmarkResult> {
   try {
     // Rate Limiting (인증 필요 API)
     const headersList = await headers();

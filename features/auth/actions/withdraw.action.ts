@@ -3,7 +3,7 @@
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/supabase/server.supabase';
 import { revalidatePath } from 'next/cache';
 
-export async function deleteAccountAction() {
+export async function withdrawAction() {
   try {
     const supabase = await createSupabaseServerClient();
 

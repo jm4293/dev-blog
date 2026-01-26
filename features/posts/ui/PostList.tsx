@@ -1,5 +1,3 @@
-'use client';
-
 import { PostWithCompany } from '@/supabase';
 import { PostCard } from './PostCard';
 

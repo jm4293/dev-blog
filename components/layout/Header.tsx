@@ -1,10 +1,10 @@
-import { getCurrentUser } from '@/supabase';
+import { getUser } from '@/features/auth';
 import { HeaderClient } from './HeaderClient';
 import Link from 'next/link';
 import { MobileHamburger } from './MobileHamburger';
 
 export async function Header() {
-  const user = await getCurrentUser();
+  const user = await getUser();
 
   // return <HeaderClient isLoggedIn={!!user} />;
   return (

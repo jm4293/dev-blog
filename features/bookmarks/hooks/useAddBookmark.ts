@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { BookmarkWithPost } from '@/supabase';
-import { addBookmark } from '@/features/bookmarks';
+import { createBookmarkAction } from '@/features/bookmarks';
 import { queryKeys } from '@/lib/query-keys';
 
 export const useAddBookmark = () => {
@@ -10,7 +10,7 @@ export const useAddBookmark = () => {
 
   return useMutation({
     mutationFn: async (postId: string) => {
-      const result = await addBookmark(postId);
+      const result = await createBookmarkAction(postId);
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to add bookmark');

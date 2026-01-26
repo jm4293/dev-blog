@@ -16,7 +16,7 @@ interface AddBookmarkResult {
  * @param postId - 게시글 ID
  * @returns AddBookmarkResult
  */
-export async function addBookmark(postId: string): Promise<AddBookmarkResult> {
+export async function createBookmarkAction(postId: string): Promise<AddBookmarkResult> {
   try {
     // Rate Limiting (인증 필요 API)
     const headersList = await headers();

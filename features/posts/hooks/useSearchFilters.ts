@@ -1,46 +1,41 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { parseSearchParams, buildQueryParams } from '@/utils';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { buildQueryParams } from '@/utils';
 import { useDebounce } from '@/hooks';
 
-export function useSearchFilters() {
+interface InitialFilters {
+  page: number;
+  search: string;
+  tags: string;
+  companies: string;
+  sort: 'newest' | 'oldest';
+}
+
+// 초기 배열 파싱 헬퍼
+const parseArrayParam = (param: string): string[] => (param ? param.split(',').filter((item) => item.trim()) : []);
+
+export function useSearchFilters(initialFilters?: InitialFilters) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const isInitialMount = useRef(true);
 
-  // URL 파라미터에서 현재 상태 추출
-  const {
-    page: currentPage,
-    search: searchQuery,
-    tags: tagsParam,
-    companies: companiesParam,
-    sort: sortParam,
-  } = parseSearchParams(searchParams, {
-    page: { default: 1, parse: (v) => Math.max(1, parseInt(v, 10)) },
-    search: { default: '' },
-    tags: { default: '' },
-    companies: { default: '' },
-    sort: { default: 'newest' as 'newest' | 'oldest' },
-  });
+  // 서버에서 전달받은 초기 필터 값 사용
+  const currentPage = initialFilters?.page || 1;
+  const searchQuery = initialFilters?.search || '';
+  const tagsParam = initialFilters?.tags || '';
+  const companiesParam = initialFilters?.companies || '';
+  const sortParam = initialFilters?.sort || 'newest';
 
+  // 초기값을 initialFilters에서 직접 파싱
   const [inputValue, setInputValue] = useState(searchQuery);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>(() => parseArrayParam(tagsParam));
+  const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>(() => parseArrayParam(companiesParam));
   const [showTagModal, setShowTagModal] = useState(false);
   const [showCompanyModal, setShowCompanyModal] = useState(false);
 
   // 디바운스된 검색어 (500ms 지연)
   const debouncedSearchQuery = useDebounce(inputValue, 500);
-
-  // URL 파라미터가 변경되면 내부 상태 동기화
-  useEffect(() => {
-    const tagsArray = tagsParam ? tagsParam.split(',').filter((tag) => tag.trim()) : [];
-    setSelectedTags(tagsArray);
-    const companiesArray = companiesParam ? companiesParam.split(',').filter((name) => name.trim()) : [];
-    setSelectedCompanyNames(companiesArray);
-    setInputValue(searchQuery);
-  }, [tagsParam, companiesParam, searchQuery]);
 
   // URL 업데이트 함수
   const updateUrl = useCallback(
@@ -59,8 +54,12 @@ export function useSearchFilters() {
     [router],
   );
 
-  // 디바운스된 검색어가 변경되면 URL 업데이트
+  // 디바운스된 검색어가 변경되면 URL 업데이트 (초기 마운트 제외)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     updateUrl(1, debouncedSearchQuery, selectedTags, selectedCompanyNames, sortParam); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchQuery]);
 
@@ -92,6 +91,9 @@ export function useSearchFilters() {
   };
 
   const handleReset = () => {
+    setInputValue('');
+    setSelectedTags([]);
+    setSelectedCompanyNames([]);
     updateUrl(1, '', [], [], 'newest');
   };
 

@@ -2,7 +2,7 @@
 
 import { createSupabaseServerClient } from '@/supabase';
 
-export async function deleteRecentViews(postIds: string[]) {
+export async function deleteRecentViewAction(postIds: string[]) {
   const supabase = await createSupabaseServerClient();
 
   const {

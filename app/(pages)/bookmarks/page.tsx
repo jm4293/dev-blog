@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { BookmarkContainer } from '@/features/bookmarks';
-import { getCurrentUser } from '@/supabase';
 import { APP } from '@/utils/constants';
+import { getUser } from '@/features/auth';
 
 export const metadata: Metadata = {
   title: '즐겨찾기 | 개발 블로그 저장 관리 - devBlog.kr',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BookmarksPage() {
-  const user = await getCurrentUser();
+  const user = await getUser();
 
   return (
     <div className="container mx-auto px-4 py-8">

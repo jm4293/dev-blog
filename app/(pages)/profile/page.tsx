@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getCurrentUser } from '@/supabase/getCurrentUser';
+import { getUser } from '@/features/auth';
 import { ActivityHeatmap, ProfileClient, ProfileInfoCard } from '@/features/profile';
 import { User as UserIcon, Mail, Github, Calendar } from 'lucide-react';
 import Image from 'next/image';
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProfilePage() {
-  const user = await getCurrentUser();
+  const user = await getUser();
 
   return (
     <div className="container mx-auto px-4 py-8">

@@ -1,2 +1,2 @@
-export * from './recentViewTrack';
-export * from './recentViewDelete';
+export * from './getRecentView.action';
+export * from './deleteRecentView.action';

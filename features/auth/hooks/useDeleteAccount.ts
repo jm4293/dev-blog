@@ -1,8 +1,8 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteAccountAction } from '@/features/auth/actions/deleteAccount.action';
 import { useRouter } from 'next/navigation';
+import { withdrawAction } from '../actions';
 
 export const useDeleteAccount = () => {
   const router = useRouter();
@@ -10,7 +10,7 @@ export const useDeleteAccount = () => {
 
   return useMutation({
     mutationFn: async () => {
-      await deleteAccountAction();
+      await withdrawAction();
     },
     onSuccess: () => {
       // React Query 캐시 초기화

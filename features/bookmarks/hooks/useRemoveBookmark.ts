@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { BookmarkWithPost } from '@/supabase';
-import { removeBookmark } from '@/features/bookmarks';
+import { deleteBookmarkAction } from '@/features/bookmarks';
 import { queryKeys } from '@/lib/query-keys';
 
 export const useRemoveBookmark = () => {
@@ -10,7 +10,7 @@ export const useRemoveBookmark = () => {
 
   return useMutation({
     mutationFn: async (postId: string) => {
-      const result = await removeBookmark(postId);
+      const result = await deleteBookmarkAction(postId);
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to remove bookmark');

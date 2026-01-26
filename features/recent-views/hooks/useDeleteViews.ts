@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteRecentViews, clearAllRecentViews } from '../actions';
+import { deleteRecentViewAction, clearAllRecentViews } from '../actions';
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils';
 import type { RecentView } from '../services/local-storage.types';
 import { queryKeys } from '@/lib/query-keys';
@@ -20,7 +20,7 @@ export function useDeleteViews(isLoggedIn: boolean) {
 
       // 로그인 시 DB에서도 삭제
       if (isLoggedIn) {
-        await deleteRecentViews(postIds);
+        await deleteRecentViewAction(postIds);
       }
     },
     onSuccess: () => {

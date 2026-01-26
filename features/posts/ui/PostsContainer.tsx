@@ -1,57 +1,55 @@
 'use client';
 
 import { PostList, SearchBar } from '@/features/posts';
-import { GridSkeleton } from '@/components/skeleton';
-import { usePosts, useSearchFilters } from '../hooks';
-import { NoPostsMessage, ErrorMessage } from '../components';
+import { useSearchFilters } from '../hooks';
+import { NoPostsMessage } from '../components';
 import { Pagination } from '@/components/pagination';
+import { GetPostsResponse } from '../types';
+
+interface InitialFilters {
+  page: number;
+  search: string;
+  tags: string;
+  companies: string;
+  sort: 'newest' | 'oldest';
+}
 
 interface PostsContainerProps {
   isLoggedIn: boolean;
+  initialData: GetPostsResponse;
+  initialFilters: InitialFilters;
 }
 
-export function PostsContainer({ isLoggedIn }: PostsContainerProps) {
-  const filters = useSearchFilters();
+export function PostsContainer({ isLoggedIn, initialData, initialFilters }: PostsContainerProps) {
+  const filters = useSearchFilters(initialFilters);
 
-  const { data, isLoading, error } = usePosts({
-    page: filters.currentPage,
-    search: filters.searchQuery,
-    tagsString: filters.tagsParam,
-    companiesString: filters.companiesParam,
-    sort: filters.sortParam,
-  });
+  // 서버에서 받은 초기 데이터 사용
+  const posts = initialData.posts;
+  const totalPages = initialData.totalPages;
 
-  const posts = data?.posts || [];
-  const totalPages = data?.totalPages || 0;
-
-  if (isLoading) {
-    return <GridSkeleton />;
-  }
-
-  if (error) {
-    return <ErrorMessage error={error} />;
-  }
-
-  if (!isLoading && !error && posts.length === 0) {
+  if (posts.length === 0) {
     return (
-      <NoPostsMessage
-        searchQuery={filters.debouncedSearchQuery}
-        selectedTagsLength={filters.selectedTags.length}
-        selectedCompaniesLength={filters.selectedCompanyNames.length}
-      />
+      <>
+        <SearchBar initialFilters={initialFilters} />
+        <NoPostsMessage
+          searchQuery={filters.debouncedSearchQuery}
+          selectedTagsLength={filters.selectedTags.length}
+          selectedCompaniesLength={filters.selectedCompanyNames.length}
+        />
+      </>
     );
   }
 
   return (
     <>
-      <SearchBar />
+      <SearchBar initialFilters={initialFilters} />
 
       <PostList posts={posts} isLoggedIn={isLoggedIn} />
 
       <Pagination
         currentPage={filters.currentPage}
         totalPages={totalPages}
-        totalCount={data?.total}
+        totalCount={initialData.total}
         baseUrl="/"
         onPageChange={filters.handlePageChange}
         searchQuery={filters.searchQuery}
