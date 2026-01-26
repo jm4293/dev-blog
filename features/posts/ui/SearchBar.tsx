@@ -19,7 +19,6 @@ interface SearchBarProps {
 export function SearchBar({ initialFilters }: SearchBarProps) {
   const filters = useSearchFilters(initialFilters);
 
-  // useQuery를 통한 캐싱된 데이터 조회
   const { data: allCompaniesData, isLoading: isLoadingAllCompanies } = useCompanies();
   const { data: allTagsData, isLoading: isLoadingAllTags } = useTags({ sort: 'name' });
   const { data: popularTagsData, isLoading: isLoadingPopularTags } = useTags({ featured: true });
@@ -34,7 +33,6 @@ export function SearchBar({ initialFilters }: SearchBarProps) {
 
   return (
     <section className="mb-8">
-      {/* Search Input & Filter Buttons */}
       <SearchInput
         value={filters.inputValue}
         onChange={filters.handleSearchChange}
@@ -44,7 +42,6 @@ export function SearchBar({ initialFilters }: SearchBarProps) {
         onSortChange={filters.handleSortChange}
       />
 
-      {/* Popular Companies */}
       <PopularCompanies
         companies={popularCompanies}
         selectedCompanyNames={filters.selectedCompanyNames}
@@ -52,7 +49,6 @@ export function SearchBar({ initialFilters }: SearchBarProps) {
         isLoading={isLoadingCompanies}
       />
 
-      {/* Popular Tags */}
       <PopularTags
         tags={popularTags}
         selectedTags={filters.selectedTags}
@@ -60,7 +56,6 @@ export function SearchBar({ initialFilters }: SearchBarProps) {
         isLoading={isLoadingTags}
       />
 
-      {/* Active Filters Summary */}
       <ActiveFilters
         searchQuery={filters.debouncedSearchQuery}
         selectedCompanyNamesCount={filters.selectedCompanyNames.length}
@@ -68,7 +63,6 @@ export function SearchBar({ initialFilters }: SearchBarProps) {
         onReset={filters.handleReset}
       />
 
-      {/* Selected Badges */}
       <SelectedBadges
         selectedCompanyNames={filters.selectedCompanyNames}
         selectedTags={filters.selectedTags}
@@ -76,7 +70,6 @@ export function SearchBar({ initialFilters }: SearchBarProps) {
         onTagRemove={filters.handleTagToggle}
       />
 
-      {/* Company Filter Modal */}
       <CompanyFilterModal
         companies={allCompanies}
         selectedCompanyNames={filters.selectedCompanyNames}
@@ -86,7 +79,6 @@ export function SearchBar({ initialFilters }: SearchBarProps) {
         isLoading={isLoadingCompanies}
       />
 
-      {/* Tag Filter Modal */}
       <TagFilterModal
         tags={allTags}
         selectedTags={filters.selectedTags}

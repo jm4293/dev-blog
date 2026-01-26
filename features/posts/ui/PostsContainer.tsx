@@ -21,11 +21,9 @@ interface PostsContainerProps {
 }
 
 export function PostsContainer({ isLoggedIn, initialData, initialFilters }: PostsContainerProps) {
-  const filters = useSearchFilters(initialFilters);
-
-  // 서버에서 받은 초기 데이터 사용
   const posts = initialData.posts;
   const totalPages = initialData.totalPages;
+  const filters = useSearchFilters(initialFilters);
 
   if (posts.length === 0) {
     return (
@@ -43,9 +41,7 @@ export function PostsContainer({ isLoggedIn, initialData, initialFilters }: Post
   return (
     <>
       <SearchBar initialFilters={initialFilters} />
-
       <PostList posts={posts} isLoggedIn={isLoggedIn} />
-
       <Pagination
         currentPage={filters.currentPage}
         totalPages={totalPages}

@@ -3,7 +3,7 @@
 import { PostWithCompany } from '@/supabase';
 import Link from 'next/link';
 import { useBookmarkToggle } from '@/features/bookmarks';
-import { useTrackView } from '@/features/recent-views';
+import { useAddRecentView } from '@/features/recent-views';
 import { BookmarkButton, PostCardHeader, PostCardTags } from '@/features/posts';
 import { formatPostDate } from '@/utils';
 
@@ -14,11 +14,11 @@ interface PostCardProps {
 
 export function PostCard({ post, isLoggedIn }: PostCardProps) {
   const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip } = useBookmarkToggle(post.id, isLoggedIn);
-  const trackView = useTrackView(isLoggedIn);
+  const addRecentView = useAddRecentView(isLoggedIn);
   const timeDisplay = formatPostDate(post.published_at);
 
   const handleClick = () => {
-    trackView.mutate(post);
+    addRecentView.mutate(post);
   };
 
   return (
@@ -37,20 +37,16 @@ export function PostCard({ post, isLoggedIn }: PostCardProps) {
         }
       />
 
-      {/* Title */}
       <Link href={post.url} target="_blank" rel="noopener noreferrer" onClick={handleClick}>
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
           {post.title}
         </h3>
       </Link>
 
-      {/* Summary */}
       {post.summary && <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-4">{post.summary}</p>}
 
-      {/* Tags */}
       <PostCardTags tags={post.tags || []} />
 
-      {/* Link Button */}
       <Link
         href={post.url}
         target="_blank"

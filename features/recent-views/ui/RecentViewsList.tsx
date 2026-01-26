@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useRecentViews, useDeleteViews, useClearAllViews } from '../hooks';
+import { useRecentViews, useDeleteRecentView, useClearAllRecentViews } from '../hooks';
 import { RecentViewsListSkeleton } from './RecentViewsListSkeleton';
 import { RecentViewsEmpty } from './RecentViewsEmpty';
 import { RecentViewsError } from './RecentViewsError';
@@ -14,8 +14,8 @@ interface RecentViewsListProps {
 
 export function RecentViewsList({ isLoggedIn }: RecentViewsListProps) {
   const { data: views, isLoading, error } = useRecentViews(isLoggedIn);
-  const deleteViews = useDeleteViews(isLoggedIn);
-  const clearAll = useClearAllViews(isLoggedIn);
+  const deleteRecentView = useDeleteRecentView(isLoggedIn);
+  const clearAll = useClearAllRecentViews(isLoggedIn);
   const [selected, setSelected] = useState<string[]>([]);
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -32,10 +32,10 @@ export function RecentViewsList({ isLoggedIn }: RecentViewsListProps) {
     if (selected.length === 0) return;
     if (!confirm(`선택한 ${selected.length}개의 항목을 삭제하시겠습니까?`)) return;
 
-    deleteViews.mutate(selected, {
+    deleteRecentView.mutate(selected, {
       onSuccess: () => setSelected([]),
     });
-  }, [selected, deleteViews]);
+  }, [selected, deleteRecentView]);
 
   const handleClearAll = useCallback(() => {
     if (!views || views.length === 0) return;
@@ -78,12 +78,10 @@ export function RecentViewsList({ isLoggedIn }: RecentViewsListProps) {
         onClearAll={handleClearAll}
       />
 
-      {/* Recent Views Count */}
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
         총 <span className="font-semibold text-blue-600 dark:text-blue-400">{views.length}</span>개
       </p>
 
-      {/* Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {views.map((view) => (
           <RecentViewPostCard

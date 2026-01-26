@@ -1,7 +1,7 @@
 import { Check } from 'lucide-react';
 import Link from 'next/link';
 import type { RecentViewWithPost } from '@/supabase/types.supabase';
-import { useTrackView } from '@/features/recent-views';
+import { useAddRecentView } from '@/features/recent-views';
 import { formatPostDate } from '@/utils';
 import { PostCardHeader, PostCardTags, BookmarkButton } from '@/features/posts/components';
 import { useBookmarkToggle } from '@/features/bookmarks';
@@ -16,7 +16,7 @@ interface RecentViewPostCardProps {
 
 export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, onSelect }: RecentViewPostCardProps) {
   const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip } = useBookmarkToggle(view.post.id, isLoggedIn);
-  const trackView = useTrackView(isLoggedIn);
+  const addRecentView = useAddRecentView(isLoggedIn);
   const timeDisplay = formatPostDate(view.post.published_at);
 
   const handleCardClick = () => {
@@ -27,7 +27,7 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
 
   const handleLinkClick = () => {
     if (!isEditMode) {
-      trackView.mutate(view.post);
+      addRecentView.mutate(view.post);
     }
   };
 

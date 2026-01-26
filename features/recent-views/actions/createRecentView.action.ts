@@ -2,7 +2,7 @@
 
 import { createSupabaseServerClient } from '@/supabase';
 
-export async function getRecentViewAction(postId: string) {
+export async function createRecentViewAction(postId: string) {
   const supabase = await createSupabaseServerClient();
 
   const {

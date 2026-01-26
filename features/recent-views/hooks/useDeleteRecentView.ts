@@ -8,7 +8,7 @@ import { queryKeys } from '@/lib/query-keys';
 
 const STORAGE_KEY = 'recent-posts';
 
-export function useDeleteViews(isLoggedIn: boolean) {
+export function useDeleteRecentView(isLoggedIn: boolean) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -30,7 +30,7 @@ export function useDeleteViews(isLoggedIn: boolean) {
   });
 }
 
-export function useClearAllViews(isLoggedIn: boolean) {
+export function useClearAllRecentViews(isLoggedIn: boolean) {
   const queryClient = useQueryClient();
 
   return useMutation({

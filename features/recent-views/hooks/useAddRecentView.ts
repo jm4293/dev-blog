@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { getRecentViewAction } from '../actions';
+import { createRecentViewAction } from '../actions';
 import { getLocalStorage, setLocalStorage } from '@/utils';
 import type { PostWithCompany } from '@/supabase';
 import type { RecentView } from '../services/local-storage.types';
@@ -10,7 +10,7 @@ import { queryKeys } from '@/lib/query-keys';
 const MAX_RECENT_VIEWS = 20;
 const STORAGE_KEY = 'recent-posts';
 
-export function useTrackView(isLoggedIn: boolean) {
+export function useAddRecentView(isLoggedIn: boolean) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -31,7 +31,7 @@ export function useTrackView(isLoggedIn: boolean) {
 
       // 로그인 시 DB에도 저장
       if (isLoggedIn) {
-        await getRecentViewAction(post.id);
+        await createRecentViewAction(post.id);
       }
     },
     onSuccess: () => {

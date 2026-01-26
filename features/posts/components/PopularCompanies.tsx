@@ -14,7 +14,9 @@ export function PopularCompanies({
   onCompanyToggle,
   isLoading,
 }: PopularCompaniesProps) {
-  if (companies.length === 0) return null;
+  if (companies.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mt-4 space-y-2">

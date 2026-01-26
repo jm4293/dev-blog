@@ -5,7 +5,7 @@ import type { GetPostsParams, GetPostsResponse } from '../types';
  * 서버에서 게시글 목록을 조회합니다.
  * SSR을 위해 page.tsx에서 직접 호출합니다.
  */
-export async function getPosts({
+export async function fetchPosts({
   page = 1,
   search = '',
   tags: tagsParam = '',

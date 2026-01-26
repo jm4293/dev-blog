@@ -6,7 +6,9 @@ interface PopularTagsProps {
 }
 
 export function PopularTags({ tags, selectedTags, onTagToggle, isLoading }: PopularTagsProps) {
-  if (tags.length === 0) return null;
+  if (tags.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mt-4 space-y-2">

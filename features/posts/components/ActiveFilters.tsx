@@ -13,7 +13,9 @@ export function ActiveFilters({
 }: ActiveFiltersProps) {
   const hasFilters = selectedCompanyNamesCount > 0 || selectedTagsCount > 0 || searchQuery;
 
-  if (!hasFilters) return null;
+  if (!hasFilters) {
+    return null;
+  }
 
   return (
     <div className="mt-4 flex items-center justify-between px-4 py-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">

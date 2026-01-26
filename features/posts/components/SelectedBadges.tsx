@@ -15,7 +15,9 @@ export function SelectedBadges({
 }: SelectedBadgesProps) {
   const hasSelection = selectedCompanyNames.length > 0 || selectedTags.length > 0;
 
-  if (!hasSelection) return null;
+  if (!hasSelection) {
+    return null;
+  }
 
   return (
     <div className="mt-4 space-y-2">

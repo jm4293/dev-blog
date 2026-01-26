@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { PostsContainer } from '@/features/posts';
-import { getPosts } from '@/features/posts/actions';
+import { fetchPosts, PostsContainer } from '@/features/posts';
 import { getUser } from '@/features/auth';
 import { APP } from '@/utils/constants';
 
@@ -48,15 +47,13 @@ interface PageProps {
 export default async function PostPage({ searchParams }: PageProps) {
   const params = await searchParams;
 
-  // URL 쿼리 파라미터 파싱
   const page = Math.max(1, parseInt(params.page || '1', 10));
   const search = params.search || '';
   const tags = params.tags || '';
   const companies = params.companies || '';
   const sort = (params.sort as 'newest' | 'oldest') || 'newest';
 
-  // 서버에서 데이터 페칭 (병렬 실행)
-  const [user, postsData] = await Promise.all([getUser(), getPosts({ page, search, tags, companies, sort })]);
+  const [user, postsData] = await Promise.all([getUser(), fetchPosts({ page, search, tags, companies, sort })]);
 
   return (
     <div className="container mx-auto px-4 py-8">

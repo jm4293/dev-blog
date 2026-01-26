@@ -1,3 +1,3 @@
-export * from './useTrackView';
+export * from './useAddRecentView';
 export * from './useRecentViews';
-export * from './useDeleteViews';
+export * from './useDeleteRecentView';
