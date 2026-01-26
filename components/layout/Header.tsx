@@ -1,12 +1,10 @@
-import { getUser } from '@/features/auth';
 import { HeaderClient } from './HeaderClient';
 import Link from 'next/link';
 import { MobileHamburger } from './MobileHamburger';
+import { MobileMenu } from './MobileMenu';
+import ThemeToggle from '../theme/ThemeToggle';
 
-export async function Header() {
-  const user = await getUser();
-
-  // return <HeaderClient isLoggedIn={!!user} />;
+export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -17,11 +15,16 @@ export async function Header() {
           devBlog
         </Link>
 
-        <HeaderClient isLoggedIn={!!user} />
+        <HeaderClient />
 
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
           <MobileHamburger />
         </div>
+      </div>
+
+      <div className="md:hidden">
+        <MobileMenu />
       </div>
     </header>
   );

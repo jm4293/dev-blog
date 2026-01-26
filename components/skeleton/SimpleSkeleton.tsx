@@ -4,7 +4,7 @@ interface SimpleSkeletonProps {
   className?: string;
 }
 
-export function SimpleSkeleton({ count = 3, height = 'h-40', className = '' }: SimpleSkeletonProps) {
+export function SimpleSkeleton({ count = 3, height = 'h-16', className = '' }: SimpleSkeletonProps) {
   return (
     <div className="space-y-4">
       {Array.from({ length: count }).map((_, i) => (
