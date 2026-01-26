@@ -73,13 +73,13 @@ export function SearchInput({
             onClick={onCompanyFilterClick}
             className="flex-1 flex items-center justify-center px-3 py-3 bg-gray-200 text-gray-900 text-sm font-semibold rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition-colors whitespace-nowrap"
           >
-            기업
+            기업 필터
           </button>
           <button
             onClick={onTagFilterClick}
             className="flex-1 flex items-center justify-center px-3 py-3 bg-gray-200 text-gray-900 text-sm font-semibold rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 transition-colors whitespace-nowrap"
           >
-            태그
+            태그 필터
           </button>
         </div>
       </div>

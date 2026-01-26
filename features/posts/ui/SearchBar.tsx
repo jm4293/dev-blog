@@ -1,24 +1,14 @@
 'use client';
 
 import { CompanyFilterModal, TagFilterModal } from '@/components/search';
-import { useCompanies, useTags, useSearchFilters } from '../hooks';
+import { useCompanies, useTags } from '../hooks';
 import { SearchInput, PopularCompanies, PopularTags, ActiveFilters, SelectedBadges } from '../components';
 
-interface InitialFilters {
-  page: number;
-  search: string;
-  tags: string;
-  companies: string;
-  sort: 'newest' | 'oldest';
-}
-
 interface SearchBarProps {
-  initialFilters?: InitialFilters;
+  filters: ReturnType<typeof import('../hooks').useSearchFilters>;
 }
 
-export function SearchBar({ initialFilters }: SearchBarProps) {
-  const filters = useSearchFilters(initialFilters);
-
+export function SearchBar({ filters }: SearchBarProps) {
   const { data: allCompaniesData, isLoading: isLoadingAllCompanies } = useCompanies();
   const { data: allTagsData, isLoading: isLoadingAllTags } = useTags({ sort: 'name' });
   const { data: popularTagsData, isLoading: isLoadingPopularTags } = useTags({ featured: true });

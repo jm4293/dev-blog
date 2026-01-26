@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { buildQueryParams } from '@/utils';
 import { useDebounce } from '@/hooks';
@@ -19,6 +19,7 @@ const parseArrayParam = (param: string): string[] => (param ? param.split(',').f
 export function useSearchFilters(initialFilters?: InitialFilters) {
   const router = useRouter();
   const isInitialMount = useRef(true);
+  const [isPending, startTransition] = useTransition();
 
   // 서버에서 전달받은 초기 필터 값 사용
   const currentPage = initialFilters?.page || 1;
@@ -49,9 +50,11 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
       });
 
       const newUrl = params.toString() ? `/?${params.toString()}` : '/';
-      router.push(newUrl);
+      startTransition(() => {
+        router.push(newUrl);
+      });
     },
-    [router],
+    [router, startTransition],
   );
 
   // 디바운스된 검색어가 변경되면 URL 업데이트 (초기 마운트 제외)
@@ -69,21 +72,17 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
   };
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTags((prev) => {
-      const newTags = prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag];
-      updateUrl(1, searchQuery, newTags, selectedCompanyNames, sortParam);
-      return newTags;
-    });
+    const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag];
+    setSelectedTags(newTags);
+    updateUrl(1, searchQuery, newTags, selectedCompanyNames, sortParam);
   };
 
   const handleCompanyToggle = (companyName: string) => {
-    setSelectedCompanyNames((prev) => {
-      const newCompanies = prev.includes(companyName)
-        ? prev.filter((name) => name !== companyName)
-        : [...prev, companyName];
-      updateUrl(1, searchQuery, selectedTags, newCompanies, sortParam);
-      return newCompanies;
-    });
+    const newCompanies = selectedCompanyNames.includes(companyName)
+      ? selectedCompanyNames.filter((name) => name !== companyName)
+      : [...selectedCompanyNames, companyName];
+    setSelectedCompanyNames(newCompanies);
+    updateUrl(1, searchQuery, selectedTags, newCompanies, sortParam);
   };
 
   const handleSortChange = (sort: 'newest' | 'oldest') => {
@@ -114,6 +113,7 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
     sortParam,
     showTagModal,
     showCompanyModal,
+    isPending,
 
     // 액션
     setShowTagModal,
