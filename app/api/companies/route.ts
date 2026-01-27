@@ -1,17 +1,3 @@
-/**
- * GET /api/companies
- * 기업 목록 조회
- *
- * Query Parameters:
- *   - featured: "true" - 인기 기업만 조회 (is_featured=true)
- *   - all: "true" - 비활성화된 기업 포함 (기본값: 활성화만)
- *
- * 예시:
- *   - /api/companies - 활성화된 모든 기업
- *   - /api/companies?featured=true - 인기 기업만
- *   - /api/companies?all=true - 모든 기업 (활성화/비활성화)
- */
-
 import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { Company } from '@/supabase/types.supabase';
@@ -40,7 +26,7 @@ export async function GET(request: Request) {
 
     let query = supabase.from('companies').select('*');
 
-    // 필터링: featured 또는 활성화된 기업
+    // 필터링: featured 또는 활성화된 블로그
     if (featured) {
       query = query.eq('is_featured', true).eq('is_active', true);
     } else if (!all) {

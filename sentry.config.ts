@@ -13,7 +13,6 @@ export function initSentry() {
 
   // 프로덕션에서만 Sentry 초기화
   if (!process.env.SENTRY_DSN) {
-    console.warn('SENTRY_DSN is not set. Sentry will not be initialized.');
     return;
   }
 
@@ -33,9 +32,7 @@ export function initSentry() {
 export function captureException(error: Error | unknown, context?: Record<string, any>) {
   // 개발 모드에서는 콘솔에만 출력
   if (process.env.NODE_ENV === 'development') {
-    console.error('Development Error:', error);
     if (context) {
-      console.error('Context:', context);
     }
     return;
   }
@@ -52,10 +49,13 @@ export function captureException(error: Error | unknown, context?: Record<string
  * @param level 로그 레벨
  * @param context 추가 컨텍스트 정보
  */
-export function captureMessage(message: string, level: 'fatal' | 'error' | 'warning' | 'info' = 'error', context?: Record<string, any>) {
+export function captureMessage(
+  message: string,
+  level: 'fatal' | 'error' | 'warning' | 'info' = 'error',
+  context?: Record<string, any>,
+) {
   // 개발 모드에서는 콘솔에만 출력
   if (process.env.NODE_ENV === 'development') {
-    console.log(`[${level.toUpperCase()}] ${message}`, context || '');
     return;
   }
 

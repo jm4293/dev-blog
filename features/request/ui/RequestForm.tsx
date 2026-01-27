@@ -42,8 +42,8 @@ export function RequestForm() {
               <div className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
                 <div className="text-center">
                   <div className="text-2xl mb-2">🏢</div>
-                  <div className="font-medium text-gray-900 dark:text-white">기업 추가</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">새로운 기업를 추가해달라</div>
+                  <div className="font-medium text-gray-900 dark:text-white">블로그 추가</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">새로운 블로그를 추가해달라</div>
                 </div>
               </div>
             </label>
@@ -76,14 +76,14 @@ export function RequestForm() {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                요청하는 기업명 *
+                요청하는 블로그명 *
               </label>
               <input
                 type="text"
                 {...register('companyName', {
                   validate: (value) => {
                     if (requestType === 'company' && !value.trim()) {
-                      return '기업명은 필수입니다.';
+                      return '블로그명은 필수입니다.';
                     }
                     return true;
                   },

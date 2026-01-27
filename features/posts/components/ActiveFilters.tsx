@@ -28,7 +28,7 @@ export function ActiveFilters({
         )}
         {(selectedCompanyNamesCount > 0 || selectedTagsCount > 0) && (
           <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-            기업 {selectedCompanyNamesCount}개, 태그 {selectedTagsCount}개 선택됨
+            블로그 {selectedCompanyNamesCount}개, 태그 {selectedTagsCount}개 선택됨
           </p>
         )}
       </div>

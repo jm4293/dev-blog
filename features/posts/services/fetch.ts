@@ -59,7 +59,7 @@ export async function fetchPosts({
     postsQuery = postsQuery.ilike('title', searchTerm);
   }
 
-  // 기업 필터 promise 즉시 시작 (waterfall 방지)
+  // 블로그 필터 promise 즉시 시작 (waterfall 방지)
   let companiesPromise: any = null;
   if (companies.length > 0 && !companyId) {
     companiesPromise = supabase.from('companies').select('id').in('name', companies);
@@ -71,7 +71,7 @@ export async function fetchPosts({
     postsQuery = postsQuery.overlaps('tags', tags);
   }
 
-  // 기업 필터 (단일 또는 다중)
+  // 블로그 필터 (단일 또는 다중)
   if (companyId) {
     countQuery = countQuery.eq('company_id', companyId);
     postsQuery = postsQuery.eq('company_id', companyId);

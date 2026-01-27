@@ -30,7 +30,7 @@ export function useCompanies({ featured = false, all = false }: UseCompaniesOpti
 
       return response.json();
     },
-    staleTime: 30 * 60 * 1000, // 30분 (기업 정보는 자주 변하지 않음)
+    staleTime: 30 * 60 * 1000, // 30분 (블로그 정보는 자주 변하지 않음)
     gcTime: 1 * 60 * 60 * 1000, // 1시간
   });
 }

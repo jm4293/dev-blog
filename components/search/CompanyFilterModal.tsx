@@ -59,14 +59,14 @@ export function CompanyFilterModal({
 
   return (
     <FilterModal
-      title="기업 선택"
+      title="블로그 선택"
       isOpen={isOpen}
       onClose={onClose}
       onReset={handleReset}
       onComplete={handleComplete}
       isLoading={isLoading}
       isEmpty={companies.length === 0}
-      emptyMessage="기업 정보가 없습니다."
+      emptyMessage="블로그 정보가 없습니다."
     >
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {companies.map((company) => (

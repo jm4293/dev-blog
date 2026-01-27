@@ -25,7 +25,7 @@ export function SelectedBadges({
       {selectedCompanyNames.length > 0 && (
         <div className="space-y-2">
           <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-            선택된 기업 ({selectedCompanyNames.length})
+            선택된 블로그 ({selectedCompanyNames.length})
           </p>
           <div className="flex flex-wrap gap-2">
             {[...selectedCompanyNames].sort().map((companyName) => (

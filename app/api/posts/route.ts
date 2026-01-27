@@ -6,14 +6,11 @@
  * - page: 페이지 번호 (기본값: 1)
  * - search: 검색어 (제목 기반)
  * - tags: 태그 필터 (쉼표로 구분, OR 조건)
- * - company: 기업 ID 필터 (단일)
- * - companies: 기업 ID 필터 (쉼표로 구분, 다중, OR 조건)
+ * - company: 블로그 ID 필터 (단일)
+ * - companies: 블로그 ID 필터 (쉼표로 구분, 다중, OR 조건)
  * - sort: 정렬 방식 (newest, oldest, 기본값: newest)
  * - limit: 페이지당 게시글 수 (기본값: 20)
- *
- * 예시:
- * - /api/posts?page=1&search=react
- * - /api/posts?tags=Frontend,Backend&companies=toss,kakao&sort=oldest
+ * *
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -94,7 +91,7 @@ export async function GET(request: NextRequest) {
       postsQuery = postsQuery.ilike('title', searchTerm);
     }
 
-    // 기업 필터 promise 즉시 시작 (waterfall 방지)
+    // 블로그 필터 promise 즉시 시작 (waterfall 방지)
     let companiesPromise: any = null;
     if (companies.length > 0 && !companyId) {
       companiesPromise = supabase.from('companies').select('id').in('name', companies);
@@ -107,13 +104,13 @@ export async function GET(request: NextRequest) {
       postsQuery = postsQuery.overlaps('tags', tags);
     }
 
-    // 기업 필터 (단일 또는 다중)
+    // 블로그 필터 (단일 또는 다중)
     if (companyId) {
-      // 단일 기업 필터
+      // 단일 블로그 필터
       countQuery = countQuery.eq('company_id', companyId);
       postsQuery = postsQuery.eq('company_id', companyId);
     } else if (companies.length > 0) {
-      // 다중 기업 필터 (OR 조건: company name으로 필터링)
+      // 다중 블로그 필터 (OR 조건: company name으로 필터링)
       // companies 배열에는 company name이 들어옴
       // promise 결과 대기
       if (companiesPromise) {

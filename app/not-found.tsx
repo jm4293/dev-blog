@@ -139,34 +139,39 @@ export default function NotFound() {
   return (
     <div
       ref={containerRef}
-      className={`min-h-screen ${isDark ? 'bg-black text-green-400' : 'bg-white text-blue-600'} flex items-center justify-center relative overflow-hidden transition-colors duration-300`}>
+      className={`min-h-screen ${isDark ? 'bg-black text-green-400' : 'bg-white text-blue-600'} flex items-center justify-center relative overflow-hidden transition-colors duration-300`}
+    >
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-20" />
 
       <div className="text-center z-10 px-4">
         <h1
           ref={titleRef}
           className={`text-8xl md:text-9xl font-bold mb-4 font-mono tracking-wider ${isDark ? 'text-green-400' : 'text-blue-600'}`}
-          style={{ textShadow: isDark ? '0 0 20px #00ff00' : '0 0 20px #2563eb' }}>
+          style={{ textShadow: isDark ? '0 0 20px #00ff00' : '0 0 20px #2563eb' }}
+        >
           404
         </h1>
 
         <p
           ref={subtitleRef}
-          className={`text-xl md:text-2xl mb-8 font-mono ${isDark ? 'text-green-300' : 'text-blue-500'}`}>
+          className={`text-xl md:text-2xl mb-8 font-mono ${isDark ? 'text-green-300' : 'text-blue-500'}`}
+        >
           페이지를 찾을 수 없습니다
         </p>
 
         <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/"
-            className={`group flex items-center gap-2 px-6 py-3 ${isDark ? 'bg-green-600 hover:bg-green-500 text-black' : 'bg-blue-600 hover:bg-blue-500 text-white'} font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${isDark ? 'hover:shadow-green-400/50' : 'hover:shadow-blue-400/50'}`}>
+            className={`group flex items-center gap-2 px-6 py-3 ${isDark ? 'bg-green-600 hover:bg-green-500 text-black' : 'bg-blue-600 hover:bg-blue-500 text-white'} font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${isDark ? 'hover:shadow-green-400/50' : 'hover:shadow-blue-400/50'}`}
+          >
             <Home className="w-5 h-5 group-hover:rotate-12 transition-transform" />
             홈으로 돌아가기
           </Link>
 
           <button
             onClick={() => window.history.back()}
-            className={`group flex items-center gap-2 px-6 py-3 border-2 ${isDark ? 'border-green-400 hover:bg-green-400 hover:text-black text-green-400' : 'border-blue-400 hover:bg-blue-400 hover:text-white text-blue-400'} font-semibold rounded-lg transition-all duration-300 hover:scale-105`}>
+            className={`group flex items-center gap-2 px-6 py-3 border-2 ${isDark ? 'border-green-400 hover:bg-green-400 hover:text-black text-green-400' : 'border-blue-400 hover:bg-blue-400 hover:text-white text-blue-400'} font-semibold rounded-lg transition-all duration-300 hover:scale-105`}
+          >
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             이전 페이지
           </button>

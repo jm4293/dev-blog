@@ -5,13 +5,13 @@ import { APP } from '@/utils/constants';
 export const metadata: Metadata = {
   title: '요청하기 - devBlog.kr',
   description:
-    '새로운 기업이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다. devBlog.kr을 더 나은 개발 블로그 플랫폼으로 만들어보세요.',
+    '새로운 블로그이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다. devBlog.kr을 더 나은 개발 블로그 플랫폼으로 만들어보세요.',
   alternates: {
     canonical: `${APP.URL}/request`,
   },
   openGraph: {
     title: '요청하기 - devBlog.kr',
-    description: '새로운 기업이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
+    description: '새로운 블로그이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
     url: `${APP.URL}/request`,
     siteName: 'devBlog.kr',
     type: 'website',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '요청하기 - devBlog.kr',
-    description: '새로운 기업이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
+    description: '새로운 블로그이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
     images: [`${APP.URL}/og-image.png`],
   },
 };
@@ -39,7 +39,7 @@ export default function RequestPage() {
       <section className="mb-12">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">요청하기</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
-          새로운 기업나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.
+          새로운 블로그나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.
         </p>
       </section>
 

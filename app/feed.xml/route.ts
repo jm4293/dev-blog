@@ -93,7 +93,7 @@ function generateRSS(posts: RSSPost[], baseUrl: string): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>devBlog.kr - 개발 기업 블로그</title>
+    <title>devBlog.kr - 개발 블로그</title>
     <link>${baseUrl}</link>
     <description>개발 블로그 게시글을 한 곳에서 모아볼 수 있는 플랫폼</description>
     <language>ko-kr</language>

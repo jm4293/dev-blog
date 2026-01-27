@@ -7,13 +7,13 @@ import { SimpleSkeleton } from '@/components/skeleton';
 
 export const metadata: Metadata = {
   title: '공지사항 - devBlog.kr',
-  description: '최신 기능 업데이트, 새로운 기업 추가, 버그 수정 등 devBlog.kr의 공지사항과 소식을 확인하세요.',
+  description: '최신 기능 업데이트, 새로운 블로그 추가, 버그 수정 등 devBlog.kr의 공지사항과 소식을 확인하세요.',
   alternates: {
     canonical: `${APP.URL}/announcements`,
   },
   openGraph: {
     title: '공지사항 - devBlog.kr',
-    description: '최신 기능 업데이트, 새로운 기업 추가, 버그 수정 등 devBlog.kr의 소식을 확인하세요.',
+    description: '최신 기능 업데이트, 새로운 블로그 추가, 버그 수정 등 devBlog.kr의 소식을 확인하세요.',
     url: `${APP.URL}/announcements`,
     siteName: 'devBlog.kr',
     type: 'website',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '공지사항 - devBlog.kr',
-    description: '최신 기능 업데이트, 새로운 기업 추가, 버그 수정 등 devBlog.kr의 소식을 확인하세요.',
+    description: '최신 기능 업데이트, 새로운 블로그 추가, 버그 수정 등 devBlog.kr의 소식을 확인하세요.',
     images: [`${APP.URL}/og-image.png`],
   },
 };

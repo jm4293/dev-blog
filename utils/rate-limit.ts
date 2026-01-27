@@ -46,14 +46,17 @@ export const RATE_LIMIT_CONFIG = {
  */
 export function checkRateLimit(
   ip: string,
-  config?: { readonly WINDOW: number; readonly MAX_REQUESTS: number } | { limit: number; window: number }
+  config?: { readonly WINDOW: number; readonly MAX_REQUESTS: number } | { limit: number; window: number },
 ): boolean {
   const now = Date.now();
   const record = rateLimitStore.get(ip);
 
   // config 정규화
-  const limit = config && 'MAX_REQUESTS' in config ? config.MAX_REQUESTS : config?.['limit'] ?? RATE_LIMIT_CONFIG.PUBLIC.MAX_REQUESTS;
-  const window = config && 'WINDOW' in config ? config.WINDOW : config?.['window'] ?? RATE_LIMIT_CONFIG.PUBLIC.WINDOW;
+  const limit =
+    config && 'MAX_REQUESTS' in config
+      ? config.MAX_REQUESTS
+      : (config?.['limit'] ?? RATE_LIMIT_CONFIG.PUBLIC.MAX_REQUESTS);
+  const window = config && 'WINDOW' in config ? config.WINDOW : (config?.['window'] ?? RATE_LIMIT_CONFIG.PUBLIC.WINDOW);
 
   if (!record || now > record.resetTime) {
     // 새로운 기간 시작
@@ -96,9 +99,7 @@ export function extractIP(request: Request): string {
  * @param message - 에러 메시지
  * @returns NextResponse (429 Too Many Requests)
  */
-export function createRateLimitResponse(
-  message: string = 'Too many requests. Rate limit: 100 requests per hour'
-) {
+export function createRateLimitResponse(message: string = 'Too many requests. Rate limit: 100 requests per hour') {
   return new Response(JSON.stringify({ error: message }), {
     status: 429,
     headers: {

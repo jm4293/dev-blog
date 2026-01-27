@@ -20,7 +20,7 @@ export function PopularCompanies({
 
   return (
     <div className="mt-4 space-y-2">
-      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 기업</p>
+      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">인기 블로그</p>
       <div className="flex flex-wrap gap-2">
         {isLoading ? (
           <p className="text-sm text-gray-500 dark:text-gray-400">로딩 중...</p>

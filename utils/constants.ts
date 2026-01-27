@@ -4,7 +4,7 @@
 
 export const APP = {
   NAME: 'devBlog.kr',
-  DESCRIPTION: '개발 기업들의 개발 블로그를 한 곳에서 모아보세요.',
+  DESCRIPTION: '개발 블로그들의 개발 블로그를 한 곳에서 모아보세요.',
   URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr',
 };
 
@@ -84,7 +84,7 @@ export const ANNOUNCEMENTS = {
     },
     new_company: {
       emoji: '🏢',
-      label: '신규 기업',
+      label: '신규 블로그',
       bgColor: 'bg-green-100 dark:bg-green-900/30',
       textColor: 'text-green-700 dark:text-green-400',
       borderColor: 'border-l-green-500',
