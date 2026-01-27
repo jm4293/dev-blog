@@ -12,7 +12,7 @@ export const organizationSchema: WithContext<Organization> = {
   name: 'devBlog.kr',
   url: baseUrl,
   logo: `${baseUrl}/og-image.svg`,
-  description: '한국 IT 기업들의 기술 블로그를 한 곳에서 모아보는 플랫폼',
+  description: '개발 블로그를 한 곳에서 모아보는 플랫폼',
   sameAs: ['https://github.com/jm4293/dev-blog'],
 };
 
@@ -25,7 +25,7 @@ export const websiteSchema = {
   '@type': 'WebSite',
   name: 'devBlog.kr',
   url: baseUrl,
-  description: '한국 IT 기업들의 기술 블로그 수집 플랫폼',
+  description: '개발 블로그 수집 플랫폼',
   potentialAction: {
     '@type': 'SearchAction',
     target: `${baseUrl}/?search={search_term_string}`,

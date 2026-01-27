@@ -4,7 +4,7 @@
 
 export const APP = {
   NAME: 'devBlog.kr',
-  DESCRIPTION: '한국 개발 기업들의 기술 블로그를 한 곳에서 모아보세요.',
+  DESCRIPTION: '개발 기업들의 개발 블로그를 한 곳에서 모아보세요.',
   URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr',
 };
 

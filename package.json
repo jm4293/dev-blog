@@ -1,7 +1,7 @@
 {
   "name": "dev-blog",
   "version": "1.0.0",
-  "description": "한국 개발 기업들의 기술 블로그를 한 곳에서 모아보는 플랫폼",
+  "description": "개발 블로그를 한 곳에서 모아보는 플랫폼",
   "author": "jm4293",
   "license": "MIT",
   "homepage": "https://devblog.kr",

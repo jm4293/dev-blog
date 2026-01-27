@@ -3,14 +3,14 @@ import { RequestForm } from '@/features/request';
 import { APP } from '@/utils/constants';
 
 export const metadata: Metadata = {
-  title: '요청하기 | 기업 / 태그 추가 요청 - devBlog.kr',
+  title: '요청하기 - devBlog.kr',
   description:
     '새로운 기업이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다. devBlog.kr을 더 나은 개발 블로그 플랫폼으로 만들어보세요.',
   alternates: {
     canonical: `${APP.URL}/request`,
   },
   openGraph: {
-    title: '요청하기 | 기업 / 태그 추가 요청 - devBlog.kr',
+    title: '요청하기 - devBlog.kr',
     description: '새로운 기업이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
     url: `${APP.URL}/request`,
     siteName: 'devBlog.kr',
@@ -21,13 +21,13 @@ export const metadata: Metadata = {
         url: `${APP.URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: '요청하기 | devBlog.kr',
+        alt: '요청하기 - devBlog.kr',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '요청하기 | 기업 / 태그 추가 요청 - devBlog.kr',
+    title: '요청하기 - devBlog.kr',
     description: '새로운 기업이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
     images: [`${APP.URL}/og-image.png`],
   },

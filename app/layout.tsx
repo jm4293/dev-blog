@@ -18,15 +18,15 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: '개발 블로그 | 기술 블로그 모음 - devBlog.kr',
+  title: '개발 블로그 모음 - devBlog.kr',
   description:
-    '토스, 카카오 등 한국 IT 기업들의 기술 블로그를 한 곳에서 모아보세요. 최신 개발 트렌드와 기술 정보를 태그와 검색으로 쉽게 찾아보세요.',
+    '토스, 카카오 등 개발 블로그를 한 곳에서 모아보세요. 최신 개발 트렌드와 개발 정보를 태그와 검색으로 쉽게 찾아보세요.',
   keywords: [
     '개발 블로그',
     '개발블로그',
-    '기술 블로그',
-    '기술블로그',
-    '한국 IT 기업 블로그',
+    '개발 블로그',
+    '개발블로그',
+    '한국 개발 블로그',
     '개발자',
     'Frontend',
     'Backend',
@@ -59,21 +59,21 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: baseUrl,
     siteName: 'devBlog.kr',
-    title: '개발 블로그 | 기술 블로그 모음 - devBlog.kr',
-    description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
+    title: '개발 블로그 모음 - devBlog.kr',
+    description: '토스, 카카오 등 개발 블로그 게시글을 한 곳에서 모아보세요.',
     images: [
       {
         url: `${baseUrl}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: '개발 블로그 | 기술 블로그 모음 플랫폼',
+        alt: '개발 블로그 | 개발 블로그 모음 플랫폼',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '개발 블로그 | 기술 블로그 모음 - devBlog.kr',
-    description: '토스, 카카오 등 한국 IT 기업들의 기술 블로그 게시글을 한 곳에서 모아보세요.',
+    title: '개발 블로그 모음 - devBlog.kr',
+    description: '토스, 카카오 등 개발 블로그 게시글을 한 곳에서 모아보세요.',
     images: [`${baseUrl}/og-image.png`],
   },
   icons: {

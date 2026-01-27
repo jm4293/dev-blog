@@ -3,13 +3,13 @@ import { getUser } from '@/features/auth';
 import { APP } from '@/utils/constants';
 
 export const metadata = {
-  title: '최근 본 글 | devBlog.kr',
-  description: '최근에 조회한 게시글 목록을 확인하세요. 관심 있는 기술 블로그 포스트를 다시 찾아보세요.',
+  title: '최근 본 글 - devBlog.kr',
+  description: '최근에 조회한 게시글 목록을 확인하세요. 관심 있는 개발 블로그 포스트를 다시 찾아보세요.',
   alternates: {
     canonical: `${APP.URL}/recent-views`,
   },
   openGraph: {
-    title: '최근 본 글 | devBlog.kr',
+    title: '최근 본 글 - devBlog.kr',
     description: '최근에 조회한 게시글 목록을 확인하세요.',
     url: `${APP.URL}/recent-views`,
     siteName: 'devBlog.kr',
@@ -20,13 +20,13 @@ export const metadata = {
         url: `${APP.URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: '최근 본 글 | devBlog.kr',
+        alt: '최근 본 글 - devBlog.kr',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '최근 본 글 | devBlog.kr',
+    title: '최근 본 글 - devBlog.kr',
     description: '최근에 조회한 게시글 목록을 확인하세요.',
     images: [`${APP.URL}/og-image.png`],
   },

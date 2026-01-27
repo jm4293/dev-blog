@@ -65,7 +65,7 @@ export async function generateSummary(title: string, content: string): Promise<s
   const messages: Array<{ role: 'user' | 'system'; content: string }> = [
     {
       role: 'system',
-      content: `당신은 기술 블로그 게시글 요약 전문가입니다. 주어진 제목과 내용을 바탕으로 1-2줄의 핵심 요약을 한국어로 작성해주세요.`,
+      content: `당신은 개발 블로그 게시글 요약 전문가입니다. 주어진 제목과 내용을 바탕으로 1-2줄의 핵심 요약을 한국어로 작성해주세요.`,
     },
     {
       role: 'user',
@@ -96,7 +96,7 @@ export async function generateTags(title: string, summary: string, availableTags
   const messages: Array<{ role: 'user' | 'system'; content: string }> = [
     {
       role: 'system',
-      content: `당신은 기술 블로그 게시글 태깅 전문가입니다. 주어진 제목과 요약을 분석하여 아래 태그 목록에서 가장 관련성 높은 태그를 3-5개 선택해주세요.
+      content: `당신은 개발 블로그 게시글 태깅 전문가입니다. 주어진 제목과 요약을 분석하여 아래 태그 목록에서 가장 관련성 높은 태그를 3-5개 선택해주세요.
 
 사용 가능한 태그 목록:
 ${tagList}

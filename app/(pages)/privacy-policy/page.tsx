@@ -2,13 +2,13 @@ import { Metadata } from 'next';
 import { APP } from '@/utils/constants';
 
 export const metadata: Metadata = {
-  title: '개인정보 처리방침 | devBlog.kr',
+  title: '개인정보 처리방침 - devBlog.kr',
   description: 'devBlog.kr의 개인정보 처리방침을 확인하세요. 이용자의 개인정보 보호를 위한 정책을 안내합니다.',
   alternates: {
     canonical: `${APP.URL}/privacy-policy`,
   },
   openGraph: {
-    title: '개인정보 처리방침 | devBlog.kr',
+    title: '개인정보 처리방침 - devBlog.kr',
     description: 'devBlog.kr의 개인정보 처리방침을 확인하세요. 이용자의 개인정보 보호를 위한 정책을 안내합니다.',
     url: `${APP.URL}/privacy-policy`,
     siteName: 'devBlog.kr',
@@ -19,13 +19,13 @@ export const metadata: Metadata = {
         url: `${APP.URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: '개인정보 처리방침 | devBlog.kr',
+        alt: '개인정보 처리방침 - devBlog.kr',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '개인정보 처리방침 | devBlog.kr',
+    title: '개인정보 처리방침 - devBlog.kr',
     description: 'devBlog.kr의 개인정보 처리방침을 확인하세요.',
     images: [`${APP.URL}/og-image.png`],
   },
@@ -193,7 +193,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">8. 개인정보 보호를 위한 조치</h2>
             <p className="mb-4">devBlog는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.</p>
             <ul className="list-disc list-inside space-y-2">
-              <li>기술적 조치: 개인정보처리시스템의 접근권한 관리, 개인정보의 암호화, 보안프로그램 설치 및 운영</li>
+              <li>개발적 조치: 개인정보처리시스템의 접근권한 관리, 개인정보의 암호화, 보안프로그램 설치 및 운영</li>
               <li>관리적 조치: 개인정보 처리자 지정 및 교육, 접근 권한 관리</li>
               <li>물리적 조치: Supabase, Vercel 등 보안이 검증된 클라우드 서비스 이용</li>
             </ul>

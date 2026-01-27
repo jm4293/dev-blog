@@ -2,13 +2,13 @@ import { Metadata } from 'next';
 import { APP } from '@/utils/constants';
 
 export const metadata: Metadata = {
-  title: '이용약관 | devBlog.kr',
+  title: '이용약관 - devBlog.kr',
   description: 'devBlog.kr의 이용약관을 확인하세요. 서비스 이용 시 준수해야 할 규정을 안내합니다.',
   alternates: {
     canonical: `${APP.URL}/terms`,
   },
   openGraph: {
-    title: '이용약관 | devBlog.kr',
+    title: '이용약관 - devBlog.kr',
     description: 'devBlog.kr의 이용약관을 확인하세요. 서비스 이용 시 준수해야 할 규정을 안내합니다.',
     url: `${APP.URL}/terms`,
     siteName: 'devBlog.kr',
@@ -19,13 +19,13 @@ export const metadata: Metadata = {
         url: `${APP.URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: '이용약관 | devBlog.kr',
+        alt: '이용약관 - devBlog.kr',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '이용약관 | devBlog.kr',
+    title: '이용약관 - devBlog.kr',
     description: 'devBlog.kr의 이용약관을 확인하세요.',
     images: [`${APP.URL}/og-image.png`],
   },
@@ -58,8 +58,8 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">제2조 (용어의 정의)</h2>
             <ul className="list-disc list-inside space-y-2">
               <li>
-                &quot;서비스&quot;란 devBlog가 제공하는 한국 개발 기업들의 기술 블로그 게시글을 수집하고, 태그 및 검색
-                기능을 통해 사용자에게 제공하는 플랫폼을 말합니다.
+                &quot;서비스&quot;란 devBlog가 제공하는 개발 블로그 게시글을 수집하고, 태그 및 검색 기능을 통해
+                사용자에게 제공하는 플랫폼을 말합니다.
               </li>
               <li>
                 &quot;이용자&quot;란 서비스에 접속하여 이 약관에 따라 서비스를 이용하는 개인(회원 및 비회원)을 말합니다.
@@ -69,7 +69,7 @@ export default function TermsPage() {
                 수 있는 자를 말합니다.
               </li>
               <li>
-                &quot;콘텐츠&quot;란 각 기업 블로그에서 제공하는 기술 블로그 게시글, 제목, 설명 등 모든 정보를 말합니다.
+                &quot;콘텐츠&quot;란 각 기업 블로그에서 제공하는 개발 블로그 게시글, 제목, 설명 등 모든 정보를 말합니다.
               </li>
             </ul>
           </section>
@@ -106,7 +106,7 @@ export default function TermsPage() {
             <p>② 서비스는 다음 각 호에 해당하지 않는 한 회원 가입을 승인합니다:</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>GitHub 계정이 부정한 목적으로 생성된 것으로 판단되는 경우</li>
-              <li>회원 가입이 서비스의 기술상 현저히 지장을 줄 수 있다고 판단되는 경우</li>
+              <li>회원 가입이 서비스의 개발상 현저히 지장을 줄 수 있다고 판단되는 경우</li>
             </ul>
           </section>
 
@@ -131,7 +131,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">제7조 (이용자의 의무)</h2>
             <p className="mb-4">이용자는 다음 행위를 하여서는 안 됩니다:</p>
             <ul className="list-disc list-inside space-y-2">
-              <li>기술 블로그 콘텐츠의 무단 복제, 배포, 전송 또는 편집</li>
+              <li>개발 블로그 콘텐츠의 무단 복제, 배포, 전송 또는 편집</li>
               <li>서비스 운영을 방해하거나 정상적인 기능을 저해하는 행위</li>
               <li>서비스를 통해 얻은 정보를 상업적 목적으로 이용하는 행위</li>
               <li>타 이용자의 개인정보를 수집 또는 이용하는 행위</li>
@@ -144,7 +144,7 @@ export default function TermsPage() {
               제8조 (서비스 콘텐츠의 저작권)
             </h2>
             <p className="mb-4">
-              ① devBlog가 제공하는 콘텐츠(기술 블로그 게시글 포함)는 각 기업의 저작물입니다. 해당 콘텐츠의 저작권은 각
+              ① devBlog가 제공하는 콘텐츠(개발 블로그 게시글 포함)는 각 기업의 저작물입니다. 해당 콘텐츠의 저작권은 각
               기업에 귀속됩니다.
             </p>
             <p className="mb-4">
@@ -167,7 +167,7 @@ export default function TermsPage() {
               ② 서비스는 이용자의 귀책사유로 인한 서비스 이용의 장애에 대하여 책임을 지지 않습니다.
             </p>
             <p className="mb-4">
-              ③ 서비스는 이용자가 외부 기업의 기술 블로그를 이용함에 있어 발생하는 손해에 대해서는 책임을 지지 않습니다.
+              ③ 서비스는 이용자가 외부 기업의 개발 블로그를 이용함에 있어 발생하는 손해에 대해서는 책임을 지지 않습니다.
             </p>
             <p>
               ④ 서비스는 수집된 콘텐츠의 정확성, 완전성, 신뢰성 등에 대해 명시적 또는 묵시적 보증을 제공하지 않습니다.
