@@ -43,7 +43,7 @@ export default async function AnnouncementsPage({ searchParams }: AnnouncementsP
   const params = await searchParams;
   const page = Math.max(1, parseInt(params.page || '1', 10));
 
-  const data = fetchAnnouncements({ page });
+  const announcementsPromise = fetchAnnouncements({ page });
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -55,7 +55,7 @@ export default async function AnnouncementsPage({ searchParams }: AnnouncementsP
       </section>
 
       <Suspense fallback={<SimpleSkeleton />}>
-        <AnnouncementsContainer data={data} />
+        <AnnouncementsContainer data={announcementsPromise} />
       </Suspense>
     </div>
   );

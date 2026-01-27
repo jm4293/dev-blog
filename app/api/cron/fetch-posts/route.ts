@@ -1,38 +1,3 @@
-/**
- * Cron Job: 블로그 자동 수집
- *
- * 실행 주기: 매일 19시 (19:00 KST) = UTC 10:00
- * 스케줄: 0 10 * * * (vercel.json 참조)
- *
- * 🌍 시간대 변환:
- * - UTC 10:00 = 한국 시간(KST) 19:00 (UTC+9)
- * - 설정 변경: vercel.json의 schedule 값 수정
- *
- * 프로세스:
- * 1. 활성화된 기업 목록 조회
- * 2. 각 기업의 RSS 피드 파싱
- * 3. 중복 제거 (URL 기반)
- * 4. OpenAI로 요약 & 태그 생성
- * 5. Supabase에 저장
- *
- * 🔐 보안:
- * - 프로덕션 환경에서는 vercel.json에 등록된 경로만 호출 가능
- * - 수동 테스트: Authorization 헤더에 'Bearer {CRON_SECRET}' 추가
- * - GET: 테스트용 (수동 실행)
- * - POST: Vercel 자동 호출 (프로덕션)
- *
- * 📊 모니터링:
- * - Vercel Dashboard > Functions > Cron Jobs에서 로그 확인
- * - Function Logs에서 [CRON-INFO], [CRON-ERROR] 검색
- * - process.stderr를 통해 JSON 형식으로 로깅
- *
- * 💡 문제 해결:
- * - 404 오류: vercel.json의 path가 올바른지 확인 (/api/cron/fetch-posts)
- * - 401 오류: NODE_ENV가 'production'인지 확인 또는 Authorization 헤더 전달
- * - 실행 안됨: vercel.json 배포 후 새로고침 (최대 5분 대기)
- * - 타임아웃: RSS 피드 파싱 시간 최적화 필요
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase';
 import { getAllTagsFromDatabase } from '@/features/ai/services/tag-selector';
@@ -79,15 +44,17 @@ function verifyCronSecret(request: NextRequest): boolean {
   return false;
 }
 
-export async function POST(request: NextRequest) {
-  // Vercel Cron Secret 검증
+export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
-  const vercelCronHeader = request.headers.get('x-vercel-cron');
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response('Unauthorized', {
+      status: 401,
+    });
+  }
 
   cronLog('info', 'Fetch Posts Started', {
     authHeaderPresent: !!authHeader,
     authHeaderValue: authHeader ? authHeader.substring(0, 20) + '...' : 'none',
-    vercelCronHeader,
     nodeEnv: process.env.NODE_ENV,
     cronSecretConfigured: !!process.env.CRON_SECRET,
   });
@@ -223,12 +190,4 @@ export async function POST(request: NextRequest) {
       { status: 500 },
     );
   }
-}
-
-export async function GET(request: NextRequest) {
-  if (!verifyCronSecret(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  return POST(request);
 }

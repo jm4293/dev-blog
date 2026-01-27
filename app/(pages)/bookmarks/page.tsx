@@ -71,7 +71,7 @@ export default async function BookmarksPage() {
     );
   }
 
-  const data = fetchBookmarks();
+  const bookmarksPromise = fetchBookmarks();
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -81,7 +81,7 @@ export default async function BookmarksPage() {
       </section>
 
       <Suspense fallback={<GridSkeleton />}>
-        <BookmarkContainer data={data} isLoggedIn={!!user} />
+        <BookmarkContainer data={bookmarksPromise} isLoggedIn={!!user} />
       </Suspense>
     </div>
   );
