@@ -9,7 +9,7 @@ interface PostsParams {
   page?: number;
   search?: string;
   tagsString?: string;
-  companiesString?: string;
+  blogsString?: string;
   companyId?: string;
   sort?: 'newest' | 'oldest';
 }
@@ -27,7 +27,7 @@ export function usePosts({
   page = 1,
   search = '',
   tagsString = '',
-  companiesString = '',
+  blogsString = '',
   companyId = '',
   sort = 'newest',
 }: PostsParams = {}) {
@@ -36,7 +36,7 @@ export function usePosts({
       page,
       search,
       tags: tagsString ? tagsString.split(',') : [],
-      companies: companiesString ? companiesString.split(',') : [],
+      blogs: blogsString ? blogsString.split(',') : [],
       companyId,
       sort,
     }),
@@ -45,7 +45,7 @@ export function usePosts({
         page,
         search,
         tags: tagsString,
-        companies: companiesString,
+        blogs: blogsString,
         company: companyId,
         sort: sort !== 'newest' ? sort : undefined,
       });

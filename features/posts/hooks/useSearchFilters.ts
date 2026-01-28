@@ -9,7 +9,7 @@ interface InitialFilters {
   page: number;
   search: string;
   tags: string;
-  companies: string;
+  blogs: string;
   sort: 'newest' | 'oldest';
 }
 
@@ -25,13 +25,13 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
   const currentPage = initialFilters?.page || 1;
   const searchQuery = initialFilters?.search || '';
   const tagsParam = initialFilters?.tags || '';
-  const companiesParam = initialFilters?.companies || '';
+  const blogsParam = initialFilters?.blogs || '';
   const sortParam = initialFilters?.sort || 'newest';
 
   // 초기값을 initialFilters에서 직접 파싱
   const [inputValue, setInputValue] = useState(searchQuery);
   const [selectedTags, setSelectedTags] = useState<string[]>(() => parseArrayParam(tagsParam));
-  const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>(() => parseArrayParam(companiesParam));
+  const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>(() => parseArrayParam(blogsParam));
   const [showTagModal, setShowTagModal] = useState(false);
   const [showCompanyModal, setShowCompanyModal] = useState(false);
 
@@ -40,12 +40,12 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
 
   // URL 업데이트 함수
   const updateUrl = useCallback(
-    (page: number, search: string, tags: string[], companies: string[], sort: 'newest' | 'oldest') => {
+    (page: number, search: string, tags: string[], blogs: string[], sort: 'newest' | 'oldest') => {
       const params = buildQueryParams({
         page: page > 1 ? page : undefined,
         search,
         tags: tags.length > 0 ? tags.join(',') : undefined,
-        companies: companies.length > 0 ? companies.join(',') : undefined,
+        blogs: blogs.length > 0 ? blogs.join(',') : undefined,
         sort: sort !== 'newest' ? sort : undefined,
       });
 
@@ -107,7 +107,7 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
     debouncedSearchQuery,
     searchQuery,
     tagsParam,
-    companiesParam,
+    blogsParam,
     selectedTags,
     selectedCompanyNames,
     sortParam,

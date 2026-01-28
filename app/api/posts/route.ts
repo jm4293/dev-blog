@@ -7,7 +7,7 @@
  * - search: 검색어 (제목 기반)
  * - tags: 태그 필터 (쉼표로 구분, OR 조건)
  * - company: 블로그 ID 필터 (단일)
- * - companies: 블로그 ID 필터 (쉼표로 구분, 다중, OR 조건)
+ * - blogs: 블로그 이름 필터 (쉼표로 구분, 다중, OR 조건)
  * - sort: 정렬 방식 (newest, oldest, 기본값: newest)
  * - limit: 페이지당 게시글 수 (기본값: 20)
  * *
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || '';
     const tagsParam = searchParams.get('tags') || '';
     const companyId = searchParams.get('company') || '';
-    const companiesParam = searchParams.get('companies') || '';
+    const blogsParam = searchParams.get('blogs') || '';
     const sortParam = searchParams.get('sort') || 'newest';
     const limit = Math.min(100, parseInt(searchParams.get('limit') || '20', 10));
 
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
       .split(',')
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
-    const companies = companiesParam
+    const blogs = blogsParam
       .split(',')
       .map((c) => c.trim())
       .filter((c) => c.length > 0);
@@ -92,9 +92,9 @@ export async function GET(request: NextRequest) {
     }
 
     // 블로그 필터 promise 즉시 시작 (waterfall 방지)
-    let companiesPromise: any = null;
-    if (companies.length > 0 && !companyId) {
-      companiesPromise = supabase.from('companies').select('id').in('name', companies);
+    let blogsPromise: any = null;
+    if (blogs.length > 0 && !companyId) {
+      blogsPromise = supabase.from('companies').select('id').in('name', blogs);
     }
 
     // 태그 필터 (OR 조건: 하나 이상의 태그 포함)
@@ -109,18 +109,18 @@ export async function GET(request: NextRequest) {
       // 단일 블로그 필터
       countQuery = countQuery.eq('company_id', companyId);
       postsQuery = postsQuery.eq('company_id', companyId);
-    } else if (companies.length > 0) {
-      // 다중 블로그 필터 (OR 조건: company name으로 필터링)
-      // companies 배열에는 company name이 들어옴
+    } else if (blogs.length > 0) {
+      // 다중 블로그 필터 (OR 조건: blog name으로 필터링)
+      // blogs 배열에는 blog name이 들어옴
       // promise 결과 대기
-      if (companiesPromise) {
-        const { data: companiesData, error: companiesError } = await companiesPromise;
+      if (blogsPromise) {
+        const { data: blogsData, error: blogsError } = await blogsPromise;
 
-        if (companiesError) {
-          throw companiesError;
+        if (blogsError) {
+          throw blogsError;
         }
 
-        const companyIds = companiesData?.map((c: { id: string }) => c.id) || [];
+        const companyIds = blogsData?.map((c: { id: string }) => c.id) || [];
         if (companyIds.length > 0) {
           countQuery = countQuery.in('company_id', companyIds);
           postsQuery = postsQuery.in('company_id', companyIds);

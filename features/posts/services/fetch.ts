@@ -9,7 +9,7 @@ export async function fetchPosts({
   page = 1,
   search = '',
   tags: tagsParam = '',
-  companies: companiesParam = '',
+  blogs: blogsParam = '',
   companyId = '',
   sort = 'newest',
   limit = 20,
@@ -21,7 +21,7 @@ export async function fetchPosts({
     .split(',')
     .map((t) => t.trim())
     .filter((t) => t.length > 0);
-  const companies = companiesParam
+  const blogs = blogsParam
     .split(',')
     .map((c) => c.trim())
     .filter((c) => c.length > 0);
@@ -60,9 +60,9 @@ export async function fetchPosts({
   }
 
   // 블로그 필터 promise 즉시 시작 (waterfall 방지)
-  let companiesPromise: any = null;
-  if (companies.length > 0 && !companyId) {
-    companiesPromise = supabase.from('companies').select('id').in('name', companies);
+  let blogsPromise: any = null;
+  if (blogs.length > 0 && !companyId) {
+    blogsPromise = supabase.from('companies').select('id').in('name', blogs);
   }
 
   // 태그 필터 (OR 조건: 하나 이상의 태그 포함)
@@ -75,14 +75,14 @@ export async function fetchPosts({
   if (companyId) {
     countQuery = countQuery.eq('company_id', companyId);
     postsQuery = postsQuery.eq('company_id', companyId);
-  } else if (companies.length > 0 && companiesPromise) {
-    const { data: companiesData, error: companiesError } = await companiesPromise;
+  } else if (blogs.length > 0 && blogsPromise) {
+    const { data: blogsData, error: blogsError } = await blogsPromise;
 
-    if (companiesError) {
-      throw companiesError;
+    if (blogsError) {
+      throw blogsError;
     }
 
-    const companyIds = companiesData?.map((c: { id: string }) => c.id) || [];
+    const companyIds = blogsData?.map((c: { id: string }) => c.id) || [];
     if (companyIds.length > 0) {
       countQuery = countQuery.in('company_id', companyIds);
       postsQuery = postsQuery.in('company_id', companyIds);

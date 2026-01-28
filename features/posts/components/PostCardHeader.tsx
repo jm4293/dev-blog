@@ -1,4 +1,4 @@
-import { CompanyLogoImage } from '@/components/image';
+import { BlogLogoImage } from '@/components/image';
 
 interface PostCardHeaderProps {
   logoUrl: string | undefined;
@@ -10,7 +10,7 @@ interface PostCardHeaderProps {
 export function PostCardHeader({ logoUrl, companyName, timeDisplay, bookmarkButton }: PostCardHeaderProps) {
   return (
     <div className="flex items-center gap-3 mb-4">
-      <CompanyLogoImage
+      <BlogLogoImage
         logoUrl={logoUrl}
         companyName={companyName}
         width={32}

@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import type { Company } from '@/supabase/types.supabase';
 import { FilterModal } from '../ui';
-import { CompanyLogoImage } from '../image';
+import { BlogLogoImage } from '../image';
 
-interface CompanyFilterModalProps {
+interface BlogFilterModalProps {
   companies: Company[];
   selectedCompanyNames: string[];
   onCompanyToggle: (companyName: string) => void;
@@ -14,14 +14,14 @@ interface CompanyFilterModalProps {
   isLoading?: boolean;
 }
 
-export function CompanyFilterModal({
+export function BlogFilterModal({
   companies,
   selectedCompanyNames,
   onCompanyToggle,
   isOpen,
   onClose,
   isLoading = false,
-}: CompanyFilterModalProps) {
+}: BlogFilterModalProps) {
   // 모달 내 임시 상태 (모달이 열릴 때 초기화)
   const [tempSelectedCompanies, setTempSelectedCompanies] = useState<string[]>(selectedCompanyNames);
 
@@ -79,7 +79,7 @@ export function CompanyFilterModal({
                 : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
-            <CompanyLogoImage
+            <BlogLogoImage
               logoUrl={company.logo_url}
               companyName={company.name}
               width={32}

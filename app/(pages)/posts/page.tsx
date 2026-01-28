@@ -39,7 +39,7 @@ interface PageProps {
     page?: string;
     search?: string;
     tags?: string;
-    companies?: string;
+    blogs?: string;
     sort?: string;
   }>;
 }
@@ -50,10 +50,10 @@ export default async function PostPage({ searchParams }: PageProps) {
   const page = Math.max(1, parseInt(params.page || '1', 10));
   const search = params.search || '';
   const tags = params.tags || '';
-  const companies = params.companies || '';
+  const blogs = params.blogs || '';
   const sort = (params.sort as 'newest' | 'oldest') || 'newest';
 
-  const [user, postsData] = await Promise.all([getUser(), fetchPosts({ page, search, tags, companies, sort })]);
+  const [user, postsData] = await Promise.all([getUser(), fetchPosts({ page, search, tags, blogs, sort })]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -65,7 +65,7 @@ export default async function PostPage({ searchParams }: PageProps) {
       <PostsContainer
         isLoggedIn={!!user}
         initialData={postsData}
-        initialFilters={{ page, search, tags, companies, sort }}
+        initialFilters={{ page, search, tags, blogs, sort }}
       />
     </div>
   );

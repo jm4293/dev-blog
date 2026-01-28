@@ -10,7 +10,7 @@ interface InitialFilters {
   page: number;
   search: string;
   tags: string;
-  companies: string;
+  blogs: string;
   sort: 'newest' | 'oldest';
 }
 

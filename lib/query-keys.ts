@@ -13,18 +13,18 @@ export const queryKeys = {
       page: number;
       search?: string;
       tags?: string[];
-      companies?: string[];
+      blogs?: string[];
       companyId?: string;
       sort?: string;
     }) => {
       const tagsString = params.tags?.join(',') || '';
-      const companiesString = params.companies?.join(',') || '';
+      const blogsString = params.blogs?.join(',') || '';
       return [
         'posts',
         params.page,
         params.search || '',
         tagsString,
-        companiesString,
+        blogsString,
         params.companyId || '',
         params.sort || '',
       ] as const;
@@ -32,7 +32,7 @@ export const queryKeys = {
   },
 
   /**
-   * 회사 관련 query keys
+   * 블로그 관련 query keys
    */
   companies: {
     all: ['companies'] as const,

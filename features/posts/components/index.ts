@@ -2,7 +2,7 @@ export * from './ActiveFilters';
 export * from './BookmarkButton';
 export * from './ErrorMessage';
 export * from './NoPostsMessage';
-export * from './PopularCompanies';
+export * from './PopularBlogs';
 export * from './PopularTags';
 export * from './PostCardHeader';
 export * from './PostCardTags';

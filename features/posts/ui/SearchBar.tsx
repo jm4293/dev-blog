@@ -1,8 +1,8 @@
 'use client';
 
-import { CompanyFilterModal, TagFilterModal } from '@/components/search';
+import { BlogFilterModal, TagFilterModal } from '@/components/search';
 import { useCompanies, useTags } from '../hooks';
-import { SearchInput, PopularCompanies, PopularTags, ActiveFilters, SelectedBadges } from '../components';
+import { SearchInput, PopularBlogs, PopularTags, ActiveFilters, SelectedBadges } from '../components';
 
 interface SearchBarProps {
   filters: ReturnType<typeof import('../hooks').useSearchFilters>;
@@ -32,7 +32,7 @@ export function SearchBar({ filters }: SearchBarProps) {
         onSortChange={filters.handleSortChange}
       />
 
-      <PopularCompanies
+      <PopularBlogs
         companies={popularCompanies}
         selectedCompanyNames={filters.selectedCompanyNames}
         onCompanyToggle={filters.handleCompanyToggle}
@@ -60,7 +60,7 @@ export function SearchBar({ filters }: SearchBarProps) {
         onTagRemove={filters.handleTagToggle}
       />
 
-      <CompanyFilterModal
+      <BlogFilterModal
         companies={allCompanies}
         selectedCompanyNames={filters.selectedCompanyNames}
         onCompanyToggle={filters.handleCompanyToggle}

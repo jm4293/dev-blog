@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Building2 } from 'lucide-react';
 import { useState } from 'react';
 
-interface CompanyLogoImageProps {
+interface BlogLogoImageProps {
   logoUrl?: string | null;
   companyName: string;
   width: number;
@@ -15,12 +15,12 @@ interface CompanyLogoImageProps {
 }
 
 /**
- * 회사 로고 이미지 컴포넌트
+ * 블로그 로고 이미지 컴포넌트
  * - 로고 다운로드 중: 스켈레톤 로딩 UI
  * - 로고 없으면 기본 아이콘 표시
  * - 로드 실패 시 기본 아이콘으로 폴백
  */
-export function CompanyLogoImage({
+export function BlogLogoImage({
   logoUrl,
   companyName,
   width,
@@ -28,7 +28,7 @@ export function CompanyLogoImage({
   className = '',
   title,
   priority = false,
-}: CompanyLogoImageProps) {
+}: BlogLogoImageProps) {
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 

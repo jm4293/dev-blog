@@ -1,19 +1,14 @@
 import type { Company } from '@/supabase/types.supabase';
-import { CompanyLogoImage } from '@/components/image';
+import { BlogLogoImage } from '@/components/image';
 
-interface PopularCompaniesProps {
+interface PopularBlogsProps {
   companies: Company[];
   selectedCompanyNames: string[];
   onCompanyToggle: (companyName: string) => void;
   isLoading: boolean;
 }
 
-export function PopularCompanies({
-  companies,
-  selectedCompanyNames,
-  onCompanyToggle,
-  isLoading,
-}: PopularCompaniesProps) {
+export function PopularBlogs({ companies, selectedCompanyNames, onCompanyToggle, isLoading }: PopularBlogsProps) {
   if (companies.length === 0) {
     return null;
   }
@@ -36,7 +31,7 @@ export function PopularCompanies({
               }`}
               title={company.name}
             >
-              <CompanyLogoImage
+              <BlogLogoImage
                 logoUrl={company.logo_url}
                 companyName={company.name}
                 width={20}

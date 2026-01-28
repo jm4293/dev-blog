@@ -4,7 +4,7 @@ export interface GetPostsParams {
   page?: number;
   search?: string;
   tags?: string;
-  companies?: string;
+  blogs?: string;
   companyId?: string;
   sort?: 'newest' | 'oldest';
   limit?: number;
