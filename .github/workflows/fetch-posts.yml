@@ -1,0 +1,42 @@
+name: Fetch Blog Posts
+
+on:
+  # 매일 한국시간 00:00 (UTC 15:00)에 실행
+  schedule:
+    - cron: '0 15 * * *'
+
+  # 수동 실행 가능
+  workflow_dispatch:
+
+jobs:
+  fetch-posts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run fetch posts script
+        run: npx tsx scripts/fetch-posts.ts
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Upload logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fetch-posts-logs
+          path: |
+            *.log
+          retention-days: 7

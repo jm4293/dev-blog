@@ -36,6 +36,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "rm -rf .next node_modules .turbo",
+    "fetch-posts": "tsx scripts/fetch-posts.ts",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
@@ -88,6 +89,7 @@
     "schema-dts": "^1.1.5",
     "sharp": "^0.34.5",
     "tailwindcss": "^3.4.0",
+    "tsx": "^4.19.2",
     "typescript": "^5",
     "vitest": "^4.0.17"
   },
