@@ -1,38 +1,44 @@
-name: Fetch Blog Posts
+name: 블로그 게시글 자동 수집
 
 on:
-  # 매일 한국시간 00:00 (UTC 15:00)에 실행
+  # 매일 한국시간 00:00 (UTC 15:00)에 자동 실행
   schedule:
     - cron: '0 15 * * *'
 
-  # 수동 실행 가능
+  # GitHub UI에서 수동 실행 가능
   workflow_dispatch:
 
 jobs:
   fetch-posts:
+    name: 블로그 게시글 수집
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      # 1단계: 저장소 코드 체크아웃
+      - name: 저장소 코드 가져오기
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      # 2단계: Node.js 환경 설정
+      - name: Node.js 20 설치
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install dependencies
+      # 3단계: npm 패키지 설치
+      - name: 패키지 설치
         run: npm ci
 
-      - name: Run fetch posts script
+      # 4단계: 블로그 수집 스크립트 실행
+      - name: 블로그 게시글 수집 실행
         run: npx tsx scripts/fetch-posts.ts
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
-      - name: Upload logs (on failure)
+      # 5단계: 실패 시 로그 파일 업로드
+      - name: 실패 시 로그 업로드
         if: failure()
         uses: actions/upload-artifact@v4
         with:
