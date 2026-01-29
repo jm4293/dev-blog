@@ -57,16 +57,18 @@ export default async function PostPage({ searchParams }: PageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <section className="mb-12">
+      <header className="mb-12">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">devBlog.kr</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">개발 블로그를 한 곳에서 모아보세요.</p>
-      </section>
+      </header>
 
-      <PostsContainer
-        isLoggedIn={!!user}
-        initialData={postsData}
-        initialFilters={{ page, search, tags, blogs, sort }}
-      />
+      <section aria-label="블로그 게시글 목록">
+        <PostsContainer
+          isLoggedIn={!!user}
+          initialData={postsData}
+          initialFilters={{ page, search, tags, blogs, sort }}
+        />
+      </section>
     </div>
   );
 }

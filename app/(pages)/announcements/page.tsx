@@ -47,16 +47,18 @@ export default async function AnnouncementsPage({ searchParams }: AnnouncementsP
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <section className="mb-12">
+      <header className="mb-12">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">새로운 소식</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
           devBlog.kr의 최신 업데이트, 새로운 기능, 버그 수정 사항을 확인하세요.
         </p>
-      </section>
+      </header>
 
-      <Suspense fallback={<SimpleSkeleton />}>
-        <AnnouncementsContainer data={announcementsPromise} />
-      </Suspense>
+      <section aria-label="공지사항 목록">
+        <Suspense fallback={<SimpleSkeleton />}>
+          <AnnouncementsContainer data={announcementsPromise} />
+        </Suspense>
+      </section>
     </div>
   );
 }

@@ -38,9 +38,9 @@ export function PostCard({ post, isLoggedIn }: PostCardProps) {
       />
 
       <Link href={post.url} target="_blank" rel="noopener noreferrer" onClick={handleClick}>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
           {post.title}
-        </h3>
+        </h2>
       </Link>
 
       {post.summary && <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-4">{post.summary}</p>}

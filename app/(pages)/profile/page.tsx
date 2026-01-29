@@ -52,11 +52,11 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <section className="mb-12">
+        <header className="mb-12">
           <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">프로필</h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">내 정보를 확인하고 관리하세요.</p>
-        </section>
-        <div className="max-w-2xl mx-auto">
+        </header>
+        <section className="max-w-2xl mx-auto">
           <article className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-12 text-center">
             <div className="mb-6">
               <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mx-auto mb-4">
@@ -73,19 +73,19 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
               GitHub로 로그인
             </Link>
           </article>
-        </div>
+        </section>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <section className="mb-12">
+      <header className="mb-12">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">프로필</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">내 정보를 확인하고 관리하세요.</p>
-      </section>
+      </header>
 
-      <div className="max-w-3xl mx-auto">
+      <section aria-label="사용자 프로필" className="max-w-3xl mx-auto">
         <article className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 mb-6">
           <div className="flex items-center gap-6 mb-8">
             <div className="relative">
@@ -133,7 +133,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
         <ActivityHeatmap year={year} />
 
         <ProfileClient user={user} />
-      </div>
+      </section>
     </div>
   );
 }

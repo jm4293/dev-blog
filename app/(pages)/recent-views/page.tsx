@@ -37,12 +37,14 @@ export default async function RecentViewsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <section className="mb-12">
+      <header className="mb-12">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">최근 본 글</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">최근에 조회한 게시글 목록입니다.</p>
-      </section>
+      </header>
 
-      <RecentViewsList isLoggedIn={!!user} />
+      <section aria-label="최근 본 게시글 목록">
+        <RecentViewsList isLoggedIn={!!user} />
+      </section>
     </div>
   );
 }
