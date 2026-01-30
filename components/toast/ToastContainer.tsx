@@ -18,7 +18,7 @@ export const ToastContainer = () => {
   }
 
   return createPortal(
-    <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-[999] flex flex-col gap-3 max-w-md w-full px-4 pointer-events-none">
+    <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-[999] flex flex-col gap-3 max-w-md w-full px-4 pointer-events-none">
       {toasts.map((toast) => (
         <div key={toast.id} className="animate-in fade-in slide-in-from-top-2 duration-300 pointer-events-auto">
           <div
@@ -26,10 +26,10 @@ export const ToastContainer = () => {
               flex items-center gap-3 rounded-lg px-4 py-3 shadow-lg
               ${
                 toast.type === 'success'
-                  ? 'bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800'
+                  ? 'bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800'
                   : toast.type === 'error'
-                    ? 'bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800'
-                    : 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800'
+                    ? 'bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800'
+                    : 'bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800'
               }
             `}
           >
