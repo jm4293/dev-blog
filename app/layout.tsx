@@ -78,12 +78,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/favicon-512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/logo_32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/logo_192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/logo_512.png', sizes: '512x512', type: 'image/png' },
     ],
-    shortcut: '/favicon-32.png',
-    apple: '/favicon-192.png',
+    shortcut: '/logo_32.png',
+    apple: '/logo_192.png',
   },
   // verification: {
   //   google: 'Google이 제공하는 고유 verification code',
@@ -98,9 +98,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko" suppressHydrationWarning>
       <head>
         <GoogleAnalytics />
-        <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
-        <link rel="icon" href="/favicon-192.png" sizes="192x192" type="image/png" />
-        <link rel="apple-touch-icon" href="/favicon-192.png" />
+        <link rel="icon" href="/logo_32.png" sizes="32x32" type="image/png" />
+        <link rel="icon" href="/logo_192.png" sizes="192x192" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo_192.png" />
 
         {/* 구조화된 데이터 (Schema.org) - Organization */}
         <script

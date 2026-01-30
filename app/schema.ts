@@ -11,7 +11,7 @@ export const organizationSchema: WithContext<Organization> = {
   '@type': 'Organization',
   name: 'devBlog.kr',
   url: baseUrl,
-  logo: `${baseUrl}/og-image.svg`,
+  logo: `${baseUrl}/og-image.png`,
   description: '개발 블로그를 한 곳에서 모아보는 플랫폼',
   sameAs: ['https://github.com/jm4293/dev-blog'],
 };
