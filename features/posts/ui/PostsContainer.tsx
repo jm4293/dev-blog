@@ -1,10 +1,14 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { PostList, SearchBar } from '@/features/posts';
 import { useSearchFilters } from '../hooks';
 import { NoPostsMessage } from '../components';
 import { Pagination } from '@/components/pagination';
+import { PageLoadingSpinner } from '@/components/skeleton';
 import { GetPostsResponse } from '../types';
+import { useToast } from '@/hooks';
 
 interface InitialFilters {
   page: number;
@@ -18,38 +22,54 @@ interface PostsContainerProps {
   isLoggedIn: boolean;
   initialData: GetPostsResponse;
   initialFilters: InitialFilters;
+  loginStatus?: string;
+  errorStatus?: string;
 }
 
-export function PostsContainer({ isLoggedIn, initialData, initialFilters }: PostsContainerProps) {
+export function PostsContainer({
+  isLoggedIn,
+  initialData,
+  initialFilters,
+  loginStatus,
+  errorStatus,
+}: PostsContainerProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { showToast } = useToast();
+
   const posts = initialData.posts;
   const totalPages = initialData.totalPages;
   const filters = useSearchFilters(initialFilters);
 
-  const loadingOverlay = filters.isPending && (
-    <div className="fixed inset-x-0 top-16 bottom-0 z-30 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
-      <div className="flex items-center gap-1">
-        <span className="animate-pulse text-2xl font-bold text-blue-600 dark:text-blue-500 [animation-delay:-0.4s]">
-          d
-        </span>
-        <span className="animate-pulse text-2xl font-bold text-blue-600 dark:text-blue-500 [animation-delay:-0.3s]">
-          e
-        </span>
-        <span className="animate-pulse text-2xl font-bold text-blue-600 dark:text-blue-500 [animation-delay:-0.2s]">
-          v
-        </span>
-        <span className="animate-pulse text-2xl font-bold text-blue-600 dark:text-blue-500 [animation-delay:-0.1s]">
-          B
-        </span>
-        <span className="animate-pulse text-2xl font-bold text-blue-600 dark:text-blue-500">l</span>
-        <span className="animate-pulse text-2xl font-bold text-blue-600 dark:text-blue-500 [animation-delay:-0.05s]">
-          o
-        </span>
-        <span className="animate-pulse text-2xl font-bold text-blue-600 dark:text-blue-500 [animation-delay:-0.1s]">
-          g
-        </span>
-      </div>
-    </div>
-  );
+  // 로그인 성공/실패 토스트 표시
+  useEffect(() => {
+    if (loginStatus === 'success') {
+      showToast({
+        message: '로그인 성공! devBlog.kr에 오신 것을 환영합니다.',
+        type: 'success',
+        duration: 3000,
+      });
+
+      // URL 쿼리 파라미터 제거 (토스트 중복 방지)
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('login');
+      const newUrl = params.toString() ? `/posts?${params.toString()}` : '/posts';
+      router.replace(newUrl, { scroll: false });
+    }
+
+    if (errorStatus === 'auth_failed') {
+      showToast({
+        message: '로그인에 실패했습니다. 다시 시도해주세요.',
+        type: 'error',
+        duration: 3000,
+      });
+
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('error');
+      const newUrl = params.toString() ? `/posts?${params.toString()}` : '/posts';
+      router.replace(newUrl, { scroll: false });
+    }
+  }, [loginStatus, errorStatus, showToast, router, searchParams]);
 
   if (posts.length === 0) {
     return (
@@ -60,7 +80,7 @@ export function PostsContainer({ isLoggedIn, initialData, initialFilters }: Post
           selectedTagsLength={filters.selectedTags.length}
           selectedCompaniesLength={filters.selectedCompanyNames.length}
         />
-        {loadingOverlay}
+        {filters.isPending && <PageLoadingSpinner overlay />}
       </>
     );
   }
@@ -78,7 +98,7 @@ export function PostsContainer({ isLoggedIn, initialData, initialFilters }: Post
         searchQuery={filters.searchQuery}
         tagsString={filters.tagsParam}
       />
-      {loadingOverlay}
+      {filters.isPending && <PageLoadingSpinner overlay />}
     </>
   );
 }

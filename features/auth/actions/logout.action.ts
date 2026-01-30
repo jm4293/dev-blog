@@ -2,6 +2,7 @@
 
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 
 export async function logoutAction() {
   try {
@@ -13,11 +14,17 @@ export async function logoutAction() {
       throw error;
     }
 
-    // 캐시 무효화
+    const cookieStore = cookies();
+
+    cookieStore.getAll().forEach((cookie) => {
+      if (cookie.name.startsWith('sb-')) {
+        cookieStore.delete(cookie.name);
+      }
+    });
+
     revalidatePath('/', 'layout');
 
-    // 홈페이지로 리다이렉트
-    // redirect('/posts');
+    return { success: true };
   } catch (error) {
     throw new Error('로그아웃에 실패했습니다');
   }

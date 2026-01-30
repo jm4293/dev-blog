@@ -2,6 +2,7 @@
 
 import { createSupabaseServerClient, createSupabaseAdminClient } from '@/supabase/server.supabase';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 
 export async function withdrawAction() {
   try {
@@ -27,6 +28,8 @@ export async function withdrawAction() {
     }
 
     // 2. Admin 클라이언트로 사용자 계정 삭제
+    const { data } = await supabase.auth.getSession();
+
     const adminSupabase = await createSupabaseAdminClient();
     const { error: authError } = await adminSupabase.auth.admin.deleteUser(userId);
 
@@ -34,10 +37,13 @@ export async function withdrawAction() {
       throw new Error('계정 삭제에 실패했습니다');
     }
 
-    // 3. 로그아웃 (쿠키 제거 및 세션 종료)
-    await supabase.auth.signOut();
+    const cookieStore = cookies();
+    cookieStore.getAll().forEach((cookie) => {
+      if (cookie.name.startsWith('sb-')) {
+        cookieStore.delete(cookie.name);
+      }
+    });
 
-    // 캐시 무효화
     revalidatePath('/', 'layout');
 
     return { success: true };

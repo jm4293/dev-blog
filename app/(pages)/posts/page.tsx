@@ -41,6 +41,8 @@ interface PageProps {
     tags?: string;
     blogs?: string;
     sort?: string;
+    login?: string;
+    error?: string;
   }>;
 }
 
@@ -52,6 +54,8 @@ export default async function PostPage({ searchParams }: PageProps) {
   const tags = params.tags || '';
   const blogs = params.blogs || '';
   const sort = (params.sort as 'newest' | 'oldest') || 'newest';
+  const login = params.login;
+  const error = params.error;
 
   const [user, postsData] = await Promise.all([getUser(), fetchPosts({ page, search, tags, blogs, sort })]);
 
@@ -67,6 +71,8 @@ export default async function PostPage({ searchParams }: PageProps) {
           isLoggedIn={!!user}
           initialData={postsData}
           initialFilters={{ page, search, tags, blogs, sort }}
+          loginStatus={login}
+          errorStatus={error}
         />
       </section>
     </div>

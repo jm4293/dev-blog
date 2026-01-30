@@ -9,9 +9,22 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/posts" className="flex items-center gap-2 font-bold text-xl">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white">
-            D
-          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <rect width="32" height="32" rx="4" fill="#2563EB" />
+
+            <text
+              x="16.5"
+              y="18"
+              fontFamily="Arial, sans-serif"
+              fontSize="24"
+              fontWeight="bold"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fill="white"
+            >
+              D
+            </text>
+          </svg>
           devBlog
         </Link>
 
