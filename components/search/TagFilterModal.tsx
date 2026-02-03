@@ -7,7 +7,7 @@ import { FilterModal } from '../ui';
 interface TagFilterModalProps {
   tags: Tag[];
   selectedTags: string[];
-  onTagToggle: (tag: string) => void;
+  onTagsApply: (tags: string[]) => void;
   isOpen: boolean;
   onClose: () => void;
   isLoading?: boolean;
@@ -16,7 +16,7 @@ interface TagFilterModalProps {
 export function TagFilterModal({
   tags,
   selectedTags,
-  onTagToggle,
+  onTagsApply,
   isOpen,
   onClose,
   isLoading = false,
@@ -40,17 +40,7 @@ export function TagFilterModal({
   };
 
   const handleComplete = () => {
-    // 변경된 항목들만 toggle 호출
-    selectedTags.forEach((tag) => {
-      if (!tempSelectedTags.includes(tag)) {
-        onTagToggle(tag);
-      }
-    });
-    tempSelectedTags.forEach((tag) => {
-      if (!selectedTags.includes(tag)) {
-        onTagToggle(tag);
-      }
-    });
+    onTagsApply(tempSelectedTags);
     onClose();
   };
 

@@ -71,18 +71,26 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
     setInputValue(e.target.value);
   };
 
+  const handleTagsApply = (tags: string[]) => {
+    setSelectedTags(tags);
+    updateUrl(1, searchQuery, tags, selectedCompanyNames, sortParam);
+  };
+
+  const handleCompaniesApply = (companies: string[]) => {
+    setSelectedCompanyNames(companies);
+    updateUrl(1, searchQuery, selectedTags, companies, sortParam);
+  };
+
   const handleTagToggle = (tag: string) => {
-    const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag];
-    setSelectedTags(newTags);
-    updateUrl(1, searchQuery, newTags, selectedCompanyNames, sortParam);
+    handleTagsApply(selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]);
   };
 
   const handleCompanyToggle = (companyName: string) => {
-    const newCompanies = selectedCompanyNames.includes(companyName)
-      ? selectedCompanyNames.filter((name) => name !== companyName)
-      : [...selectedCompanyNames, companyName];
-    setSelectedCompanyNames(newCompanies);
-    updateUrl(1, searchQuery, selectedTags, newCompanies, sortParam);
+    handleCompaniesApply(
+      selectedCompanyNames.includes(companyName)
+        ? selectedCompanyNames.filter((name) => name !== companyName)
+        : [...selectedCompanyNames, companyName],
+    );
   };
 
   const handleSortChange = (sort: 'newest' | 'oldest') => {
@@ -121,6 +129,8 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
     handleSearchChange,
     handleTagToggle,
     handleCompanyToggle,
+    handleTagsApply,
+    handleCompaniesApply,
     handleSortChange,
     handleReset,
     handlePageChange,

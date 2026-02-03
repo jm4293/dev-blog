@@ -8,7 +8,7 @@ import { BlogLogoImage } from '../image';
 interface BlogFilterModalProps {
   companies: Company[];
   selectedCompanyNames: string[];
-  onCompanyToggle: (companyName: string) => void;
+  onCompaniesApply: (companies: string[]) => void;
   isOpen: boolean;
   onClose: () => void;
   isLoading?: boolean;
@@ -17,7 +17,7 @@ interface BlogFilterModalProps {
 export function BlogFilterModal({
   companies,
   selectedCompanyNames,
-  onCompanyToggle,
+  onCompaniesApply,
   isOpen,
   onClose,
   isLoading = false,
@@ -43,17 +43,7 @@ export function BlogFilterModal({
   };
 
   const handleComplete = () => {
-    // 변경된 항목들만 toggle 호출
-    selectedCompanyNames.forEach((name) => {
-      if (!tempSelectedCompanies.includes(name)) {
-        onCompanyToggle(name);
-      }
-    });
-    tempSelectedCompanies.forEach((name) => {
-      if (!selectedCompanyNames.includes(name)) {
-        onCompanyToggle(name);
-      }
-    });
+    onCompaniesApply(tempSelectedCompanies);
     onClose();
   };
 

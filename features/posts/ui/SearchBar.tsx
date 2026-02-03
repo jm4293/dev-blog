@@ -1,11 +1,11 @@
 'use client';
 
 import { BlogFilterModal, TagFilterModal } from '@/components/search';
-import { useCompanies, useTags } from '../hooks';
+import { useCompanies, useSearchFilters, useTags } from '../hooks';
 import { SearchInput, PopularBlogs, PopularTags, ActiveFilters, SelectedBadges } from '../components';
 
 interface SearchBarProps {
-  filters: ReturnType<typeof import('../hooks').useSearchFilters>;
+  filters: ReturnType<typeof useSearchFilters>;
 }
 
 export function SearchBar({ filters }: SearchBarProps) {
@@ -63,7 +63,7 @@ export function SearchBar({ filters }: SearchBarProps) {
       <BlogFilterModal
         companies={allCompanies}
         selectedCompanyNames={filters.selectedCompanyNames}
-        onCompanyToggle={filters.handleCompanyToggle}
+        onCompaniesApply={filters.handleCompaniesApply}
         isOpen={filters.showCompanyModal}
         onClose={() => filters.setShowCompanyModal(false)}
         isLoading={isLoadingCompanies}
@@ -72,7 +72,7 @@ export function SearchBar({ filters }: SearchBarProps) {
       <TagFilterModal
         tags={allTags}
         selectedTags={filters.selectedTags}
-        onTagToggle={filters.handleTagToggle}
+        onTagsApply={filters.handleTagsApply}
         isOpen={filters.showTagModal}
         onClose={() => filters.setShowTagModal(false)}
         isLoading={isLoadingTags}
