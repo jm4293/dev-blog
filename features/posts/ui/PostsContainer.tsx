@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PostList, SearchBar } from '@/features/posts';
 import { useSearchFilters } from '../hooks';
-import { NoPostsMessage } from '../components';
 import { Pagination } from '@/components/pagination';
 import { PageLoadingSpinner } from '@/components/skeleton';
 import { GetPostsResponse } from '../types';
@@ -37,11 +36,6 @@ export function PostsContainer({
   const searchParams = useSearchParams();
   const { showToast } = useToast();
 
-  const posts = initialData.posts;
-  const totalPages = initialData.totalPages;
-  const filters = useSearchFilters(initialFilters);
-
-  // 로그인 성공/실패 토스트 표시
   useEffect(() => {
     if (loginStatus === 'success') {
       showToast({
@@ -71,15 +65,25 @@ export function PostsContainer({
     }
   }, [loginStatus, errorStatus, showToast, router, searchParams]);
 
+  const posts = initialData.posts;
+  const totalPages = initialData.totalPages;
+  const filters = useSearchFilters(initialFilters);
+  const hasFilters =
+    filters.debouncedSearchQuery !== '' || filters.selectedTags.length > 0 || filters.selectedCompanyNames.length > 0;
+
   if (posts.length === 0) {
     return (
       <>
         <SearchBar filters={filters} />
-        <NoPostsMessage
-          searchQuery={filters.debouncedSearchQuery}
-          selectedTagsLength={filters.selectedTags.length}
-          selectedCompaniesLength={filters.selectedCompanyNames.length}
-        />
+
+        <div className="flex flex-col items-center justify-center py-12">
+          <div className="text-center">
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">게시글이 없습니다</p>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">
+              {hasFilters ? '검색 조건을 변경해주세요' : '새로운 게시글이 곧 추가될 예정입니다'}
+            </p>
+          </div>
+        </div>
         {filters.isPending && <PageLoadingSpinner overlay />}
       </>
     );
@@ -95,8 +99,6 @@ export function PostsContainer({
         totalCount={initialData.total}
         baseUrl="/"
         onPageChange={filters.handlePageChange}
-        searchQuery={filters.searchQuery}
-        tagsString={filters.tagsParam}
       />
       {filters.isPending && <PageLoadingSpinner overlay />}
     </>

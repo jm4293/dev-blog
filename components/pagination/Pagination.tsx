@@ -12,37 +12,17 @@ interface PaginationProps {
   totalCount?: number;
   baseUrl: string;
   onPageChange?: (page: number) => void;
-  searchQuery?: string;
-  tagsString?: string;
 }
 
-export function Pagination({
-  currentPage,
-  totalPages,
-  totalCount = 0,
-  baseUrl,
-  onPageChange,
-  searchQuery,
-  tagsString,
-}: PaginationProps) {
+export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, onPageChange }: PaginationProps) {
   const isMobile = useIsMobile();
 
-  // URL에 쿼리 파라미터 추가
   const buildUrl = (page: number) => {
     const params = buildQueryParams({
       page: page > 1 ? page : undefined,
-      search: searchQuery,
-      tags: tagsString,
     });
 
     return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
-  };
-
-  // 페이지 클릭 핸들러
-  const handlePageClick = (page: number) => {
-    if (onPageChange) {
-      onPageChange(page);
-    }
   };
 
   // 페이지 번호 범위 계산 (반응형)
@@ -80,7 +60,7 @@ export function Pagination({
           page={1}
           isDisabled={currentPage === 1}
           url={onPageChange ? undefined : buildUrl(1)}
-          onClick={onPageChange ? handlePageClick : undefined}
+          onClick={onPageChange}
         >
           <ChevronsLeft className="w-5 h-5" />
         </PaginationButton>
@@ -89,7 +69,7 @@ export function Pagination({
           page={prevPage}
           isDisabled={!prevPage}
           url={onPageChange || !prevPage ? undefined : buildUrl(prevPage)}
-          onClick={onPageChange ? handlePageClick : undefined}
+          onClick={onPageChange}
         >
           <ChevronLeft className="w-5 h-5" />
         </PaginationButton>
@@ -100,7 +80,7 @@ export function Pagination({
             pageNum={pageNum}
             isCurrentPage={pageNum === currentPage}
             url={onPageChange ? undefined : buildUrl(pageNum)}
-            onClick={onPageChange ? handlePageClick : undefined}
+            onClick={onPageChange}
           />
         ))}
 
@@ -108,7 +88,7 @@ export function Pagination({
           page={nextPage}
           isDisabled={!nextPage}
           url={onPageChange || !nextPage ? undefined : buildUrl(nextPage)}
-          onClick={onPageChange ? handlePageClick : undefined}
+          onClick={onPageChange}
         >
           <ChevronRight className="w-5 h-5" />
         </PaginationButton>
@@ -117,7 +97,7 @@ export function Pagination({
           page={totalPages}
           isDisabled={currentPage === totalPages}
           url={onPageChange ? undefined : buildUrl(totalPages)}
-          onClick={onPageChange ? handlePageClick : undefined}
+          onClick={onPageChange}
         >
           <ChevronsRight className="w-5 h-5" />
         </PaginationButton>

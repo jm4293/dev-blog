@@ -4,12 +4,12 @@ import { AnnouncementsResponse } from '@/supabase';
 import { use } from 'react';
 
 export function AnnouncementsContainer({ data }: { data: Promise<AnnouncementsResponse> }) {
-  const { announcements, page_size, total_pages } = use(data);
+  const { announcements, page, total_pages } = use(data);
 
   return (
     <div>
       <AnnouncementList announcements={announcements} />
-      {total_pages > 1 && <Pagination currentPage={page_size} totalPages={total_pages} baseUrl="/announcements" />}
+      {total_pages > 1 && <Pagination currentPage={page} totalPages={total_pages} baseUrl="/announcements" />}
     </div>
   );
 }
