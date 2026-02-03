@@ -5,6 +5,7 @@ import { User as UserIcon, Mail, Github, Calendar, UserX, LogIn } from 'lucide-r
 import Image from 'next/image';
 import Link from 'next/link';
 import { APP } from '@/utils/constants';
+import { NotificationSettings } from '@/features/notifications';
 
 export const metadata: Metadata = {
   title: '프로필 - devBlog.kr',
@@ -130,7 +131,14 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
           </div>
         </article>
 
-        <ActivityHeatmap year={year} />
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6 overflow-visible">
+          <ActivityHeatmap year={year} />
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">알림 설정</h3>
+          <NotificationSettings />
+        </div>
 
         <ProfileClient user={user} />
       </section>

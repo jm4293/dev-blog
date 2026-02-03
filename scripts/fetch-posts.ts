@@ -169,6 +169,38 @@ async function main() {
       '소요 시간': `${(stats.duration / 1000).toFixed(2)}초`,
     });
 
+    // 새 글이 저장된 경우 Push 알림 발송
+    if (stats.postsCreated > 0) {
+      log('info', '🔔 Push 알림 발송 중...');
+      try {
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+        if (!siteUrl) {
+          log('warn', '⚠️ NEXT_PUBLIC_SITE_URL 미설정 — Push 알림 건너뜀');
+        } else {
+          const notifyResponse = await fetch(`${siteUrl}/api/notifications/send`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${process.env.CRON_SECRET}`,
+            },
+            body: JSON.stringify({ postsCreated: stats.postsCreated }),
+          });
+
+          const notifyResult = await notifyResponse.json();
+
+          if (notifyResponse.ok) {
+            log('info', '🔔 Push 알림 발송 완료', notifyResult);
+          } else {
+            log('error', '❌ Push 알림 발송 실패', notifyResult);
+          }
+        }
+      } catch (notifyError) {
+        // Push 알림 실패는 수집 자체를 실패시키지 않음
+        const errorMsg = notifyError instanceof Error ? notifyError.message : String(notifyError);
+        log('error', '❌ Push 알림 요청 에러:', { error: errorMsg });
+      }
+    }
+
     // 정상 종료
     process.exit(0);
   } catch (error) {

@@ -151,7 +151,7 @@ export function ActivityHeatmapClient({ stats, selectedYear }: ActivityHeatmapCl
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6 overflow-visible">
+    <>
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-baseline gap-2">
@@ -251,6 +251,6 @@ export function ActivityHeatmapClient({ stats, selectedYear }: ActivityHeatmapCl
         ))}
         <span>많음</span>
       </div>
-    </div>
+    </>
   );
 }

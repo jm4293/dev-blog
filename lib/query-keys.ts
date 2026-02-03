@@ -71,4 +71,11 @@ export const queryKeys = {
     all: ['announcements'] as const,
     list: (params: { page: number; limit: number }) => ['announcements', params.page, params.limit] as const,
   },
+
+  /**
+   * 알림 관련 query keys
+   */
+  notifications: {
+    preferences: () => ['notifications', 'preferences'] as const,
+  },
 } as const;

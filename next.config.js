@@ -22,6 +22,7 @@ const nextConfig = {
   // Barrel file import optimization
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    optimizeFonts: true,
   },
 };
 
