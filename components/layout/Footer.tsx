@@ -6,9 +6,9 @@ export function Footer() {
       <div className="container mx-auto px-4 py-8">
         <nav aria-label="푸터 네비게이션">
           <h2 className="sr-only">푸터 메뉴</h2>
-          <div className="flex justify-center gap-8">
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-8">
             <span className="font-semibold text-gray-900 dark:text-white">정보</span>
-            <ul className="flex gap-6">
+            <ul className="flex flex-wrap justify-center gap-4 sm:gap-6">
               <li>
                 <a
                   href="https://github.com/jm4293/dev-blog"

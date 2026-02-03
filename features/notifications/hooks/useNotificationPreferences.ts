@@ -24,7 +24,10 @@ export function useNotificationPreferences() {
       const previous = queryClient.getQueryData<PreferencesResponse>(queryKeys.notifications.preferences());
 
       queryClient.setQueryData<PreferencesResponse>(queryKeys.notifications.preferences(), (old) => {
-        if (!old) return old;
+        if (!old) {
+          return old;
+        }
+
         return {
           ...old,
           preferences: { ...old.preferences, new_post_enabled },
