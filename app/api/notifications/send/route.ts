@@ -58,7 +58,9 @@ export async function POST(request: NextRequest) {
       .select('user_id')
       .eq('new_post_enabled', true);
 
-    if (prefError) throw prefError;
+    if (prefError) {
+      throw prefError;
+    }
 
     if (!preferences || preferences.length === 0) {
       return NextResponse.json({ success: true, message: 'No users with notifications enabled', sent: 0 });
@@ -73,7 +75,9 @@ export async function POST(request: NextRequest) {
       .in('user_id', userIds)
       .eq('enabled', true);
 
-    if (subError) throw subError;
+    if (subError) {
+      throw subError;
+    }
 
     if (!subscriptions || subscriptions.length === 0) {
       return NextResponse.json({ success: true, message: 'No active subscriptions', sent: 0 });

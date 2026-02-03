@@ -3,9 +3,12 @@
 
 // Push 메시지 수신
 self.addEventListener('push', function (event) {
-  if (!event.data) return;
+  if (!event.data) {
+    return;
+  }
 
   let payload;
+
   try {
     payload = event.data.json();
   } catch {

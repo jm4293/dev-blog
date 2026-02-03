@@ -6,26 +6,45 @@ import { removeSubscriptionByOSAction, updateSubscriptionEnabledAction, updatePr
 import type { PreferencesResponse } from '../types';
 
 /**
- * 알림 설정 조회/변경 훅 (TanStack Query)
+ * 알림 설정 조회/변경 훅
  */
 export function useNotificationPreferences() {
   const queryClient = useQueryClient();
 
-  // 전체 알림 on/off 변경
-  const updatePreferencesMutation = useMutation({
+  // 전체 알림 on/off 변경 — 낙관적 업데이트
+  const toggleAllNotifications = useMutation({
     mutationFn: async (new_post_enabled: boolean) => {
       const result = await updatePreferencesAction(new_post_enabled);
       if (!result.success) {
         throw new Error(result.error);
       }
     },
-    onSuccess: () => {
+    onMutate: async (new_post_enabled) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.notifications.preferences() });
+      const previous = queryClient.getQueryData<PreferencesResponse>(queryKeys.notifications.preferences());
+
+      queryClient.setQueryData<PreferencesResponse>(queryKeys.notifications.preferences(), (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          preferences: { ...old.preferences, new_post_enabled },
+        };
+      });
+
+      return { previous };
+    },
+    onError: (_error, _variables, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(queryKeys.notifications.preferences(), context.previous);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.notifications.preferences() });
     },
   });
 
   // 기기별 enabled 변경 (OS 단위 bulk) — 낙관적 업데이트
-  const updateDeviceEnabledMutation = useMutation({
+  const toggleDeviceNotification = useMutation({
     mutationFn: async ({ device_os, enabled }: { device_os: string; enabled: boolean }) => {
       const result = await updateSubscriptionEnabledAction(device_os, enabled);
 
@@ -58,21 +77,16 @@ export function useNotificationPreferences() {
   });
 
   // OS 단위 장치 삭제
-  const deleteDeviceMutation = useMutation({
-    mutationFn: async (device_os: string) => {
-      const result = await removeSubscriptionByOSAction(device_os);
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-    },
+  const deleteDeviceSubscriptions = useMutation({
+    mutationFn: async (device_os: string) => await removeSubscriptionByOSAction(device_os),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.notifications.preferences() });
     },
   });
 
   return {
-    toggleAllNotifications: updatePreferencesMutation,
-    toggleDeviceNotification: updateDeviceEnabledMutation,
-    deleteDeviceSubscriptions: deleteDeviceMutation,
+    toggleAllNotifications,
+    toggleDeviceNotification,
+    deleteDeviceSubscriptions,
   };
 }

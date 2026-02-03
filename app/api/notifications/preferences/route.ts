@@ -14,11 +14,13 @@ import { captureException } from '@/sentry.config';
 export async function GET(request: NextRequest) {
   try {
     const ip = extractIP(request);
+
     if (!checkRateLimit(ip, RATE_LIMIT_CONFIG.AUTHENTICATED)) {
       return createRateLimitResponse('Too many requests. Rate limit: 1000 requests per hour');
     }
 
     const supabase = await createSupabaseServerClient();
+
     const {
       data: { user },
       error: userError,
@@ -42,7 +44,9 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id)
       .order('created_at', { ascending: true });
 
-    if (subError) throw subError;
+    if (subError) {
+      throw subError;
+    }
 
     return NextResponse.json({
       preferences: {

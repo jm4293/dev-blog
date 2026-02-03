@@ -1,4 +1,3 @@
-export * from './usePushSubscription';
-export * from './usePreferences';
-export * from './useSubscribe';
+export * from './useNotifications';
+export * from './useNotificationSubscribe';
 export * from './useNotificationPreferences';

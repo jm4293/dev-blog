@@ -12,8 +12,9 @@ interface UpdatePreferencesResult {
 
 export async function updatePreferencesAction(new_post_enabled: boolean): Promise<UpdatePreferencesResult> {
   try {
-    const headersList = await headers();
+    const headersList = headers();
     const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown';
+
     if (!checkRateLimit(ip, RATE_LIMIT_CONFIG.AUTHENTICATED)) {
       return { success: false, error: 'Too many requests' };
     }
@@ -23,6 +24,7 @@ export async function updatePreferencesAction(new_post_enabled: boolean): Promis
     }
 
     const supabase = await createSupabaseServerClient();
+
     const {
       data: { user },
       error: userError,
@@ -41,7 +43,9 @@ export async function updatePreferencesAction(new_post_enabled: boolean): Promis
       { onConflict: 'user_id' },
     );
 
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
 
     return { success: true };
   } catch (error) {

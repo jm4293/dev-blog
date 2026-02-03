@@ -1,56 +1,28 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Bell, BellOff, Monitor, Smartphone, Apple, Trash2 } from 'lucide-react';
-import { usePreferencesQuery, useSubscribe, useNotificationPreferences } from '../hooks';
+import { Bell, BellOff, Trash2 } from 'lucide-react';
+import { useNotifications, useNotificationSubscribe, useNotificationPreferences } from '../hooks';
+import { groupDevices } from '../services';
 import { useToast } from '@/hooks';
-import type { Subscription } from '../types';
-
-// OS별 표시 정보
-const OS_META: Record<string, { label: string; Icon: React.ComponentType<{ className?: string }> }> = {
-  windows: { label: 'Windows', Icon: Monitor },
-  mac: { label: 'Mac', Icon: Apple },
-  linux: { label: 'Linux', Icon: Monitor },
-  android: { label: 'Android', Icon: Smartphone },
-  ios: { label: 'iPhone', Icon: Apple },
-};
-
-interface DeviceGroup {
-  device_os: string;
-  label: string;
-  Icon: React.ComponentType<{ className?: string }>;
-  count: number;
-  enabled: boolean; // 그룹 내 모든 기기가 enabled인지
-}
-
-// 구독 목록을 OS별로 그룹화
-function groupByOS(subscriptions: Subscription[]): DeviceGroup[] {
-  const map = new Map<string, Subscription[]>();
-
-  subscriptions.forEach((sub) => {
-    const existing = map.get(sub.device_os) || [];
-    existing.push(sub);
-    map.set(sub.device_os, existing);
-  });
-
-  return Array.from(map.entries()).map(([device_os, subs]) => ({
-    device_os,
-    label: OS_META[device_os]?.label || device_os,
-    Icon: OS_META[device_os]?.Icon || Monitor,
-    count: subs.length,
-    enabled: subs.every((s) => s.enabled),
-  }));
-}
 
 export function NotificationSettings() {
-  const { data, isLoading } = usePreferencesQuery();
+  const { data, isLoading } = useNotifications();
 
   const { toggleAllNotifications, toggleDeviceNotification, deleteDeviceSubscriptions } = useNotificationPreferences();
-  const { subscribeMutation } = useSubscribe();
+  const { subscribeMutation } = useNotificationSubscribe();
   const { showToast } = useToast();
 
-  const isAllEnabled = data?.preferences?.new_post_enabled ?? false;
-  const deviceGroups = useMemo(() => groupByOS(data?.subscriptions || []), [data?.subscriptions]);
+  const isAllEnabled = data?.preferences.new_post_enabled;
+  const deviceGroups = groupDevices(data?.subscriptions || []);
+
+  // 전체 알림 토글
+  const handleToggleAll = () => {
+    try {
+      toggleAllNotifications.mutate(!isAllEnabled);
+    } catch {
+      showToast({ message: '알림 설정 변경에 실패했습니다.', type: 'error' });
+    }
+  };
 
   // 구독 요청
   const handleSubscribe = async () => {
@@ -68,15 +40,6 @@ export function NotificationSettings() {
       } else {
         showToast({ message: '알림 구독에 실패했습니다.', type: 'error' });
       }
-    }
-  };
-
-  // 전체 알림 토글
-  const handleToggleAll = () => {
-    try {
-      toggleAllNotifications.mutate(!isAllEnabled);
-    } catch {
-      showToast({ message: '알림 설정 변경에 실패했습니다.', type: 'error' });
     }
   };
 
@@ -206,7 +169,6 @@ export function NotificationSettings() {
 
               {/* 현재 장치 추가 버튼 */}
               <button
-                // onClick={() => subscribeMutation.mutate()}
                 onClick={handleSubscribe}
                 disabled={subscribeMutation.isPending}
                 className={`mt-2 text-xs transition-colors text-left ${
