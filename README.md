@@ -17,6 +17,7 @@
 - **🔍 검색 & 필터**: 제목 검색 + 다중 태그/회사 필터링 (OR 조건)
 - **👤 GitHub 로그인**: GitHub OAuth로 안전하게 로그인 및 즐겨찾기 관리
 - **🌓 테마 지원**: 라이트/다크 모드 (시스템 설정 자동 감지)
+- **🔔 Push 알림**: Web Push API 기반 새 글 알림 (기기별 설정, 만료 구독 자동 정리)
 - **📱 반응형**: 모바일부터 데스크탑까지 완벽 최적화
 
 ---
@@ -27,7 +28,7 @@
 | ------------- | ---------------------------------------------- |
 | **Frontend**  | Next.js 14, React 18, TypeScript, Tailwind CSS |
 | **상태 관리** | Jotai, TanStack Query, React Hook Form         |
-| **Backend**   | Supabase (PostgreSQL, GitHub OAuth)            |
+| **Backend**   | Supabase (PostgreSQL, GitHub OAuth), web-push  |
 | **배포**      | Vercel (with Cron Jobs)                        |
 | **개발 도구** | ESLint, Prettier, Husky, TypeScript            |
 
@@ -37,13 +38,13 @@
 
 ```
 dev-blog/
-├── app/              # Next.js App Router
+├── app/              # Next.js App Router (페이지, API 라우트)
 ├── components/       # React 컴포넌트
-├── features/         # 기능별 비즈니스 로직
+├── features/         # 기능별 비즈니스 로직 (posts, auth, notifications 등)
 ├── atoms/            # Jotai 전역 상태
-├── supabase/         # Supabase 클라이언트
+├── supabase/         # Supabase 클라이언트 & 타입
 ├── utils/            # 유틸리티 함수
-├── hooks/            # React 훅
-├── lib/              # 라이브러리
-└── public/           # 정적 파일
+├── hooks/            # 공유 React 훅
+├── lib/              # 라이브러리 (Query Keys, GA)
+└── public/           # 정적 파일 (로고, sw.js)
 ```
