@@ -85,9 +85,6 @@ export const metadata: Metadata = {
     shortcut: '/logo_32.png',
     apple: '/logo_192.png',
   },
-  // verification: {
-  //   google: 'Google이 제공하는 고유 verification code',
-  // },
   other: {
     'naver-site-verification': '7f789ada98f40ecd34a513b77f53acd408b08300',
   },
@@ -101,6 +98,54 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/logo_32.png" sizes="32x32" type="image/png" />
         <link rel="icon" href="/logo_192.png" sizes="192x192" type="image/png" />
         <link rel="apple-touch-icon" href="/logo_192.png" />
+
+        {/* PWA manifest */}
+        <link rel="manifest" href="/manifest.json" />
+
+        {/* iOS PWA splash screen */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="devBlog.kr" />
+        <link
+          rel="apple-touch-startup-image"
+          href="/splash-640x1138.png"
+          media="(device-width: 320px) and (device-height: 568px) and (-apple-system-2x)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/splash-750x1334.png"
+          media="(device-width: 375px) and (device-height: 667px) and (-apple-system-2x)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/splash-828x1792.png"
+          media="(device-width: 414px) and (device-height: 896px) and (-apple-system-2x)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/splash-1125x2436.png"
+          media="(device-width: 375px) and (device-height: 812px) and (-apple-system-3x)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/splash-1242x2208.png"
+          media="(device-width: 414px) and (device-height: 736px) and (-apple-system-3x)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/splash-1284x2778.png"
+          media="(device-width: 428px) and (device-height: 926px) and (-apple-system-3x)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/splash-1179x2556.png"
+          media="(device-width: 393px) and (device-height: 852px) and (-apple-system-3x)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/splash-1320x2868.png"
+          media="(device-width: 440px) and (device-height: 956px) and (-apple-system-3x)"
+        />
 
         {/* 구조화된 데이터 (Schema.org) - Organization */}
         <script
