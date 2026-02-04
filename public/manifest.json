@@ -4,7 +4,7 @@
   "description": "개발 기업들의 기술 블로그 모음 플랫폼",
   "start_url": "/posts",
   "display": "standalone",
-  "theme_color": "#2563EB",
+  "theme_color": "#000000",
   "background_color": "#2563EB",
   "icons": [
     {
