@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     // 3. 알림 메시지 구성
     const payload = JSON.stringify({
       title: 'devBlog.kr',
-      body: `방금 ${postsCreated}개의 새 글이 등록되었습니다.`,
+      body: `${postsCreated}개의 새 포스트를 확인해보세요!`,
       icon: '/logo_192.png',
       badge: '/logo_32.png',
       tag: 'devblog-new-posts',
