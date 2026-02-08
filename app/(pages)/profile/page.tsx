@@ -8,7 +8,7 @@ import { APP } from '@/utils/constants';
 import { NotificationSettings } from '@/features/notifications';
 
 export const metadata: Metadata = {
-  title: '프로필 - devBlog.kr',
+  title: '프로필',
   description: 'GitHub 계정으로 연동된 프로필 정보와 계정 설정을 관리하세요.',
   alternates: {
     canonical: `${APP.URL}/profile`,

@@ -4,7 +4,7 @@ import { getUser } from '@/features/auth';
 import { APP } from '@/utils/constants';
 
 export const metadata: Metadata = {
-  title: '포스트 - devBlog.kr',
+  title: '포스트',
   description:
     '토스, 카카오 등 개발 블로그 게시글을 한 곳에서 모아보세요. React, TypeScript, 백엔드, DevOps 등 최신 개발 정보를 태그와 검색으로 쉽게 찾아보세요.',
   alternates: {

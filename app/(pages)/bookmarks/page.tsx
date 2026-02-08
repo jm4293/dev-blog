@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 import { GridSkeleton } from '@/components/skeleton';
 
 export const metadata: Metadata = {
-  title: '즐겨찾기 - devBlog.kr',
+  title: '즐겨찾기',
   description:
     'GitHub 로그인으로 저장한 개발 블로그 게시글을 한눈에 관리하고 정리하세요. 토스, 카카오 등 개발 블로그를 북마크 하세요.',
   alternates: {

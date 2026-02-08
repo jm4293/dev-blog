@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 import { SimpleSkeleton } from '@/components/skeleton';
 
 export const metadata: Metadata = {
-  title: '공지사항 - devBlog.kr',
+  title: '공지사항',
   description: '최신 기능 업데이트, 새로운 블로그 추가, 버그 수정 등 devBlog.kr의 공지사항과 소식을 확인하세요.',
   alternates: {
     canonical: `${APP.URL}/announcements`,

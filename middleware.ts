@@ -5,7 +5,7 @@ const redirectToPosts = (request: NextRequest) => {
   if (request.nextUrl.pathname === '/') {
     const url = request.nextUrl.clone();
     url.pathname = '/posts';
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(url, { status: 301 });
   }
 };
 

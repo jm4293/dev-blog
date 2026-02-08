@@ -18,7 +18,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: '개발 블로그 모음 - devBlog.kr',
+  title: {
+    default: '개발 블로그 모음 - devBlog.kr',
+    template: '%s - devBlog.kr',
+  },
   description:
     '토스, 카카오 등 개발 블로그를 한 곳에서 모아보세요. 최신 개발 트렌드와 개발 정보를 태그와 검색으로 쉽게 찾아보세요.',
   keywords: [

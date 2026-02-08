@@ -3,7 +3,7 @@ import { getUser } from '@/features/auth';
 import { APP } from '@/utils/constants';
 
 export const metadata = {
-  title: '최근 본 글 - devBlog.kr',
+  title: '최근 본 글',
   description: '최근에 조회한 게시글 목록을 확인하세요. 관심 있는 개발 블로그 포스트를 다시 찾아보세요.',
   alternates: {
     canonical: `${APP.URL}/recent-views`,
