@@ -4,10 +4,10 @@ interface PostCardHeaderProps {
   logoUrl: string | undefined;
   companyName: string;
   timeDisplay: string;
-  bookmarkButton: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-export function PostCardHeader({ logoUrl, companyName, timeDisplay, bookmarkButton }: PostCardHeaderProps) {
+export function PostCardHeader({ logoUrl, companyName, timeDisplay, children }: PostCardHeaderProps) {
   return (
     <div className="flex items-center gap-3 mb-4">
       <BlogLogoImage
@@ -23,7 +23,7 @@ export function PostCardHeader({ logoUrl, companyName, timeDisplay, bookmarkButt
         <p className="text-sm font-semibold text-gray-900 dark:text-white">{companyName}</p>
         <p className="text-xs text-gray-500 dark:text-gray-400">{timeDisplay}</p>
       </div>
-      {bookmarkButton}
+      {children}
     </div>
   );
 }
