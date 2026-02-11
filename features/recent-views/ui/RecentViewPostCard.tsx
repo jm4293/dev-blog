@@ -57,20 +57,19 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
           logoUrl={view.post.company.logo_url}
           companyName={view.post.company.name}
           timeDisplay={timeDisplay}
-          bookmarkButton={
-            !isEditMode ? (
-              <BookmarkButton
-                isBookmarked={isBookmarked}
-                isLoading={isLoading}
-                onToggle={(e) => {
-                  e.stopPropagation();
-                  toggleBookmark();
-                }}
-                showLoginTooltip={showLoginTooltip}
-              />
-            ) : null
-          }
-        />
+        >
+          {!isEditMode && (
+            <BookmarkButton
+              isBookmarked={isBookmarked}
+              isLoading={isLoading}
+              onToggle={(e) => {
+                e.stopPropagation();
+                toggleBookmark();
+              }}
+              showLoginTooltip={showLoginTooltip}
+            />
+          )}
+        </PostCardHeader>
 
         {/* Title */}
         {isEditMode ? (

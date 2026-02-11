@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { fetchPosts, PostsContainer } from '@/features/posts';
 import { getUser } from '@/features/auth';
-import { APP } from '@/utils/constants';
+import { APP, parsePostsSearchParams } from '@/utils';
 
 export const metadata: Metadata = {
   title: '포스트',
@@ -35,27 +35,11 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  searchParams: Promise<{
-    page?: string;
-    search?: string;
-    tags?: string;
-    blogs?: string;
-    sort?: string;
-    login?: string;
-    error?: string;
-  }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
 export default async function PostPage({ searchParams }: PageProps) {
-  const params = await searchParams;
-
-  const page = Math.max(1, parseInt(params.page || '1', 10));
-  const search = params.search || '';
-  const tags = params.tags || '';
-  const blogs = params.blogs || '';
-  const sort = (params.sort as 'newest' | 'oldest') || 'newest';
-  const login = params.login;
-  const error = params.error;
+  const { page, search, tags, blogs, sort, login, error } = parsePostsSearchParams(await searchParams);
 
   const [user, postsData] = await Promise.all([getUser(), fetchPosts({ page, search, tags, blogs, sort })]);
 
