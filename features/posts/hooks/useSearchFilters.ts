@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { buildQueryParams } from '@/utils';
 import { useDebounce } from '@/hooks';
+import { useFilterModal } from './useFilterModal';
 
 interface InitialFilters {
   page: number;
@@ -32,8 +33,7 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
   const [inputValue, setInputValue] = useState(searchQuery);
   const [selectedTags, setSelectedTags] = useState<string[]>(() => parseArrayParam(tagsParam));
   const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>(() => parseArrayParam(blogsParam));
-  const [showTagModal, setShowTagModal] = useState(false);
-  const [showCompanyModal, setShowCompanyModal] = useState(false);
+  const { showTagModal, showCompanyModal, setShowTagModal, setShowCompanyModal } = useFilterModal();
 
   // 디바운스된 검색어 (500ms 지연)
   const debouncedSearchQuery = useDebounce(inputValue, 500);

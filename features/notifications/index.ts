@@ -1,5 +1,2 @@
-export * from './actions';
-export * from './services';
-export * from './hooks';
-export * from './types';
-export * from './ui';
+// UI 컴포넌트 (features/profile에서 사용)
+export { NotificationSettings } from './ui/NotificationSettings';
