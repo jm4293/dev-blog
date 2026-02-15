@@ -5,7 +5,11 @@
   "printWidth": 120,
   "trailingComma": "all",
   "bracketSpacing": true,
+  "bracketSameLine": false,
   "arrowParens": "always",
   "endOfLine": "lf",
+  "singleAttributePerLine": false,
+  "htmlWhitespaceSensitivity": "css",
+  "embeddedLanguageFormatting": "auto",
   "plugins": ["prettier-plugin-tailwindcss"]
 }

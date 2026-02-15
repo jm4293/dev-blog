@@ -8,7 +8,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-700 dark:bg-gray-900/80">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/posts" className="flex items-center gap-2 text-xl font-bold">
+        <Link href="/posts" className="flex items-center gap-2 text-xl font-bold text-blue-600 dark:text-blue-400">
           devBlog.kr
         </Link>
 
