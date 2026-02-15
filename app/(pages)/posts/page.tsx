@@ -158,7 +158,7 @@ export default async function PostPage({ searchParams }: PageProps) {
       />
 
       <header className="mb-4">
-        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">devBlog.kr</h1>
+        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">포스트</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">개발 블로그를 한 곳에서 모아보세요.</p>
       </header>
 
