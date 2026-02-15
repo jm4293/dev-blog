@@ -3,8 +3,8 @@ import type { PostWithCompany } from '@/supabase';
 export interface GetPostsParams {
   page?: number;
   search?: string;
-  tags?: string;
-  blogs?: string;
+  tags?: string[];
+  blogs?: string[];
   companyId?: string;
   sort?: 'newest' | 'oldest';
   limit?: number;

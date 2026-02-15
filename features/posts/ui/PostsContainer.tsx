@@ -10,8 +10,8 @@ import { GetPostsResponse } from '../types';
 interface InitialFilters {
   page: number;
   search: string;
-  tags: string;
-  blogs: string;
+  tags: string[];
+  blogs: string[];
   sort: 'newest' | 'oldest';
 }
 

@@ -8,8 +8,8 @@ import type { GetPostsParams, GetPostsResponse } from '../types';
 export async function fetchPosts({
   page = 1,
   search = '',
-  tags: tagsParam = '',
-  blogs: blogsParam = '',
+  tags = [],
+  blogs = [],
   companyId = '',
   sort = 'newest',
   limit = 20,
@@ -17,14 +17,6 @@ export async function fetchPosts({
   const supabase = await createSupabaseServerClient();
 
   const offset = (page - 1) * limit;
-  const tags = tagsParam
-    .split(',')
-    .map((t) => t.trim())
-    .filter((t) => t.length > 0);
-  const blogs = blogsParam
-    .split(',')
-    .map((c) => c.trim())
-    .filter((c) => c.length > 0);
 
   // 1. 전체 게시글 수 조회
   let countQuery = supabase.from('posts').select('id', { count: 'exact', head: true });
