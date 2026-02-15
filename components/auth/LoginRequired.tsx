@@ -11,7 +11,7 @@ export function LoginRequired({
   description = 'GitHub 계정으로 로그인하고 서비스를 이용하세요',
 }: LoginRequiredProps) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 dark:border-gray-800 dark:bg-gray-900">
+    <div className="mx-auto max-w-md rounded-lg border border-gray-200 bg-gray-50 p-8 dark:border-gray-800 dark:bg-gray-900">
       <div className="mb-6 flex flex-col items-center">
         <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">{title}</h2>
         <p className="text-center text-gray-600 dark:text-gray-400">{description}</p>
