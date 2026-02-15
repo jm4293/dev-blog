@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useGitHubLogin } from '../hooks';
-import Link from 'next/link';
 
 export function LoginCard() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +26,7 @@ export function LoginCard() {
       <button
         onClick={handleLogin}
         disabled={isLoading}
-        className="mx-auto mb-4 flex w-72 items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
       >
         {isLoading ? (
           <>
