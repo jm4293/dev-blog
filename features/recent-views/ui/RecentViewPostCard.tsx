@@ -2,7 +2,7 @@ import { Check } from 'lucide-react';
 import Link from 'next/link';
 import type { RecentViewWithPost } from '@/supabase/types.supabase';
 import { useAddRecentView } from '@/features/recent-views';
-import { formatPostDate } from '@/utils';
+import { formatPostDate, cn } from '@/utils';
 import { PostCardHeader, PostCardTags, BookmarkButton } from '@/features/posts/components';
 import { useBookmarkToggle } from '@/features/bookmarks';
 
@@ -32,12 +32,12 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
   };
 
   return (
-    <div className="relative group">
+    <div className="group relative">
       {/* 선택 표시 - 편집 모드일 때만 */}
       {isEditMode && isSelected && (
-        <div className="absolute top-4 right-4 z-10">
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center shadow-lg">
-            <Check className="w-5 h-5 text-white" />
+        <div className="absolute right-4 top-4 z-10">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 shadow-lg">
+            <Check className="h-5 w-5 text-white" />
           </div>
         </div>
       )}
@@ -45,13 +45,14 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
       {/* Post Card */}
       <article
         onClick={handleCardClick}
-        className={`bg-white dark:bg-gray-800 rounded-lg border-2 p-6 transition-all ${
+        className={cn(
+          'rounded-lg border-2 bg-white p-6 transition-all dark:bg-gray-800',
           isEditMode
             ? isSelected
-              ? 'border-blue-600 dark:border-blue-500 bg-blue-50 dark:bg-blue-950/30 cursor-pointer'
-              : 'border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 cursor-pointer'
-            : 'border-gray-200 dark:border-gray-700 hover:shadow-lg dark:hover:shadow-xl hover:-translate-y-1 transform duration-300'
-        }`}
+              ? 'cursor-pointer border-blue-600 bg-blue-50 dark:border-blue-500 dark:bg-blue-950/30'
+              : 'cursor-pointer border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-600'
+            : 'transform border-gray-200 duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:hover:shadow-xl',
+        )}
       >
         <PostCardHeader
           logoUrl={view.post.company.logo_url}
@@ -73,10 +74,10 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
 
         {/* Title */}
         {isEditMode ? (
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2">{view.post.title}</h3>
+          <h3 className="mb-3 line-clamp-2 text-lg font-bold text-gray-900 dark:text-white">{view.post.title}</h3>
         ) : (
           <Link href={view.post.url} target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <h3 className="mb-3 line-clamp-2 text-lg font-bold text-gray-900 transition-colors hover:text-blue-600 dark:text-white dark:hover:text-blue-400">
               {view.post.title}
             </h3>
           </Link>
@@ -84,7 +85,7 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
 
         {/* Summary */}
         {view.post.summary && (
-          <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-4">{view.post.summary}</p>
+          <p className="mb-4 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">{view.post.summary}</p>
         )}
 
         {/* Tags */}
@@ -97,7 +98,7 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleLinkClick}
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-semibold transition-colors"
+            className="inline-flex items-center text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
           >
             전체 읽기 →
           </Link>
@@ -105,7 +106,7 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
       </article>
 
       {/* Viewed At */}
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+      <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
         조회: {new Date(view.viewed_at).toLocaleString('ko-KR')}
       </p>
     </div>

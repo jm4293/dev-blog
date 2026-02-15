@@ -19,23 +19,23 @@ export function EmptyState({
   showLoginPrompt = false,
 }: EmptyStateProps) {
   return (
-    <div className="text-center py-12 px-4">
+    <div className="px-4 py-12 text-center">
       {Icon && (
-        <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-            <Icon className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+        <div className="mb-4 flex justify-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
+            <Icon className="h-8 w-8 text-gray-400 dark:text-gray-500" />
           </div>
         </div>
       )}
 
-      <p className="text-gray-900 dark:text-gray-100 text-lg font-semibold mb-2">{title}</p>
-      <p className="text-gray-500 dark:text-gray-400 text-sm whitespace-pre-line">{description}</p>
+      <p className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</p>
+      <p className="whitespace-pre-line text-sm text-gray-500 dark:text-gray-400">{description}</p>
 
       {showLoginPrompt && actionHref && actionLabel && (
         <div className="mt-6">
           <Link
             href={actionHref}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
           >
             {actionLabel}
           </Link>

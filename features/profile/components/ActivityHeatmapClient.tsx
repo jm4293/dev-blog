@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { format, startOfYear, endOfYear, eachDayOfInterval, getDay, getMonth } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { cn } from '@/utils';
 import type { BookmarkStats } from '../services';
 
 interface MonthLabel {
@@ -97,7 +98,7 @@ function HeatmapCell({
   onHover: (data: { date: string; count: number } | null) => void;
 }) {
   if (!day) {
-    return <div className="w-[10px] h-[10px] bg-transparent" />;
+    return <div className="h-[10px] w-[10px] bg-transparent" />;
   }
 
   const dateKey = format(day, 'yyyy-MM-dd');
@@ -105,16 +106,19 @@ function HeatmapCell({
   const colorClass = getColorForCount(count);
 
   return (
-    <div className="relative group">
+    <div className="group relative">
       <div
-        className={`w-[10px] h-[10px] rounded-sm ${colorClass} transition-all group-hover:ring-2 group-hover:ring-emerald-500 dark:group-hover:ring-emerald-400 cursor-pointer`}
+        className={cn(
+          'h-[10px] w-[10px] cursor-pointer rounded-sm transition-all group-hover:ring-2 group-hover:ring-emerald-500 dark:group-hover:ring-emerald-400',
+          colorClass,
+        )}
         onMouseEnter={() => onHover({ date: dateKey, count })}
         onMouseLeave={() => onHover(null)}
       />
       {hoveredDay?.date === dateKey && (
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded whitespace-nowrap shadow-lg z-50 pointer-events-none">
+        <div className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white shadow-lg dark:bg-gray-700">
           {count}개
-          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
+          <div className="absolute left-1/2 top-full -mt-px -translate-x-1/2">
             <div className="border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
           </div>
         </div>
@@ -153,42 +157,44 @@ export function ActivityHeatmapClient({ stats, selectedYear }: ActivityHeatmapCl
   return (
     <>
       {/* 헤더 */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex items-baseline gap-2">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">즐겨찾기 활동</h3>
           <span className="text-sm text-gray-500 dark:text-gray-400">
             총 <span className="font-medium text-emerald-600 dark:text-emerald-400">{stats.total}</span>개
           </span>
         </div>
-        <div className="flex items-center gap-1 ">
+        <div className="flex items-center gap-1">
           <button
             onClick={() => handleYearChange(selectedYear - 1)}
             disabled={!canGoPrev}
-            className={`p-1.5 rounded-md transition-colors ${
+            className={cn(
+              'rounded-md p-1.5 transition-colors',
               !canGoPrev
-                ? 'opacity-30 cursor-not-allowed'
-                : 'hover:bg-white dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
-            }`}
+                ? 'cursor-not-allowed opacity-30'
+                : 'text-gray-700 hover:bg-white dark:text-gray-300 dark:hover:bg-gray-600',
+            )}
             title="이전 년도"
             aria-label="이전 년도"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="h-4 w-4" />
           </button>
-          <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 min-w-[60px] text-center px-2">
+          <span className="min-w-[60px] px-2 text-center text-sm font-semibold text-gray-900 dark:text-gray-100">
             {selectedYear}년
           </span>
           <button
             onClick={() => handleYearChange(selectedYear + 1)}
             disabled={!canGoNext}
-            className={`p-1.5 rounded-md transition-colors ${
+            className={cn(
+              'rounded-md p-1.5 transition-colors',
               !canGoNext
-                ? 'opacity-30 cursor-not-allowed'
-                : 'hover:bg-white dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
-            }`}
+                ? 'cursor-not-allowed opacity-30'
+                : 'text-gray-700 hover:bg-white dark:text-gray-300 dark:hover:bg-gray-600',
+            )}
             title="다음 년도"
             aria-label="다음 년도"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -198,13 +204,13 @@ export function ActivityHeatmapClient({ stats, selectedYear }: ActivityHeatmapCl
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full pb-2">
             {/* 월 레이블 */}
-            <div className="flex mb-2">
+            <div className="mb-2 flex">
               <div className="w-[29px]"></div>
-              <div className="flex-1 relative h-4">
+              <div className="relative h-4 flex-1">
                 {monthLabels.map((month, index) => (
                   <div
                     key={index}
-                    className="absolute text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap"
+                    className="absolute whitespace-nowrap text-xs text-gray-600 dark:text-gray-400"
                     style={{ left: `${month.weekIndex * 13}px` }}
                   >
                     {month.label}
@@ -216,9 +222,9 @@ export function ActivityHeatmapClient({ stats, selectedYear }: ActivityHeatmapCl
             {/* 히트맵 그리드 */}
             <div className="flex gap-[3px]">
               {/* 요일 레이블 */}
-              <div className="flex flex-col gap-[3px] text-xs text-gray-600 dark:text-gray-400 w-[26px] flex-shrink-0">
+              <div className="flex w-[26px] flex-shrink-0 flex-col gap-[3px] text-xs text-gray-600 dark:text-gray-400">
                 {WEEK_DAYS.map((day, index) => (
-                  <div key={index} className="h-[10px] flex items-center">
+                  <div key={index} className="flex h-[10px] items-center">
                     {DISPLAYED_DAYS.includes(index) ? day : ''}
                   </div>
                 ))}
@@ -244,10 +250,10 @@ export function ActivityHeatmapClient({ stats, selectedYear }: ActivityHeatmapCl
       </div>
 
       {/* 범례 */}
-      <div className="flex justify-end items-center gap-2 mt-2 text-xs text-gray-600 dark:text-gray-400">
+      <div className="mt-2 flex items-center justify-end gap-2 text-xs text-gray-600 dark:text-gray-400">
         <span>적음</span>
         {LEVELS.map((level, index) => (
-          <div key={index} className={`w-3 h-3 rounded-sm ${level.color}`} title={level.label}></div>
+          <div key={index} className={cn('h-3 w-3 rounded-sm', level.color)} title={level.label}></div>
         ))}
         <span>많음</span>
       </div>

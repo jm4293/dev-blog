@@ -55,15 +55,15 @@ export function TagFilterModal({
       isEmpty={tags.length === 0}
       emptyMessage="태그가 없습니다."
     >
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
         {tags.map((tag) => (
           <button
             key={tag.id}
             onClick={() => handleTempToggle(tag.name)}
-            className={`p-4 rounded-lg font-semibold transition-all ${
+            className={`rounded-lg p-4 font-semibold transition-all ${
               tempSelectedTags.includes(tag.name)
                 ? 'bg-blue-600 text-white dark:bg-blue-500'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
+                : 'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600'
             }`}
           >
             {tag.name}

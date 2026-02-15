@@ -21,7 +21,7 @@ button {
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  @apply w-2 h-2;
+  @apply h-2 w-2;
 }
 
 ::-webkit-scrollbar-track {
@@ -29,7 +29,7 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+  @apply rounded-full bg-gray-300 dark:bg-gray-700;
 }
 
 ::-webkit-scrollbar-thumb:hover {

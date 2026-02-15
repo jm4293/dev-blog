@@ -69,8 +69,8 @@ export function NotificationSettings() {
   if (isLoading) {
     return (
       <>
-        <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-4" />
-        <div className="h-10 w-full bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse" />
+        <div className="mb-4 h-4 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
+        <div className="h-10 w-full animate-pulse rounded-lg bg-gray-100 dark:bg-gray-700" />
       </>
     );
   }
@@ -81,9 +81,9 @@ export function NotificationSettings() {
       <div className="flex items-center justify-between py-3">
         <div className="flex items-center gap-3">
           {isAllEnabled ? (
-            <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <Bell className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           ) : (
-            <BellOff className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+            <BellOff className="h-5 w-5 text-gray-400 dark:text-gray-500" />
           )}
           <div>
             <p className="text-sm font-medium text-gray-900 dark:text-white">새 글 알림</p>
@@ -92,13 +92,13 @@ export function NotificationSettings() {
         </div>
         <button
           onClick={handleToggleAll}
-          className={`relative w-11 h-6 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
+          className={`relative h-6 w-11 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
             isAllEnabled ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
           }`}
           aria-label="새 글 알림 토글"
         >
           <span
-            className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200 ${
+            className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform duration-200 ${
               isAllEnabled ? 'translate-x-5' : 'translate-x-0'
             }`}
           />
@@ -107,19 +107,19 @@ export function NotificationSettings() {
 
       {/* 장치별 설정 — 전체 토글 ON일 때만 표시 */}
       {isAllEnabled && (
-        <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-3">장치별 설정</p>
+        <div className="border-t border-gray-100 pt-3 dark:border-gray-700">
+          <p className="mb-3 text-xs font-medium text-gray-500 dark:text-gray-400">장치별 설정</p>
 
           {deviceGroups.length === 0 ? (
             // 등록된 기기가 없는 경우
-            <div className="text-center py-4">
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">등록된 장치가 없습니다.</p>
+            <div className="py-4 text-center">
+              <p className="mb-3 text-sm text-gray-500 dark:text-gray-400">등록된 장치가 없습니다.</p>
               <button
                 onClick={handleSubscribe}
                 disabled={subscribeMutation.isPending}
-                className={`px-4 py-2 text-white text-sm font-medium rounded-lg transition-colors ${
+                className={`rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors ${
                   subscribeMutation.isPending
-                    ? 'bg-blue-400 dark:bg-blue-400 cursor-not-allowed'
+                    ? 'cursor-not-allowed bg-blue-400 dark:bg-blue-400'
                     : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
                 }`}
               >
@@ -134,33 +134,33 @@ export function NotificationSettings() {
                 return (
                   <div
                     key={group.device_os}
-                    className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-gray-50 dark:bg-gray-900/50"
+                    className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2.5 dark:bg-gray-900/50"
                   >
                     <div className="flex items-center gap-3">
-                      <Icon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                      <Icon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
                       <span className="text-sm text-gray-900 dark:text-white">{group.label}</span>
                       <span className="text-xs text-gray-400 dark:text-gray-500">({group.count}기기)</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleToggleDevice(group.device_os, group.enabled)}
-                        className={`relative w-9 h-5 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-gray-800 ${
+                        className={`relative h-5 w-9 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:focus:ring-offset-gray-800 ${
                           group.enabled ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
                         }`}
                         aria-label={`${group.label} 알림 토글`}
                       >
                         <span
-                          className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${
+                          className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200 ${
                             group.enabled ? 'translate-x-4' : 'translate-x-0'
                           }`}
                         />
                       </button>
                       <button
                         onClick={() => handleDeleteDevice(group.device_os, group.label)}
-                        className="p-1 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400 transition-colors"
+                        className="p-1 text-gray-400 transition-colors hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400"
                         aria-label={`${group.label} 장치 삭제`}
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
                   </div>
@@ -171,9 +171,9 @@ export function NotificationSettings() {
               <button
                 onClick={handleSubscribe}
                 disabled={subscribeMutation.isPending}
-                className={`mt-2 text-xs transition-colors text-left ${
+                className={`mt-2 text-left text-xs transition-colors ${
                   subscribeMutation.isPending
-                    ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                    ? 'cursor-not-allowed text-gray-400 dark:text-gray-500'
                     : 'text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
                 }`}
               >

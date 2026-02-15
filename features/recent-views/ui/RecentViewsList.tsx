@@ -78,11 +78,11 @@ export function RecentViewsList({ isLoggedIn }: RecentViewsListProps) {
         onClearAll={handleClearAll}
       />
 
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
         총 <span className="font-semibold text-blue-600 dark:text-blue-400">{views.length}</span>개
       </p>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {views.map((view) => (
           <RecentViewPostCard
             key={view.post_id}

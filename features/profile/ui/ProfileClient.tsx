@@ -31,19 +31,19 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-blue-200 dark:border-blue-900/50 p-6 mb-6">
-        <h3 className="text-sm font-semibold text-blue-700 dark:text-blue-400 mb-3">로그아웃</h3>
+      <div className="mb-6 rounded-xl border-2 border-blue-200 bg-white p-6 dark:border-blue-900/50 dark:bg-gray-800">
+        <h3 className="mb-3 text-sm font-semibold text-blue-700 dark:text-blue-400">로그아웃</h3>
         <button
           onClick={handleLogout}
           disabled={isPending}
-          className="w-full px-4 py-2.5 rounded-lg border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+          className="w-full rounded-lg border-2 border-blue-600 px-4 py-2.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-blue-500 dark:text-blue-400 dark:hover:bg-blue-900/20"
         >
           {isPending ? '로그아웃 중...' : '로그아웃'}
         </button>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-red-200 dark:border-red-900/50 p-6 mb-6">
-        <h3 className="text-sm font-semibold text-red-700 dark:text-red-400 mb-3">회원 탈퇴</h3>
+      <div className="mb-6 rounded-xl border-2 border-red-200 bg-white p-6 dark:border-red-900/50 dark:bg-gray-800">
+        <h3 className="mb-3 text-sm font-semibold text-red-700 dark:text-red-400">회원 탈퇴</h3>
         <div className="mb-4">
           <p className="text-sm text-red-700 dark:text-red-400">
             회원탈퇴 시 모든 데이터가 영구 삭제되며 복구할 수 없습니다.
@@ -53,7 +53,7 @@ export const ProfileClient = ({ user }: ProfileClientProps) => {
         <button
           onClick={handleDeleteAccount}
           disabled={isDeleting || showDeleteConfirm}
-          className="w-full px-4 py-2.5 rounded-lg border-2 border-red-600 dark:border-red-700 text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+          className="w-full rounded-lg border-2 border-red-600 px-4 py-2.5 text-sm font-medium text-red-700 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/30"
         >
           {isDeleting ? '회원탈퇴 중...' : '회원탈퇴'}
         </button>

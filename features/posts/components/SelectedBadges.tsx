@@ -31,15 +31,15 @@ export function SelectedBadges({
             {[...selectedCompanyNames].sort().map((companyName) => (
               <span
                 key={companyName}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium"
+                className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
               >
                 {companyName}
                 <button
                   onClick={() => onCompanyRemove(companyName)}
-                  className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
+                  className="rounded-full p-0.5 transition-colors hover:bg-blue-200 dark:hover:bg-blue-800"
                   aria-label={`Remove ${companyName} company`}
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </button>
               </span>
             ))}
@@ -55,15 +55,15 @@ export function SelectedBadges({
             {[...selectedTags].sort().map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium"
+                className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
               >
                 {tag}
                 <button
                   onClick={() => onTagRemove(tag)}
-                  className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5 transition-colors"
+                  className="rounded-full p-0.5 transition-colors hover:bg-blue-200 dark:hover:bg-blue-800"
                   aria-label={`Remove ${tag} tag`}
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </button>
               </span>
             ))}

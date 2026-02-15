@@ -8,8 +8,8 @@ export function MobileHamburger() {
   const [isOpen, toggle] = useAtom(toggleMobileMenuAtom);
 
   return (
-    <button onClick={toggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-      {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+    <button onClick={toggle} className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+      {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
     </button>
   );
 }

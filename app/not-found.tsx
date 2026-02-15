@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Link from 'next/link';
 import { Home, ArrowLeft } from 'lucide-react';
+import { cn } from '@/utils';
 
 export default function NotFound() {
   const [isDark, setIsDark] = useState(false);
@@ -139,14 +140,20 @@ export default function NotFound() {
   return (
     <div
       ref={containerRef}
-      className={`min-h-screen ${isDark ? 'bg-black text-green-400' : 'bg-white text-blue-600'} flex items-center justify-center relative overflow-hidden transition-colors duration-300`}
+      className={cn(
+        'relative flex min-h-screen items-center justify-center overflow-hidden transition-colors duration-300',
+        isDark ? 'bg-black text-green-400' : 'bg-white text-blue-600',
+      )}
     >
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-20" />
+      <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 opacity-20" />
 
-      <div className="text-center z-10 px-4">
+      <div className="z-10 px-4 text-center">
         <h1
           ref={titleRef}
-          className={`text-8xl md:text-9xl font-bold mb-4 font-mono tracking-wider ${isDark ? 'text-green-400' : 'text-blue-600'}`}
+          className={cn(
+            'mb-4 font-mono text-8xl font-bold tracking-wider md:text-9xl',
+            isDark ? 'text-green-400' : 'text-blue-600',
+          )}
           style={{ textShadow: isDark ? '0 0 20px #00ff00' : '0 0 20px #2563eb' }}
         >
           404
@@ -154,30 +161,40 @@ export default function NotFound() {
 
         <p
           ref={subtitleRef}
-          className={`text-xl md:text-2xl mb-8 font-mono ${isDark ? 'text-green-300' : 'text-blue-500'}`}
+          className={cn('mb-8 font-mono text-xl md:text-2xl', isDark ? 'text-green-300' : 'text-blue-500')}
         >
           페이지를 찾을 수 없습니다
         </p>
 
-        <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div ref={buttonsRef} className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/"
-            className={`group flex items-center gap-2 px-6 py-3 ${isDark ? 'bg-green-600 hover:bg-green-500 text-black' : 'bg-blue-600 hover:bg-blue-500 text-white'} font-semibold rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg ${isDark ? 'hover:shadow-green-400/50' : 'hover:shadow-blue-400/50'}`}
+            className={cn(
+              'group flex items-center gap-2 rounded-lg px-6 py-3 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg',
+              isDark
+                ? 'bg-green-600 text-black hover:bg-green-500 hover:shadow-green-400/50'
+                : 'bg-blue-600 text-white hover:bg-blue-500 hover:shadow-blue-400/50',
+            )}
           >
-            <Home className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+            <Home className="h-5 w-5 transition-transform group-hover:rotate-12" />
             홈으로 돌아가기
           </Link>
 
           <button
             onClick={() => window.history.back()}
-            className={`group flex items-center gap-2 px-6 py-3 border-2 ${isDark ? 'border-green-400 hover:bg-green-400 hover:text-black text-green-400' : 'border-blue-400 hover:bg-blue-400 hover:text-white text-blue-400'} font-semibold rounded-lg transition-all duration-300 hover:scale-105`}
+            className={cn(
+              'group flex items-center gap-2 rounded-lg border-2 px-6 py-3 font-semibold transition-all duration-300 hover:scale-105',
+              isDark
+                ? 'border-green-400 text-green-400 hover:bg-green-400 hover:text-black'
+                : 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white',
+            )}
           >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
             이전 페이지
           </button>
         </div>
 
-        <div className={`mt-12 text-sm opacity-60 font-mono ${isDark ? 'text-green-300' : 'text-blue-500'}`}>
+        <div className={cn('mt-12 font-mono text-sm opacity-60', isDark ? 'text-green-300' : 'text-blue-500')}>
           <p>{isDark ? '개발자의 세계에서 길을 잃었군요...' : '페이지를 찾는 중입니다...'}</p>
           <p className="mt-2">
             {isDark ? '하지만 코드는 여전히 실행되고 있습니다 🚀' : '잠시 후 다시 시도해주세요 🔍'}

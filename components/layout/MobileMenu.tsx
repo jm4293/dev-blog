@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAtom } from 'jotai';
 import { toggleMobileMenuAtom } from '@/atoms';
+import { cn } from '@/utils';
 
 interface MenuItem {
   href: string;
@@ -89,20 +90,22 @@ export function MobileMenu() {
   return (
     <div
       ref={menuRef}
-      className={`absolute top-16 left-0 right-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-200 ${
-        isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-      }`}
+      className={cn(
+        'absolute left-0 right-0 top-16 border-b border-gray-200 bg-white shadow-lg transition-all duration-200 dark:border-gray-700 dark:bg-gray-900',
+        isAnimating ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0',
+      )}
     >
-      <nav className="container mx-auto px-4 py-4 space-y-1">
+      <nav className="container mx-auto space-y-1 px-4 py-4">
         {MENU_ITEMS.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className={`block px-4 py-3 rounded-lg transition-colors ${
+            className={cn(
+              'block rounded-lg px-4 py-3 transition-colors',
               isActive(item.href)
-                ? 'text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-950'
-                : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white'
-            }`}
+                ? 'bg-blue-50 font-semibold text-blue-600 dark:bg-blue-950 dark:text-blue-400'
+                : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800',
+            )}
             onClick={toggle}
           >
             {item.label}
