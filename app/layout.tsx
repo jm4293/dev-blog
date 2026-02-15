@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { QueryProvider } from './providers/QueryProvider';
 import { ToastContainer } from '@/components/toast';
+import { OfflineBanner } from '@/components/ui';
 import { GoogleAnalytics } from './GoogleAnalytics';
 import { initSentry } from '@/sentry.config';
 import { organizationSchema, websiteSchema } from './schema';
@@ -176,6 +177,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-screen bg-white dark:bg-gray-950">
+        <OfflineBanner />
         <ToastContainer />
         <QueryProvider>{children}</QueryProvider>
       </body>

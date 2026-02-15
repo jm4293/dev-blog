@@ -1,204 +1,45 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
 import Link from 'next/link';
 import { Home, ArrowLeft } from 'lucide-react';
-import { cn } from '@/utils';
+import { AnimatedBackground } from '@/features/auth';
 
 export default function NotFound() {
-  const [isDark, setIsDark] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    // 테마 감지 (저장된 테마 → 시스템 테마 → 기본값)
-    const checkTheme = () => {
-      const htmlElement = document.documentElement;
-
-      // 저장된 테마 확인
-      const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-      if (savedTheme) {
-        setIsDark(savedTheme === 'dark');
-        return;
-      }
-
-      // 시스템 테마 확인
-      const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDark(isSystemDark);
-    };
-
-    checkTheme();
-
-    // 테마 변경 감지
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    // Matrix rain animation
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const matrix =
-      'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const matrixArray = matrix.split('');
-
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops: number[] = [];
-
-    for (let x = 0; x < columns; x++) {
-      drops[x] = 1;
-    }
-
-    function draw() {
-      if (!ctx || !canvas) return;
-
-      // 테마에 따른 색상
-      const bgColor = isDark ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.04)';
-      const textColor = isDark ? '#0f0' : '#2563eb';
-
-      ctx.fillStyle = bgColor;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = textColor;
-      ctx.font = fontSize + 'px monospace';
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-
-    const interval = setInterval(draw, 35);
-
-    // GSAP animations
-    const tl = gsap.timeline();
-
-    tl.fromTo(titleRef.current, { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out' })
-      .fromTo(
-        subtitleRef.current,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
-        '-=0.5',
-      )
-      .fromTo(
-        buttonsRef.current,
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.7)' },
-        '-=0.3',
-      );
-
-    // Floating particles
-    const particles: HTMLDivElement[] = [];
-    const particleColor = isDark ? 'bg-green-400' : 'bg-blue-400';
-
-    for (let i = 0; i < 20; i++) {
-      const particle = document.createElement('div');
-      particle.className = `absolute w-1 h-1 ${particleColor} rounded-full opacity-60`;
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.top = Math.random() * 100 + '%';
-      containerRef.current?.appendChild(particle);
-      particles.push(particle);
-
-      gsap.to(particle, {
-        y: 'random(-100, 100)',
-        x: 'random(-100, 100)',
-        duration: 'random(3, 6)',
-        ease: 'none',
-        repeat: -1,
-        yoyo: true,
-      });
-    }
-
-    return () => {
-      clearInterval(interval);
-      particles.forEach((particle) => particle.remove());
-    };
-  }, [isDark]);
-
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        'relative flex min-h-screen items-center justify-center overflow-hidden transition-colors duration-300',
-        isDark ? 'bg-black text-green-400' : 'bg-white text-blue-600',
-      )}
-    >
-      <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 opacity-20" />
+    <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
+      <AnimatedBackground />
 
-      <div className="z-10 px-4 text-center">
-        <h1
-          ref={titleRef}
-          className={cn(
-            'mb-4 font-mono text-8xl font-bold tracking-wider md:text-9xl',
-            isDark ? 'text-green-400' : 'text-blue-600',
-          )}
-          style={{ textShadow: isDark ? '0 0 20px #00ff00' : '0 0 20px #2563eb' }}
-        >
-          404
-        </h1>
+      <div className="relative z-50 w-full max-w-md duration-1000 animate-in fade-in">
+        <div className="space-y-8 text-center">
+          <div className="space-y-2">
+            <p className="font-mono text-6xl font-bold text-gray-900 dark:text-white">404</p>
+            <p className="text-gray-500 dark:text-gray-400">페이지를 찾을 수 없습니다</p>
+          </div>
 
-        <p
-          ref={subtitleRef}
-          className={cn('mb-8 font-mono text-xl md:text-2xl', isDark ? 'text-green-300' : 'text-blue-500')}
-        >
-          페이지를 찾을 수 없습니다
-        </p>
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 dark:border-gray-800 dark:bg-gray-900">
+            <h2 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">페이지가 없어요</h2>
+            <p className="mb-6 text-sm text-gray-600 dark:text-gray-400">
+              요청하신 페이지가 존재하지 않거나 이동되었습니다.
+            </p>
 
-        <div ref={buttonsRef} className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link
-            href="/"
-            className={cn(
-              'group flex items-center gap-2 rounded-lg px-6 py-3 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg',
-              isDark
-                ? 'bg-green-600 text-black hover:bg-green-500 hover:shadow-green-400/50'
-                : 'bg-blue-600 text-white hover:bg-blue-500 hover:shadow-blue-400/50',
-            )}
-          >
-            <Home className="h-5 w-5 transition-transform group-hover:rotate-12" />
-            홈으로 돌아가기
-          </Link>
+            <Link
+              href="/"
+              className="mx-auto mb-4 flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            >
+              <Home className="h-4 w-4" />
+              홈으로 돌아가기
+            </Link>
+          </div>
 
           <button
             onClick={() => window.history.back()}
-            className={cn(
-              'group flex items-center gap-2 rounded-lg border-2 px-6 py-3 font-semibold transition-all duration-300 hover:scale-105',
-              isDark
-                ? 'border-green-400 text-green-400 hover:bg-green-400 hover:text-black'
-                : 'border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white',
-            )}
+            className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-center font-semibold text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
           >
-            <ArrowLeft className="h-5 w-5 transition-transform group-hover:-translate-x-1" />
-            이전 페이지
+            <span className="flex items-center justify-center gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              이전 페이지
+            </span>
           </button>
-        </div>
-
-        <div className={cn('mt-12 font-mono text-sm opacity-60', isDark ? 'text-green-300' : 'text-blue-500')}>
-          <p>{isDark ? '개발자의 세계에서 길을 잃었군요...' : '페이지를 찾는 중입니다...'}</p>
-          <p className="mt-2">
-            {isDark ? '하지만 코드는 여전히 실행되고 있습니다 🚀' : '잠시 후 다시 시도해주세요 🔍'}
-          </p>
         </div>
       </div>
     </div>

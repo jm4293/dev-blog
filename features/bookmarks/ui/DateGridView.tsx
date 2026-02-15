@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { PostCard } from '@/features/posts';
 import { BookmarkWithPost } from '@/supabase';
-import { EmptyState } from '@/components/ui/EmptyState';
+import { EmptyState } from '@/components/ui';
 import { Heart } from 'lucide-react';
 
 interface DateGridViewProps {
