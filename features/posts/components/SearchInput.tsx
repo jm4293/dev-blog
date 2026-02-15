@@ -34,7 +34,7 @@ export function SearchInput({
           href="/recent-views"
           className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
         >
-          <span className="hidden lg:inline">최근 본 글</span>
+          최근 본 글
         </Link>
         <button
           onClick={onCompanyFilterClick}
