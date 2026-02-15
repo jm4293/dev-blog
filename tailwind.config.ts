@@ -51,11 +51,21 @@ const config: Config = {
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'pulse-fast': 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'slide-up': 'slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
+        'scale-in': 'scaleIn 0.2s cubic-bezier(0.32, 0.72, 0, 1)',
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
         },
       },
     },
