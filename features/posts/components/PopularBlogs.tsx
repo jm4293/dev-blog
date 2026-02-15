@@ -1,5 +1,6 @@
 import type { Company } from '@/supabase/types.supabase';
 import { BlogLogoImage } from '@/components/image';
+import { cn } from '@/utils';
 
 interface PopularBlogsProps {
   companies: Company[];
@@ -24,11 +25,12 @@ export function PopularBlogs({ companies, selectedCompanyNames, onCompanyToggle,
             <button
               key={company.id}
               onClick={() => onCompanyToggle(company.name)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all ${
+              className={cn(
+                'flex items-center gap-2 rounded-full px-4 py-2 font-medium transition-all',
                 selectedCompanyNames.includes(company.name)
                   ? 'bg-blue-600 text-white dark:bg-blue-500'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
-              }`}
+                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600',
+              )}
               title={company.name}
             >
               <BlogLogoImage
@@ -36,7 +38,7 @@ export function PopularBlogs({ companies, selectedCompanyNames, onCompanyToggle,
                 companyName={company.name}
                 width={20}
                 height={20}
-                className="w-5 h-5 object-contain"
+                className="h-5 w-5 object-contain"
               />
               <span className="text-xs sm:text-sm">{company.name}</span>
             </button>

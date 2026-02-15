@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Building2 } from 'lucide-react';
 import { useState } from 'react';
+import { cn } from '@/utils';
 
 interface BlogLogoImageProps {
   logoUrl?: string | null;
@@ -36,11 +37,11 @@ export function BlogLogoImage({
   if (!logoUrl) {
     return (
       <div
-        className={`bg-gray-200 dark:bg-gray-700 flex items-center justify-center ${className}`}
+        className={cn('flex items-center justify-center bg-gray-200 dark:bg-gray-700', className)}
         style={{ width, height }}
         title={title || companyName}
       >
-        <Building2 className="w-1/2 h-1/2 text-gray-400 dark:text-gray-500" />
+        <Building2 className="h-1/2 w-1/2 text-gray-400 dark:text-gray-500" />
       </div>
     );
   }
@@ -49,11 +50,11 @@ export function BlogLogoImage({
   if (imageError) {
     return (
       <div
-        className={`bg-gray-200 dark:bg-gray-700 flex items-center justify-center ${className}`}
+        className={cn('flex items-center justify-center bg-gray-200 dark:bg-gray-700', className)}
         style={{ width, height }}
         title={title || companyName}
       >
-        <Building2 className="w-1/2 h-1/2 text-gray-400 dark:text-gray-500" />
+        <Building2 className="h-1/2 w-1/2 text-gray-400 dark:text-gray-500" />
       </div>
     );
   }
@@ -62,7 +63,7 @@ export function BlogLogoImage({
     <div style={{ position: 'relative', width, height }} title={title || companyName}>
       {isLoading && (
         <div
-          className={`bg-gray-200 dark:bg-gray-700 rounded animate-pulse absolute inset-0 ${className}`}
+          className={cn('absolute inset-0 animate-pulse rounded bg-gray-200 dark:bg-gray-700', className)}
           style={{ width, height }}
         />
       )}

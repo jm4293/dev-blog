@@ -1,6 +1,7 @@
 'use client';
 
 import { ANNOUNCEMENTS } from '@/utils/constants';
+import { cn } from '@/utils';
 import type { AnnouncementType } from '@/supabase/types.supabase';
 
 interface TypeBadgeProps {
@@ -12,12 +13,11 @@ export function TypeBadge({ type }: TypeBadgeProps) {
 
   return (
     <span
-      className={`
-        inline-flex items-center gap-2 px-3 py-1 rounded-full
-        text-sm font-semibold
-        ${config.bgColor}
-        ${config.textColor}
-      `}
+      className={cn(
+        'inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold',
+        config.bgColor,
+        config.textColor,
+      )}
     >
       <span>{config.emoji}</span>
       <span>{config.label}</span>

@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import ThemeToggle from '../theme/ThemeToggle';
+import { ThemeToggle } from '@/components/theme';
 
 interface NavItem {
   href: string;
@@ -30,7 +30,7 @@ export function HeaderClient() {
   ];
 
   return (
-    <div className="hidden md:flex items-center gap-8">
+    <div className="hidden items-center gap-8 md:flex">
       <nav className="flex items-center gap-8">
         {navItems.map((item) => (
           <Link
@@ -38,7 +38,7 @@ export function HeaderClient() {
             href={item.href}
             className={`transition-colors ${
               item.active
-                ? 'text-blue-600 dark:text-blue-400 font-semibold'
+                ? 'font-semibold text-blue-600 dark:text-blue-400'
                 : 'text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400'
             }`}
           >

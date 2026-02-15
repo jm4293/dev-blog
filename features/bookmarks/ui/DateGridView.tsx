@@ -56,7 +56,7 @@ export const DateGridView = ({ bookmarks, isLoggedIn }: DateGridViewProps) => {
 
         return (
           <section key={date} className="space-y-4">
-            <header className="sticky top-0 bg-white dark:bg-gray-900 z-10 py-3 px-4 rounded-lg border border-gray-200 dark:border-gray-700">
+            <header className="sticky top-0 z-10 rounded-lg border border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-900">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div>
@@ -69,7 +69,7 @@ export const DateGridView = ({ bookmarks, isLoggedIn }: DateGridViewProps) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-bold text-sm">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-blue-600 text-sm font-bold text-blue-600 dark:border-blue-500 dark:text-blue-400">
                     {dayBookmarks.length}
                   </span>
                 </div>

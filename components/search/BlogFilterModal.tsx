@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import type { Company } from '@/supabase/types.supabase';
 import { FilterModal } from '../ui';
 import { BlogLogoImage } from '../image';
+import { cn } from '@/utils';
 
 interface BlogFilterModalProps {
   companies: Company[];
@@ -58,16 +59,17 @@ export function BlogFilterModal({
       isEmpty={companies.length === 0}
       emptyMessage="블로그 정보가 없습니다."
     >
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
         {companies.map((company) => (
           <button
             key={company.id}
             onClick={() => handleTempToggle(company.name)}
-            className={`p-4 rounded-lg transition-all flex flex-col items-center gap-2 ${
+            className={cn(
+              'flex flex-col items-center gap-2 rounded-lg p-4 transition-all',
               tempSelectedCompanies.includes(company.name)
                 ? 'bg-blue-600 dark:bg-blue-500'
-                : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'
-            }`}
+                : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600',
+            )}
           >
             <BlogLogoImage
               logoUrl={company.logo_url}
@@ -77,9 +79,10 @@ export function BlogFilterModal({
               className="object-contain"
             />
             <span
-              className={`text-sm font-semibold text-center ${
-                tempSelectedCompanies.includes(company.name) ? 'text-white' : 'text-gray-900 dark:text-white'
-              }`}
+              className={cn(
+                'text-center text-sm font-semibold',
+                tempSelectedCompanies.includes(company.name) ? 'text-white' : 'text-gray-900 dark:text-white',
+              )}
             >
               {company.name}
             </span>

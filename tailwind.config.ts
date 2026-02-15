@@ -50,6 +50,7 @@ const config: Config = {
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
+        'pulse-fast': 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         fadeIn: {

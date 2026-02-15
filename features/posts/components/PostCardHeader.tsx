@@ -9,7 +9,7 @@ interface PostCardHeaderProps {
 
 export function PostCardHeader({ logoUrl, companyName, timeDisplay, children }: PostCardHeaderProps) {
   return (
-    <div className="flex items-center gap-3 mb-4">
+    <div className="mb-4 flex items-center gap-3">
       <BlogLogoImage
         logoUrl={logoUrl}
         companyName={companyName}

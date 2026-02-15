@@ -11,15 +11,15 @@ export function AnnouncementCard({ announcement }: AnnouncementCardProps) {
   const timeDisplay = format(createdDate, 'yyyy-MM-dd');
 
   return (
-    <article className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg dark:hover:shadow-xl transition-shadow hover:-translate-y-1 transform duration-300">
-      <div className="flex items-center justify-between mb-4 gap-3">
+    <article className="transform rounded-lg border border-gray-200 bg-white p-6 transition-shadow duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:shadow-xl">
+      <div className="mb-4 flex items-center justify-between gap-3">
         <TypeBadge type={announcement.type} />
-        <time className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap font-medium">{timeDisplay}</time>
+        <time className="whitespace-nowrap text-sm font-medium text-gray-500 dark:text-gray-400">{timeDisplay}</time>
       </div>
 
-      <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-3">{announcement.title}</h2>
+      <h2 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">{announcement.title}</h2>
 
-      <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed whitespace-pre-wrap">
+      <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-600 dark:text-gray-400">
         {announcement.content}
       </p>
     </article>

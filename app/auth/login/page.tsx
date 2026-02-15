@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 relative">
+    <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
       <AnimatedBackground />
 
-      <div className="relative z-50 w-full max-w-md animate-in fade-in duration-1000">
-        <div className="text-center space-y-8">
+      <div className="relative z-50 w-full max-w-md duration-1000 animate-in fade-in">
+        <div className="space-y-8 text-center">
           <div className="space-y-4">
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white">devBlog.kr</h1>
           </div>
@@ -22,7 +22,7 @@ export default function LoginPage() {
 
           <Link
             href="/posts"
-            className="w-full px-4 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white font-semibold rounded-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 transition-colors block text-center"
+            className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-center font-semibold text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
           >
             뒤로가기
           </Link>

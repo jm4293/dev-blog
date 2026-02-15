@@ -44,8 +44,8 @@ export default async function BookmarksPage() {
   if (!user) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <header className="mb-12">
-          <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">즐겨찾기</h1>
+        <header className="mb-4">
+          <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">즐겨찾기</h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">저장한 게시글을 확인해보세요.</p>
         </header>
         <LoginRequired description="GitHub 계정으로 로그인하고 즐겨찾기를 이용하세요" />
@@ -57,8 +57,8 @@ export default async function BookmarksPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <header className="mb-12">
-        <h1 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">즐겨찾기</h1>
+      <header className="mb-4">
+        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">즐겨찾기</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">저장한 게시글을 확인해보세요.</p>
       </header>
 

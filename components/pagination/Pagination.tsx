@@ -54,15 +54,15 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
   const nextPage = lastPageInRange < totalPages ? lastPageInRange + 1 : null;
 
   return (
-    <div className="flex flex-col items-center gap-6 mt-12">
-      <nav className="flex justify-center items-center gap-2">
+    <div className="mt-12 flex flex-col items-center gap-6">
+      <nav className="flex items-center justify-center gap-2">
         <PaginationButton
           page={1}
           isDisabled={currentPage === 1}
           url={onPageChange ? undefined : buildUrl(1)}
           onClick={onPageChange}
         >
-          <ChevronsLeft className="w-5 h-5" />
+          <ChevronsLeft className="h-5 w-5" />
         </PaginationButton>
 
         <PaginationButton
@@ -71,7 +71,7 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
           url={onPageChange || !prevPage ? undefined : buildUrl(prevPage)}
           onClick={onPageChange}
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="h-5 w-5" />
         </PaginationButton>
 
         {pageNumbers.map((pageNum) => (
@@ -90,7 +90,7 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
           url={onPageChange || !nextPage ? undefined : buildUrl(nextPage)}
           onClick={onPageChange}
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="h-5 w-5" />
         </PaginationButton>
 
         <PaginationButton
@@ -99,7 +99,7 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
           url={onPageChange ? undefined : buildUrl(totalPages)}
           onClick={onPageChange}
         >
-          <ChevronsRight className="w-5 h-5" />
+          <ChevronsRight className="h-5 w-5" />
         </PaginationButton>
       </nav>
 

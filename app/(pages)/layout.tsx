@@ -3,13 +3,13 @@ import { Footer, Header } from '@/components/layout';
 
 function HeaderFallback() {
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md h-16 animate-pulse" />
+    <header className="sticky top-0 z-50 h-16 animate-pulse border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-700 dark:bg-gray-900/80" />
   );
 }
 
 export default function PagesLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Suspense fallback={<HeaderFallback />}>
         <Header />
       </Suspense>
