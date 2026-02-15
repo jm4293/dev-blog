@@ -1,4 +1,4 @@
-import type { WithContext, Organization } from 'schema-dts';
+import type { WithContext, Organization, BreadcrumbList } from 'schema-dts';
 
 export const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr';
 
@@ -32,3 +32,61 @@ export const websiteSchema = {
     'query-input': 'required name=search_term_string',
   },
 } as const;
+
+/**
+ * BreadcrumbList 구조화된 데이터 생성 함수
+ * Google 검색 결과에 빵부스러기(경로) 표시
+ *
+ * @example
+ * // 기본 포스트 페이지
+ * createBreadcrumbSchema([
+ *   { name: 'Home', url: 'https://devblog.kr' },
+ *   { name: '포스트', url: 'https://devblog.kr/posts' }
+ * ])
+ *
+ * // 태그 필터 페이지
+ * createBreadcrumbSchema([
+ *   { name: 'Home', url: 'https://devblog.kr' },
+ *   { name: '포스트', url: 'https://devblog.kr/posts' },
+ *   { name: 'React', url: 'https://devblog.kr/posts?tags=React' }
+ * ])
+ */
+export function createBreadcrumbSchema(items: Array<{ name: string; url: string }>): WithContext<BreadcrumbList> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
+/**
+ * CollectionPage 구조화된 데이터 생성 함수
+ * 블로그 게시글 목록 페이지용
+ */
+export function createCollectionPageSchema(params: {
+  name: string;
+  description: string;
+  url: string;
+  numberOfItems?: number;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: params.name,
+    description: params.description,
+    url: params.url,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'devBlog.kr',
+      url: baseUrl,
+    },
+    ...(params.numberOfItems && {
+      numberOfItems: params.numberOfItems,
+    }),
+  } as const;
+}
