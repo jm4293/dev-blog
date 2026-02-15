@@ -17,14 +17,6 @@ interface SendBody {
   postsCreated: number;
 }
 
-// VAPID 설정 (한번만)
-// Public Key는 클라이언트에서도 사용하므로 NEXT_PUBLIC_ 접두사 사용
-webpush.setVapidDetails(
-  process.env.VAPID_SUBJECT!,
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!,
-);
-
 // CRON_SECRET 인증 검증
 function verifyCronSecret(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization');
@@ -41,6 +33,13 @@ export async function POST(request: NextRequest) {
     if (!verifyCronSecret(request)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+
+    // VAPID 설정 (런타임에 설정하여 빌드 시 env 미설정 오류 방지)
+    webpush.setVapidDetails(
+      process.env.VAPID_SUBJECT!,
+      process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+      process.env.VAPID_PRIVATE_KEY!,
+    );
 
     const body: SendBody = await request.json();
     const { postsCreated } = body;

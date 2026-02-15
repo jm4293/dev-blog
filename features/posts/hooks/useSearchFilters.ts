@@ -9,13 +9,10 @@ import { useFilterModal } from './useFilterModal';
 interface InitialFilters {
   page: number;
   search: string;
-  tags: string;
-  blogs: string;
+  tags: string[];
+  blogs: string[];
   sort: 'newest' | 'oldest';
 }
-
-// 초기 배열 파싱 헬퍼
-const parseArrayParam = (param: string): string[] => (param ? param.split(',').filter((item) => item.trim()) : []);
 
 export function useSearchFilters(initialFilters?: InitialFilters) {
   const router = useRouter();
@@ -25,14 +22,14 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
   // 서버에서 전달받은 초기 필터 값 사용
   const currentPage = initialFilters?.page || 1;
   const searchQuery = initialFilters?.search || '';
-  const tagsParam = initialFilters?.tags || '';
-  const blogsParam = initialFilters?.blogs || '';
+  const tagsParam = initialFilters?.tags || [];
+  const blogsParam = initialFilters?.blogs || [];
   const sortParam = initialFilters?.sort || 'newest';
 
-  // 초기값을 initialFilters에서 직접 파싱
+  // 초기값을 initialFilters에서 직접 사용
   const [inputValue, setInputValue] = useState(searchQuery);
-  const [selectedTags, setSelectedTags] = useState<string[]>(() => parseArrayParam(tagsParam));
-  const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>(() => parseArrayParam(blogsParam));
+  const [selectedTags, setSelectedTags] = useState<string[]>(() => tagsParam);
+  const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>(() => blogsParam);
   const { showTagModal, showCompanyModal, setShowTagModal, setShowCompanyModal } = useFilterModal();
 
   // 디바운스된 검색어 (500ms 지연)

@@ -3,4 +3,4 @@ export { AnimatedBackground } from './ui/AnimatedBackground';
 export { LoginCard } from './ui/LoginCard';
 
 // Server Actions (app/pages에서 사용)
-export { getUser } from './actions/getUser';
+export { getUser } from './services/getUser';
