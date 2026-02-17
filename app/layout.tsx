@@ -107,7 +107,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <GoogleAnalytics />
         <link rel="icon" href="/logo_32.png" sizes="32x32" type="image/png" />
         <link rel="icon" href="/logo_192.png" sizes="192x192" type="image/png" />
         <link rel="apple-touch-icon" href="/logo_192.png" />
@@ -180,6 +179,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OfflineBanner />
         <ToastContainer />
         <QueryProvider>{children}</QueryProvider>
+        <GoogleAnalytics />
       </body>
     </html>
   );
