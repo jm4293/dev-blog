@@ -1,6 +1,6 @@
 'use server';
 
-import { createSupabaseServerClient } from '@/supabase';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 
 export async function createRecentViewAction(postId: string) {
   const supabase = await createSupabaseServerClient();

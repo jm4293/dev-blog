@@ -1,9 +1,9 @@
-export * from './ActiveFilters';
-export * from './BookmarkButton';
-export * from './ErrorMessage';
-export * from './PopularBlogs';
-export * from './PopularTags';
-export * from './PostCardHeader';
-export * from './PostCardTags';
-export * from './SearchInput';
-export * from './SelectedBadges';
+export { ActiveFilters } from './ActiveFilters';
+export { BookmarkButton } from './BookmarkButton';
+export { ErrorMessage } from './ErrorMessage';
+export { PopularBlogs } from './PopularBlogs';
+export { PopularTags } from './PopularTags';
+export { PostCardHeader } from './PostCardHeader';
+export { PostCardTags } from './PostCardTags';
+export { SearchInput } from './SearchInput';
+export { SelectedBadges } from './SelectedBadges';

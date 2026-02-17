@@ -1,4 +1,4 @@
-export * from './PostCard';
-export * from './PostList';
-export * from './PostsContainer';
-export * from './SearchBar';
+export { PostCard } from './PostCard';
+export { PostList } from './PostList';
+export { PostsContainer } from './PostsContainer';
+export { SearchBar } from './SearchBar';

@@ -1,6 +1,6 @@
-export * from './RecentViewsList';
-export * from './RecentViewsListSkeleton';
-export * from './RecentViewsEmpty';
-export * from './RecentViewsError';
-export * from './RecentViewsActions';
-export * from './RecentViewPostCard';
+export { RecentViewsList } from './RecentViewsList';
+export { RecentViewsListSkeleton } from './RecentViewsListSkeleton';
+export { RecentViewsEmpty } from './RecentViewsEmpty';
+export { RecentViewsError } from './RecentViewsError';
+export { RecentViewsActions } from './RecentViewsActions';
+export { RecentViewPostCard } from './RecentViewPostCard';

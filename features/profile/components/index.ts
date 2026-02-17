@@ -1,1 +1,1 @@
-export * from './ActivityHeatmap';
+export { ActivityHeatmap } from './ActivityHeatmap';

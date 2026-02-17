@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from '@/supabase';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 
 export interface BookmarkStats {
   stats: Record<string, number>;

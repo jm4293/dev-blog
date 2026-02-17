@@ -1,1 +1,1 @@
-export * from './BlogLogoImage';
+export { BlogLogoImage } from './BlogLogoImage';

@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from '@/supabase';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { ANNOUNCEMENTS } from '@/utils/constants';
 import type { Announcement, AnnouncementsResponse } from '@/supabase';
 

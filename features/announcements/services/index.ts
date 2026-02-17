@@ -1,1 +1,1 @@
-export * from './fetchAnnouncements';
+export { fetchAnnouncements } from './fetchAnnouncements';
