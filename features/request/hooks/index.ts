@@ -1,1 +1,1 @@
-export * from './useSubmitRequest';
+export { useSubmitRequest } from './useSubmitRequest';

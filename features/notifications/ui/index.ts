@@ -1,1 +1,1 @@
-export * from './NotificationSettings';
+export { NotificationSettings } from './NotificationSettings';

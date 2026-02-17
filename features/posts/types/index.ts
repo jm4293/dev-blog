@@ -1,1 +1,1 @@
-export * from './posts.types';
+export type { GetPostsParams, GetPostsResponse } from './posts.types';

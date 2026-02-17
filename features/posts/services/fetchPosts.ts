@@ -1,4 +1,5 @@
-import { createSupabaseServerClient, PostWithCompany } from '@/supabase';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import type { PostWithCompany } from '@/supabase';
 import type { GetPostsParams, GetPostsResponse } from '../types';
 
 /**

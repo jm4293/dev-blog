@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { LogIn, User as UserIcon } from 'lucide-react';
 
 interface LoginRequiredProps {
   title?: string;

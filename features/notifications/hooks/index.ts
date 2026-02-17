@@ -1,3 +1,3 @@
-export * from './useNotifications';
-export * from './useNotificationSubscribe';
-export * from './useNotificationPreferences';
+export { useNotifications } from './useNotifications';
+export { useNotificationSubscribe } from './useNotificationSubscribe';
+export { useNotificationPreferences } from './useNotificationPreferences';

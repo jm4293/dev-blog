@@ -1,2 +1,2 @@
-export * from './createBookmark.action';
-export * from './deleteBookmark.action';
+export { createBookmarkAction } from './createBookmark.action';
+export { deleteBookmarkAction } from './deleteBookmark.action';

@@ -1,4 +1,4 @@
-export * from './saveSubscription.action';
-export * from './updatePreferences.action';
-export * from './updateSubscriptionEnabled.action';
-export * from './removeSubscriptionByOS.action';
+export { saveSubscriptionAction } from './saveSubscription.action';
+export { updatePreferencesAction } from './updatePreferences.action';
+export { updateSubscriptionEnabledAction } from './updateSubscriptionEnabled.action';
+export { removeSubscriptionByOSAction } from './removeSubscriptionByOS.action';

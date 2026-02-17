@@ -1,3 +1,3 @@
-export * from './BlogFilterModal';
-export * from './SortButton';
-export * from './TagFilterModal';
+export { BlogFilterModal } from './BlogFilterModal';
+export { SortButton } from './SortButton';
+export { TagFilterModal } from './TagFilterModal';
