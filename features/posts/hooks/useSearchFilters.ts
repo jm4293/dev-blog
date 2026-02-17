@@ -32,6 +32,14 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
   const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>(() => blogsParam);
   const { showTagModal, showCompanyModal, setShowTagModal, setShowCompanyModal } = useFilterModal();
 
+  // 디바운스 effect에서 최신 값을 읽기 위한 ref (stale closure 방지)
+  const selectedTagsRef = useRef(selectedTags);
+  const selectedCompanyNamesRef = useRef(selectedCompanyNames);
+  const sortParamRef = useRef(sortParam);
+  selectedTagsRef.current = selectedTags;
+  selectedCompanyNamesRef.current = selectedCompanyNames;
+  sortParamRef.current = sortParam;
+
   // 디바운스된 검색어 (500ms 지연)
   const debouncedSearchQuery = useDebounce(inputValue, 500);
 
@@ -55,13 +63,14 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
   );
 
   // 디바운스된 검색어가 변경되면 URL 업데이트 (초기 마운트 제외)
+  // ref를 통해 최신 태그/회사/정렬 값을 읽어 stale closure 문제 방지
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
-    updateUrl(1, debouncedSearchQuery, selectedTags, selectedCompanyNames, sortParam); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchQuery]);
+    updateUrl(1, debouncedSearchQuery, selectedTagsRef.current, selectedCompanyNamesRef.current, sortParamRef.current);
+  }, [debouncedSearchQuery, updateUrl]);
 
   // 핸들러
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
