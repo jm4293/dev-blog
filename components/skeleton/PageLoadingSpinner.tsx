@@ -5,23 +5,23 @@ interface PageLoadingSpinnerProps {
 export function PageLoadingSpinner({ overlay = false }: PageLoadingSpinnerProps) {
   const content = (
     <div className="flex items-center gap-1">
-      <span className="animate-pulse-fast text-2xl font-bold text-gray-900 [animation-delay:-0.4s] dark:text-white">
+      <span className="animate-pulse-fast text-2xl font-bold text-blue-600 [animation-delay:-0.4s] dark:text-blue-400">
         d
       </span>
-      <span className="animate-pulse-fast text-2xl font-bold text-gray-900 [animation-delay:-0.3s] dark:text-white">
+      <span className="animate-pulse-fast text-2xl font-bold text-blue-600 [animation-delay:-0.3s] dark:text-blue-400">
         e
       </span>
-      <span className="animate-pulse-fast text-2xl font-bold text-gray-900 [animation-delay:-0.2s] dark:text-white">
+      <span className="animate-pulse-fast text-2xl font-bold text-blue-600 [animation-delay:-0.2s] dark:text-blue-400">
         v
       </span>
-      <span className="animate-pulse-fast text-2xl font-bold text-gray-900 [animation-delay:-0.1s] dark:text-white">
+      <span className="animate-pulse-fast text-2xl font-bold text-blue-600 [animation-delay:-0.1s] dark:text-blue-400">
         B
       </span>
-      <span className="animate-pulse-fast text-2xl font-bold text-gray-900 dark:text-white">l</span>
-      <span className="animate-pulse-fast text-2xl font-bold text-gray-900 [animation-delay:-0.05s] dark:text-white">
+      <span className="animate-pulse-fast text-2xl font-bold text-blue-600 dark:text-blue-400">l</span>
+      <span className="animate-pulse-fast text-2xl font-bold text-blue-600 [animation-delay:-0.05s] dark:text-blue-400">
         o
       </span>
-      <span className="animate-pulse-fast text-2xl font-bold text-gray-900 [animation-delay:-0.1s] dark:text-white">
+      <span className="animate-pulse-fast text-2xl font-bold text-blue-600 [animation-delay:-0.1s] dark:text-blue-400">
         g
       </span>
     </div>

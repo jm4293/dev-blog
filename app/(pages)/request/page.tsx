@@ -48,7 +48,7 @@ export default function RequestPage() {
       </section>
 
       <aside className="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-6 dark:border-blue-800 dark:bg-blue-900/20">
-        <h2 className="mb-2 font-medium text-blue-900 dark:text-blue-100">📋 요청 처리 안내</h2>
+        <h2 className="mb-2 font-medium text-blue-900 dark:text-blue-100">요청 처리 안내</h2>
         <ul className="space-y-1 text-sm text-blue-800 dark:text-blue-200">
           <li>• 요청은 검토 후 최대 3-5일 이내에 처리됩니다.</li>
           <li>• 모든 요청이 승인되는 것은 아닙니다.</li>
