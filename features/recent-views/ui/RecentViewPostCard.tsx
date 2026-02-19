@@ -76,10 +76,16 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
         {isEditMode ? (
           <h3 className="mb-3 line-clamp-2 text-lg font-bold text-gray-900 dark:text-white">{view.post.title}</h3>
         ) : (
-          <Link href={view.post.url} target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
-            <h3 className="mb-3 line-clamp-2 text-lg font-bold text-gray-900 transition-colors hover:text-blue-600 dark:text-white dark:hover:text-blue-400">
+          <Link
+            href={view.post.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleLinkClick}
+            className="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-1"
+          >
+            <h2 className="mb-3 line-clamp-2 text-lg font-bold text-foreground transition-colors hover:text-muted-foreground">
               {view.post.title}
-            </h3>
+            </h2>
           </Link>
         )}
 
@@ -98,7 +104,7 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, o
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleLinkClick}
-            className="inline-flex items-center text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            className="inline-flex items-center rounded text-sm font-semibold text-foreground underline-offset-2 transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-1"
           >
             전체 읽기 →
           </Link>
