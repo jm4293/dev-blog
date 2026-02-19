@@ -23,14 +23,14 @@ export function PaginationButton({
 
   const getStyles = () => {
     if (isActive) {
-      return `${baseStyles} px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600`;
+      return `${baseStyles} px-4 py-2 bg-foreground text-background`;
     }
 
     if (isDisabled) {
-      return `${baseStyles} p-2 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed`;
+      return `${baseStyles} p-2 border border-border bg-muted text-muted-foreground cursor-not-allowed`;
     }
 
-    return `${baseStyles} p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700`;
+    return `${baseStyles} p-2 border border-border bg-background text-foreground hover:bg-muted`;
   };
 
   const styles = `${getStyles()} ${className}`;

@@ -15,21 +15,11 @@ export const ProfileInfoCard = memo(function ProfileInfoCard({
   isActive = false,
 }: ProfileInfoCardProps) {
   return (
-    <div className="flex items-start gap-3 rounded-lg bg-gray-50 p-4 dark:bg-gray-900/50">
-      <Icon
-        className={`mt-0.5 h-5 w-5 flex-shrink-0 ${
-          isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'
-        }`}
-      />
+    <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-4">
+      <Icon className={`mt-0.5 h-5 w-5 flex-shrink-0 ${isActive ? 'text-foreground' : 'text-muted-foreground'}`} />
       <div className="min-w-0 flex-1">
-        <p className="mb-1 text-xs font-medium text-gray-600 dark:text-gray-400">{label}</p>
-        <p
-          className={`truncate text-sm ${
-            isActive ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'
-          }`}
-        >
-          {value}
-        </p>
+        <p className="mb-1 text-xs font-medium text-muted-foreground">{label}</p>
+        <p className={`truncate text-sm ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>{value}</p>
       </div>
     </div>
   );

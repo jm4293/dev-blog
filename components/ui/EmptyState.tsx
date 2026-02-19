@@ -35,7 +35,7 @@ export function EmptyState({
         <div className="mt-6">
           <Link
             href={actionHref}
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+            className="inline-flex items-center gap-2 rounded-lg bg-foreground px-6 py-3 font-medium text-background transition-colors hover:bg-foreground/90"
           >
             {actionLabel}
           </Link>

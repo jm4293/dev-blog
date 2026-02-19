@@ -109,7 +109,7 @@ function HeatmapCell({
     <div className="group relative">
       <div
         className={cn(
-          'h-[10px] w-[10px] cursor-pointer rounded-sm transition-all group-hover:ring-2 group-hover:ring-emerald-500 dark:group-hover:ring-emerald-400',
+          'h-[10px] w-[10px] cursor-pointer transition-all group-hover:ring-2 group-hover:ring-emerald-500 dark:group-hover:ring-emerald-400',
           colorClass,
         )}
         onMouseEnter={() => onHover({ date: dateKey, count })}

@@ -36,10 +36,8 @@ export function HeaderClient() {
           <Link
             key={item.href}
             href={item.href}
-            className={`transition-colors ${
-              item.active
-                ? 'font-semibold text-blue-600 dark:text-blue-400'
-                : 'text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400'
+            className={`rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-2 ${
+              item.active ? 'font-bold text-foreground' : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             {item.label}

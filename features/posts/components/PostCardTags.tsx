@@ -12,7 +12,7 @@ export function PostCardTags({ tags }: PostCardTagsProps) {
       {[...tags].sort().map((tag) => (
         <span
           key={tag}
-          className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+          className="inline-block rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground"
         >
           {tag}
         </span>

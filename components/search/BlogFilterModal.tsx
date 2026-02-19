@@ -17,7 +17,7 @@ interface BlogFilterModalProps {
 }
 
 const BlogIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -78,15 +78,13 @@ export function BlogFilterModal({
               key={company.id}
               onClick={() => handleTempToggle(company.name)}
               className={cn(
-                'relative flex flex-col items-center gap-2 rounded-xl p-3 transition-all',
-                isSelected
-                  ? 'bg-blue-50 ring-2 ring-blue-500 dark:bg-blue-900/20 dark:ring-blue-400'
-                  : 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700',
+                'relative flex flex-col items-center gap-2 rounded-xl p-3 transition-[colors,box-shadow]',
+                isSelected ? 'bg-foreground/10 ring-2 ring-foreground' : 'bg-muted hover:bg-muted/80',
               )}
             >
               {isSelected && (
-                <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 dark:bg-blue-400">
-                  <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-foreground">
+                  <Check className="h-3 w-3 text-background" strokeWidth={3} />
                 </span>
               )}
               <BlogLogoImage
@@ -99,7 +97,7 @@ export function BlogFilterModal({
               <span
                 className={cn(
                   'text-center text-xs font-semibold leading-tight',
-                  isSelected ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300',
+                  isSelected ? 'text-foreground' : 'text-muted-foreground',
                 )}
               >
                 {company.name}

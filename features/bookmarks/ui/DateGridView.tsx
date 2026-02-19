@@ -56,23 +56,17 @@ export const DateGridView = ({ bookmarks, isLoggedIn }: DateGridViewProps) => {
 
         return (
           <section key={date} className="space-y-4">
-            <header className="sticky top-0 z-10 rounded-lg border border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-900">
+            <header className="sticky top-0 z-10 rounded-lg border border-border bg-background/90 px-4 py-3 backdrop-blur-sm">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">{year}년</span>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">{month}월</span>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">{day}일</span>
-                      <span className="text-lg font-semibold text-blue-600 dark:text-blue-400">({dayName})</span>
-                    </div>
-                  </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-foreground">{year}년</span>
+                  <span className="text-2xl font-bold text-foreground">{month}월</span>
+                  <span className="text-2xl font-bold text-foreground">{day}일</span>
+                  <span className="text-lg font-semibold text-muted-foreground">({dayName})</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-blue-600 text-sm font-bold text-blue-600 dark:border-blue-500 dark:text-blue-400">
-                    {dayBookmarks.length}
-                  </span>
-                </div>
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-sm font-bold text-foreground">
+                  {dayBookmarks.length}
+                </span>
               </div>
             </header>
 

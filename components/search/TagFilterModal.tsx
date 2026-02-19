@@ -77,13 +77,13 @@ export function TagFilterModal({
               className={cn(
                 'relative flex items-center justify-center gap-1.5 rounded-xl px-3 py-3 text-sm font-semibold transition-all',
                 isSelected
-                  ? 'bg-blue-50 text-blue-700 ring-2 ring-blue-500 dark:bg-blue-900/20 dark:text-blue-300 dark:ring-blue-400'
-                  : 'bg-gray-50 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700',
+                  ? 'bg-foreground/10 text-foreground ring-2 ring-foreground'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80',
               )}
             >
               {isSelected && (
-                <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 dark:bg-blue-400">
-                  <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-foreground">
+                  <Check className="h-3 w-3 text-background" strokeWidth={3} />
                 </span>
               )}
               {tag.name}

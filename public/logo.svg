@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <!-- Background with rounded corners -->
-  <rect width="32" height="32" rx="4" fill="#2563EB"/>
-
-  <!-- Letter D - centered -->
-  <text x="16.5" y="18" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="white">
-    D
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Dark background with rounded corners -->
+  <rect width="512" height="512" rx="96" fill="#141414"/>
+  <!-- Left chevron < -->
+  <polyline points="185,165 105,256 185,347" fill="none" stroke="white" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Right chevron > -->
+  <polyline points="327,165 407,256 327,347" fill="none" stroke="white" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Slash / -->
+  <line x1="295" y1="138" x2="217" y2="374" stroke="white" stroke-width="52" stroke-linecap="round"/>
 </svg>
