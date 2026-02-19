@@ -28,8 +28,8 @@ export function PopularBlogs({ companies, selectedCompanyNames, onCompanyToggle,
               className={cn(
                 'flex items-center gap-2 rounded-full px-4 py-2 font-medium transition-all',
                 selectedCompanyNames.includes(company.name)
-                  ? 'bg-blue-600 text-white dark:bg-blue-500'
-                  : 'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600',
+                  ? 'bg-foreground text-background'
+                  : 'bg-muted text-foreground hover:bg-muted/80',
               )}
               title={company.name}
             >

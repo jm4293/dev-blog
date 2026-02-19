@@ -25,26 +25,29 @@ export function SearchInput({
         <SortButton currentSort={currentSort} onSortChange={onSortChange} />
         <input
           type="text"
+          name="search"
+          autoComplete="off"
+          aria-label="게시글 검색"
           placeholder="게시글 검색..."
           value={value}
           onChange={onChange}
-          className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+          className="flex-1 rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
         />
         <Link
           href="/recent-views"
-          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-foreground px-4 py-3 font-semibold text-background transition-colors hover:bg-foreground/90"
         >
           최근 본 글
         </Link>
         <button
           onClick={onCompanyFilterClick}
-          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-gray-200 px-6 py-3 font-semibold text-gray-900 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-muted px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted/80"
         >
           블로그 필터
         </button>
         <button
           onClick={onTagFilterClick}
-          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-gray-200 px-6 py-3 font-semibold text-gray-900 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-muted px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted/80"
         >
           태그 필터
         </button>
@@ -56,28 +59,31 @@ export function SearchInput({
           <SortButton currentSort={currentSort} onSortChange={onSortChange} />
           <input
             type="text"
+            name="search"
+            autoComplete="off"
+            aria-label="게시글 검색"
             placeholder="게시글 검색..."
             value={value}
             onChange={onChange}
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
           />
         </div>
         <div className="flex gap-2">
           <Link
             href="/recent-views"
-            className="flex items-center justify-center whitespace-nowrap rounded-lg bg-blue-600 px-3 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+            className="flex items-center justify-center whitespace-nowrap rounded-lg bg-foreground px-3 py-3 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
           >
             최근 본 글
           </Link>
           <button
             onClick={onCompanyFilterClick}
-            className="flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-gray-200 px-3 py-3 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+            className="flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-muted px-3 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/80"
           >
             블로그 필터
           </button>
           <button
             onClick={onTagFilterClick}
-            className="flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-gray-200 px-3 py-3 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+            className="flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-muted px-3 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/80"
           >
             태그 필터
           </button>

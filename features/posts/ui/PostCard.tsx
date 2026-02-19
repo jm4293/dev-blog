@@ -17,7 +17,7 @@ export function PostCard({ post, isLoggedIn }: PostCardProps) {
   const timeDisplay = formatPostDate(post.published_at);
 
   return (
-    <article className="transform rounded-lg border border-gray-200 bg-white p-6 transition-shadow duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:shadow-xl">
+    <article className="glass-card transform rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <PostCardHeader logoUrl={post.company.logo_url} companyName={post.company.name} timeDisplay={timeDisplay}>
         <BookmarkButton
           isBookmarked={isBookmarked}
@@ -27,13 +27,19 @@ export function PostCard({ post, isLoggedIn }: PostCardProps) {
         />
       </PostCardHeader>
 
-      <Link href={post.url} target="_blank" rel="noopener noreferrer" onClick={handlePostClick}>
-        <h2 className="mb-3 line-clamp-2 text-lg font-bold text-gray-900 transition-colors hover:text-blue-600 dark:text-white dark:hover:text-blue-400">
+      <Link
+        href={post.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handlePostClick}
+        className="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-1"
+      >
+        <h2 className="mb-3 line-clamp-2 text-lg font-bold text-foreground transition-colors hover:text-muted-foreground">
           {post.title}
         </h2>
       </Link>
 
-      {post.summary && <p className="mb-4 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">{post.summary}</p>}
+      {post.summary && <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>}
 
       <PostCardTags tags={post.tags || []} />
 
@@ -42,7 +48,7 @@ export function PostCard({ post, isLoggedIn }: PostCardProps) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={handlePostClick}
-        className="inline-flex items-center text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+        className="inline-flex items-center rounded text-sm font-semibold text-foreground underline-offset-2 transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-1"
       >
         전체 읽기 →
       </Link>

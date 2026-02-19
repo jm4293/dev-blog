@@ -10,8 +10,8 @@ interface PaginationPageNumberProps {
 export function PaginationPageNumber({ pageNum, isCurrentPage, url, onClick }: PaginationPageNumberProps) {
   const styles = `px-4 py-2 rounded-lg font-semibold transition-colors ${
     isCurrentPage
-      ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
-      : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+      ? 'bg-foreground text-background'
+      : 'bg-background text-foreground border border-border hover:bg-muted'
   }`;
 
   if (onClick) {

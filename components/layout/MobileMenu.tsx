@@ -90,8 +90,11 @@ export function MobileMenu() {
   return (
     <div
       ref={menuRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="내비게이션 메뉴"
       className={cn(
-        'absolute left-0 right-0 top-16 border-b border-gray-200 bg-white shadow-lg transition-all duration-200 dark:border-gray-700 dark:bg-gray-900',
+        'absolute left-0 right-0 top-16 border-b border-border bg-background shadow-lg transition-[transform,opacity] duration-200',
         isAnimating ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0',
       )}
     >
@@ -101,10 +104,8 @@ export function MobileMenu() {
             key={item.href}
             href={item.href}
             className={cn(
-              'block rounded-lg px-4 py-3 transition-colors',
-              isActive(item.href)
-                ? 'bg-blue-50 font-semibold text-blue-600 dark:bg-blue-950 dark:text-blue-400'
-                : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800',
+              'block rounded-lg px-4 py-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-1',
+              isActive(item.href) ? 'bg-foreground font-semibold text-background' : 'text-foreground hover:bg-muted',
             )}
             onClick={toggle}
           >
