@@ -19,6 +19,7 @@
 2. **게시글 본문(content) 저장 금지** (제목, URL, 요약만)
 3. **page.tsx에 'use client' 디렉티브 금지** (항상 서버 컴포넌트)
 4. **새 태그를 AI로 생성 금지** (tags 테이블 사전정의만)
+5. **하드코딩 색상 사용 금지** (`bg-blue-600`, `dark:bg-gray-900` 등 → CSS 변수 클래스 사용)
 
 ### 필수 준수 패턴 ✅
 
@@ -154,8 +155,9 @@ dev-blog/
 
 - **Framework**: Next.js 14.2.0 (App Router)
 - **Language**: TypeScript 5
-- **Styling**: Tailwind CSS 3.4.0
-- **State Management**: Jotai 2.16.1 (최소 사용 - 모바일 메뉴, 토스트)
+- **Styling**: Tailwind CSS 3.4.0 + shadcn/ui (button, badge, separator, tooltip)
+- **Animation**: GSAP (데스크탑 사이드바 hover expand/collapse)
+- **State Management**: Jotai 2.16.1 (최소 사용 - 모바일 메뉴, 토스트, 사이드바)
 - **Data Fetching**: TanStack Query 5.90.16 (React Query) - 주요 상태 관리
 
 ### Backend & Infrastructure
@@ -570,10 +572,12 @@ GitHub Actions (fetch-posts.ts)
 
 **데스크탑 (≥ 768px)**
 
-- **헤더**:
-  - 좌측: 로고 + 포스트 + 블로그 + 즐겨찾기 (가로 배치)
-  - 우측: 테마 토글 + 로그인 버튼 (제일 마지막)
-  - 햄버거 메뉴 숨김
+- **사이드바** (`components/layout/Sidebar.tsx`):
+  - 좌측 고정 (`position: fixed`), 평상시 아이콘만 표시 (64px)
+  - hover 시 GSAP 애니메이션으로 240px로 확장 (아이콘 + 텍스트)
+  - 모바일에서는 완전 숨김 (`hidden md:flex`)
+  - 상단: 로고(`</>` 아이콘) / 중단: 네비 링크 / 하단: 테마 토글
+- **헤더**: 데스크탑에서는 숨김 (사이드바가 대신함)
 - **메인**:
   - 상단: 검색 바 및 필터 영역
     - 검색 입력: 게시글 제목 및 요약 검색 (실시간)
@@ -864,10 +868,12 @@ dev-blog/
 │
 ├── components/                 # React 컴포넌트
 │   ├── layout/
-│   │   ├── Header.tsx          # 헤더 (서버 컴포넌트)
+│   │   ├── Header.tsx          # 모바일 헤더 (fixed, md:hidden)
 │   │   ├── HeaderClient.tsx    # 헤더 클라이언트 로직
 │   │   ├── MobileHamburger.tsx # 햄버거 메뉴 버튼
-│   │   ├── MobileMenu.tsx      # 모바일 사이드 메뉴
+│   │   ├── MobileMenu.tsx      # 모바일 드롭다운 메뉴
+│   │   ├── Sidebar.tsx         # 데스크탑 사이드바 (GSAP hover expand)
+│   │   ├── SidebarLayout.tsx   # 페이지 공통 레이아웃 래퍼
 │   │   ├── Footer.tsx          # 푸터
 │   │   └── index.ts            # 배럴 export
 │   │
@@ -1111,6 +1117,7 @@ dev-blog/
 │   ├── useDebounce.ts          # 디바운스 훅
 │   ├── useIsMobile.ts          # 모바일 감지 훅
 │   ├── useToast.ts             # 토스트 훅
+│   ├── useTheme.ts             # 테마 토글 훅 (CustomEvent로 사이드바/헤더 동기화)
 │   └── index.ts                # 배럴 export
 ```
 
@@ -1272,6 +1279,7 @@ Jotai를 사용하여 전역 상태를 간단하고 효율적으로 관리합니
 atoms/
 ├── mobileMenu.atom.ts   # 모바일 메뉴 상태
 ├── toast.atom.ts        # 토스트 알림 상태
+├── sidebar.atom.ts      # 사이드바 상태 (collapsed/expanded)
 └── index.ts             # 배럴 export
 ```
 
@@ -1548,20 +1556,26 @@ const TAGGING_PROMPT = `
 
 ## 🎨 UI/UX 디자인 가이드
 
-### 색상 팔레트 (Tailwind)
+### 색상 팔레트 (CSS 변수 기반 모노크롬)
 
-- **라이트 모드**:
-  - Background: bg-white, bg-gray-50
-  - Text: text-gray-900, text-gray-600
-  - Primary: #2563EB (파란색) - bg-blue-600, text-blue-600
-  - Accent: #F6A54C (주황색) - bg-orange-400, text-orange-500
-  - Border: border-gray-200
-- **다크 모드**:
-  - Background: bg-gray-950, bg-gray-900
-  - Text: text-gray-100, text-gray-400
-  - Primary: #3B82F6 (밝은 파란색) - bg-blue-500, text-blue-400
-  - Accent: #FBBF24 (밝은 주황색) - bg-yellow-400, text-yellow-300
-  - Border: border-gray-700
+> ⚠️ **하드코딩 금지**: `bg-blue-600`, `dark:bg-gray-900` 등 직접 색상 사용 금지
+
+| 용도          | 클래스                          | 라이트    | 다크      |
+| ------------- | ------------------------------- | --------- | --------- |
+| 페이지 배경   | `bg-background`                 | `#FAFAFA` | `#141414` |
+| 기본 텍스트   | `text-foreground`               | `#212121` | `#EBEBEB` |
+| 카드 배경     | `bg-card` / `glass-card`        | `#FFFFFF` | `#1C1C1C` |
+| 보조 배경     | `bg-muted` / `bg-secondary`     | `#F2F2F2` | `#292929` |
+| 비활성 텍스트 | `text-muted-foreground`         | `#707070` | `#949494` |
+| 구분선        | `border-border`                 | `#E0E0E0` | `#333333` |
+| 강조 버튼     | `bg-foreground text-background` | 검정 버튼 | 흰 버튼   |
+| 파괴적 액션   | `text-destructive`              | 빨강      | 빨강      |
+
+**글래스모피즘 유틸리티** (`app/globals.css`):
+
+- `.glass-sidebar` — 데스크탑 사이드바
+- `.glass-card` — 게시글 카드, 공지사항 카드
+- `.glass-modal` — 필터 모달
 
 ### 컴포넌트 스타일
 
@@ -1782,7 +1796,10 @@ const TAGGING_PROMPT = `
 - [x] **Vercel 배포**: 프로덕션 환경 배포 완료
 - [x] **Cron Job**: 블로그 자동 수집 (매일 실행)
 - [x] **32개 기업 블로그**: 토스, 카카오, 네이버, 라인, 우아한형제들 등
-- [ ] **문서화**: CLAUDE.md 최신화 (진행 중)
+- [x] **디자인 전면 개편**: 모노크롬 + 글래스모피즘 + YouTube식 사이드바
+- [x] **shadcn/ui + GSAP**: 사이드바 애니메이션, UI 컴포넌트
+- [x] **로고/PWA 이미지 개편**: `</>` 아이콘, 블랙 배경 og-image/splash
+- [x] **문서화**: CLAUDE.md 최신화
 - [ ] **성능 모니터링**: Lighthouse 점수 개선
 - [ ] **사용자 피드백**: 기능 개선
 
@@ -2350,7 +2367,7 @@ chore: 기타 변경
 
 ---
 
-**마지막 업데이트**: 2026년 2월 3일
+**마지막 업데이트**: 2026년 2월 19일
 
 ## 📊 현재 프로젝트 현황
 
@@ -2359,7 +2376,7 @@ chore: 기타 변경
 - **등록된 블로그**: 32개 기업
 - **수집된 게시글**: 지속적 업데이트
 - **주요 기능**: 게시글 검색/필터링, 북마크, 최근 본 글, 프로필, 공지사항, Push 알림 (기획 중)
-- **기술 스택**: Next.js 14.2.0, TypeScript 5, Supabase, TanStack Query 5.90.16
+- **기술 스택**: Next.js 14.2.0, TypeScript 5, Supabase, TanStack Query 5.90.16, shadcn/ui, GSAP
 - **배포 환경**: Vercel (프로덕션)
 - **모니터링**: Sentry, Google Analytics
 

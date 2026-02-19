@@ -119,7 +119,7 @@ export default function PostsPage() {
 ### 상태 관리
 
 - **TanStack Query**: 서버 데이터 (게시글, 북마크, 사용자 정보)
-- **Jotai**: UI 상태만 (모바일 메뉴, 토스트)
+- **Jotai**: UI 상태만 (모바일 메뉴, 토스트, 사이드바 상태)
 - **Query Key**: `lib/query-keys.ts`에 중앙 관리
 
 ```typescript
@@ -304,6 +304,19 @@ chore: 기타 변경
 - ❌ **잘못**: 게시글, 북마크를 Jotai atom에 저장
 - ✅ **올바름**: TanStack Query 사용
 
+### 6. 색상 하드코딩
+
+- ❌ **잘못**: `bg-blue-600`, `text-blue-400`, `dark:bg-gray-900` 등 직접 색상 사용
+- ✅ **올바름**: `bg-foreground`, `text-muted-foreground`, `bg-card` 등 CSS 변수 클래스 사용
+- 이유: Tailwind 기본 `gray`는 blue tint가 있어 다크모드에서 색조가 어긋남 (프로젝트에서 neutral gray로 재정의됨)
+
+### 7. 레이아웃 구조
+
+- **`app/(pages)/layout.tsx`**: `SidebarLayout`으로 감쌈
+- **데스크탑(md↑)**: 좌측 고정 사이드바 (`Sidebar.tsx`, hover 시 GSAP으로 확장)
+- **모바일(md↓)**: 상단 고정 헤더 (`Header.tsx`) + 햄버거 메뉴
+- 새 레이아웃 컴포넌트 추가 시 `SidebarLayout` 구조 유지 필수
+
 ---
 
 ## 📚 필독 문서
@@ -326,4 +339,4 @@ chore: 기타 변경
 
 ---
 
-**마지막 업데이트**: 2026년 2month 3일
+**마지막 업데이트**: 2026년 2월 19일

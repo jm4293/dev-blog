@@ -16,6 +16,10 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#141414' },
+    { media: '(prefers-color-scheme: dark)', color: '#141414' },
+  ],
 };
 
 export const metadata: Metadata = {
@@ -116,7 +120,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* iOS PWA splash screen */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="apple-mobile-web-app-title" content="devBlog.kr" />
         <link
           rel="apple-touch-startup-image"
@@ -175,7 +179,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-screen bg-white dark:bg-gray-950">
+      <body className="min-h-screen bg-background">
         <OfflineBanner />
         <ToastContainer />
         <QueryProvider>{children}</QueryProvider>
