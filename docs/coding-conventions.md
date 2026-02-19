@@ -277,6 +277,49 @@ export function MobileHamburger() {
 - **유틸리티 클래스 우선**: 인라인 className 사용
 - **커스텀 CSS는 최소화**: globals.css만 사용
 - **cn 유틸 사용**: 조건부 클래스와 className 병합
+- **하드코딩 색상 금지**: `text-blue-600`, `bg-gray-900` 등 대신 CSS 변수 클래스 사용
+
+#### 색상 규칙 (모노크롬 팔레트)
+
+```typescript
+// ❌ 하드코딩 색상 (blue tint, 다크모드 불일치)
+<div className="bg-blue-600 text-white dark:bg-gray-900" />
+
+// ✅ CSS 변수 기반 (다크/라이트 자동 전환)
+<div className="bg-foreground text-background" />
+<div className="bg-muted text-muted-foreground" />
+<div className="border-border bg-card" />
+```
+
+| 의미          | 클래스                                   |
+| ------------- | ---------------------------------------- |
+| 강조 버튼     | `bg-foreground text-background`          |
+| 보조 버튼     | `bg-muted text-foreground`               |
+| 카드 배경     | `bg-card` / `glass-card`                 |
+| 비활성 텍스트 | `text-muted-foreground`                  |
+| 구분선        | `border-border`                          |
+| 파괴적 액션   | `text-destructive` / `bg-destructive/10` |
+
+#### 포커스 인디케이터
+
+```typescript
+// ❌ focus: (마우스 클릭에도 링 표시)
+<button className="focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+// ✅ focus-visible: (키보드 탐색에만 링 표시)
+<button className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30" />
+```
+
+#### 애니메이션
+
+```typescript
+// ❌ transition-all (성능 저하)
+<div className="transition-all duration-200" />
+
+// ✅ 특정 속성만 (GPU composite 속성)
+<div className="transition-[transform,opacity] duration-200" />
+<div className="transition-colors duration-200" />
+```
 
 #### cn 유틸리티 (tailwind-merge + clsx)
 
