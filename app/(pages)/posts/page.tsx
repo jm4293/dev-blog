@@ -1,8 +1,10 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { fetchPosts, PostsContainer } from '@/features/posts';
+import { PostsFetcher } from '@/features/posts';
 import { getUser } from '@/features/auth';
 import { APP, parsePostsSearchParams } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import { GridSkeleton } from '@/components/skeleton';
 
 interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
@@ -114,7 +116,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 export default async function PostPage({ searchParams }: PageProps) {
   const { page, search, tags, blogs, sort, login, error } = parsePostsSearchParams(await searchParams);
 
-  const [user, postsData] = await Promise.all([getUser(), fetchPosts({ page, search, tags, blogs, sort })]);
+  const user = await getUser();
 
   // Breadcrumb 스키마 생성 (SEO)
   const breadcrumbItems = [{ name: 'Home', url: APP.URL }];
@@ -163,13 +165,18 @@ export default async function PostPage({ searchParams }: PageProps) {
       </header>
 
       <section aria-label="블로그 게시글 목록">
-        <PostsContainer
-          isLoggedIn={!!user}
-          initialData={postsData}
-          initialFilters={{ page, search, tags, blogs, sort }}
-          loginStatus={login}
-          errorStatus={error}
-        />
+        <Suspense fallback={<GridSkeleton count={8} />}>
+          <PostsFetcher
+            isLoggedIn={!!user}
+            page={page}
+            search={search}
+            tags={tags}
+            blogs={blogs}
+            sort={sort}
+            loginStatus={login}
+            errorStatus={error}
+          />
+        </Suspense>
       </section>
     </div>
   );
