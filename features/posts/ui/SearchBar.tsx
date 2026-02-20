@@ -26,6 +26,7 @@ export function SearchBar({ filters }: SearchBarProps) {
       <SearchInput
         value={filters.inputValue}
         onChange={filters.handleSearchChange}
+        onSearch={filters.handleSearchSubmit}
         onCompanyFilterClick={() => filters.setShowCompanyModal(true)}
         onTagFilterClick={() => filters.setShowTagModal(true)}
         currentSort={filters.sortParam}
@@ -47,7 +48,7 @@ export function SearchBar({ filters }: SearchBarProps) {
       />
 
       <ActiveFilters
-        searchQuery={filters.debouncedSearchQuery}
+        searchQuery={filters.searchQuery}
         selectedCompanyNamesCount={filters.selectedCompanyNames.length}
         selectedTagsCount={filters.selectedTags.length}
         onReset={filters.handleReset}

@@ -1,9 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
+import { useCallback, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { buildQueryParams } from '@/utils';
-import { useDebounce } from '@/hooks';
 import { useFilterModal } from './useFilterModal';
 
 interface InitialFilters {
@@ -16,7 +15,6 @@ interface InitialFilters {
 
 export function useSearchFilters(initialFilters?: InitialFilters) {
   const router = useRouter();
-  const isInitialMount = useRef(true);
   const [isPending, startTransition] = useTransition();
 
   // 서버에서 전달받은 초기 필터 값 사용
@@ -32,16 +30,13 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
   const [selectedCompanyNames, setSelectedCompanyNames] = useState<string[]>(() => blogsParam);
   const { showTagModal, showCompanyModal, setShowTagModal, setShowCompanyModal } = useFilterModal();
 
-  // 디바운스 effect에서 최신 값을 읽기 위한 ref (stale closure 방지)
+  // 최신 값을 읽기 위한 ref (stale closure 방지)
   const selectedTagsRef = useRef(selectedTags);
   const selectedCompanyNamesRef = useRef(selectedCompanyNames);
   const sortParamRef = useRef(sortParam);
   selectedTagsRef.current = selectedTags;
   selectedCompanyNamesRef.current = selectedCompanyNames;
   sortParamRef.current = sortParam;
-
-  // 디바운스된 검색어 (500ms 지연)
-  const debouncedSearchQuery = useDebounce(inputValue, 500);
 
   // URL 업데이트 함수
   const updateUrl = useCallback(
@@ -62,19 +57,13 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
     [router, startTransition],
   );
 
-  // 디바운스된 검색어가 변경되면 URL 업데이트 (초기 마운트 제외)
-  // ref를 통해 최신 태그/회사/정렬 값을 읽어 stale closure 문제 방지
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-    updateUrl(1, debouncedSearchQuery, selectedTagsRef.current, selectedCompanyNamesRef.current, sortParamRef.current);
-  }, [debouncedSearchQuery, updateUrl]);
-
   // 핸들러
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    updateUrl(1, inputValue, selectedTagsRef.current, selectedCompanyNamesRef.current, sortParamRef.current);
   };
 
   const handleTagsApply = (tags: string[]) => {
@@ -118,7 +107,6 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
     // 상태
     currentPage,
     inputValue,
-    debouncedSearchQuery,
     searchQuery,
     tagsParam,
     blogsParam,
@@ -133,6 +121,7 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
     setShowTagModal,
     setShowCompanyModal,
     handleSearchChange,
+    handleSearchSubmit,
     handleTagToggle,
     handleCompanyToggle,
     handleTagsApply,

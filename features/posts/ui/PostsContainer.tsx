@@ -36,7 +36,7 @@ export function PostsContainer({
   const totalPages = initialData.totalPages;
   const filters = useSearchFilters(initialFilters);
   const hasFilters =
-    filters.debouncedSearchQuery !== '' || filters.selectedTags.length > 0 || filters.selectedCompanyNames.length > 0;
+    filters.searchQuery !== '' || filters.selectedTags.length > 0 || filters.selectedCompanyNames.length > 0;
 
   if (posts.length === 0) {
     return (
