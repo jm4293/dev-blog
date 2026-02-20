@@ -4,6 +4,7 @@
 export { PostCard } from './ui/PostCard';
 export { PostList } from './ui/PostList';
 export { PostsContainer } from './ui/PostsContainer';
+export { PostsFetcher } from './ui/PostsFetcher';
 export { SearchBar } from './ui/SearchBar';
 
 // 서비스 (scripts/fetch-posts.ts에서 사용)
