@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAddBookmark, useRemoveBookmark, useIsBookmarked } from './index';
 
 export function useBookmarkToggle(postId: string, isLoggedIn: boolean) {
@@ -14,6 +14,11 @@ export function useBookmarkToggle(postId: string, isLoggedIn: boolean) {
   // 낙관적 상태: 로컬 상태로 UI 즉시 업데이트
   const [optimisticBookmarked, setOptimisticBookmarked] = useState(serverBookmarked);
   const [showLoginTooltip, setShowLoginTooltip] = useState(false);
+
+  // API 응답이 도착하면 서버 상태로 동기화 (최초 로드 시 하트 표시를 위해 필요)
+  useEffect(() => {
+    setOptimisticBookmarked(serverBookmarked);
+  }, [serverBookmarked]);
 
   const toggleBookmark = () => {
     // 비로그인 시 툴팁 표시하고 API 호출 차단
