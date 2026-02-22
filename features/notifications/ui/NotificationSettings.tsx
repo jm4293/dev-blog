@@ -59,15 +59,17 @@ export function NotificationSettings() {
 
   if (isLoading) {
     return (
-      <>
+      <div className="mb-6 rounded-xl border border-border bg-card p-6">
+        <h3 className="mb-4 text-lg font-semibold text-foreground">알림 설정</h3>
         <div className="mb-4 h-4 w-24 animate-pulse rounded bg-muted" />
         <div className="h-10 w-full animate-pulse rounded-lg bg-muted" />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="mb-6 rounded-xl border border-border bg-card p-6">
+      <h3 className="mb-4 text-lg font-semibold text-foreground">알림 설정</h3>
       {/* 전체 알림 토글 */}
       <div className="flex items-center justify-between py-3">
         <div className="flex items-center gap-3">
@@ -163,6 +165,6 @@ export function NotificationSettings() {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -51,14 +51,9 @@ export function ProfileContent({ user, year }: ProfileContentProps) {
         </div>
       </article>
 
-      <div className="mb-6 overflow-visible rounded-xl border border-border bg-card p-6">
-        <ActivityHeatmap year={year} />
-      </div>
+      <ActivityHeatmap year={year} />
 
-      <div className="mb-6 rounded-xl border border-border bg-card p-6">
-        <h3 className="mb-4 text-lg font-semibold text-foreground">알림 설정</h3>
-        <NotificationSettings />
-      </div>
+      <NotificationSettings />
 
       <ProfileClient user={user} />
     </section>
