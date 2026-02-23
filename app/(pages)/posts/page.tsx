@@ -160,8 +160,16 @@ export default async function PostPage({ searchParams }: PageProps) {
       />
 
       <header className="mb-4">
-        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">포스트</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">개발 블로그를 한 곳에서 모아보세요.</p>
+        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">
+          <span className="sr-only">개발블로그·기술블로그 모음 - </span>
+          포스트
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400">
+          <span className="sr-only">
+            토스, 카카오 등 국내 주요 IT 기업의 개발 블로그와 기술 블로그 글을 한 곳에서 검색하고 모아보세요.
+          </span>
+          개발 블로그를 한 곳에서 모아보세요.
+        </p>
       </header>
 
       <section aria-label="블로그 게시글 목록">
