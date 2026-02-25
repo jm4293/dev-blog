@@ -19,22 +19,22 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const { search, tags, blogs } = parsePostsSearchParams(params);
 
   // 기본 메타데이터
-  let title = '개발 블로그 모음';
-  let description = '토스, 카카오 등 32개 기업의 개발 블로그 게시글을 한 곳에서 모아보세요.';
+  let title = '개발/기술 블로그 모음';
+  let description = '토스, 카카오 등 32+ 기업의 개발/기술 블로그 게시글을 한 곳에서 모아보세요.';
   let canonicalUrl = `${APP.URL}/posts`;
 
   // 검색어가 있는 경우
   if (search) {
     title = `"${search}" 검색 결과`;
-    description = `"${search}" 관련 개발 블로그 게시글을 찾아보세요. 토스, 카카오 등 한국 주요 IT 기업의 기술 블로그에서 검색한 결과입니다.`;
+    description = `"${search}" 관련 개발/기술 블로그 게시글을 찾아보세요. 토스, 카카오 등 한국 주요 IT 기업의 기술 블로그에서 검색한 결과입니다.`;
     canonicalUrl = `${APP.URL}/posts?search=${encodeURIComponent(search)}`;
   }
 
   // 태그 필터가 있는 경우
   if (tags && tags.length > 0) {
     const tagNames = tags.join(', ');
-    title = `${tagNames} 개발 블로그 모음`;
-    description = `${tagNames} 관련 최신 기술 블로그 글 모음. 토스, 카카오 등 32개 기업의 ${tagNames} 개발 경험과 노하우를 한 곳에서 확인하세요.`;
+    title = `${tagNames} 개발/기술 블로그 모음`;
+    description = `${tagNames} 관련 최신 개발/기술 블로그 글 모음. 토스, 카카오 등 32+ 기업의 ${tagNames} 개발 경험과 노하우를 한 곳에서 확인하세요.`;
     canonicalUrl = `${APP.URL}/posts?tags=${tags.map(encodeURIComponent).join(',')}`;
   }
 
@@ -57,7 +57,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   if (search && tags && tags.length > 0) {
     const tagNames = tags.join(', ');
     title = `"${search}" ${tagNames} 검색 결과`;
-    description = `"${search}" 키워드로 ${tagNames} 관련 개발 블로그 글을 검색한 결과입니다.`;
+    description = `"${search}" 키워드로 ${tagNames} 관련 개발/기술 블로그 글을 검색한 결과입니다.`;
   }
 
   const fullTitle = `${title} - devBlog.kr`;
@@ -100,7 +100,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
           url: `${APP.URL}/og-image.png`,
           width: 1200,
           height: 630,
-          alt: '개발 블로그 모음 플랫폼 - devBlog.kr',
+          alt: '개발/기술 블로그 모음 플랫폼 - devBlog.kr',
         },
       ],
     },
@@ -168,7 +168,7 @@ export default async function PostPage({ searchParams }: PageProps) {
           <span className="sr-only">
             토스, 카카오 등 국내 주요 IT 기업의 개발 블로그와 기술 블로그 글을 한 곳에서 검색하고 모아보세요.
           </span>
-          개발 블로그를 한 곳에서 모아보세요.
+          개발/기술 블로그를 한 곳에서 모아보세요.
         </p>
       </header>
 
