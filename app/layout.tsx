@@ -95,12 +95,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/logo_32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/logo_192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/logo_512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/logo.svg?v=2', type: 'image/svg+xml' },
+      { url: '/logo_32.png?v=2', sizes: '32x32', type: 'image/png' },
+      { url: '/logo_48.png?v=2', sizes: '48x48', type: 'image/png' },
+      { url: '/logo_192.png?v=2', sizes: '192x192', type: 'image/png' },
+      { url: '/logo_512.png?v=2', sizes: '512x512', type: 'image/png' },
     ],
-    shortcut: '/logo_32.png',
-    apple: '/logo_192.png',
+    shortcut: '/logo_48.png?v=2',
+    apple: '/logo_192.png?v=2',
   },
   other: {
     'naver-site-verification': '7f789ada98f40ecd34a513b77f53acd408b08300',
@@ -111,9 +113,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logo_32.png" sizes="32x32" type="image/png" />
-        <link rel="icon" href="/logo_192.png" sizes="192x192" type="image/png" />
-        <link rel="apple-touch-icon" href="/logo_192.png" />
+        <link rel="icon" href="/logo.svg?v=2" type="image/svg+xml" />
+        <link rel="icon" href="/logo_32.png?v=2" sizes="32x32" type="image/png" />
+        <link rel="icon" href="/logo_48.png?v=2" sizes="48x48" type="image/png" />
+        <link rel="icon" href="/logo_192.png?v=2" sizes="192x192" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo_192.png?v=2" />
 
         {/* PWA manifest */}
         <link rel="manifest" href="/manifest.json" />
