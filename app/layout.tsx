@@ -24,7 +24,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: '개발 블로그 모음 - devBlog.kr',
+    default: '개발/기술 블로그 모음 - devBlog.kr',
     template: '%s - devBlog.kr',
   },
   description:
@@ -76,8 +76,8 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: baseUrl,
     siteName: 'devBlog.kr',
-    title: '개발 블로그 모음 - devBlog.kr',
-    description: '토스, 카카오 등 개발 블로그 게시글을 한 곳에서 모아보세요.',
+    title: '개발/기술 블로그 모음 - devBlog.kr',
+    description: '토스, 카카오 등 32+ 기업의 개발/기술 블로그 게시글을 한 곳에서 모아보세요.',
     images: [
       {
         url: `${baseUrl}/og-image.png`,
@@ -89,8 +89,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '개발 블로그 모음 - devBlog.kr',
-    description: '토스, 카카오 등 개발 블로그 게시글을 한 곳에서 모아보세요.',
+    title: '개발/기술 블로그 모음 - devBlog.kr',
+    description: '토스, 카카오 등 32+ 기업의 개발/기술 블로그 게시글을 한 곳에서 모아보세요.',
     images: [`${baseUrl}/og-image.png`],
   },
   icons: {
