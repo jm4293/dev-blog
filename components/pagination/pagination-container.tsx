@@ -61,6 +61,7 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
           isDisabled={currentPage === 1}
           url={onPageChange ? undefined : buildUrl(1)}
           onClick={onPageChange}
+          ariaLabel="첫 페이지로 이동"
         >
           <ChevronsLeft className="h-5 w-5" />
         </PaginationButton>
@@ -70,6 +71,7 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
           isDisabled={!prevPage}
           url={onPageChange || !prevPage ? undefined : buildUrl(prevPage)}
           onClick={onPageChange}
+          ariaLabel="이전 페이지 묶음으로 이동"
         >
           <ChevronLeft className="h-5 w-5" />
         </PaginationButton>
@@ -89,6 +91,7 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
           isDisabled={!nextPage}
           url={onPageChange || !nextPage ? undefined : buildUrl(nextPage)}
           onClick={onPageChange}
+          ariaLabel="다음 페이지 묶음으로 이동"
         >
           <ChevronRight className="h-5 w-5" />
         </PaginationButton>
@@ -98,6 +101,7 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
           isDisabled={currentPage === totalPages}
           url={onPageChange ? undefined : buildUrl(totalPages)}
           onClick={onPageChange}
+          ariaLabel="마지막 페이지로 이동"
         >
           <ChevronsRight className="h-5 w-5" />
         </PaginationButton>
