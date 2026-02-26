@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { PostsFetcher } from '@/features/posts';
 import { getUser } from '@/features/auth';
 import { APP, parsePostsSearchParams } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { GridSkeleton } from '@/components/skeleton';
+import { PostsFetcher } from '@/features/posts';
 
 interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;

@@ -2,7 +2,7 @@
  * 현재 기기의 device_os, browser를 User-Agent에서 감지
  */
 
-export interface DeviceInfo {
+interface DeviceInfo {
   device_os: string; // windows, mac, linux, android, ios
   browser: string; // chrome, firefox, safari, edge
 }

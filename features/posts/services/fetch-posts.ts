@@ -1,0 +1,130 @@
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import type { PostWithCompany } from '@/supabase/types.supabase';
+
+interface GetPostsParams {
+  page?: number;
+  search?: string;
+  tags?: string[];
+  blogs?: string[];
+  companyId?: string;
+  sort?: 'newest' | 'oldest';
+  limit?: number;
+}
+
+interface GetPostsResponse {
+  posts: PostWithCompany[];
+  total: number;
+  page: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+export async function fetchPosts({
+  page = 1,
+  search = '',
+  tags = [],
+  blogs = [],
+  companyId = '',
+  sort = 'newest',
+  limit = 20,
+}: GetPostsParams = {}): Promise<GetPostsResponse> {
+  const supabase = await createSupabaseServerClient();
+
+  const offset = (page - 1) * limit;
+
+  // 1. 전체 게시글 수 조회
+  let countQuery = supabase.from('posts').select('id', { count: 'exact', head: true });
+
+  // 2. 게시글 목록 조회 (정렬: 기본값은 최신순)
+  const isAscending = sort === 'oldest';
+  let postsQuery = supabase
+    .from('posts')
+    .select(
+      `
+      id,
+      company_id,
+      title,
+      url,
+      content,
+      summary,
+      author,
+      tags,
+      published_at,
+      scraped_at,
+      created_at,
+      updated_at,
+      company:companies(*)
+    `,
+    )
+    .order('published_at', { ascending: isAscending });
+
+  // 검색 필터 (제목 기반)
+  if (search) {
+    const searchTerm = `%${search}%`;
+    countQuery = countQuery.ilike('title', searchTerm);
+    postsQuery = postsQuery.ilike('title', searchTerm);
+  }
+
+  // 블로그 필터 promise 즉시 시작 (waterfall 방지)
+  let blogsPromise: any = null;
+  if (blogs.length > 0 && !companyId) {
+    blogsPromise = supabase.from('companies').select('id').in('name', blogs);
+  }
+
+  // 태그 필터 (OR 조건: 하나 이상의 태그 포함)
+  if (tags.length > 0) {
+    countQuery = countQuery.overlaps('tags', tags);
+    postsQuery = postsQuery.overlaps('tags', tags);
+  }
+
+  // 블로그 필터 (단일 또는 다중)
+  if (companyId) {
+    countQuery = countQuery.eq('company_id', companyId);
+    postsQuery = postsQuery.eq('company_id', companyId);
+  } else if (blogs.length > 0 && blogsPromise) {
+    const { data: blogsData, error: blogsError } = await blogsPromise;
+
+    if (blogsError) {
+      throw blogsError;
+    }
+
+    const companyIds = blogsData?.map((c: { id: string }) => c.id) || [];
+    if (companyIds.length > 0) {
+      countQuery = countQuery.in('company_id', companyIds);
+      postsQuery = postsQuery.in('company_id', companyIds);
+    }
+  }
+
+  // 전체 개수 조회
+  const { count, error: countError } = await countQuery;
+
+  if (countError) {
+    throw countError;
+  }
+
+  const total = count || 0;
+  const totalPages = Math.ceil(total / limit);
+
+  // 페이지네이션 적용
+  const { data: posts, error: postsError } = await postsQuery.range(offset, offset + limit - 1);
+
+  if (postsError) {
+    throw postsError;
+  }
+
+  // 응답 형식 변환
+  const typedPosts: PostWithCompany[] = (posts || []).map((post: any) => ({
+    ...post,
+    company: post.company || ({} as any),
+  }));
+
+  return {
+    posts: typedPosts,
+    total,
+    page,
+    totalPages,
+    hasNextPage: page < totalPages,
+    hasPrevPage: page > 1,
+  };
+}

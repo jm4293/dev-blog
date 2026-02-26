@@ -11,7 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { Tag } from '@/supabase/types.supabase';
-import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
+import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils';
 
 interface TagsResponse {
   tags: Tag[];

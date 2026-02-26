@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { APP } from '@/utils/constants';
+import { APP } from '@/utils';
 
 export const metadata: Metadata = {
   title: '개인정보 처리방침',

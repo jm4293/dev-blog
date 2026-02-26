@@ -1,2 +1,2 @@
-export { logoutAction } from './logout.action';
-export { withdrawAction } from './withdraw.action';
+export * from './logout.action';
+export * from './withdraw.action';

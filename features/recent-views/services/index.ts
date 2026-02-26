@@ -1,1 +1,1 @@
-export type { RecentView } from './local-storage.types';
+export * from './local-storage.types';

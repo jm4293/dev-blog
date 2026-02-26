@@ -10,7 +10,7 @@ const OS_META: Record<string, { label: string; Icon: React.ComponentType<{ class
   ios: { label: 'iPhone', Icon: Apple },
 };
 
-export interface DeviceGroup {
+interface DeviceGroup {
   device_os: string;
   label: string;
   Icon: React.ComponentType<{ className?: string }>;

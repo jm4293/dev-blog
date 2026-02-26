@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import { AnnouncementsContainer } from '@/features/announcements';
-import { fetchAnnouncements } from '@/features/announcements/services';
-import { APP } from '@/utils/constants';
+import { AnnouncementsContainer, fetchAnnouncements } from '@/features/announcements';
+import { APP } from '@/utils';
 import { Suspense } from 'react';
 import { SimpleSkeleton } from '@/components/skeleton';
 

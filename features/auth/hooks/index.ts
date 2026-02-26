@@ -1,3 +1,3 @@
-export { useGitHubLogin } from './useGitHubLogin';
-export { useLogout } from './useLogout';
-export { useDeleteAccount } from './useDeleteAccount';
+export * from './use-github-login';
+export * from './use-logout';
+export * from './use-delete-account';

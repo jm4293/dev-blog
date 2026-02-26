@@ -1,1 +1,2 @@
-export { ActivityHeatmap } from './ActivityHeatmap';
+export * from './activity-heatmap';
+export * from './activity-heatmap-client';

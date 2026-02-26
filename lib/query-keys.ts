@@ -34,9 +34,9 @@ export const queryKeys = {
   /**
    * 블로그 관련 query keys
    */
-  companies: {
-    all: ['companies'] as const,
-    list: (params: { featured?: boolean; all?: boolean }) => ['companies', params.featured, params.all] as const,
+  blogs: {
+    all: ['blogs'] as const,
+    list: (params: { featured?: boolean; all?: boolean }) => ['blogs', params.featured, params.all] as const,
   },
 
   /**

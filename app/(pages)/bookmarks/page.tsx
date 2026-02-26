@@ -1,9 +1,8 @@
 import { Metadata } from 'next';
-import { BookmarkContainer } from '@/features/bookmarks';
-import { fetchBookmarks } from '@/features/bookmarks/services';
-import { APP } from '@/utils/constants';
+import { BookmarkContainer, fetchBookmarks } from '@/features/bookmarks';
 import { getUser } from '@/features/auth';
 import { Suspense } from 'react';
+import { APP } from '@/utils';
 import { GridSkeleton } from '@/components/skeleton';
 import { LoginRequired } from '@/components/auth';
 

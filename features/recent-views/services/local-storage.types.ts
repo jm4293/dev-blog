@@ -1,4 +1,4 @@
-import { PostWithCompany } from '@/supabase';
+import { PostWithCompany } from '@/supabase/types.supabase';
 
 export interface RecentView {
   postId: string;
