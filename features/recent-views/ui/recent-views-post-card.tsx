@@ -10,13 +10,12 @@ interface RecentViewPostCardProps {
   view: RecentViewWithPost;
   isEditMode: boolean;
   isSelected: boolean;
-  isLoggedIn: boolean;
   onSelect: (postId: string) => void;
 }
 
-export function RecentViewPostCard({ view, isEditMode, isSelected, isLoggedIn, onSelect }: RecentViewPostCardProps) {
-  const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip } = useBookmarkToggle(view.post.id, isLoggedIn);
-  const addRecentView = useAddRecentView(isLoggedIn);
+export function RecentViewPostCard({ view, isEditMode, isSelected, onSelect }: RecentViewPostCardProps) {
+  const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip } = useBookmarkToggle(view.post.id);
+  const addRecentView = useAddRecentView();
   const timeDisplay = formatPostDate(view.post.published_at);
 
   const handleCardClick = () => {

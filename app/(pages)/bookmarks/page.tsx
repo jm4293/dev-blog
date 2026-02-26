@@ -1,10 +1,8 @@
 import { Metadata } from 'next';
 import { BookmarkContainer, fetchBookmarks } from '@/features/bookmarks';
-import { getUser } from '@/features/auth';
 import { Suspense } from 'react';
 import { APP } from '@/utils';
 import { GridSkeleton } from '@/components/skeleton';
-import { LoginRequired } from '@/components/auth';
 
 export const metadata: Metadata = {
   title: '즐겨찾기',
@@ -38,20 +36,6 @@ export const metadata: Metadata = {
 };
 
 export default async function BookmarksPage() {
-  const user = await getUser();
-
-  if (!user) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <header className="mb-4">
-          <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">즐겨찾기</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">저장한 게시글을 확인해보세요.</p>
-        </header>
-        <LoginRequired description="GitHub 계정으로 로그인하고 즐겨찾기를 이용하세요" />
-      </div>
-    );
-  }
-
   const bookmarksPromise = fetchBookmarks();
 
   return (
@@ -63,7 +47,7 @@ export default async function BookmarksPage() {
 
       <section aria-label="북마크된 게시글 목록">
         <Suspense fallback={<GridSkeleton />}>
-          <BookmarkContainer data={bookmarksPromise} isLoggedIn={!!user} />
+          <BookmarkContainer data={bookmarksPromise} />
         </Suspense>
       </section>
     </div>

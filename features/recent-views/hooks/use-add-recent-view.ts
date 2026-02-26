@@ -6,11 +6,14 @@ import { getLocalStorage, setLocalStorage } from '@/utils';
 import type { PostWithCompany } from '@/supabase/types.supabase';
 import type { RecentView } from '../services/local-storage.types';
 import { queryKeys } from '@/lib/query-keys';
+import { useUser } from '@/features/auth';
 
 const MAX_RECENT_VIEWS = 20;
 const STORAGE_KEY = 'recent-posts';
 
-export function useAddRecentView(isLoggedIn: boolean) {
+export function useAddRecentView() {
+  const { data: user } = useUser();
+  const isLoggedIn = !!user;
   const queryClient = useQueryClient();
 
   return useMutation({

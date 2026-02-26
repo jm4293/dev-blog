@@ -7,14 +7,13 @@ import { BookmarksResponse } from '../services';
 
 interface BookmarkContainerProps {
   data: Promise<BookmarksResponse>;
-  isLoggedIn: boolean;
 }
 
 interface BookmarksByDate {
   [date: string]: BookmarkWithPost[];
 }
 
-export function BookmarkContainer({ data, isLoggedIn }: BookmarkContainerProps) {
+export function BookmarkContainer({ data }: BookmarkContainerProps) {
   const { bookmarks } = use(data);
 
   // 날짜별로 북마크를 그룹화하고 정렬 (useMemo로 최적화)
@@ -79,7 +78,7 @@ export function BookmarkContainer({ data, isLoggedIn }: BookmarkContainerProps) 
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               {dayBookmarks.map((bookmark) => (
-                <PostCard key={bookmark.post.id} post={bookmark.post} isLoggedIn={isLoggedIn} />
+                <PostCard key={bookmark.post.id} post={bookmark.post} />
               ))}
             </div>
           </section>

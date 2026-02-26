@@ -8,14 +8,10 @@ import { RecentViewsError } from './recent-views-error';
 import { RecentViewsActions } from './recent-views-actions';
 import { RecentViewPostCard } from './recent-views-post-card';
 
-interface RecentViewsListProps {
-  isLoggedIn: boolean;
-}
-
-export function RecentViewsList({ isLoggedIn }: RecentViewsListProps) {
-  const { data: views, isLoading, error } = useRecentViews(isLoggedIn);
-  const deleteRecentView = useDeleteRecentView(isLoggedIn);
-  const clearAll = useClearAllRecentViews(isLoggedIn);
+export function RecentViewsList() {
+  const { data: views, isLoading, error } = useRecentViews();
+  const deleteRecentView = useDeleteRecentView();
+  const clearAll = useClearAllRecentViews();
   const [selected, setSelected] = useState<string[]>([]);
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -89,7 +85,6 @@ export function RecentViewsList({ isLoggedIn }: RecentViewsListProps) {
             view={view}
             isEditMode={isEditMode}
             isSelected={selected.includes(view.post_id)}
-            isLoggedIn={isLoggedIn}
             onSelect={handleSelect}
           />
         ))}

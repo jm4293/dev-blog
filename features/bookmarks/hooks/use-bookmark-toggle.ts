@@ -2,8 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useAddBookmark, useRemoveBookmark, useIsBookmarked } from './index';
+import { useUser } from '@/features/auth';
 
-export function useBookmarkToggle(postId: string, isLoggedIn: boolean) {
+export function useBookmarkToggle(postId: string) {
+  const { data: user } = useUser();
+  const isLoggedIn = !!user;
+
   const addBookmarkMutation = useAddBookmark();
   const removeBookmarkMutation = useRemoveBookmark();
   const isBookmarkedFn = useIsBookmarked();
