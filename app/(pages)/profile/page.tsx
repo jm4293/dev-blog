@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import { getUser } from '@/features/auth';
 import { ProfileContainer } from '@/features/profile';
 import { APP } from '@/utils';
-import { LoginRequired } from '@/components/auth';
+import { getUser } from '@/features/auth';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: '프로필',
@@ -43,21 +43,15 @@ interface ProfilePageProps {
 }
 
 export default async function ProfilePage({ searchParams }: ProfilePageProps) {
-  const params = await searchParams;
-  const year = params.year ? parseInt(params.year, 10) : undefined;
   const user = await getUser();
 
+  // 비로그인 시 로그인 페이지로 리다이렉트
   if (!user) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <header className="mb-4">
-          <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">프로필</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">내 정보를 확인하고 관리하세요.</p>
-        </header>
-        <LoginRequired description="GitHub 계정으로 로그인하고 프로필 정보를 확인하세요" />
-      </div>
-    );
+    redirect('/auth/login?redirect=/profile');
   }
+
+  const params = await searchParams;
+  const year = params.year ? parseInt(params.year, 10) : undefined;
 
   return (
     <div className="container mx-auto px-4 py-8">

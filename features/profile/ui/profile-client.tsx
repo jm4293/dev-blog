@@ -3,15 +3,10 @@
 import { useLogout } from '@/features/auth/hooks/use-logout';
 import { useDeleteAccount } from '@/features/auth/hooks/use-delete-account';
 import { DeleteAccountConfirmModal } from '@/components/modal';
-import type { User } from '@supabase/auth-js';
 import { useState } from 'react';
 import { LogOut, Trash2 } from 'lucide-react';
 
-interface ProfileClientProps {
-  user: User;
-}
-
-export const ProfileClient = ({ user }: ProfileClientProps) => {
+export const ProfileClient = () => {
   const { mutate: logout, isPending } = useLogout();
   const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);

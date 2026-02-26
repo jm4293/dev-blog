@@ -23,20 +23,13 @@ interface GetPostsResponse {
 }
 
 interface PostsContainerProps {
-  isLoggedIn: boolean;
   initialData: GetPostsResponse;
   initialFilters: InitialFilters;
   loginStatus?: string;
   errorStatus?: string;
 }
 
-export function PostsContainer({
-  isLoggedIn,
-  initialData,
-  initialFilters,
-  loginStatus,
-  errorStatus,
-}: PostsContainerProps) {
+export function PostsContainer({ initialData, initialFilters, loginStatus, errorStatus }: PostsContainerProps) {
   useLoginStatusHandler({ loginStatus, errorStatus });
 
   const posts = initialData.posts;
@@ -65,7 +58,7 @@ export function PostsContainer({
   return (
     <>
       <SearchContainer filters={filters} />
-      <PostList posts={posts} isLoggedIn={isLoggedIn} />
+      <PostList posts={posts} />
       <Pagination
         currentPage={filters.currentPage}
         totalPages={totalPages}

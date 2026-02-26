@@ -2,7 +2,6 @@ import { fetchPosts } from '../services';
 import { PostsContainer } from '../ui';
 
 interface PostsFetcherProps {
-  isLoggedIn: boolean;
   page: number;
   search: string;
   tags: string[];
@@ -12,21 +11,11 @@ interface PostsFetcherProps {
   errorStatus?: string;
 }
 
-export async function PostsFetcher({
-  isLoggedIn,
-  page,
-  search,
-  tags,
-  blogs,
-  sort,
-  loginStatus,
-  errorStatus,
-}: PostsFetcherProps) {
+export async function PostsFetcher({ page, search, tags, blogs, sort, loginStatus, errorStatus }: PostsFetcherProps) {
   const postsData = await fetchPosts({ page, search, tags, blogs, sort });
 
   return (
     <PostsContainer
-      isLoggedIn={isLoggedIn}
       initialData={postsData}
       initialFilters={{ page, search, tags, blogs, sort }}
       loginStatus={loginStatus}

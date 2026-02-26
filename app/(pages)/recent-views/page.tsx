@@ -1,5 +1,4 @@
 import { RecentViewsList } from '@/features/recent-views/ui';
-import { getUser } from '@/features/auth';
 import { APP } from '@/utils';
 
 export const metadata = {
@@ -32,9 +31,7 @@ export const metadata = {
   },
 };
 
-export default async function RecentViewsPage() {
-  const user = await getUser();
-
+export default function RecentViewsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-4">
@@ -43,7 +40,7 @@ export default async function RecentViewsPage() {
       </header>
 
       <section aria-label="최근 본 게시글 목록">
-        <RecentViewsList isLoggedIn={!!user} />
+        <RecentViewsList />
       </section>
     </div>
   );

@@ -5,10 +5,14 @@ import { getLocalStorage } from '@/utils';
 import { RecentViewsResponse } from '@/supabase/types.supabase';
 import type { RecentView } from '../services/local-storage.types';
 import { queryKeys } from '@/lib/query-keys';
+import { useUser } from '@/features/auth';
 
 const STORAGE_KEY = 'recent-posts';
 
-export function useRecentViews(isLoggedIn: boolean) {
+export function useRecentViews() {
+  const { data: user } = useUser();
+  const isLoggedIn = !!user;
+
   return useQuery({
     queryKey: queryKeys.recentViews.list(isLoggedIn),
     queryFn: async () => {

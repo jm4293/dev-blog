@@ -10,11 +10,10 @@ import { BookmarkButton } from './bookmark-button';
 
 interface PostCardProps {
   post: PostWithCompany;
-  isLoggedIn: boolean;
 }
 
-export function PostCard({ post, isLoggedIn }: PostCardProps) {
-  const { bookmark, handlePostClick } = usePostCardInteractions(post, isLoggedIn);
+export function PostCard({ post }: PostCardProps) {
+  const { bookmark, handlePostClick } = usePostCardInteractions(post);
   const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip } = bookmark;
   const timeDisplay = formatPostDate(post.published_at);
 

@@ -78,4 +78,11 @@ export const queryKeys = {
   notifications: {
     preferences: () => ['notifications', 'preferences'] as const,
   },
+
+  /**
+   * 인증 관련 query keys
+   */
+  auth: {
+    user: ['auth', 'user'] as const,
+  },
 } as const;

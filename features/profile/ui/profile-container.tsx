@@ -55,7 +55,7 @@ export function ProfileContainer({ user, year }: ProfileContainerProps) {
 
       <NotificationSettings />
 
-      <ProfileClient user={user} />
+      <ProfileClient />
     </section>
   );
 }
