@@ -39,6 +39,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
 
       # 5단계: 실패 시 로그 파일 업로드
       - name: 실패 시 로그 업로드

@@ -169,11 +169,39 @@ async function main() {
       '소요 시간': `${(stats.duration / 1000).toFixed(2)}초`,
     });
 
-    // 새 글이 저장된 경우 Push 알림 발송
+    // 새 글이 저장된 경우 ISR 캐시 갱신 및 Push 알림 발송
     if (stats.postsCreated > 0) {
-      log('info', '🔔 Push 알림 발송 중...');
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+      // ISR 캐시 갱신
+      log('info', '🔄 ISR 캐시 갱신 중...');
       try {
-        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+        const revalidateSecret = process.env.REVALIDATE_SECRET;
+
+        if (!siteUrl || !revalidateSecret) {
+          log('warn', '⚠️ ISR 갱신 설정 미완료 (NEXT_PUBLIC_SITE_URL 또는 REVALIDATE_SECRET 미설정)');
+        } else {
+          const revalidateResponse = await fetch(`${siteUrl}/api/revalidate?secret=${revalidateSecret}&path=/posts`, {
+            method: 'POST',
+          });
+
+          if (revalidateResponse.ok) {
+            const revalidateResult = await revalidateResponse.json();
+            log('info', '✅ ISR 캐시 갱신 완료', revalidateResult);
+          } else {
+            const revalidateError = await revalidateResponse.json();
+            log('error', '❌ ISR 캐시 갱신 실패', revalidateError);
+          }
+        }
+      } catch (revalidateError) {
+        // ISR 갱신 실패는 수집 자체를 실패시키지 않음
+        const errorMsg = revalidateError instanceof Error ? revalidateError.message : String(revalidateError);
+        log('error', '❌ ISR 캐시 갱신 요청 에러:', { error: errorMsg });
+      }
+
+      // Push 알림 발송
+      log('info', '\n🔔 Push 알림 발송 중...');
+      try {
         if (!siteUrl) {
           log('warn', '⚠️ NEXT_PUBLIC_SITE_URL 미설정 — Push 알림 건너뜀');
         } else {
