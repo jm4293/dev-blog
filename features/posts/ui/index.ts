@@ -1,6 +1,5 @@
 export * from './searched-result';
 export * from './bookmark-button';
-export * from './error-message';
 export * from './popular-blogs';
 export * from './popular-tags';
 export * from './post-card';
@@ -8,7 +7,6 @@ export * from './post-card-header';
 export * from './post-card-tags';
 export * from './post-list';
 export * from './posts-container';
-export * from './posts-fetcher';
 export * from './search-container';
 export * from './search-wrapper';
 export * from './searched-selected';
