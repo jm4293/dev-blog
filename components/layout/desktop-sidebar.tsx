@@ -7,6 +7,7 @@ import gsap from 'gsap';
 import { Code2, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/hooks';
 import { MENU_ITEMS } from '@/utils';
+import { useUser } from '@/features/auth';
 
 const COLLAPSED_W = 64;
 const EXPANDED_W = 240;
@@ -14,6 +15,8 @@ const EXPANDED_W = 240;
 export function DesktopSidebar() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const { data: user } = useUser();
+  const isLoggedIn = !!user;
 
   const sidebarRef = useRef<HTMLDivElement>(null);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -94,6 +97,8 @@ export function DesktopSidebar() {
         {MENU_ITEMS.map((item, index) => {
           const Icon = item.icon;
           const active = isActive(item.href);
+          const requiresAuth = item.href === '/bookmarks' || item.href === '/profile';
+          const showLoginRequired = requiresAuth && !isLoggedIn;
 
           return (
             <Link
@@ -109,10 +114,11 @@ export function DesktopSidebar() {
                 ref={(el) => {
                   labelRefs.current[index] = el;
                 }}
-                className="overflow-hidden whitespace-nowrap text-sm font-medium"
+                className="flex items-center gap-2 overflow-hidden whitespace-nowrap text-sm font-medium"
                 style={{ width: 0, opacity: 0 }}
               >
                 {item.label}
+                {showLoginRequired && <span className="text-xs text-muted-foreground opacity-75">(로그인 필요)</span>}
               </span>
             </Link>
           );
