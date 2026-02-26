@@ -4,7 +4,7 @@ echo "🚀 푸시 전 검사를 시작합니다..."
 
 # 1. 전체 린트 검사
 echo "🔍 ESLint 검사 중..."
-npx next lint
+npx eslint .
 
 if [ $? -ne 0 ]; then
   echo "❌ ESLint 검사 실패!"

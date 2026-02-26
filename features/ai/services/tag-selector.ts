@@ -1,10 +1,6 @@
-/**
- * 태그 조회 서비스
- */
-
 import { SupabaseClient } from '@supabase/supabase-js';
 
-export interface Tag {
+interface Tag {
   id: string;
   name: string;
 }

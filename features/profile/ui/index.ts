@@ -1,3 +1,3 @@
-export { ProfileClient } from './ProfileClient';
-export { ProfileInfoCard } from './ProfileInfoCard';
-export { ProfileContent } from './ProfileContent';
+export * from './profile-client';
+export * from './profile-container';
+export * from './profile-info-card';

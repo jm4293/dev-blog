@@ -37,7 +37,7 @@ export async function withdrawAction() {
       throw new Error('계정 삭제에 실패했습니다');
     }
 
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     cookieStore.getAll().forEach((cookie) => {
       if (cookie.name.startsWith('sb-')) {
         cookieStore.delete(cookie.name);

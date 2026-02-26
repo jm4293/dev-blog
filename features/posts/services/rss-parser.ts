@@ -15,7 +15,7 @@ const parser = new Parser({
   },
 });
 
-export interface ParsedPost {
+interface ParsedPost {
   title: string;
   url: string;
   summary: string;

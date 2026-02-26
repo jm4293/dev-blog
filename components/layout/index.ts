@@ -1,6 +1,6 @@
-export { Footer } from './Footer';
-export { Header } from './Header';
-export { MobileHamburger } from './MobileHamburger';
-export { MobileMenu } from './MobileMenu';
-export { Sidebar } from './Sidebar';
-export { SidebarLayout } from './SidebarLayout';
+export * from './footer-container';
+export * from './layout-container';
+export * from './mobile-hamburger';
+export * from './mobile-header';
+export * from './mobile-menu';
+export * from './desktop-sidebar';

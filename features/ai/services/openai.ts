@@ -1,21 +1,19 @@
-/**
- * OpenAI API 래퍼
- * - GPT-4o-mini 모델 사용
- * - 토큰 사용량 로깅
- */
-
 import OpenAI from 'openai';
-import { Tag } from './tag-selector';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+interface Tag {
+  id: string;
+  name: string;
+}
 
-export interface CompletionResult {
+interface CompletionResult {
   content: string;
   tokensUsed: number;
   model: string;
 }
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 /**
  * OpenAI API 호출 (재시도 로직 포함)

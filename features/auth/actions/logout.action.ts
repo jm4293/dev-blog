@@ -14,7 +14,7 @@ export async function logoutAction() {
       throw error;
     }
 
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
 
     cookieStore.getAll().forEach((cookie) => {
       if (cookie.name.startsWith('sb-')) {

@@ -1,4 +1,6 @@
-export { useToast } from './useToast';
-export { useIsMobile } from './useIsMobile';
-export { useDebounce } from './useDebounce';
-export { useTheme } from './useTheme';
+export * from './use-toast';
+export * from './use-is-mobile';
+export * from './use-debounce';
+export * from './use-theme';
+export * from './use-back-close';
+export * from './use-click-outside';

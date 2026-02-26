@@ -1,6 +1,6 @@
 import { RecentViewsList } from '@/features/recent-views/ui';
 import { getUser } from '@/features/auth';
-import { APP } from '@/utils/constants';
+import { APP } from '@/utils';
 
 export const metadata = {
   title: '최근 본 글',

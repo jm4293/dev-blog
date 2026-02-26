@@ -1,12 +1,18 @@
-/**
- * 애플리케이션 상수
- */
+import { FileText, Bookmark, User, Bell, PlusCircle } from 'lucide-react';
 
 export const APP = {
   NAME: 'devBlog.kr',
   DESCRIPTION: '개발 블로그들의 개발 블로그를 한 곳에서 모아보세요.',
   URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr',
 };
+
+export const MENU_ITEMS = [
+  { href: '/posts', label: '포스트', icon: FileText },
+  { href: '/bookmarks', label: '즐겨찾기', icon: Bookmark },
+  { href: '/profile', label: '프로필', icon: User },
+  { href: '/announcements', label: '새로운 소식', icon: Bell },
+  { href: '/request', label: '요청하기', icon: PlusCircle },
+];
 
 export const PAGINATION = {
   ITEMS_PER_PAGE: 9,

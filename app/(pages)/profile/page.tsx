@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { getUser } from '@/features/auth';
-import { ProfileContent } from '@/features/profile';
-import { APP } from '@/utils/constants';
+import { ProfileContainer } from '@/features/profile';
+import { APP } from '@/utils';
 import { LoginRequired } from '@/components/auth';
 
 export const metadata: Metadata = {
@@ -66,7 +66,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
         <p className="text-lg text-gray-600 dark:text-gray-400">내 정보를 확인하고 관리하세요.</p>
       </header>
 
-      <ProfileContent user={user} year={year} />
+      <ProfileContainer user={user} year={year} />
     </div>
   );
 }

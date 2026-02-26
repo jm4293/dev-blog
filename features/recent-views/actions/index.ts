@@ -1,2 +1,2 @@
-export { createRecentViewAction } from './createRecentView.action';
-export { deleteRecentViewAction, clearAllRecentViews } from './deleteRecentView.action';
+export * from './create-recent-view.action';
+export * from './delete-recent-view.action';

@@ -1,1 +1,1 @@
-export { useAnnouncements } from './useAnnouncements';
+export * from './use-announcements';

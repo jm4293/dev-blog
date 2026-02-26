@@ -1,5 +1,5 @@
-import { SidebarLayout } from '@/components/layout/SidebarLayout';
+import { LayoutContainer } from '@/components/layout';
 
 export default function PagesLayout({ children }: { children: React.ReactNode }) {
-  return <SidebarLayout>{children}</SidebarLayout>;
+  return <LayoutContainer>{children}</LayoutContainer>;
 }

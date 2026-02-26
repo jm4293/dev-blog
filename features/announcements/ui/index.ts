@@ -1,4 +1,4 @@
-export { TypeBadge } from './TypeBadge';
-export { AnnouncementCard } from './AnnouncementCard';
-export { AnnouncementList } from './AnnouncementList';
-export { AnnouncementsContainer } from './AnnouncementsContainer';
+export * from './type-badge';
+export * from './announcement-card';
+export * from './announcement-list';
+export * from './announcements-container';

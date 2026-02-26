@@ -1,2 +1,2 @@
-export { AnimatedBackground } from './AnimatedBackground';
-export { LoginCard } from './LoginCard';
+export * from './animated-background';
+export * from './login-card';

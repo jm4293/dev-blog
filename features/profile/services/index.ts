@@ -1,2 +1,1 @@
-export type { BookmarkStats } from './fetchBookmarkStats';
-export { fetchBookmarkStats } from './fetchBookmarkStats';
+export * from './fetch-bookmark-stats';

@@ -1,1 +1,1 @@
-export { LoginRequired } from './LoginRequired';
+export * from './login-required';

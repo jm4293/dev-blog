@@ -1,3 +1,3 @@
-export { useAddRecentView } from './useAddRecentView';
-export { useRecentViews } from './useRecentViews';
-export { useDeleteRecentView, useClearAllRecentViews } from './useDeleteRecentView';
+export * from './use-add-recent-view';
+export * from './use-recent-views';
+export * from './use-delete-recent-view';

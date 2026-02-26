@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import { QueryProvider } from '../lib/QueryProvider';
+import { QueryProvider } from '../lib/query-provider';
 import { ToastContainer } from '@/components/toast';
 import { OfflineBanner } from '@/components/ui';
 import { GoogleAnalytics } from './GoogleAnalytics';
