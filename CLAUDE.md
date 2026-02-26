@@ -80,6 +80,7 @@
 | **[데이터베이스 스키마](./docs/database-schema.md)** | 테이블 구조, RLS 정책, 쿼리 예시 | DB 작업 시       |
 | **[API 명세](./docs/api-specification.md)**          | REST API 엔드포인트, 요청/응답   | API 추가/수정 시 |
 | **[환경 변수 가이드](./docs/environment-setup.md)**  | .env 설정 및 Vercel 환경 변수    | 환경 설정 시     |
+| **[ISR 설정 가이드](./docs/isr-setup-guide.md)**     | ISR 캐시 갱신 및 성능 최적화     | 성능 개선 시     |
 
 ### 마케팅 & SEO
 
@@ -143,7 +144,7 @@ dev-blog/
 │
 ├── .env.local             # 환경 변수 (Git 제외)
 ├── .env.example           # 환경 변수 예시
-├── middleware.ts          # Next.js Middleware (/ → /posts)
+├── proxy.ts               # Next.js Proxy (/ → /posts, 인증 라우트 보호)
 ├── vercel.json            # Cron 설정
 └── README.md              # 사용자용 README
 
@@ -200,6 +201,8 @@ dev-blog/
   3. 신규 게시글 감지 (URL 중복 체크)
   4. tags 테이블에서 키워드 매칭으로 적절한 태그 선택 (3-5개)
   5. Supabase에 게시글 저장
+  6. **ISR 캐시 갱신**: 새 글이 저장되면 `/api/revalidate` 호출하여 `/posts` 페이지 즉시 갱신
+  7. **Push 알림 발송**: 로그인 사용자에게 새 글 알림
 
 ### 2. 태그 자동 선택 (키워드 기반)
 
@@ -521,7 +524,81 @@ GitHub Actions (fetch-posts.ts)
 
 ---
 
-### 11. UI/UX
+### 11. ISR (Incremental Static Regeneration)
+
+Next.js의 ISR을 활용하여 성능과 최신성을 모두 확보합니다.
+
+#### 작동 방식
+
+```
+사용자 요청 → 정적 페이지 제공 (빠름)
+     ↓
+30분 경과 or GitHub Actions 트리거
+     ↓
+백그라운드 재생성
+     ↓
+다음 요청부터 새 페이지 제공
+```
+
+#### 설정
+
+**1. 페이지 레벨 ISR 설정**
+
+```typescript
+// app/(pages)/posts/page.tsx
+export const revalidate = 1800; // 30분 = 1800초
+```
+
+**2. On-Demand Revalidation API**
+
+```typescript
+// app/api/revalidate/route.ts
+import { revalidatePath } from 'next/cache';
+
+export async function POST(request: NextRequest) {
+  const secret = request.nextUrl.searchParams.get('secret');
+  const path = request.nextUrl.searchParams.get('path');
+
+  if (secret !== process.env.REVALIDATE_SECRET) {
+    return NextResponse.json({ message: 'Invalid secret' }, { status: 401 });
+  }
+
+  revalidatePath(path);
+  return NextResponse.json({ revalidated: true, path });
+}
+```
+
+**3. GitHub Actions 트리거**
+
+```typescript
+// scripts/fetch-posts.ts (새 글 저장 후)
+if (stats.postsCreated > 0) {
+  await fetch(
+    `${siteUrl}/api/revalidate?secret=${revalidateSecret}&path=/posts`,
+    { method: 'POST' }
+  );
+}
+```
+
+#### 장점
+
+- ✅ **빠른 로딩**: 정적 페이지 수준의 성능 (CDN 캐싱)
+- ✅ **자동 갱신**: 30분마다 자동 재생성
+- ✅ **즉시 반영**: GitHub Actions에서 새 글 수집 시 즉시 갱신
+- ✅ **서버 부하 감소**: 매 요청마다 DB 조회 불필요
+- ✅ **SEO 최적화**: 서버 렌더링된 HTML 제공
+
+#### 환경 변수
+
+```bash
+REVALIDATE_SECRET=your-random-secret-32-chars
+```
+
+자세한 설정: [ISR 설정 가이드](./docs/isr-setup-guide.md)
+
+---
+
+### 12. UI/UX
 
 - **테마**: 라이트 모드 / 다크 모드 (사용자 선택 & 시스템 설정 감지)
 - **반응형 브레이크포인트**:
@@ -1406,6 +1483,10 @@ OPENAI_API_KEY=sk-...  # GPT-4o-mini 모델 사용
 # Vercel Cron Secret (보안)
 CRON_SECRET=your-random-secret-string  # 최소 32자 추천
 
+# ISR Revalidation Secret (보안)
+# 생성 방법: openssl rand -hex 32
+REVALIDATE_SECRET=your-random-secret-32-chars-minimum
+
 # Web Push (VAPID Keys)
 VAPID_PUBLIC_KEY=your-vapid-public-key   # web-push generateVAPIDKeys()로 생성
 VAPID_PRIVATE_KEY=your-vapid-private-key
@@ -1435,7 +1516,18 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000  # 개발: localhost, 배포: devBlog
 openssl rand -hex 32
 ```
 
-**4. VAPID Keys (Web Push)**
+**4. ISR Revalidation Secret**
+
+```bash
+# 터미널에서 생성 (Linux/macOS)
+openssl rand -hex 32
+```
+
+- GitHub Actions에서 새 글 수집 후 ISR 캐시 갱신에 사용
+- Vercel, GitHub Actions Secrets에 모두 추가 필요
+- 자세한 설정: [ISR 설정 가이드](./docs/isr-setup-guide.md)
+
+**5. VAPID Keys (Web Push)**
 
 ```bash
 # 한번만 생성 후 환경 변수에 저장 (변경하면 기존 구독 무효화됨)
@@ -1446,12 +1538,13 @@ npx tsx -e "const webpush = require('web-push'); console.log(JSON.stringify(webp
 - 생성된 `privateKey` → `VAPID_PRIVATE_KEY`
 - `VAPID_SUBJECT`는 본인 이메일 주소
 
-**5. GitHub Actions Secrets 추가**
+**6. GitHub Actions Secrets 추가**
 
 - `CRON_SECRET`: 기존 환경 변수와 동일한 값
+- `REVALIDATE_SECRET`: ISR 캐시 갱신용 (신규)
 - `NEXT_PUBLIC_SITE_URL`: 프로덕션 URL (예: `https://devblog.kr`)
 
-**6. 배포 환경 변수**
+**7. 배포 환경 변수**
 
 - Vercel 대시보드 > Settings > Environment Variables
 - 동일한 환경 변수 설정
@@ -1491,35 +1584,84 @@ export async function GET(request: Request) {
 
 ---
 
-## 🚦 Middleware 설정
+## 🚦 Proxy 설정 (Next.js Middleware)
 
-### `middleware.ts` (프로젝트 루트)
+### `proxy.ts` (프로젝트 루트)
 
-메인 페이지(`/`)를 `/posts`로 리다이렉트하는 미들웨어입니다.
+메인 페이지 리다이렉트 및 인증 라우트 보호를 담당하는 프록시입니다.
 
 ```typescript
+import { createServerClient } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  // / 경로를 /posts로 리다이렉트
+export default async function proxy(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
+  // Supabase 클라이언트 생성 (세션 검증용)
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value);
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    },
+  );
+
+  // 세션 확인
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  // 1. 메인 페이지(/) 리다이렉트
   if (request.nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/posts', request.url));
+    return NextResponse.redirect(new URL('/posts', request.url), { status: 301 });
   }
 
-  return NextResponse.next();
+  // 2. 인증 필요 라우트 보호
+  const protectedRoutes = ['/bookmarks', '/profile'];
+  const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
+
+  if (isProtectedRoute && !session) {
+    const redirectUrl = new URL('/auth/login', request.url);
+    redirectUrl.searchParams.set('redirect', request.nextUrl.pathname);
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  // 3. 로그인 페이지 접근 시 이미 로그인된 경우 리다이렉트
+  if (request.nextUrl.pathname === '/auth/login' && session) {
+    const redirectPath = request.nextUrl.searchParams.get('redirect') || '/posts';
+    return NextResponse.redirect(new URL(redirectPath, request.url));
+  }
+
+  return response;
 }
 
 export const config = {
-  matcher: ['/'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };
 ```
 
 **기능:**
 
-- 메인 페이지 접근 시 자동으로 `/posts`로 리다이렉트
-- SEO 친화적 (301 리다이렉트)
-- 사용자 경험 개선
+1. **메인 페이지 리다이렉트**: `/` → `/posts` (301 영구 리다이렉트)
+2. **보호된 라우트**: `/bookmarks`, `/profile` - 로그인 필요
+3. **로그인 페이지 최적화**: 이미 로그인 시 자동 리다이렉트
+4. **Supabase 세션 검증**: 쿠키 기반 인증 상태 확인
+5. **리다이렉트 경로 저장**: 로그인 후 원래 페이지로 복귀
 
 ---
 

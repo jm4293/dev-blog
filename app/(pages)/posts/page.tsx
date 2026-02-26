@@ -1,6 +1,5 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getUser } from '@/features/auth';
 import { APP, parsePostsSearchParams } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { GridSkeleton } from '@/components/skeleton';
@@ -9,6 +8,13 @@ import { PostsFetcher } from '@/features/posts';
 interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
+
+/**
+ * ISR (Incremental Static Regeneration) 설정
+ * - 30분마다 자동 재생성 (GitHub Actions Cron 주기: 매일 15:00, 21:00 KST)
+ * - On-Demand Revalidation: /api/revalidate 호출 시 즉시 재생성
+ */
+export const revalidate = 1800; // 30분 = 1800초
 
 /**
  * 동적 메타데이터 생성
@@ -116,8 +122,6 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 export default async function PostPage({ searchParams }: PageProps) {
   const { page, search, tags, blogs, sort, login, error } = parsePostsSearchParams(await searchParams);
 
-  const user = await getUser();
-
   // Breadcrumb 스키마 생성 (SEO)
   const breadcrumbItems = [{ name: 'Home', url: APP.URL }];
 
@@ -175,7 +179,6 @@ export default async function PostPage({ searchParams }: PageProps) {
       <section aria-label="블로그 게시글 목록">
         <Suspense fallback={<GridSkeleton count={8} />}>
           <PostsFetcher
-            isLoggedIn={!!user}
             page={page}
             search={search}
             tags={tags}
