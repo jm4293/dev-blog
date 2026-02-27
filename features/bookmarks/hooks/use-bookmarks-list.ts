@@ -1,8 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { BookmarkWithPost } from '@/supabase/types.supabase';
 import { queryKeys } from '@/lib/query-keys';
+import { BookmarkWithPost } from '@/supabase/types.supabase';
 
 export const useBookmarksList = () => {
   return useQuery({

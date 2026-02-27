@@ -1,7 +1,7 @@
 'use client';
 
 import { useAtom } from 'jotai';
-import { toastsAtom, removeToastAtom, showToastAtom } from '@/atoms/toast.atom';
+import { removeToastAtom, showToastAtom, toastsAtom } from '@/atoms/toast.atom';
 
 export const useToast = () => {
   const [toasts] = useAtom(toastsAtom);

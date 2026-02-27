@@ -1,8 +1,8 @@
 import { use, useMemo } from 'react';
-import { PostCard } from '@/features/posts';
-import { BookmarkWithPost } from '@/supabase/types.supabase';
-import { EmptyState } from '@/components/ui';
 import { Heart } from 'lucide-react';
+import { PostCard } from '@/features/posts';
+import { EmptyState } from '@/components/ui';
+import { BookmarkWithPost } from '@/supabase/types.supabase';
 import { BookmarksResponse } from '../services';
 
 interface BookmarkContainerProps {

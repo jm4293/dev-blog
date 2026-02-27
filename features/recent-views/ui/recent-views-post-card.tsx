@@ -1,10 +1,10 @@
-import { Check } from 'lucide-react';
 import Link from 'next/link';
-import type { RecentViewWithPost } from '@/supabase/types.supabase';
-import { useAddRecentView } from '@/features/recent-views';
-import { formatPostDate, cn } from '@/utils';
-import { PostCardHeader, PostCardTags, BookmarkButton } from '@/features/posts';
+import { cn, formatPostDate } from '@/utils';
+import { Check } from 'lucide-react';
 import { useBookmarkToggle } from '@/features/bookmarks';
+import { BookmarkButton, PostCardHeader, PostCardTags } from '@/features/posts';
+import { useAddRecentView } from '@/features/recent-views';
+import type { RecentViewWithPost } from '@/supabase/types.supabase';
 
 interface RecentViewPostCardProps {
   view: RecentViewWithPost;

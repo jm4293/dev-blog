@@ -1,4 +1,4 @@
-import { useEffect, type RefObject } from 'react';
+import { type RefObject, useEffect } from 'react';
 
 /** ref 요소 외부 클릭 시 onClose 호출 */
 export function useClickOutside(ref: RefObject<HTMLElement | null>, isOpen: boolean, onClose: () => void) {

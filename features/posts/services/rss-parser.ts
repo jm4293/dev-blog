@@ -4,9 +4,8 @@
  * - HTML 본문을 텍스트로 변환
  * - 타임아웃 처리
  */
-
-import Parser from 'rss-parser';
 import * as cheerio from 'cheerio';
+import Parser from 'rss-parser';
 
 const parser = new Parser({
   timeout: 15000, // 15초 타임아웃

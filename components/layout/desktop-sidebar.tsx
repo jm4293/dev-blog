@@ -3,10 +3,10 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import gsap from 'gsap';
-import { Code2, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/hooks';
 import { MENU_ITEMS } from '@/utils';
+import gsap from 'gsap';
+import { Code2, Moon, Sun } from 'lucide-react';
 import { useUser } from '@/features/auth';
 
 const COLLAPSED_W = 64;

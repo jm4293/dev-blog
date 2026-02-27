@@ -1,12 +1,12 @@
 'use client';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createRecentViewAction } from '../actions';
 import { getLocalStorage, setLocalStorage } from '@/utils';
-import type { PostWithCompany } from '@/supabase/types.supabase';
-import type { RecentView } from '../services/local-storage.types';
-import { queryKeys } from '@/lib/query-keys';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUser } from '@/features/auth';
+import { queryKeys } from '@/lib/query-keys';
+import type { PostWithCompany } from '@/supabase/types.supabase';
+import { createRecentViewAction } from '../actions';
+import type { RecentView } from '../services/local-storage.types';
 
 const MAX_RECENT_VIEWS = 20;
 const STORAGE_KEY = 'recent-posts';

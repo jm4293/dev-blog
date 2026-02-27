@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Check } from 'lucide-react';
-import type { Company } from '@/supabase/types.supabase';
-import { FilterModal } from '@/components/ui';
-import { BlogLogoImage } from '@/components/image';
 import { cn } from '@/utils';
+import { Check } from 'lucide-react';
+import { BlogLogoImage } from '@/components/image';
+import { FilterModal } from '@/components/ui';
+import type { Company } from '@/supabase/types.supabase';
 
 interface BlogFilterModalProps {
   blogs: Company[];

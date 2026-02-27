@@ -1,6 +1,6 @@
-import { MobileHeader } from './mobile-header';
-import { FooterContainer } from './footer-container';
 import { DesktopSidebar } from './desktop-sidebar';
+import { FooterContainer } from './footer-container';
+import { MobileHeader } from './mobile-header';
 
 export function LayoutContainer({ children }: { children: React.ReactNode }) {
   return (

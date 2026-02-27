@@ -1,9 +1,9 @@
 'use server';
 
+import { headers } from 'next/headers';
+import { captureException } from '@/sentry.config';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { checkRateLimit, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
-import { captureException } from '@/sentry.config';
-import { headers } from 'next/headers';
 
 interface SaveSubscriptionResult {
   success: boolean;

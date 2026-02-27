@@ -1,9 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { ANNOUNCEMENTS } from '@/utils/constants';
-import type { AnnouncementsResponse } from '@/supabase/types.supabase';
 import { queryKeys } from '@/lib/query-keys';
+import type { AnnouncementsResponse } from '@/supabase/types.supabase';
+import { ANNOUNCEMENTS } from '@/utils/constants';
 
 interface UseAnnouncementsOptions {
   page?: number;

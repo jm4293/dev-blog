@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
+import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { Company } from '@/supabase/types.supabase';
-import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils';
 
 interface CompaniesResponse {
   companies: Company[];

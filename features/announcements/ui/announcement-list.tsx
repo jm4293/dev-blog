@@ -1,5 +1,5 @@
-import { AnnouncementCard } from './announcement-card';
 import type { Announcement } from '@/supabase/types.supabase';
+import { AnnouncementCard } from './announcement-card';
 
 interface AnnouncementListProps {
   announcements: Announcement[];

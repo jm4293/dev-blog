@@ -1,4 +1,4 @@
-import { Monitor, Smartphone, Apple } from 'lucide-react';
+import { Apple, Monitor, Smartphone } from 'lucide-react';
 import type { Subscription } from '../types';
 
 // OS별 표시 정보

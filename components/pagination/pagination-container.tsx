@@ -1,8 +1,8 @@
 'use client';
 
+import { buildQueryParams } from '@/utils';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-is-mobile';
-import { buildQueryParams } from '@/utils';
 import { PaginationButton } from './pagination-button';
 import { PaginationPageNumber } from './pagination-page-number';
 

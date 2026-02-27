@@ -1,7 +1,7 @@
 'use server';
 
-import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import sanitizeHtml from 'sanitize-html';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 
 export interface RequestFormData {
   type: 'company' | 'tag' | 'other';

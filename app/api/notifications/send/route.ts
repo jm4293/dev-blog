@@ -7,11 +7,10 @@
  * 인증: CRON_SECRET Bearer 토큰
  * Body: { postsCreated: number }
  */
-
 import { NextRequest, NextResponse } from 'next/server';
-import webpush from 'web-push';
-import { createClient } from '@supabase/supabase-js';
 import { captureException } from '@/sentry.config';
+import { createClient } from '@supabase/supabase-js';
+import webpush from 'web-push';
 
 interface SendBody {
   postsCreated: number;

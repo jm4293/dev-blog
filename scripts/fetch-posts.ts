@@ -7,10 +7,9 @@
  * 실행 방법:
  * npx tsx scripts/fetch-posts.ts
  */
-
 import { createClient } from '@supabase/supabase-js';
-import { getAllTagsFromDatabase } from '@/features/ai/services/tag-selector';
 import { generateTags } from '@/features/ai/services/openai';
+import { getAllTagsFromDatabase } from '@/features/ai/services/tag-selector';
 import { parseRssFeed } from '@/features/posts';
 
 // 환경 변수 검증

@@ -1,8 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import type { Tag } from '@/supabase/types.supabase';
 import { queryKeys } from '@/lib/query-keys';
+import type { Tag } from '@/supabase/types.supabase';
 
 interface TagsResponse {
   tags: Tag[];

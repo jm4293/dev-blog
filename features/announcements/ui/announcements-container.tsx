@@ -1,7 +1,7 @@
-import { AnnouncementList } from './announcement-list';
+import { use } from 'react';
 import { Pagination } from '@/components/pagination';
 import { AnnouncementsResponse } from '@/supabase/types.supabase';
-import { use } from 'react';
+import { AnnouncementList } from './announcement-list';
 
 export function AnnouncementsContainer({ data }: { data: Promise<AnnouncementsResponse> }) {
   const { announcements, page, total_pages } = use(data);

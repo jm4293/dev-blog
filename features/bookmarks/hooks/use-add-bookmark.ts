@@ -1,9 +1,9 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { BookmarkWithPost } from '@/supabase/types.supabase';
 import { createBookmarkAction } from '@/features/bookmarks';
 import { queryKeys } from '@/lib/query-keys';
+import { BookmarkWithPost } from '@/supabase/types.supabase';
 
 export const useAddBookmark = () => {
   const queryClient = useQueryClient();
