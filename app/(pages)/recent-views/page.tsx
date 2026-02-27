@@ -1,5 +1,5 @@
-import { RecentViewsList } from '@/features/recent-views/ui';
 import { APP } from '@/utils';
+import { RecentViewsList } from '@/features/recent-views/ui';
 
 export const metadata = {
   title: '최근 본 글',

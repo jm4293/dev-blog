@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import { ProfileContainer } from '@/features/profile';
+import { redirect } from 'next/navigation';
 import { APP } from '@/utils';
 import { getUser } from '@/features/auth';
-import { redirect } from 'next/navigation';
+import { ProfileContainer } from '@/features/profile';
 
 export const metadata: Metadata = {
   title: '프로필',

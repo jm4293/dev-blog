@@ -1,8 +1,8 @@
 'use server';
 
-import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
 
 export async function logoutAction() {
   try {

@@ -1,10 +1,10 @@
 'use client';
 
-import { useLogout } from '@/features/auth/hooks/use-logout';
-import { useDeleteAccount } from '@/features/auth/hooks/use-delete-account';
-import { DeleteAccountConfirmModal } from '@/components/modal';
 import { useState } from 'react';
 import { LogOut, Trash2 } from 'lucide-react';
+import { useDeleteAccount } from '@/features/auth/hooks/use-delete-account';
+import { useLogout } from '@/features/auth/hooks/use-logout';
+import { DeleteAccountConfirmModal } from '@/components/modal';
 
 export const ProfileClient = () => {
   const { mutate: logout, isPending } = useLogout();

@@ -7,11 +7,10 @@
  * - category: 특정 카테고리의 태그만 조회
  * - sort: 정렬 방식 (name|usage|featured, 기본값: usage)
  */
-
 import { NextRequest, NextResponse } from 'next/server';
+import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { Tag } from '@/supabase/types.supabase';
-import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils';
 
 interface TagsResponse {
   tags: Tag[];

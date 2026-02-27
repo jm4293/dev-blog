@@ -1,11 +1,11 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { getLocalStorage } from '@/utils';
+import { useQuery } from '@tanstack/react-query';
+import { useUser } from '@/features/auth';
+import { queryKeys } from '@/lib/query-keys';
 import { RecentViewsResponse } from '@/supabase/types.supabase';
 import type { RecentView } from '../services/local-storage.types';
-import { queryKeys } from '@/lib/query-keys';
-import { useUser } from '@/features/auth';
 
 const STORAGE_KEY = 'recent-posts';
 

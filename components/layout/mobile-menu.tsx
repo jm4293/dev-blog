@@ -1,13 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import { useRef } from 'react';
-
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAtom } from 'jotai';
 import { toggleMobileMenuAtom } from '@/atoms';
 import { useBackClose, useClickOutside } from '@/hooks';
-import { MENU_ITEMS, cn } from '@/utils';
+import { cn, MENU_ITEMS } from '@/utils';
+import { useAtom } from 'jotai';
 import { useUser } from '@/features/auth';
 
 export function MobileMenu() {

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Home, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Home } from 'lucide-react';
 import { AnimatedBackground } from '@/features/auth';
 
 export default function NotFound() {

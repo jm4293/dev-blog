@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import { AnimatedBackground, LoginCard } from '@/features/auth';
 import Link from 'next/link';
+import { AnimatedBackground, LoginCard } from '@/features/auth';
 
 export const metadata: Metadata = {
   title: '로그인 | devBlog',

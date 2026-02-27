@@ -1,8 +1,8 @@
 'use client';
 
-import { ANNOUNCEMENTS } from '@/utils/constants';
 import { cn } from '@/utils';
 import type { AnnouncementType } from '@/supabase/types.supabase';
+import { ANNOUNCEMENTS } from '@/utils/constants';
 
 interface TypeBadgeProps {
   type: AnnouncementType;

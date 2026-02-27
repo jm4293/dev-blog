@@ -1,7 +1,7 @@
-import { Metadata } from 'next';
-import { BookmarkContainer, fetchBookmarks } from '@/features/bookmarks';
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 import { APP } from '@/utils';
+import { BookmarkContainer, fetchBookmarks } from '@/features/bookmarks';
 import { GridSkeleton } from '@/components/skeleton';
 
 export const metadata: Metadata = {

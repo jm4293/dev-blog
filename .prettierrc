@@ -11,5 +11,22 @@
   "singleAttributePerLine": false,
   "htmlWhitespaceSensitivity": "css",
   "embeddedLanguageFormatting": "auto",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "importOrder": [
+    "^(react|react-dom)(.*)$",
+    "^(next)(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^@/app/(.*)$",
+    "^@/features/(.*)$",
+    "^@/components/(.*)$",
+    "^@/atoms/(.*)$",
+    "^@/hooks/(.*)$",
+    "^@/lib/(.*)$",
+    "^@/supabase/(.*)$",
+    "^@/utils/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true,
+  "importOrderCaseInsensitive": true
 }

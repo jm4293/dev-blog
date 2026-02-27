@@ -1,9 +1,9 @@
 'use client';
 
-import { Bell, BellOff, Trash2 } from 'lucide-react';
-import { useNotifications, useNotificationSubscribe, useNotificationPreferences } from '../hooks';
-import { groupDevices } from '../services';
 import { useToast } from '@/hooks';
+import { Bell, BellOff, Trash2 } from 'lucide-react';
+import { useNotificationPreferences, useNotifications, useNotificationSubscribe } from '../hooks';
+import { groupDevices } from '../services';
 
 export function NotificationSettings() {
   const { data, isLoading } = useNotifications();

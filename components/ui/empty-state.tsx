@@ -1,5 +1,5 @@
-import { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
+import { LucideIcon } from 'lucide-react';
 
 interface EmptyStateProps {
   icon?: LucideIcon;

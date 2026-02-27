@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { APP, parsePostsSearchParams } from '@/utils';
+import { fetchPosts, PostsContainer } from '@/features/posts';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import { fetchPosts } from '@/features/posts/services';
-import { PostsContainer } from '@/features/posts';
 
 interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
@@ -25,7 +24,8 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 
   // 기본 메타데이터
   let title = '개발/기술 블로그 모음';
-  let description = '토스, 카카오 등 32+ 기업의 개발/기술 블로그 게시글을 한 곳에서 모아보세요.';
+  let description =
+    '매일 자동 업데이트되는 토스, 카카오 등 32+ 기업의 최신 개발 블로그를 검색하고 태그별 필터링으로 원하는 기술 글을 빠르게 찾아보세요. 마음에 드는 글은 즐겨찾기에 저장하세요.';
   let canonicalUrl = `${APP.URL}/posts`;
 
   // 검색어가 있는 경우
@@ -172,9 +172,10 @@ export default async function PostPage({ searchParams }: PageProps) {
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
           <span className="sr-only">
-            토스, 카카오 등 국내 주요 IT 기업의 개발 블로그와 기술 블로그 글을 한 곳에서 검색하고 모아보세요.
+            매일 자동 업데이트되는 토스, 카카오 등 32개 기업의 최신 개발 블로그를 검색하고 태그별 필터링으로 원하는 기술
+            글을 빠르게 찾아보세요.
           </span>
-          개발/기술 블로그를 한 곳에서 모아보세요.
+          매일 업데이트되는 최신 개발 블로그를 검색하고, 마음에 드는 글은 즐겨찾기에 저장하세요.
         </p>
       </header>
 

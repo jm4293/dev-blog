@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query-keys';
-import { detectDevice } from '../services';
 import { saveSubscriptionAction } from '../actions';
+import { detectDevice } from '../services';
 
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
 

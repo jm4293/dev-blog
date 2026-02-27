@@ -1,6 +1,6 @@
-import type { Company } from '@/supabase/types.supabase';
-import { BlogLogoImage } from '@/components/image';
 import { cn } from '@/utils';
+import { BlogLogoImage } from '@/components/image';
+import type { Company } from '@/supabase/types.supabase';
 
 interface PopularBlogsProps {
   companies: Company[];

@@ -1,10 +1,10 @@
 'use client';
 
 import { useBlogs, useSearchFilters, useTags } from '../hooks';
+import { BlogFilterModal } from './blog-filter-modal';
 import { SearchWrapper } from './search-wrapper';
 import { SearchedResult } from './searched-result';
 import { SearchedSelected } from './searched-selected';
-import { BlogFilterModal } from './blog-filter-modal';
 import { TagFilterModal } from './tag-filter-modal';
 
 interface SearchContainerProps {

@@ -4,12 +4,11 @@
  * GET /api/recent-views
  * 현재 사용자의 최근 본 글 조회
  */
-
 import { NextRequest, NextResponse } from 'next/server';
+import { captureException } from '@/sentry.config';
+import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import type { RecentViewsResponse } from '@/supabase/types.supabase';
-import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils';
-import { captureException } from '@/sentry.config';
 
 interface ErrorResponse {
   error: string;

@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { useRecentViews, useDeleteRecentView, useClearAllRecentViews } from '../hooks';
-import { RecentViewsListSkeleton } from './recent-views-list-skeleton';
+import { useCallback, useState } from 'react';
+import { useClearAllRecentViews, useDeleteRecentView, useRecentViews } from '../hooks';
+import { RecentViewsActions } from './recent-views-actions';
 import { RecentViewsEmpty } from './recent-views-empty';
 import { RecentViewsError } from './recent-views-error';
-import { RecentViewsActions } from './recent-views-actions';
+import { RecentViewsListSkeleton } from './recent-views-list-skeleton';
 import { RecentViewPostCard } from './recent-views-post-card';
 
 export function RecentViewsList() {

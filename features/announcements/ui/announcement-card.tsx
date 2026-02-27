@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
-import { TypeBadge } from './type-badge';
 import type { Announcement } from '@/supabase/types.supabase';
+import { TypeBadge } from './type-badge';
 
 interface AnnouncementCardProps {
   announcement: Announcement;

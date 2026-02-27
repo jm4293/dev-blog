@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import type { PostWithCompany, Bookmark } from '@/supabase/types.supabase';
+import type { Bookmark, PostWithCompany } from '@/supabase/types.supabase';
 
 export interface BookmarkWithPost extends Bookmark {
   post: PostWithCompany;

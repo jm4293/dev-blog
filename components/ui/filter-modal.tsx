@@ -1,7 +1,7 @@
 'use client';
 
-import { X } from 'lucide-react';
 import { ReactNode, useEffect } from 'react';
+import { X } from 'lucide-react';
 
 interface FilterModalProps {
   title: string;

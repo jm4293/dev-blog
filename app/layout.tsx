@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import './globals.css';
-import { QueryProvider } from '../lib/query-provider';
+import { initSentry } from '@/sentry.config';
 import { ToastContainer } from '@/components/toast';
 import { OfflineBanner } from '@/components/ui';
+import { QueryProvider } from '../lib/query-provider';
+import './globals.css';
 import { GoogleAnalytics } from './GoogleAnalytics';
-import { initSentry } from '@/sentry.config';
 import { organizationSchema, websiteSchema } from './schema';
 
 // Sentry 초기화 (프로덕션 환경에서만)
@@ -77,7 +77,8 @@ export const metadata: Metadata = {
     url: baseUrl,
     siteName: 'devBlog.kr',
     title: '개발/기술 블로그 모음 - devBlog.kr',
-    description: '토스, 카카오 등 32+ 기업의 개발/기술 블로그 게시글을 한 곳에서 모아보세요.',
+    description:
+      '매일 자동 업데이트되는 토스, 카카오 등 32+ 기업의 최신 개발 블로그를 검색하고 태그별 필터링으로 원하는 기술 글을 빠르게 찾아보세요. 마음에 드는 글은 즐겨찾기에 저장하세요.',
     images: [
       {
         url: `${baseUrl}/og-image.png`,
@@ -90,7 +91,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '개발/기술 블로그 모음 - devBlog.kr',
-    description: '토스, 카카오 등 32+ 기업의 개발/기술 블로그 게시글을 한 곳에서 모아보세요.',
+    description:
+      '매일 자동 업데이트되는 토스, 카카오 등 32+ 기업의 최신 개발 블로그를 검색하고 태그별 필터링으로 원하는 기술 글을 빠르게 찾아보세요. 마음에 드는 글은 즐겨찾기에 저장하세요.',
     images: [`${baseUrl}/og-image.png`],
   },
   icons: {

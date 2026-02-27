@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import { User as UserIcon, Mail, Github, Calendar } from 'lucide-react';
+import { formatDateKo } from '@/utils';
 import type { User } from '@supabase/auth-js';
-import { ProfileInfoCard } from './profile-info-card';
+import { Calendar, Github, Mail, User as UserIcon } from 'lucide-react';
+import { NotificationSettings } from '@/features/notifications';
 import { ActivityHeatmap } from '../components/activity-heatmap';
 import { ProfileClient } from './profile-client';
-import { NotificationSettings } from '@/features/notifications';
-import { formatDateKo } from '@/utils';
+import { ProfileInfoCard } from './profile-info-card';
 
 interface ProfileContainerProps {
   user: User;

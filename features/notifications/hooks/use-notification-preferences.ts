@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query-keys';
-import { removeSubscriptionByOSAction, updateSubscriptionEnabledAction, updatePreferencesAction } from '../actions';
+import { removeSubscriptionByOSAction, updatePreferencesAction, updateSubscriptionEnabledAction } from '../actions';
 import type { PreferencesResponse } from '../types';
 
 /**

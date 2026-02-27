@@ -1,11 +1,11 @@
 'use client';
 
-import { PostList } from './post-list';
-import { SearchContainer } from './search-container';
-import { useSearchFilters, useLoginStatusHandler } from '../hooks';
 import { Pagination } from '@/components/pagination';
 import { PageLoadingSpinner } from '@/components/skeleton';
 import { PostWithCompany } from '@/supabase/types.supabase';
+import { useLoginStatusHandler, useSearchFilters } from '../hooks';
+import { PostList } from './post-list';
+import { SearchContainer } from './search-container';
 
 interface InitialFilters {
   page: number;

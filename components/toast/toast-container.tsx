@@ -2,9 +2,9 @@
 
 import { useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
-import { useToast } from '@/hooks/use-toast';
-import { X, CheckCircle, AlertCircle, Info } from 'lucide-react';
 import { cn } from '@/utils';
+import { AlertCircle, CheckCircle, Info, X } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const emptySubscribe = () => () => {};
 

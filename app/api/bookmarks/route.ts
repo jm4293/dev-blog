@@ -8,12 +8,11 @@
  * - addBookmark: features/bookmarks/actions/add.ts
  * - removeBookmark: features/bookmarks/actions/remove.ts
  */
-
 import { NextRequest, NextResponse } from 'next/server';
-import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import type { PostWithCompany, Bookmark } from '@/supabase/types.supabase';
-import { checkRateLimit, extractIP, createRateLimitResponse, RATE_LIMIT_CONFIG } from '@/utils';
 import { captureException } from '@/sentry.config';
+import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
+import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import type { Bookmark, PostWithCompany } from '@/supabase/types.supabase';
 
 interface BookmarksResponse {
   bookmarks: (Bookmark & { post: PostWithCompany })[];

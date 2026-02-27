@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAddBookmark, useRemoveBookmark, useIsBookmarked } from './index';
+import { useEffect, useState } from 'react';
 import { useUser } from '@/features/auth';
+import { useAddBookmark, useIsBookmarked, useRemoveBookmark } from './index';
 
 export function useBookmarkToggle(postId: string) {
   const { data: user } = useUser();

@@ -1,4 +1,4 @@
-import { FileText, Bookmark, User, Bell, PlusCircle } from 'lucide-react';
+import { Bell, Bookmark, FileText, PlusCircle, User } from 'lucide-react';
 
 export const APP = {
   NAME: 'devBlog.kr',

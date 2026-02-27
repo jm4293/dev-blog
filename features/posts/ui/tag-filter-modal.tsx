@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { cn } from '@/utils';
 import { Check } from 'lucide-react';
 import type { Tag } from '@/supabase/types.supabase';
 import { FilterModal } from '../../../components/ui';
-import { cn } from '@/utils';
 
 interface TagFilterModalProps {
   tags: Tag[];

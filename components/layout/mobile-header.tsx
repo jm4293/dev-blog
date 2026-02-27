@@ -1,7 +1,7 @@
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/theme';
 import { MobileHamburger } from './mobile-hamburger';
 import { MobileMenu } from './mobile-menu';
-import { ThemeToggle } from '@/components/theme';
 
 export function MobileHeader() {
   return (

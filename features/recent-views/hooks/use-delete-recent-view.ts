@@ -1,11 +1,11 @@
 'use client';
 
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteRecentViewAction, clearAllRecentViews } from '../actions';
-import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils';
-import type { RecentView } from '../services/local-storage.types';
-import { queryKeys } from '@/lib/query-keys';
 import { useUser } from '@/features/auth';
+import { queryKeys } from '@/lib/query-keys';
+import { clearAllRecentViews, deleteRecentViewAction } from '../actions';
+import type { RecentView } from '../services/local-storage.types';
 
 const STORAGE_KEY = 'recent-posts';
 
