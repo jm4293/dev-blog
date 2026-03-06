@@ -8,9 +8,8 @@
  * npx tsx scripts/fetch-posts.ts
  */
 import { createClient } from '@supabase/supabase-js';
-import { generateTags } from '@/features/ai/services/openai';
-import { getAllTagsFromDatabase } from '@/features/ai/services/tag-selector';
-import { parseRssFeed } from '@/features/posts';
+import { generateTags, getAllTagsFromDatabase } from '@/features/ai';
+import { parseRssFeed } from '@/features/posts/services/rss-parser';
 
 // 환경 변수 검증
 function validateEnv() {
