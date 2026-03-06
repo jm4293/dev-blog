@@ -52,7 +52,7 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
         sort: sort !== 'newest' ? sort : undefined,
       });
 
-      const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+      const newUrl = params.toString() ? `/posts?${params.toString()}` : '/posts';
       startTransition(() => {
         router.push(newUrl);
       });
