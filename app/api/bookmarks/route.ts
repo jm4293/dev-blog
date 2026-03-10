@@ -3,10 +3,6 @@
  *
  * GET /api/bookmarks
  * 현재 사용자의 즐겨찾기 조회
- *
- * Note: POST, DELETE 메서드는 Server Actions로 마이그레이션됨
- * - addBookmark: features/bookmarks/actions/add.ts
- * - removeBookmark: features/bookmarks/actions/remove.ts
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { captureException } from '@/sentry.config';
@@ -18,7 +14,6 @@ interface BookmarksResponse {
   bookmarks: (Bookmark & { post: PostWithCompany })[];
 }
 
-// GET - 사용자의 즐겨찾기 조회
 export async function GET(request: NextRequest) {
   try {
     // Rate Limiting (인증 필요 API)

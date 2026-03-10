@@ -15,7 +15,6 @@ interface ErrorResponse {
   details?: string;
 }
 
-// GET - 사용자의 최근 본 글 조회
 export async function GET(request: NextRequest) {
   try {
     // Rate Limiting (인증 필요 API)
@@ -70,7 +69,7 @@ export async function GET(request: NextRequest) {
       )
       .eq('user_id', user.id)
       .order('viewed_at', { ascending: false })
-      .limit(50); // 최대 50개
+      .limit(50);
 
     if (error) {
       throw error;

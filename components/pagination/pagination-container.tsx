@@ -25,9 +25,8 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
     return params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
   };
 
-  // 페이지 번호 범위 계산 (반응형)
   const getPageNumbers = () => {
-    const pageCount = isMobile ? 3 : 5; // 모바일 3개, 데스크탑 5개
+    const pageCount = isMobile ? 3 : 5;
     const range = [];
 
     // 현재 페이지가 속한 묶음의 시작 페이지
