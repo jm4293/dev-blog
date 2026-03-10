@@ -63,7 +63,7 @@ export function PostsContainer({ initialData, initialFilters, loginStatus, error
         currentPage={filters.currentPage}
         totalPages={totalPages}
         totalCount={initialData.total}
-        baseUrl="/"
+        baseUrl="/posts"
         onPageChange={filters.handlePageChange}
       />
       {filters.isPending && <PageLoadingSpinner overlay />}

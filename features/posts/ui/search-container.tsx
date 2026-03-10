@@ -13,16 +13,10 @@ interface SearchContainerProps {
 
 export function SearchContainer({ filters }: SearchContainerProps) {
   const { data: allBlogsData, isLoading: isLoadingAllBlogs } = useBlogs();
-  const { data: popularBlogsData } = useBlogs({ featured: true });
   const { data: allTagsData, isLoading: isLoadingAllTags } = useTags({ sort: 'name' });
-  const { data: popularTagsData, isLoading: isLoadingPopularTags } = useTags({ featured: true });
 
   const allBlogs = allBlogsData?.companies || [];
   const allTags = allTagsData?.tags || [];
-  const popularTags = (popularTagsData?.tags || []).map((tag) => tag.name);
-  const popularBlogs = popularBlogsData?.companies || [];
-  const isLoadingBlogs = isLoadingAllBlogs;
-  const isLoadingTags = isLoadingPopularTags || isLoadingAllTags;
 
   return (
     <section className="mb-8">
@@ -35,20 +29,6 @@ export function SearchContainer({ filters }: SearchContainerProps) {
         currentSort={filters.sortParam}
         onSortChange={filters.handleSortChange}
       />
-
-      {/* <PopularBlogs
-        companies={popularCompanies}
-        selectedCompanyNames={filters.selectedBlogs}
-        onCompanyToggle={filters.handleCompanyToggle}
-        isLoading={isLoadingCompanies}
-      /> */}
-
-      {/* <PopularTags
-        tags={popularTags}
-        selectedTags={filters.selectedTags}
-        onTagToggle={filters.handleTagToggle}
-        isLoading={isLoadingTags}
-      /> */}
 
       <SearchedResult
         searchQuery={filters.searchQuery}
@@ -70,7 +50,7 @@ export function SearchContainer({ filters }: SearchContainerProps) {
         onBlogsApply={filters.handleBlogsApply}
         isOpen={filters.showBlogModal}
         onClose={() => filters.setShowBlogModal(false)}
-        isLoading={isLoadingBlogs}
+        isLoading={isLoadingAllBlogs}
       />
 
       <TagFilterModal
@@ -79,7 +59,7 @@ export function SearchContainer({ filters }: SearchContainerProps) {
         onTagsApply={filters.handleTagsApply}
         isOpen={filters.showTagModal}
         onClose={() => filters.setShowTagModal(false)}
-        isLoading={isLoadingTags}
+        isLoading={isLoadingAllTags}
       />
     </section>
   );

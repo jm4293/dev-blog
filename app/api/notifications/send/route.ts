@@ -16,7 +16,6 @@ interface SendBody {
   postsCreated: number;
 }
 
-// CRON_SECRET 인증 검증
 function verifyCronSecret(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) return false;

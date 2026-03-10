@@ -9,7 +9,6 @@ import { captureException } from '@/sentry.config';
 import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 
-// GET — 알림 설정 + 기기 목록 조회
 export async function GET(request: NextRequest) {
   try {
     const ip = extractIP(request);

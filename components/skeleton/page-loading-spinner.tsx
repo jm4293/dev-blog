@@ -17,7 +17,7 @@ export function PageLoadingSpinner({ overlay = false }: PageLoadingSpinnerProps)
 
   if (overlay) {
     return (
-      <div className="fixed inset-x-0 bottom-0 top-16 z-30 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div className="fixed inset-x-0 bottom-0 top-0 z-30 flex items-center justify-center bg-background/80 backdrop-blur-sm">
         {content}
       </div>
     );

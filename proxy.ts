@@ -33,7 +33,6 @@ export default async function proxy(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // 1. 메인 페이지(/) 리다이렉트 (기존 로직)
   if (request.nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL('/posts', request.url), { status: 301 });
   }

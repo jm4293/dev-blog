@@ -1,7 +1,5 @@
 export * from './searched-result';
 export * from './bookmark-button';
-export * from './popular-blogs';
-export * from './popular-tags';
 export * from './post-card';
 export * from './post-card-header';
 export * from './post-card-tags';
