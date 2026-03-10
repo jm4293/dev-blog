@@ -60,4 +60,6 @@ Thumbs.db
 *.temp
 *.log
 
+# SonarCloud
+.scannerwork/
 
