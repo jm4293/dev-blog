@@ -60,7 +60,4 @@ Thumbs.db
 *.temp
 *.log
 
-# AI Assistants
-.agent
-.agents
-.claude
+
