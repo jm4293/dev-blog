@@ -54,7 +54,6 @@ export async function GET(request: NextRequest) {
           company_id,
           title,
           url,
-          content,
           summary,
           author,
           tags,

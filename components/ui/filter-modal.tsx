@@ -81,11 +81,11 @@ export function FilterModal({
             {isLoading ? (
               <div className="flex flex-col items-center justify-center gap-3 py-12">
                 <div className="h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
-                <p className="text-sm text-gray-500 dark:text-gray-400">불러오는 중...</p>
+                <p className="text-sm text-muted-foreground">불러오는 중...</p>
               </div>
             ) : isEmpty ? (
               <div className="flex items-center justify-center py-12">
-                <p className="text-sm text-gray-500 dark:text-gray-400">{emptyMessage}</p>
+                <p className="text-sm text-muted-foreground">{emptyMessage}</p>
               </div>
             ) : (
               children

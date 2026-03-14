@@ -37,17 +37,17 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-white px-4 py-12 dark:bg-gray-950 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">이용약관</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">devBlog 서비스 이용약관입니다.</p>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">최종 수정일: 2026년 1월 14일</p>
+          <h1 className="mb-4 text-3xl font-bold text-foreground">이용약관</h1>
+          <p className="text-lg text-muted-foreground">devBlog 서비스 이용약관입니다.</p>
+          <p className="mt-2 text-sm text-muted-foreground">최종 수정일: 2026년 1월 14일</p>
         </div>
 
-        <div className="prose prose-lg dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+        <div className="prose prose-lg dark:prose-invert max-w-none text-muted-foreground">
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제1조 (목적)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제1조 (목적)</h2>
             <p>
               이 약관은 devBlog(이하 &quot;서비스&quot;)가 제공하는 서비스의 이용조건 및 절차, 이용자와 서비스 제공자의
               권리, 의무, 책임사항과 기타 필요한 사항을 규정함을 목적으로 합니다.
@@ -55,7 +55,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제2조 (용어의 정의)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제2조 (용어의 정의)</h2>
             <ul className="list-inside list-disc space-y-2">
               <li>
                 &quot;서비스&quot;란 devBlog가 제공하는 개발 블로그 게시글을 수집하고, 태그 및 검색 기능을 통해
@@ -75,7 +75,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제3조 (약관의 효력과 변경)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제3조 (약관의 효력과 변경)</h2>
             <p className="mb-4">① 이 약관은 서비스를 이용하고자 하는 모든 이용자에 대하여 그 효력을 발생합니다.</p>
             <p className="mb-4">
               ② 서비스는 필요한 경우 관련 법령을 위배하지 않는 범위에서 이 약관을 변경할 수 있습니다.
@@ -87,7 +87,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제4조 (서비스의 제공)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제4조 (서비스의 제공)</h2>
             <p className="mb-4">
               ① 서비스는 연중무휴, 1일 24시간 제공함을 원칙으로 합니다. 단, 정기 점검 시간에는 서비스가 일시적으로
               중단될 수 있습니다.
@@ -99,7 +99,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제5조 (회원가입)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제5조 (회원가입)</h2>
             <p className="mb-4">
               ① 회원가입은 GitHub OAuth를 통해 진행되며, 사용자의 GitHub 계정 정보로 자동 인증됩니다.
             </p>
@@ -111,9 +111,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
-              제6조 (회원 탈퇴 및 자격 상실)
-            </h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제6조 (회원 탈퇴 및 자격 상실)</h2>
             <p className="mb-4">
               ① 회원은 언제든지 서비스 내 프로필 설정에서 탈퇴를 요청할 수 있으며 서비스는 즉시 회원탈퇴를 처리합니다.
             </p>
@@ -128,7 +126,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제7조 (이용자의 의무)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제7조 (이용자의 의무)</h2>
             <p className="mb-4">이용자는 다음 행위를 하여서는 안 됩니다:</p>
             <ul className="list-inside list-disc space-y-2">
               <li>개발 블로그 콘텐츠의 무단 복제, 배포, 전송 또는 편집</li>
@@ -140,9 +138,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
-              제8조 (서비스 콘텐츠의 저작권)
-            </h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제8조 (서비스 콘텐츠의 저작권)</h2>
             <p className="mb-4">
               ① devBlog가 제공하는 콘텐츠(개발 블로그 게시글 포함)는 각 블로그의 저작물입니다. 해당 콘텐츠의 저작권은 각
               블로그에 귀속됩니다.
@@ -158,7 +154,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제9조 (면책조항)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제9조 (면책조항)</h2>
             <p className="mb-4">
               ① 서비스는 천재지변 또는 이에 준하는 불가항력으로 인하여 서비스를 제공할 수 없는 경우에는 서비스 제공에
               관한 책임이 면제됩니다.
@@ -176,7 +172,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제10조 (개인정보보호)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제10조 (개인정보보호)</h2>
             <p className="mb-4">
               ① 서비스는 이용자의 개인정보 수집 시 서비스 제공을 위하여 필요한 범위에서 최소한의 개인정보를 수집합니다.
             </p>
@@ -187,7 +183,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제11조 (요청 및 문의)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제11조 (요청 및 문의)</h2>
             <p>
               이용자는 서비스 내 &quot;요청하기&quot; 페이지를 통해 새로운 블로그 추가, 태그 추가 등의 요청을 할 수
               있습니다. 모든 요청은 검토 후 승인 여부가 결정되며, 통상적으로 3-5일 내에 처리됩니다.
@@ -195,19 +191,17 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">제12조 (분쟁해결)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제12조 (분쟁해결)</h2>
             <p>서비스 이용으로 발생한 분쟁에 대해 소송이 제기될 경우 관할 법원은 민사소송법에 따라 정합니다.</p>
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
-              제13조 (서비스 이용 약관 동의)
-            </h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제13조 (서비스 이용 약관 동의)</h2>
             <p>이용자가 서비스를 이용함으로써 본 약관의 내용을 모두 읽었으며 이에 동의하는 것으로 간주됩니다.</p>
           </section>
         </div>
 
-        <div className="mt-12 text-center text-gray-600 dark:text-gray-400">
+        <div className="mt-12 text-center text-muted-foreground">
           <p>이 약관은 2026년 1월 14일부터 시행됩니다.</p>
         </div>
       </div>

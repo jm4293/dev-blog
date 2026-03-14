@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useResetKey } from '@/hooks';
 import { cn } from '@/utils';
 import { Check } from 'lucide-react';
 import { BlogLogoImage } from '@/components/image';
@@ -24,21 +25,11 @@ export function BlogFilterModal({
   onClose,
   isLoading = false,
 }: BlogFilterModalProps) {
-  // key를 사용하여 isOpen이 true가 될 때마다 내부 state를 리셋
-  const [openCount, setOpenCount] = useState(0);
-  const [wasOpen, setWasOpen] = useState(false);
-
-  if (isOpen && !wasOpen) {
-    setOpenCount((c) => c + 1);
-    setWasOpen(true);
-  }
-  if (!isOpen && wasOpen) {
-    setWasOpen(false);
-  }
+  const resetKey = useResetKey(isOpen);
 
   return (
     <BlogFilterModalInner
-      key={openCount}
+      key={resetKey}
       blogs={blogs}
       selectedBlogs={selectedBlogs}
       onBlogsApply={onBlogsApply}

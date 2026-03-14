@@ -42,7 +42,6 @@ export async function fetchBookmarks(): Promise<BookmarksResponse> {
         company_id,
         title,
         url,
-        content,
         summary,
         author,
         tags,

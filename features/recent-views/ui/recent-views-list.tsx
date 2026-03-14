@@ -74,8 +74,8 @@ export function RecentViewsList() {
         onClearAll={handleClearAll}
       />
 
-      <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        총 <span className="font-semibold text-blue-600 dark:text-blue-400">{views.length}</span>개
+      <p className="mb-4 text-sm text-muted-foreground">
+        총 <span className="font-semibold text-foreground">{views.length}</span>개
       </p>
 
       <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

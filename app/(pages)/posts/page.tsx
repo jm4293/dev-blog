@@ -98,11 +98,11 @@ export default async function PostPage({ searchParams }: PageProps) {
       />
 
       <header className="mb-4">
-        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">
+        <h1 className="mb-3 text-2xl font-bold text-foreground md:text-4xl">
           <span className="sr-only">개발블로그·기술블로그 모음 - </span>
           포스트
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">
+        <p className="text-lg text-muted-foreground">
           <span className="sr-only">
             매일 자동 업데이트되는 토스, 카카오 등 32개 기업의 최신 개발 블로그를 검색하고 태그별 필터링으로 원하는 기술
             글을 빠르게 찾아보세요.
