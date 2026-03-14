@@ -5,7 +5,7 @@ import { useToast } from '@/hooks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { withdrawAction } from '../actions';
 
-export const useDeleteAccount = () => {
+export function useDeleteAccount() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { showToast } = useToast();
@@ -18,4 +18,4 @@ export const useDeleteAccount = () => {
       router.push('/posts');
     },
   });
-};
+}

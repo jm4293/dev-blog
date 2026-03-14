@@ -7,12 +7,12 @@ interface DeleteAccountConfirmModalProps {
   onConfirm: () => void;
 }
 
-export const DeleteAccountConfirmModal = ({
+export function DeleteAccountConfirmModal({
   open,
   isDeleting,
   onOpenChange,
   onConfirm,
-}: DeleteAccountConfirmModalProps) => {
+}: DeleteAccountConfirmModalProps) {
   if (!open) return null;
 
   return (
@@ -57,4 +57,4 @@ export const DeleteAccountConfirmModal = ({
       </div>
     </div>
   );
-};
+}

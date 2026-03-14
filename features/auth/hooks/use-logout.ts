@@ -5,7 +5,7 @@ import { useToast } from '@/hooks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { logoutAction } from '@/features/auth/actions/logout.action';
 
-export const useLogout = () => {
+export function useLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { showToast } = useToast();
@@ -18,4 +18,4 @@ export const useLogout = () => {
       router.push('/posts');
     },
   });
-};
+}

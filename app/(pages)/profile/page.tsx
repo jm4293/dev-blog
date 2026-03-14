@@ -56,8 +56,8 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-4">
-        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">프로필</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">내 정보를 확인하고 관리하세요.</p>
+        <h1 className="mb-3 text-2xl font-bold text-foreground md:text-4xl">프로필</h1>
+        <p className="text-lg text-muted-foreground">내 정보를 확인하고 관리하세요.</p>
       </header>
 
       <ProfileContainer user={user} year={year} />

@@ -107,7 +107,7 @@ export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, o
       </nav>
 
       {totalPages > 0 && (
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-muted-foreground">
           페이지 {currentPage} / {totalPages} {totalCount > 0 && `(총 ${totalCount}개)`}
         </p>
       )}

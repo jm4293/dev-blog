@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useResetKey } from '@/hooks';
 import { cn } from '@/utils';
 import { Check } from 'lucide-react';
 import { FilterModal } from '@/components/ui';
@@ -23,21 +24,11 @@ export function TagFilterModal({
   onClose,
   isLoading = false,
 }: TagFilterModalProps) {
-  // key를 사용하여 isOpen이 true가 될 때마다 내부 state를 리셋
-  const [openCount, setOpenCount] = useState(0);
-  const [wasOpen, setWasOpen] = useState(false);
-
-  if (isOpen && !wasOpen) {
-    setOpenCount((c) => c + 1);
-    setWasOpen(true);
-  }
-  if (!isOpen && wasOpen) {
-    setWasOpen(false);
-  }
+  const resetKey = useResetKey(isOpen);
 
   return (
     <TagFilterModalInner
-      key={openCount}
+      key={resetKey}
       tags={tags}
       selectedTags={selectedTags}
       onTagsApply={onTagsApply}
