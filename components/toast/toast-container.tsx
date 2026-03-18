@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 
 const emptySubscribe = () => () => {};
 
-export const ToastContainer = () => {
+export function ToastContainer() {
   const { toasts, removeToast } = useToast();
   const mounted = useSyncExternalStore(
     emptySubscribe,
@@ -75,4 +75,4 @@ export const ToastContainer = () => {
     </div>,
     document.body,
   );
-};
+}

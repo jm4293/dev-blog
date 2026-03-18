@@ -46,7 +46,6 @@ export async function fetchPosts({
       company_id,
       title,
       url,
-      content,
       summary,
       author,
       tags,
@@ -96,22 +95,20 @@ export async function fetchPosts({
     }
   }
 
-  // 전체 개수 조회
-  const { count, error: countError } = await countQuery;
+  // 전체 개수 조회 + 게시글 목록 조회 (병렬 실행)
+  const [countResult, postsResult] = await Promise.all([countQuery, postsQuery.range(offset, offset + limit - 1)]);
 
-  if (countError) {
-    throw countError;
+  if (countResult.error) {
+    throw countResult.error;
   }
 
-  const total = count || 0;
+  if (postsResult.error) {
+    throw postsResult.error;
+  }
+
+  const total = countResult.count || 0;
   const totalPages = Math.ceil(total / limit);
-
-  // 페이지네이션 적용
-  const { data: posts, error: postsError } = await postsQuery.range(offset, offset + limit - 1);
-
-  if (postsError) {
-    throw postsError;
-  }
+  const posts = postsResult.data;
 
   // 응답 형식 변환
   const typedPosts: PostWithCompany[] = (posts || []).map((post: any) => ({

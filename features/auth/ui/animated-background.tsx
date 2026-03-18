@@ -1,9 +1,11 @@
+// disable eslint
+
 'use client';
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-export const AnimatedBackground = () => {
+export function AnimatedBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export const AnimatedBackground = () => {
         'async await',
         'import React',
         'export default',
-        'console.log()',
+        'log("hello")',
         'npm install',
         'git commit',
         '=> { }',
@@ -303,4 +305,4 @@ export const AnimatedBackground = () => {
       }}
     />
   );
-};
+}

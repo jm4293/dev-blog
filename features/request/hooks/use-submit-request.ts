@@ -9,7 +9,7 @@ interface UseSubmitRequestOptions {
   onError?: (error: Error) => void;
 }
 
-export const useSubmitRequest = (reset: UseFormReset<RequestFormData>, options?: UseSubmitRequestOptions) => {
+export function useSubmitRequest(reset: UseFormReset<RequestFormData>, options?: UseSubmitRequestOptions) {
   return useMutation({
     mutationFn: async (data: RequestFormData) => {
       const result = await submitRequestAction(data);
@@ -23,4 +23,4 @@ export const useSubmitRequest = (reset: UseFormReset<RequestFormData>, options?:
       options?.onError?.(error as Error);
     },
   });
-};
+}

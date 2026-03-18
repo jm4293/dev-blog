@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import { usePostCardInteractions } from '@/hooks';
 import { formatPostDate } from '@/utils';
 import { PostWithCompany } from '@/supabase/types.supabase';
-import { usePostCardInteractions } from '../hooks';
 import { BookmarkButton } from './bookmark-button';
 import { PostCardHeader } from './post-card-header';
 import { PostCardTags } from './post-card-tags';

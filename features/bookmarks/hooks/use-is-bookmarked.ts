@@ -1,11 +1,14 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useBookmarksList } from './use-bookmarks-list';
 
-export const useIsBookmarked = () => {
+export function useIsBookmarked() {
   const { data } = useBookmarksList();
 
+  const bookmarkedSet = useMemo(() => new Set(data?.bookmarks?.map((b) => b.post_id)), [data?.bookmarks]);
+
   return (postId: string): boolean => {
-    return data?.bookmarks?.some((b) => b.post_id === postId) ?? false;
+    return bookmarkedSet.has(postId);
   };
-};
+}

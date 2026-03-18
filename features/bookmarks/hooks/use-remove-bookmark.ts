@@ -5,7 +5,7 @@ import { deleteBookmarkAction } from '@/features/bookmarks';
 import { queryKeys } from '@/lib/query-keys';
 import { BookmarkWithPost } from '@/supabase/types.supabase';
 
-export const useRemoveBookmark = () => {
+export function useRemoveBookmark() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -45,4 +45,4 @@ export const useRemoveBookmark = () => {
       }
     },
   });
-};
+}

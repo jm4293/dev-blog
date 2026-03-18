@@ -6,7 +6,7 @@ import { useDeleteAccount } from '@/features/auth/hooks/use-delete-account';
 import { useLogout } from '@/features/auth/hooks/use-logout';
 import { DeleteAccountConfirmModal } from '@/components/modal';
 
-export const ProfileClient = () => {
+export function ProfileClient() {
   const { mutate: logout, isPending } = useLogout();
   const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -64,4 +64,4 @@ export const ProfileClient = () => {
       />
     </>
   );
-};
+}

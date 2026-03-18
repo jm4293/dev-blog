@@ -12,13 +12,13 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
  * Page view 추적
  * @param url 페이지 URL
  */
-export const pageview = (url: string) => {
+export function pageview(url: string) {
   if (!GA_ID || typeof window === 'undefined') return;
 
   window.gtag('config', GA_ID, {
     page_path: url,
   });
-};
+}
 
 /**
  * 이벤트 추적
@@ -27,7 +27,7 @@ export const pageview = (url: string) => {
  * @param label 이벤트 레이블
  * @param value 이벤트 값
  */
-export const event = (action: string, category: string, label: string, value?: number) => {
+export function event(action: string, category: string, label: string, value?: number) {
   if (!GA_ID || typeof window === 'undefined') return;
 
   window.gtag('event', action, {
@@ -35,7 +35,7 @@ export const event = (action: string, category: string, label: string, value?: n
     event_label: label,
     value,
   });
-};
+}
 
 // 추적할 주요 이벤트들
 export const events = {
