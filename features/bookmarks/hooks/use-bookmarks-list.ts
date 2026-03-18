@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query-keys';
 import { BookmarkWithPost } from '@/supabase/types.supabase';
 
-export const useBookmarksList = () => {
+export function useBookmarksList() {
   return useQuery({
     queryKey: queryKeys.bookmarks.list(),
     queryFn: async () => {
@@ -28,4 +28,4 @@ export const useBookmarksList = () => {
       return failureCount < 1;
     },
   });
-};
+}

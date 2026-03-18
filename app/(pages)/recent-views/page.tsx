@@ -35,8 +35,8 @@ export default function RecentViewsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="mb-4">
-        <h1 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white md:text-4xl">최근 본 글</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">최근에 조회한 게시글 목록입니다.</p>
+        <h1 className="mb-3 text-2xl font-bold text-foreground md:text-4xl">최근 본 글</h1>
+        <p className="text-lg text-muted-foreground">최근에 조회한 게시글 목록입니다.</p>
       </header>
 
       <section aria-label="최근 본 게시글 목록">

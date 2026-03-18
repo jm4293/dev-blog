@@ -3,7 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { createSupabaseClient } from '@/supabase/client.supabase';
 
-export const useGithubLogin = () => {
+export function useGithubLogin() {
   return useMutation({
     mutationFn: async () => {
       const supabaseClient = createSupabaseClient();
@@ -23,4 +23,4 @@ export const useGithubLogin = () => {
       throw error;
     },
   });
-};
+}
