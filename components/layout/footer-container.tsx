@@ -9,7 +9,7 @@ export function FooterContainer() {
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-8">
             <span className="font-semibold text-foreground">정보</span>
             <ul className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              <li>
+              {/* <li>
                 <a
                   href="https://github.com/jm4293/dev-blog"
                   className="text-muted-foreground transition-colors hover:text-foreground"
@@ -18,7 +18,7 @@ export function FooterContainer() {
                 >
                   GitHub
                 </a>
-              </li>
+              </li> */}
               <li>
                 <Link href="/terms" className="text-muted-foreground transition-colors hover:text-foreground">
                   이용약관
