@@ -57,6 +57,12 @@ export function ParticleBackground({
     let width = window.innerWidth;
     let height = window.innerHeight;
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isTouchDevice =
+      'ontouchstart' in window || (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0);
+    // Mobile browsers fire resize when the URL/tool bar shows/hides on scroll.
+    // Lock the canvas height to the largest seen value so vertical-only changes do not retrigger resize work.
+    let lockedHeight = height;
+    let lastWidth = width;
 
     function isDarkMode() {
       return document.documentElement.classList.contains('dark');
@@ -70,10 +76,7 @@ export function ParticleBackground({
       return isDarkMode() ? darkModeOpacity : lightModeOpacity;
     }
 
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function applyCanvasSize() {
       if (!canvas) return;
       canvas.width = width * dpr;
       canvas.height = height * dpr;
@@ -89,8 +92,40 @@ export function ParticleBackground({
         shootingCanvas.style.height = `${height}px`;
         shootingCanvas.getContext('2d')?.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
+    }
 
-      generateParticles();
+    function rescatterOffscreenParticles() {
+      const particles = particlesRef.current;
+      for (let i = 0; i < particles.length; i += 1) {
+        const p = particles[i];
+        if (p.x > width) p.x = Math.random() * width;
+        if (p.y > height) p.y = Math.random() * height;
+      }
+    }
+
+    function resize() {
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+      const newDpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      const widthChanged = newWidth !== lastWidth;
+      const dprChanged = newDpr !== dpr;
+
+      // On touch devices, ignore height-only changes triggered by URL bar collapse on scroll.
+      if (isTouchDevice && !widthChanged && !dprChanged) {
+        return;
+      }
+
+      width = newWidth;
+      lastWidth = newWidth;
+      dpr = newDpr;
+      // Keep the tallest height we've seen to avoid shrink-then-grow flicker.
+      lockedHeight = Math.max(lockedHeight, newHeight);
+      height = isTouchDevice ? lockedHeight : newHeight;
+
+      applyCanvasSize();
+      // Width or DPR changed: keep existing particles, just rescatter any that fell offscreen.
+      rescatterOffscreenParticles();
     }
 
     function generateParticles() {
@@ -179,7 +214,8 @@ export function ParticleBackground({
       mouseRef.current.active = false;
     }
 
-    resize();
+    applyCanvasSize();
+    generateParticles();
     step();
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', handleMouseMove, { passive: true });

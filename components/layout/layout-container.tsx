@@ -1,13 +1,20 @@
 'use client';
 
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { sidebarHoveredAtom } from '@/atoms';
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { DesktopSidebar } from './desktop-sidebar';
 import { FooterContainer } from './footer-container';
 import { MobileHeader } from './mobile-header';
 
 export function LayoutContainer({ children }: { children: React.ReactNode }) {
-  const isSidebarHovered = useAtomValue(sidebarHoveredAtom);
+  const pathname = usePathname();
+  const [isSidebarHovered, setSidebarHovered] = useAtom(sidebarHoveredAtom);
+
+  useEffect(() => {
+    setSidebarHovered(false);
+  }, [pathname, setSidebarHovered]);
 
   return (
     <div className="relative z-10 min-h-screen">

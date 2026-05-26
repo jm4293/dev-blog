@@ -75,6 +75,22 @@ export function DesktopSidebar() {
     }
   }, []);
 
+  // Collapse sidebar on route change (e.g., navigating away before mouseleave fires)
+  useEffect(() => {
+    setSidebarHovered(false);
+    const el = sidebarRef.current;
+    if (el) {
+      gsap.killTweensOf(el);
+      gsap.set(el, { width: COLLAPSED_W });
+    }
+    const labels = getAllLabels();
+    if (labels.length > 0) {
+      gsap.killTweensOf(labels);
+      gsap.set(labels, { opacity: 0, width: 0 });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
   return (
     <div
       ref={sidebarRef}
