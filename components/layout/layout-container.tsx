@@ -8,7 +8,7 @@ export function LayoutContainer({ children }: { children: React.ReactNode }) {
       <DesktopSidebar />
       <MobileHeader />
 
-      <div className="pt-16 md:pt-0">
+      <div className="pt-16 md:pl-16 md:pt-0">
         <main className="min-h-screen">{children}</main>
         <FooterContainer />
       </div>
