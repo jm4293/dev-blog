@@ -1,34 +1,21 @@
 'use client';
 
+import { Select, SelectOption } from '@/components/ui';
+
+type SortValue = 'newest' | 'oldest';
+
 interface SortButtonProps {
-  currentSort: 'newest' | 'oldest';
-  onSortChange: (sort: 'newest' | 'oldest') => void;
+  currentSort: SortValue;
+  onSortChange: (sort: SortValue) => void;
 }
 
-export function SortButton({ currentSort, onSortChange }: SortButtonProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onSortChange(e.target.value as 'newest' | 'oldest');
-  };
+const SORT_OPTIONS: SelectOption<SortValue>[] = [
+  { value: 'newest', label: '최신 순' },
+  { value: 'oldest', label: '오래된 순' },
+];
 
+export function SortButton({ currentSort, onSortChange }: SortButtonProps) {
   return (
-    <div className="relative">
-      <label htmlFor="sort-select" className="sr-only">
-        정렬 방식 선택
-      </label>
-      <select
-        id="sort-select"
-        value={currentSort}
-        onChange={handleChange}
-        className="glass-card cursor-pointer appearance-none rounded-lg bg-right bg-no-repeat px-3 py-3 font-medium text-foreground transition-colors hover:bg-muted/60 md:px-4"
-        style={{
-          backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-          backgroundSize: '20px',
-          paddingRight: '2.5rem',
-        }}
-      >
-        <option value="newest">최신 순</option>
-        <option value="oldest">오래된 순</option>
-      </select>
-    </div>
+    <Select<SortValue> value={currentSort} onChange={onSortChange} options={SORT_OPTIONS} ariaLabel="정렬 방식 선택" />
   );
 }
