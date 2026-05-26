@@ -96,7 +96,7 @@ export function FilterModal({
           <div className="pb-safe-6 flex flex-shrink-0 gap-3 px-6 py-4">
             <button
               onClick={onReset}
-              className="flex-1 rounded-xl border border-border py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+              className="glass-card flex-1 rounded-xl py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/60"
             >
               초기화
             </button>
