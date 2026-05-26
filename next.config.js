@@ -6,9 +6,6 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
-  eslint: {
-    dirs: ['app', 'components', 'features', 'hooks', 'lib', 'utils', 'atoms', 'supabase'],
-  },
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
