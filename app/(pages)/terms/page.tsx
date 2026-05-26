@@ -14,20 +14,11 @@ export const metadata: Metadata = {
     siteName: 'devBlog.kr',
     type: 'website',
     locale: 'ko_KR',
-    images: [
-      {
-        url: `${APP.URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: '이용약관 - devBlog.kr',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '이용약관 - devBlog.kr',
     description: 'devBlog.kr의 이용약관을 확인하세요.',
-    images: [`${APP.URL}/og-image.png`],
   },
   robots: {
     index: true,

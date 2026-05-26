@@ -4,33 +4,26 @@ import { APP } from '@/utils';
 import { getUser } from '@/features/auth';
 import { ProfileContainer } from '@/features/profile';
 
+const DESCRIPTION = 'GitHub 계정으로 연동된 프로필 정보와 계정 설정을 관리하세요.';
+
 export const metadata: Metadata = {
   title: '프로필',
-  description: 'GitHub 계정으로 연동된 프로필 정보와 계정 설정을 관리하세요.',
+  description: DESCRIPTION,
   alternates: {
     canonical: `${APP.URL}/profile`,
   },
   openGraph: {
     title: '프로필 - devBlog.kr',
-    description: 'GitHub 계정으로 연동된 프로필 정보와 계정 설정을 관리하세요.',
+    description: DESCRIPTION,
     url: `${APP.URL}/profile`,
     siteName: 'devBlog.kr',
     type: 'website',
     locale: 'ko_KR',
-    images: [
-      {
-        url: `${APP.URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: '프로필 - devBlog.kr',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '프로필 - devBlog.kr',
-    description: 'GitHub 계정으로 연동된 프로필 정보와 계정 설정을 관리하세요.',
-    images: [`${APP.URL}/og-image.png`],
+    description: DESCRIPTION,
   },
   robots: {
     index: false,

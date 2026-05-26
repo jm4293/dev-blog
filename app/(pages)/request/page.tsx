@@ -2,34 +2,27 @@ import { Metadata } from 'next';
 import { APP } from '@/utils';
 import { RequestForm } from '@/features/request';
 
+const DESCRIPTION =
+  '추가했으면 하는 개발블로그·기술블로그나 새로운 태그를 제안해보세요. devBlog.kr은 사용자 요청을 받아 큐레이션 목록을 확장합니다.';
+
 export const metadata: Metadata = {
   title: '요청하기',
-  description:
-    '새로운 블로그이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다. devBlog.kr을 더 나은 개발 블로그 플랫폼으로 만들어보세요.',
+  description: DESCRIPTION,
   alternates: {
     canonical: `${APP.URL}/request`,
   },
   openGraph: {
     title: '요청하기 - devBlog.kr',
-    description: '새로운 블로그이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
+    description: DESCRIPTION,
     url: `${APP.URL}/request`,
     siteName: 'devBlog.kr',
     type: 'website',
     locale: 'ko_KR',
-    images: [
-      {
-        url: `${APP.URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: '요청하기 - devBlog.kr',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '요청하기 - devBlog.kr',
-    description: '새로운 블로그이나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.',
-    images: [`${APP.URL}/og-image.png`],
+    description: DESCRIPTION,
   },
 };
 

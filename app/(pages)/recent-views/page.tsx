@@ -1,33 +1,27 @@
 import { APP } from '@/utils';
 import { RecentViewsList } from '@/features/recent-views/ui';
 
+const DESCRIPTION =
+  '최근에 조회한 개발블로그·기술블로그 게시글을 다시 빠르게 찾아보세요. 로컬에 자동 저장되어 로그인 없이도 사용할 수 있습니다.';
+
 export const metadata = {
   title: '최근 본 글',
-  description: '최근에 조회한 게시글 목록을 확인하세요. 관심 있는 개발 블로그 포스트를 다시 찾아보세요.',
+  description: DESCRIPTION,
   alternates: {
     canonical: `${APP.URL}/recent-views`,
   },
   openGraph: {
     title: '최근 본 글 - devBlog.kr',
-    description: '최근에 조회한 게시글 목록을 확인하세요.',
+    description: DESCRIPTION,
     url: `${APP.URL}/recent-views`,
     siteName: 'devBlog.kr',
     type: 'website',
     locale: 'ko_KR',
-    images: [
-      {
-        url: `${APP.URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: '최근 본 글 - devBlog.kr',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: '최근 본 글 - devBlog.kr',
-    description: '최근에 조회한 게시글 목록을 확인하세요.',
-    images: [`${APP.URL}/og-image.png`],
+    description: DESCRIPTION,
   },
 };
 

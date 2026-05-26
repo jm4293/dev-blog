@@ -4,6 +4,7 @@ import { ParticleBackground } from '@/components/background';
 import { ToastContainer } from '@/components/toast';
 import { OfflineBanner } from '@/components/ui';
 import { QueryProvider } from '../lib/query-provider';
+import { pretendard } from './fonts';
 import './globals.css';
 import { GoogleAnalytics } from './GoogleAnalytics';
 import { organizationSchema, websiteSchema } from './schema';
@@ -23,40 +24,15 @@ export const viewport: Viewport = {
   ],
 };
 
+const SITE_DESCRIPTION =
+  '토스·카카오·네이버 등 32개 한국 기업의 개발블로그·기술블로그·테크블로그를 한 곳에 모았습니다. 매일 두 번 자동 수집되는 최신 개발자 글을 태그·키워드로 검색하세요.';
+
 export const metadata: Metadata = {
   title: {
-    default: '개발/기술 블로그 모음 - devBlog.kr',
+    default: '개발블로그·기술블로그 모음 - devBlog.kr',
     template: '%s - devBlog.kr',
   },
-  description:
-    '토스, 카카오 등 32개 기업의 개발블로그, 기술블로그, 테크블로그를 한 곳에서 모아보세요. React, TypeScript, 백엔드, DevOps 등 최신 개발 트렌드와 기술 정보를 태그와 검색으로 쉽게 찾아보세요.',
-  keywords: [
-    '개발 블로그',
-    '개발블로그',
-    '개발 블로그 모음',
-    '개발블로그 모음',
-    '기술 블로그',
-    '기술블로그',
-    '기술 블로그 모음',
-    '기술블로그 모음',
-    '테크 블로그',
-    '테크블로그',
-    '테크 블로그 모음',
-    '테크블로그 모음',
-    '한국 개발 블로그',
-    '한국 기술 블로그',
-    '개발자 블로그',
-    'Frontend',
-    'Backend',
-    'DevOps',
-    'Database',
-    'React',
-    'TypeScript',
-    '토스',
-    '카카오',
-    'AI/ML',
-    'Architecture',
-  ],
+  description: SITE_DESCRIPTION,
   authors: [{ name: 'jm4293' }],
   creator: 'jm4293',
   publisher: 'devBlog.kr',
@@ -77,24 +53,13 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: baseUrl,
     siteName: 'devBlog.kr',
-    title: '개발/기술 블로그 모음 - devBlog.kr',
-    description:
-      '매일 자동 업데이트되는 토스, 카카오 등 32+ 기업의 최신 개발 블로그를 검색하고 태그별 필터링으로 원하는 기술 글을 빠르게 찾아보세요. 마음에 드는 글은 즐겨찾기에 저장하세요.',
-    images: [
-      {
-        url: `${baseUrl}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: '개발 블로그 | 개발 블로그 모음 플랫폼',
-      },
-    ],
+    title: '개발블로그·기술블로그 모음 - devBlog.kr',
+    description: SITE_DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
-    title: '개발/기술 블로그 모음 - devBlog.kr',
-    description:
-      '매일 자동 업데이트되는 토스, 카카오 등 32+ 기업의 최신 개발 블로그를 검색하고 태그별 필터링으로 원하는 기술 글을 빠르게 찾아보세요. 마음에 드는 글은 즐겨찾기에 저장하세요.',
-    images: [`${baseUrl}/og-image.png`],
+    title: '개발블로그·기술블로그 모음 - devBlog.kr',
+    description: SITE_DESCRIPTION,
   },
   icons: {
     icon: [
@@ -113,68 +78,32 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin
+    : null;
+
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko" className={pretendard.variable} suppressHydrationWarning>
       <head>
+        {supabaseHost && (
+          <>
+            <link rel="preconnect" href={supabaseHost} crossOrigin="anonymous" />
+            <link rel="dns-prefetch" href={supabaseHost} />
+          </>
+        )}
         <link rel="icon" href="/logo.svg?v=2" type="image/svg+xml" />
         <link rel="icon" href="/logo_32.png?v=2" sizes="32x32" type="image/png" />
         <link rel="icon" href="/logo_48.png?v=2" sizes="48x48" type="image/png" />
         <link rel="icon" href="/logo_192.png?v=2" sizes="192x192" type="image/png" />
         <link rel="apple-touch-icon" href="/logo_192.png?v=2" />
 
-        {/* Pretendard Variable — Korean-first display + body face */}
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-        />
-
         {/* PWA manifest */}
         <link rel="manifest" href="/manifest.json" />
 
-        {/* iOS PWA splash screen */}
+        {/* iOS PWA */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="devBlog.kr" />
-        <link
-          rel="apple-touch-startup-image"
-          href="/splash-640x1138.png"
-          media="(device-width: 320px) and (device-height: 568px) and (-apple-system-2x)"
-        />
-        <link
-          rel="apple-touch-startup-image"
-          href="/splash-750x1334.png"
-          media="(device-width: 375px) and (device-height: 667px) and (-apple-system-2x)"
-        />
-        <link
-          rel="apple-touch-startup-image"
-          href="/splash-828x1792.png"
-          media="(device-width: 414px) and (device-height: 896px) and (-apple-system-2x)"
-        />
-        <link
-          rel="apple-touch-startup-image"
-          href="/splash-1125x2436.png"
-          media="(device-width: 375px) and (device-height: 812px) and (-apple-system-3x)"
-        />
-        <link
-          rel="apple-touch-startup-image"
-          href="/splash-1242x2208.png"
-          media="(device-width: 414px) and (device-height: 736px) and (-apple-system-3x)"
-        />
-        <link
-          rel="apple-touch-startup-image"
-          href="/splash-1284x2778.png"
-          media="(device-width: 428px) and (device-height: 926px) and (-apple-system-3x)"
-        />
-        <link
-          rel="apple-touch-startup-image"
-          href="/splash-1179x2556.png"
-          media="(device-width: 393px) and (device-height: 852px) and (-apple-system-3x)"
-        />
-        <link
-          rel="apple-touch-startup-image"
-          href="/splash-1320x2868.png"
-          media="(device-width: 440px) and (device-height: 956px) and (-apple-system-3x)"
-        />
 
         {/* 구조화된 데이터 (Schema.org) - Organization */}
         <script
