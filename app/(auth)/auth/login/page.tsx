@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { AnimatedBackground, LoginCard } from '@/features/auth';
+import { LoginCard } from '@/features/auth';
+import { CosmicBackground } from '@/components/background';
 
 export const metadata: Metadata = {
   title: '로그인 | devBlog',
@@ -10,19 +11,19 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
-      <AnimatedBackground />
+      <CosmicBackground />
 
       <div className="relative z-50 w-full max-w-md duration-1000 animate-in fade-in">
         <div className="space-y-8 text-center">
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">devBlog.kr</h1>
+            <h1 className="text-4xl font-bold text-white">devBlog.kr</h1>
           </div>
 
           <LoginCard />
 
           <Link
             href="/posts"
-            className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-center font-semibold text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
+            className="block w-full rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center font-semibold text-white/80 backdrop-blur-sm transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
           >
             뒤로가기
           </Link>

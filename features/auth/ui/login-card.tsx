@@ -13,20 +13,20 @@ export function LoginCard() {
   };
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 dark:border-gray-800 dark:bg-gray-900">
-      <h2 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-white">로그인</h2>
-      <p className="mb-6 text-gray-600 dark:text-gray-400">GitHub 계정으로 로그인하여 즐겨찾기 기능을 사용하세요.</p>
+    <div className="rounded-lg border border-white/15 bg-white/5 p-8 backdrop-blur-sm">
+      <h2 className="mb-2 text-2xl font-semibold text-white">로그인</h2>
+      <p className="mb-6 text-white/70">GitHub 계정으로 로그인하여 즐겨찾기 기능을 사용하세요.</p>
 
       {error && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/30">
-          <p className="text-sm text-red-600 dark:text-red-400">{error.message}</p>
+        <div className="mb-6 rounded-lg border border-red-400/40 bg-red-500/15 p-4">
+          <p className="text-sm text-red-200">{error.message}</p>
         </div>
       )}
 
       <button
         onClick={handleLogin}
         disabled={isLoading}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 font-semibold text-black transition-colors hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isLoading ? (
           <>
