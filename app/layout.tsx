@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { initSentry } from '@/sentry.config';
+import { ParticleBackground } from '@/components/background';
 import { ToastContainer } from '@/components/toast';
 import { OfflineBanner } from '@/components/ui';
 import { QueryProvider } from '../lib/query-provider';
@@ -121,6 +122,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/logo_192.png?v=2" sizes="192x192" type="image/png" />
         <link rel="apple-touch-icon" href="/logo_192.png?v=2" />
 
+        {/* Pretendard Variable — Korean-first display + body face */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+
         {/* PWA manifest */}
         <link rel="manifest" href="/manifest.json" />
 
@@ -185,7 +192,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-screen bg-background">
+      <body className="min-h-screen">
+        <ParticleBackground />
         <OfflineBanner />
         <ToastContainer />
         <QueryProvider>{children}</QueryProvider>

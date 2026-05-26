@@ -86,6 +86,10 @@ const config: Config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        sapphire: {
+          DEFAULT: 'hsl(var(--sapphire))',
+          foreground: 'hsl(var(--sapphire-foreground))',
+        },
         chart: {
           '1': 'hsl(var(--chart-1))',
           '2': 'hsl(var(--chart-2))',
