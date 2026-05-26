@@ -9,9 +9,9 @@ interface PageProps {
 export const revalidate = 1800; // 30분 = 1800초
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = '개발/기술 블로그 모음';
+  const title = '개발블로그·기술블로그 모음';
   const description =
-    '매일 자동 업데이트되는 토스, 카카오 등 32+ 기업의 최신 개발 블로그를 검색하고 태그별 필터링으로 원하는 기술 글을 빠르게 찾아보세요. 마음에 드는 글은 즐겨찾기에 저장하세요.';
+    '토스, 카카오, 네이버 등 32개 기업의 개발블로그·기술블로그·테크블로그를 한 곳에서. 매일 두 번 자동 수집되는 최신 글을 검색하고 태그별로 필터링하세요.';
   const canonicalUrl = `${APP.URL}/posts`;
   const fullTitle = `${title} - devBlog.kr`;
 
@@ -21,24 +21,6 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: canonicalUrl,
     },
-    keywords: [
-      '개발 블로그',
-      '개발블로그',
-      '개발 블로그 모음',
-      '개발블로그 모음',
-      '기술 블로그',
-      '기술블로그',
-      '기술 블로그 모음',
-      '기술블로그 모음',
-      '테크 블로그',
-      '테크블로그',
-      '테크 블로그 모음',
-      '테크블로그 모음',
-      '한국 개발 블로그',
-      '한국 기술 블로그',
-      '한국 테크 블로그',
-      '개발자 블로그',
-    ],
     openGraph: {
       title: fullTitle,
       description,
@@ -46,20 +28,11 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: 'devBlog.kr',
       type: 'website',
       locale: 'ko_KR',
-      images: [
-        {
-          url: `${APP.URL}/og-image.png`,
-          width: 1200,
-          height: 630,
-          alt: '개발/기술 블로그 모음 플랫폼 - devBlog.kr',
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: fullTitle,
       description,
-      images: [`${APP.URL}/og-image.png`],
     },
   };
 }
@@ -88,6 +61,21 @@ export default async function PostPage({ searchParams }: PageProps) {
 
   const postsData = await fetchPosts({ page, search, tags, blogs, sort });
 
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: '개발블로그·기술블로그 모음',
+    description: '한국 32개 기업의 최신 개발자 블로그 글 목록',
+    numberOfItems: postsData.total,
+    itemListOrder: 'https://schema.org/ItemListOrderDescending',
+    itemListElement: postsData.posts.slice(0, 20).map((post, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: post.url,
+      name: post.title,
+    })),
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <script
@@ -97,11 +85,19 @@ export default async function PostPage({ searchParams }: PageProps) {
         }}
       />
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(itemListSchema),
+        }}
+      />
+
       <header className="mb-6">
         <h1 className="text-2xl font-bold text-foreground md:text-4xl">
           <span className="sr-only">
-            개발블로그·기술블로그 모음 - 매일 자동 업데이트되는 토스, 카카오 등 32개 기업의 최신 개발 블로그를 검색하고
-            태그별 필터링으로 원하는 기술 글을 빠르게 찾아보세요.
+            한국 개발블로그·기술블로그·테크블로그 모음 — 토스, 카카오, 네이버, 우아한형제들 등 32개 기업의 최신 개발자
+            블로그 글을 매일 자동 수집하여 한 곳에서 보여드립니다. Frontend, Backend, DevOps, AI/ML 등 카테고리별 검색
+            가능.
           </span>
           포스트
         </h1>
