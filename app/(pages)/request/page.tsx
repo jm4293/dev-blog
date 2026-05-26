@@ -36,11 +36,8 @@ export const metadata: Metadata = {
 export default function RequestPage() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <header className="mb-4">
-        <h1 className="mb-3 text-2xl font-bold text-foreground md:text-4xl">요청하기</h1>
-        <p className="text-lg text-muted-foreground">
-          새로운 블로그나 태그를 추가해달라고 요청하거나, 기타 문의를 보낼 수 있습니다.
-        </p>
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold text-foreground md:text-4xl">요청하기</h1>
       </header>
 
       <section aria-label="블로그 추가 요청 폼">

@@ -51,6 +51,9 @@ supabase/migrations
 *.swp
 *.swo
 
+# Claude Code (로컬 개인 설정만 제외, skills/rules는 커밋)
+.claude/settings.local.json
+
 # OS
 .DS_Store
 Thumbs.db

@@ -38,11 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-interface ProfilePageProps {
-  searchParams: Promise<{ year?: string }>;
-}
-
-export default async function ProfilePage({ searchParams }: ProfilePageProps) {
+export default async function ProfilePage() {
   const user = await getUser();
 
   // 비로그인 시 로그인 페이지로 리다이렉트
@@ -50,17 +46,13 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
     redirect('/auth/login?redirect=/profile');
   }
 
-  const params = await searchParams;
-  const year = params.year ? parseInt(params.year, 10) : undefined;
-
   return (
     <div className="container mx-auto px-4 py-8">
-      <header className="mb-4">
-        <h1 className="mb-3 text-2xl font-bold text-foreground md:text-4xl">프로필</h1>
-        <p className="text-lg text-muted-foreground">내 정보를 확인하고 관리하세요.</p>
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold text-foreground md:text-4xl">프로필</h1>
       </header>
 
-      <ProfileContainer user={user} year={year} />
+      <ProfileContainer user={user} />
     </div>
   );
 }

@@ -307,17 +307,6 @@ interface RecentView {
 - GitHub 프로필 정보
 - 가입일, 이메일
 
-### 활동 통계
-
-- 전체 북마크 수
-- 최근 활동 날짜
-
-### 활동 히트맵
-
-- **스타일**: GitHub 스타일 히트맵
-- **기간**: 최근 1년간
-- **데이터**: 일별 북마크 수
-
 ### 계정 관리
 
 - 로그아웃
@@ -326,7 +315,6 @@ interface RecentView {
 ### 구현 위치
 
 - **UI**: `features/profile/ui/ProfileClient.tsx`
-- **히트맵**: `features/profile/components/ActivityHeatmap.tsx`
 - **Actions**: `features/auth/actions/withdraw.action.ts`
 - **페이지**: `app/(pages)/profile/page.tsx`
 

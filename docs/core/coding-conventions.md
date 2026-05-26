@@ -616,7 +616,7 @@ OPENAI_API_KEY;
 // ✅ 큰 컴포넌트는 동적 import
 import dynamic from 'next/dynamic';
 
-const ActivityHeatmap = dynamic(() => import('@/features/profile/components/ActivityHeatmap'), {
+const HeavyComponent = dynamic(() => import('@/features/some/ui/HeavyComponent'), {
   ssr: false,
   loading: () => <div>로딩 중...</div>
 });

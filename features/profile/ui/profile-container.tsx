@@ -3,16 +3,14 @@ import { formatDateKo } from '@/utils';
 import type { User } from '@supabase/auth-js';
 import { Calendar, Github, Mail, User as UserIcon } from 'lucide-react';
 import { NotificationSettings } from '@/features/notifications';
-import { ActivityHeatmap } from '../components/activity-heatmap';
 import { ProfileClient } from './profile-client';
 import { ProfileInfoCard } from './profile-info-card';
 
 interface ProfileContainerProps {
   user: User;
-  year?: number;
 }
 
-export function ProfileContainer({ user, year }: ProfileContainerProps) {
+export function ProfileContainer({ user }: ProfileContainerProps) {
   const displayName = user.user_metadata?.name || user.user_metadata?.user_name || '사용자';
   const joinDate = formatDateKo(user.created_at);
 
@@ -50,8 +48,6 @@ export function ProfileContainer({ user, year }: ProfileContainerProps) {
           <ProfileInfoCard icon={Calendar} label="가입일" value={joinDate} isActive />
         </div>
       </article>
-
-      <ActivityHeatmap year={year} />
 
       <NotificationSettings />
 

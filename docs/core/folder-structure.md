@@ -148,8 +148,6 @@ features/
 │   └── ui/             # RecentViewsList, RecentViewPostCard
 │
 ├── profile/            # 프로필 기능
-│   ├── components/     # ActivityHeatmap
-│   ├── services/       # fetch.ts
 │   └── ui/             # ProfileClient, ProfileInfoCard
 │
 ├── request/            # 블로그 추가 요청 기능
