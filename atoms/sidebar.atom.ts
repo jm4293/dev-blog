@@ -4,6 +4,8 @@ const SIDEBAR_KEY = 'sidebar-collapsed';
 
 export const sidebarCollapsedAtom = atom<boolean>(false);
 
+export const sidebarHoveredAtom = atom<boolean>(false);
+
 export const toggleSidebarAtom = atom(
   (get) => get(sidebarCollapsedAtom),
   (get, set) => {

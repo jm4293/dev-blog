@@ -3,9 +3,11 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { sidebarHoveredAtom } from '@/atoms';
 import { useTheme } from '@/hooks';
 import { MENU_ITEMS } from '@/utils';
 import gsap from 'gsap';
+import { useSetAtom } from 'jotai';
 import { Code2, Moon, Sun } from 'lucide-react';
 import { useUser } from '@/features/auth';
 
@@ -17,6 +19,7 @@ export function DesktopSidebar() {
   const { theme, toggleTheme } = useTheme();
   const { data: user } = useUser();
   const isLoggedIn = !!user;
+  const setSidebarHovered = useSetAtom(sidebarHoveredAtom);
 
   const sidebarRef = useRef<HTMLDivElement>(null);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -32,6 +35,7 @@ export function DesktopSidebar() {
   const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const handleMouseEnter = () => {
+    setSidebarHovered(true);
     const el = sidebarRef.current;
     if (!el) return;
     if (reducedMotion()) {
@@ -46,6 +50,7 @@ export function DesktopSidebar() {
   };
 
   const handleMouseLeave = () => {
+    setSidebarHovered(false);
     const el = sidebarRef.current;
     if (!el) return;
     if (reducedMotion()) {

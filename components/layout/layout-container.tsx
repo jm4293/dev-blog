@@ -1,14 +1,23 @@
+'use client';
+
+import { sidebarHoveredAtom } from '@/atoms';
+import { useAtomValue } from 'jotai';
 import { DesktopSidebar } from './desktop-sidebar';
 import { FooterContainer } from './footer-container';
 import { MobileHeader } from './mobile-header';
 
 export function LayoutContainer({ children }: { children: React.ReactNode }) {
+  const isSidebarHovered = useAtomValue(sidebarHoveredAtom);
+
   return (
-    <div className="min-h-screen">
+    <div className="relative z-10 min-h-screen">
       <DesktopSidebar />
       <MobileHeader />
 
-      <div className="pt-16 md:pl-16 md:pt-0">
+      <div
+        className="pt-16 transition-[padding-left] duration-300 ease-out md:pt-0"
+        data-sidebar-expanded={isSidebarHovered}
+      >
         <main className="min-h-screen">{children}</main>
         <FooterContainer />
       </div>
