@@ -82,10 +82,8 @@ function TagFilterModalInner({
               key={tag.id}
               onClick={() => handleTempToggle(tag.name)}
               className={cn(
-                'relative flex items-center justify-center gap-1.5 rounded-xl px-3 py-3 text-sm font-semibold transition-all',
-                isSelected
-                  ? 'bg-foreground/10 text-foreground ring-2 ring-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-muted/80',
+                'glass-card relative flex items-center justify-center gap-1.5 rounded-xl px-3 py-3 text-sm font-semibold transition-all',
+                isSelected ? 'text-foreground ring-2 ring-foreground' : 'text-muted-foreground hover:bg-muted/60',
               )}
             >
               {isSelected && (

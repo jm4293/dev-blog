@@ -86,7 +86,7 @@ function BlogFilterModalInner({
               onClick={() => handleTempToggle(blog.name)}
               className={cn(
                 'relative flex flex-col items-center gap-2 rounded-xl p-3 transition-[colors,box-shadow]',
-                isSelected ? 'bg-foreground/10 ring-2 ring-foreground' : 'bg-muted hover:bg-muted/80',
+                isSelected ? 'glass-card ring-2 ring-foreground' : 'glass-card hover:bg-muted/60',
               )}
             >
               {isSelected && (

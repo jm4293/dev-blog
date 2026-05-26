@@ -45,17 +45,16 @@ export function RequestForm() {
           <legend className="mb-3 block text-sm font-medium text-foreground">요청 유형</legend>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
             {[
-              { value: 'company', Icon: Building2, label: '블로그 추가', desc: '새로운 블로그를 추가해달라' },
-              { value: 'tag', Icon: Tag, label: '태그 추가', desc: '새로운 태그를 추가해달라' },
-              { value: 'other', Icon: MessageCircle, label: '기타 문의', desc: '기타 문의사항' },
-            ].map(({ value, Icon, label, desc }) => (
+              { value: 'company', Icon: Building2, label: '블로그 추가' },
+              { value: 'tag', Icon: Tag, label: '태그 추가' },
+              { value: 'other', Icon: MessageCircle, label: '기타 문의' },
+            ].map(({ value, Icon, label }) => (
               <label key={value} className="relative cursor-pointer">
                 <input type="radio" value={value} {...register('type')} className="peer sr-only" />
                 <div className="rounded-lg border-2 border-border p-4 transition-all peer-checked:border-foreground peer-checked:bg-muted">
                   <div className="flex flex-col items-center text-center">
                     <Icon className="mb-2 h-6 w-6 text-muted-foreground" strokeWidth={1.75} aria-hidden="true" />
                     <div className="font-medium text-foreground">{label}</div>
-                    <div className="text-sm text-muted-foreground">{desc}</div>
                   </div>
                 </div>
               </label>

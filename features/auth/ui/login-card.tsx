@@ -14,8 +14,7 @@ export function LoginCard() {
 
   return (
     <div className="rounded-lg border border-white/15 bg-white/5 p-8 backdrop-blur-sm">
-      <h2 className="mb-2 text-2xl font-semibold text-white">로그인</h2>
-      <p className="mb-6 text-white/70">GitHub 계정으로 로그인하여 즐겨찾기 기능을 사용하세요.</p>
+      <h2 className="mb-6 text-2xl font-semibold text-white">로그인</h2>
 
       {error && (
         <div className="mb-6 rounded-lg border border-red-400/40 bg-red-500/15 p-4">

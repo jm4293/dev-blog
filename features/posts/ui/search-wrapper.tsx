@@ -38,7 +38,7 @@ export function SearchWrapper({
             name="search"
             autoComplete="off"
             aria-label="게시글 검색"
-            placeholder="게시글 검색..."
+            placeholder="제목, 키워드로 검색"
             value={value}
             onChange={onChange}
             onKeyDown={handleKeyDown}
@@ -82,7 +82,7 @@ export function SearchWrapper({
               name="search"
               autoComplete="off"
               aria-label="게시글 검색"
-              placeholder="게시글 검색..."
+              placeholder="제목, 키워드로 검색"
               value={value}
               onChange={onChange}
               onKeyDown={handleKeyDown}
