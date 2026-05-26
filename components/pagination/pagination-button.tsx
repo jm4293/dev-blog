@@ -29,10 +29,10 @@ export function PaginationButton({
     }
 
     if (isDisabled) {
-      return `${baseStyles} p-2.5 border border-border bg-muted text-muted-foreground cursor-not-allowed`;
+      return `${baseStyles} glass-card p-2.5 text-muted-foreground cursor-not-allowed opacity-60`;
     }
 
-    return `${baseStyles} p-2.5 border border-border bg-background text-foreground hover:bg-muted`;
+    return `${baseStyles} glass-card p-2.5 text-foreground hover:bg-muted/60`;
   };
 
   const styles = `${getStyles()} ${className}`;

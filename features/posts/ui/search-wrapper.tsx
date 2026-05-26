@@ -42,7 +42,7 @@ export function SearchWrapper({
             value={value}
             onChange={onChange}
             onKeyDown={handleKeyDown}
-            className="w-full rounded-lg border border-border bg-background py-3 pl-4 pr-12 text-foreground placeholder-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
+            className="glass-card w-full rounded-lg py-3 pl-4 pr-12 text-foreground placeholder-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
           />
           <button
             onClick={onSearch}
@@ -60,13 +60,13 @@ export function SearchWrapper({
         </Link>
         <button
           onClick={onBlogFilterClick}
-          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-muted px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted/80"
+          className="glass-card flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted/60"
         >
           블로그 필터
         </button>
         <button
           onClick={onTagFilterClick}
-          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-muted px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted/80"
+          className="glass-card flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted/60"
         >
           태그 필터
         </button>
@@ -86,7 +86,7 @@ export function SearchWrapper({
               value={value}
               onChange={onChange}
               onKeyDown={handleKeyDown}
-              className="w-full rounded-lg border border-border bg-background py-3 pl-4 pr-12 text-foreground placeholder-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
+              className="glass-card w-full rounded-lg py-3 pl-4 pr-12 text-foreground placeholder-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
             />
             <button
               onClick={onSearch}
@@ -106,13 +106,13 @@ export function SearchWrapper({
           </Link>
           <button
             onClick={onBlogFilterClick}
-            className="flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-muted px-3 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/80"
+            className="glass-card flex flex-1 items-center justify-center whitespace-nowrap rounded-lg px-3 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/60"
           >
             블로그 필터
           </button>
           <button
             onClick={onTagFilterClick}
-            className="flex flex-1 items-center justify-center whitespace-nowrap rounded-lg bg-muted px-3 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/80"
+            className="glass-card flex flex-1 items-center justify-center whitespace-nowrap rounded-lg px-3 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/60"
           >
             태그 필터
           </button>

@@ -9,9 +9,7 @@ interface PaginationPageNumberProps {
 
 export function PaginationPageNumber({ pageNum, isCurrentPage, url, onClick }: PaginationPageNumberProps) {
   const styles = `px-4 py-2 rounded-lg font-semibold transition-colors ${
-    isCurrentPage
-      ? 'bg-foreground text-background'
-      : 'bg-background text-foreground border border-border hover:bg-muted'
+    isCurrentPage ? 'bg-foreground text-background' : 'glass-card text-foreground hover:bg-muted/60'
   }`;
 
   if (onClick) {
