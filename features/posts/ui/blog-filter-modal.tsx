@@ -94,13 +94,7 @@ function BlogFilterModalInner({
                   <Check className="h-3 w-3 text-background" strokeWidth={3} />
                 </span>
               )}
-              <BlogLogoImage
-                logoUrl={blog.logo_url}
-                companyName={blog.name}
-                width={32}
-                height={32}
-                className="object-contain"
-              />
+              <BlogLogoImage logoUrl={blog.logo_url} companyName={blog.name} width={40} height={40} />
               <span
                 className={cn(
                   'text-center text-xs font-semibold leading-tight',

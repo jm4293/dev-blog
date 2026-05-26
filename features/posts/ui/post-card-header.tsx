@@ -13,9 +13,8 @@ export function PostCardHeader({ logoUrl, companyName, timeDisplay, children }: 
       <BlogLogoImage
         logoUrl={logoUrl}
         companyName={companyName}
-        width={32}
-        height={32}
-        className="rounded-lg object-cover"
+        width={36}
+        height={36}
         title={companyName}
         priority={false}
       />

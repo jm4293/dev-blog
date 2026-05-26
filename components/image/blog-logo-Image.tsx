@@ -17,9 +17,8 @@ interface BlogLogoImageProps {
 
 /**
  * 블로그 로고 이미지 컴포넌트
- * - 로고 다운로드 중: 스켈레톤 로딩 UI
- * - 로고 없으면 기본 아이콘 표시
- * - 로드 실패 시 기본 아이콘으로 폴백
+ * - 통일된 컨테이너(rounded-lg + hairline border + muted bg) 안에 로고를 contain
+ * - 로고 없거나 실패 시 Building2 폴백
  */
 export function BlogLogoImage({
   logoUrl,
@@ -33,51 +32,35 @@ export function BlogLogoImage({
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 로고가 없는 경우 기본 아이콘 표시
-  if (!logoUrl) {
+  const containerClass = cn(
+    'relative flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-muted/40 p-1',
+    className,
+  );
+
+  if (!logoUrl || imageError) {
     return (
-      <div
-        className={cn('flex items-center justify-center bg-gray-200 dark:bg-gray-700', className)}
-        style={{ width, height }}
-        title={title || companyName}
-      >
-        <Building2 className="h-1/2 w-1/2 text-gray-400 dark:text-gray-500" />
+      <div className={containerClass} style={{ width, height }} title={title || companyName}>
+        <Building2 className="h-1/2 w-1/2 text-muted-foreground" strokeWidth={1.5} />
       </div>
     );
   }
 
-  // 로드 실패 시 기본 아이콘 표시
-  if (imageError) {
-    return (
-      <div
-        className={cn('flex items-center justify-center bg-gray-200 dark:bg-gray-700', className)}
-        style={{ width, height }}
-        title={title || companyName}
-      >
-        <Building2 className="h-1/2 w-1/2 text-gray-400 dark:text-gray-500" />
-      </div>
-    );
-  }
+  const innerSize = Math.max(width - 8, 16);
 
   return (
-    <div style={{ position: 'relative', width, height }} title={title || companyName}>
-      {isLoading && (
-        <div
-          className={cn('absolute inset-0 animate-pulse rounded bg-gray-200 dark:bg-gray-700', className)}
-          style={{ width, height }}
-        />
-      )}
+    <div className={containerClass} style={{ width, height }} title={title || companyName}>
+      {isLoading && <div className="absolute h-full w-full animate-pulse rounded-md bg-muted" />}
       <Image
         src={`/company_logos/${logoUrl}`}
         alt={`${companyName} 로고`}
-        width={width}
-        height={height}
-        className={className}
+        width={innerSize}
+        height={innerSize}
+        className="h-full w-full object-contain"
         title={title || companyName}
         priority={priority}
         onError={() => setImageError(true)}
         onLoad={() => setIsLoading(false)}
-        style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.3s ease-in-out' }}
+        style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.2s ease-in-out' }}
       />
     </div>
   );
