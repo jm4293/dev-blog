@@ -41,7 +41,7 @@ export function LoginCard() {
                 clipRule="evenodd"
               />
             </svg>
-            GitHub로 로그인하기
+            GitHub 로그인
           </>
         )}
       </button>
