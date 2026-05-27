@@ -35,8 +35,8 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, onSelect }: R
       {/* 선택 표시 - 편집 모드일 때만 */}
       {isEditMode && isSelected && (
         <div className="absolute right-4 top-4 z-10">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 shadow-lg">
-            <Check className="h-5 w-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground shadow-lg">
+            <Check className="h-5 w-5 text-background" strokeWidth={3} />
           </div>
         </div>
       )}
@@ -45,12 +45,12 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, onSelect }: R
       <article
         onClick={handleCardClick}
         className={cn(
-          'rounded-lg border-2 bg-white p-6 transition-all dark:bg-gray-800',
+          'glass-card rounded-xl p-6 transition-all',
           isEditMode
             ? isSelected
-              ? 'cursor-pointer border-blue-600 bg-blue-50 dark:border-blue-500 dark:bg-blue-950/30'
-              : 'cursor-pointer border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-600'
-            : 'transform border-gray-200 duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:hover:shadow-xl',
+              ? 'cursor-pointer ring-2 ring-foreground'
+              : 'cursor-pointer hover:bg-muted/60'
+            : 'transform duration-300 hover:-translate-y-1 hover:shadow-lg',
         )}
       >
         <PostCardHeader
@@ -73,7 +73,7 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, onSelect }: R
 
         {/* Title */}
         {isEditMode ? (
-          <h3 className="mb-3 line-clamp-2 text-lg font-bold text-gray-900 dark:text-white">{view.post.title}</h3>
+          <h3 className="mb-3 line-clamp-2 text-lg font-bold text-foreground">{view.post.title}</h3>
         ) : (
           <Link
             href={view.post.url}
@@ -89,9 +89,7 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, onSelect }: R
         )}
 
         {/* Summary */}
-        {view.post.summary && (
-          <p className="mb-4 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">{view.post.summary}</p>
-        )}
+        {view.post.summary && <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">{view.post.summary}</p>}
 
         {/* Tags */}
         <PostCardTags tags={view.post.tags || []} />
@@ -111,9 +109,7 @@ export function RecentViewPostCard({ view, isEditMode, isSelected, onSelect }: R
       </article>
 
       {/* Viewed At */}
-      <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-        조회: {new Date(view.viewed_at).toLocaleString('ko-KR')}
-      </p>
+      <p className="mt-2 text-xs text-muted-foreground">읽음: {new Date(view.viewed_at).toLocaleString('ko-KR')}</p>
     </div>
   );
 }

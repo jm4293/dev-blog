@@ -22,14 +22,14 @@ export function EmptyState({
     <div className="px-4 py-12 text-center">
       {Icon && (
         <div className="mb-4 flex justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
-            <Icon className="h-8 w-8 text-gray-400 dark:text-gray-500" />
+          <div className="glass-card flex h-16 w-16 items-center justify-center rounded-full">
+            <Icon className="h-8 w-8 text-muted-foreground" />
           </div>
         </div>
       )}
 
-      <p className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</p>
-      {description && <p className="whitespace-pre-line text-sm text-gray-500 dark:text-gray-400">{description}</p>}
+      <p className="mb-2 text-lg font-semibold text-foreground">{title}</p>
+      {description && <p className="whitespace-pre-line text-sm text-muted-foreground">{description}</p>}
 
       {showLoginPrompt && actionHref && actionLabel && (
         <div className="mt-6">
