@@ -4,7 +4,7 @@ import { LucideIcon } from 'lucide-react';
 interface EmptyStateProps {
   icon?: LucideIcon;
   title: string;
-  description: string;
+  description?: string;
   actionLabel?: string;
   actionHref?: string;
   showLoginPrompt?: boolean;
@@ -29,7 +29,7 @@ export function EmptyState({
       )}
 
       <p className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</p>
-      <p className="whitespace-pre-line text-sm text-gray-500 dark:text-gray-400">{description}</p>
+      {description && <p className="whitespace-pre-line text-sm text-gray-500 dark:text-gray-400">{description}</p>}
 
       {showLoginPrompt && actionHref && actionLabel && (
         <div className="mt-6">
