@@ -1,0 +1,3 @@
+# Claude Code / AI 에이전트 스킬 파일은 언어 통계에서 제외
+.claude/** linguist-vendored
+.agents/** linguist-vendored
