@@ -1,7 +1,6 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { captureException } from '@/sentry.config';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { checkRateLimit, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 
@@ -57,7 +56,7 @@ export async function saveSubscriptionAction(
 
     return { success: true };
   } catch (error) {
-    captureException(error, { action: 'saveSubscription' });
+    console.error(error, { action: 'saveSubscription' });
     return { success: false, error: 'Failed to save subscription' };
   }
 }

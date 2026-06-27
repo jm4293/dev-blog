@@ -1,7 +1,6 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { captureException } from '@/sentry.config';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { checkRateLimit, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 
@@ -81,7 +80,7 @@ export async function createBookmarkAction(postId: string): Promise<AddBookmarkR
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
 
-    captureException(error, {
+    console.error(error, {
       action: 'addBookmark',
       postId,
       errorMessage: errorMsg,

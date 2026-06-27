@@ -5,7 +5,6 @@
  * (PUT는 Server Action으로 이동)
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { captureException } from '@/sentry.config';
 import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 
@@ -53,7 +52,7 @@ export async function GET(request: NextRequest) {
       subscriptions: subscriptions || [],
     });
   } catch (error) {
-    captureException(error, { method: 'GET', endpoint: '/api/notifications/preferences' });
+    console.error(error, { method: 'GET', endpoint: '/api/notifications/preferences' });
     return NextResponse.json({ error: 'Failed to fetch preferences' }, { status: 500 });
   }
 }

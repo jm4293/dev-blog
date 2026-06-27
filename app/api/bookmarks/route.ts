@@ -5,7 +5,6 @@
  * 현재 사용자의 즐겨찾기 조회
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { captureException } from '@/sentry.config';
 import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import type { Bookmark, PostWithCompany } from '@/supabase/types.supabase';
@@ -80,7 +79,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
 
-    captureException(error, {
+    console.error(error, {
       method: 'GET',
       endpoint: '/api/bookmarks',
       errorMessage: errorMsg,

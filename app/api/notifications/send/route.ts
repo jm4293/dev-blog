@@ -8,7 +8,6 @@
  * Body: { postsCreated: number }
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { captureException } from '@/sentry.config';
 import { createClient } from '@supabase/supabase-js';
 import webpush from 'web-push';
 
@@ -131,7 +130,7 @@ export async function POST(request: NextRequest) {
       expired: failedEndpoints.length,
     });
   } catch (error) {
-    captureException(error, { method: 'POST', endpoint: '/api/notifications/send' });
+    console.error(error, { method: 'POST', endpoint: '/api/notifications/send' });
     return NextResponse.json({ error: 'Failed to send notifications' }, { status: 500 });
   }
 }

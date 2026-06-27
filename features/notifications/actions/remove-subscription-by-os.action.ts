@@ -1,7 +1,6 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { captureException } from '@/sentry.config';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { checkRateLimit, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 
@@ -46,7 +45,7 @@ export async function removeSubscriptionByOSAction(device_os: string): Promise<R
 
     return { success: true };
   } catch (error) {
-    captureException(error, { action: 'removeSubscriptionByOS', device_os });
+    console.error(error, { action: 'removeSubscriptionByOS', device_os });
     return { success: false, error: 'Failed to remove subscriptions' };
   }
 }

@@ -1,7 +1,6 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { captureException } from '@/sentry.config';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { checkRateLimit, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 
@@ -49,7 +48,7 @@ export async function updateSubscriptionEnabledAction(
 
     return { success: true };
   } catch (error) {
-    captureException(error, { action: 'updateSubscriptionEnabled', device_os });
+    console.error(error, { action: 'updateSubscriptionEnabled', device_os });
     return { success: false, error: 'Failed to update subscription' };
   }
 }

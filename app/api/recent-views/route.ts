@@ -5,7 +5,6 @@
  * 현재 사용자의 최근 본 글 조회
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { captureException } from '@/sentry.config';
 import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import type { RecentViewsResponse } from '@/supabase/types.supabase';
@@ -83,7 +82,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
 
-    captureException(error, {
+    console.error(error, {
       method: 'GET',
       endpoint: '/api/recent-views',
       errorMessage: errorMsg,

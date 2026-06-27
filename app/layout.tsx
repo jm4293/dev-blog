@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import { initSentry } from '@/sentry.config';
 import { ParticleBackground } from '@/components/background';
 import { ToastContainer } from '@/components/toast';
 import { OfflineBanner } from '@/components/ui';
@@ -8,9 +7,6 @@ import { pretendard } from './fonts';
 import './globals.css';
 import { GoogleAnalytics } from './GoogleAnalytics';
 import { organizationSchema, websiteSchema } from './schema';
-
-// Sentry 초기화 (프로덕션 환경에서만)
-initSentry();
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr';
 
