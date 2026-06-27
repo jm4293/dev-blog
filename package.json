@@ -60,10 +60,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "rm -rf .next node_modules .turbo",
-    "fetch-posts": "tsx scripts/fetch-posts.ts",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "fetch-posts": "tsx scripts/fetch-posts.ts"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.8",
@@ -93,8 +90,6 @@
     "web-push": "^3.6.7"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -104,13 +99,10 @@
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
     "@vitejs/plugin-react": "^5.1.2",
-    "@vitest/coverage-v8": "^4.0.17",
-    "@vitest/ui": "^4.0.17",
     "autoprefixer": "^10.4.16",
     "eslint": "^9.39.3",
     "eslint-config-next": "^16.1.6",
     "husky": "^9.0.0",
-    "jsdom": "^27.4.0",
     "lint-staged": "^15.2.0",
     "postcss": "^8.4.31",
     "prettier": "^3.7.4",
@@ -119,8 +111,7 @@
     "sharp": "^0.34.5",
     "tailwindcss": "^3.4.0",
     "tsx": "^4.19.2",
-    "typescript": "^5",
-    "vitest": "^4.0.17"
+    "typescript": "^5"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
