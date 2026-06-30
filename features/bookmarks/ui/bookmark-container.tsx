@@ -1,6 +1,6 @@
 import { use } from 'react';
 import { Heart } from 'lucide-react';
-import { PostCard } from '@/features/posts';
+import { PostList } from '@/features/posts';
 import { EmptyState } from '@/components/ui';
 import { BookmarksResponse } from '../services';
 
@@ -21,11 +21,5 @@ export function BookmarkContainer({ data }: BookmarkContainerProps) {
     );
   }
 
-  return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {bookmarks.map((bookmark) => (
-        <PostCard key={bookmark.post.id} post={bookmark.post} />
-      ))}
-    </div>
-  );
+  return <PostList posts={bookmarks.map((bookmark) => bookmark.post)} />;
 }

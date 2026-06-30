@@ -61,50 +61,68 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
   );
 
   // 핸들러
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
-  };
+  }, []);
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = useCallback(() => {
     updateUrl(1, inputValue, selectedTagsRef.current, selectedBlogsRef.current, sortParamRef.current);
-  };
+  }, [updateUrl, inputValue]);
 
-  const handleTagsApply = (tags: string[]) => {
-    setSelectedTags(tags);
-    updateUrl(1, searchQuery, tags, selectedBlogs, sortParam);
-  };
+  const handleTagsApply = useCallback(
+    (tags: string[]) => {
+      setSelectedTags(tags);
+      updateUrl(1, searchQuery, tags, selectedBlogs, sortParam);
+    },
+    [updateUrl, searchQuery, selectedBlogs, sortParam],
+  );
 
-  const handleBlogsApply = (blogs: string[]) => {
-    setSelectedBlogs(blogs);
-    updateUrl(1, searchQuery, selectedTags, blogs, sortParam);
-  };
+  const handleBlogsApply = useCallback(
+    (blogs: string[]) => {
+      setSelectedBlogs(blogs);
+      updateUrl(1, searchQuery, selectedTags, blogs, sortParam);
+    },
+    [updateUrl, searchQuery, selectedTags, sortParam],
+  );
 
-  const handleTagToggle = (tag: string) => {
-    handleTagsApply(selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]);
-  };
+  const handleTagToggle = useCallback(
+    (tag: string) => {
+      handleTagsApply(selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]);
+    },
+    [handleTagsApply, selectedTags],
+  );
 
-  const handleBlogToggle = (blogName: string) => {
-    handleBlogsApply(
-      selectedBlogs.includes(blogName)
-        ? selectedBlogs.filter((name) => name !== blogName)
-        : [...selectedBlogs, blogName],
-    );
-  };
+  const handleBlogToggle = useCallback(
+    (blogName: string) => {
+      handleBlogsApply(
+        selectedBlogs.includes(blogName)
+          ? selectedBlogs.filter((name) => name !== blogName)
+          : [...selectedBlogs, blogName],
+      );
+    },
+    [handleBlogsApply, selectedBlogs],
+  );
 
-  const handleSortChange = (sort: 'newest' | 'oldest') => {
-    updateUrl(1, searchQuery, selectedTags, selectedBlogs, sort);
-  };
+  const handleSortChange = useCallback(
+    (sort: 'newest' | 'oldest') => {
+      updateUrl(1, searchQuery, selectedTags, selectedBlogs, sort);
+    },
+    [updateUrl, searchQuery, selectedTags, selectedBlogs],
+  );
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setInputValue('');
     setSelectedTags([]);
     setSelectedBlogs([]);
     updateUrl(1, '', [], [], 'newest');
-  };
+  }, [updateUrl]);
 
-  const handlePageChange = (page: number) => {
-    updateUrl(page, searchQuery, selectedTags, selectedBlogs, sortParam);
-  };
+  const handlePageChange = useCallback(
+    (page: number) => {
+      updateUrl(page, searchQuery, selectedTags, selectedBlogs, sortParam);
+    },
+    [updateUrl, searchQuery, selectedTags, selectedBlogs, sortParam],
+  );
 
   return {
     // 상태

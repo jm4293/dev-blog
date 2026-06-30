@@ -1,5 +1,11 @@
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import type { PostWithCompany } from '@/supabase/types.supabase';
+import type { Company, Post, PostWithCompany } from '@/supabase/types.supabase';
+
+// posts + company 조인 쿼리의 행 타입 (수동 타입 환경이라 명시적으로 선언)
+type PostRow = Post & { company: Company | null };
+
+// 블로그명 → company_id 조회 쿼리의 결과 타입
+type BlogIdsResult = { data: { id: string }[] | null; error: { message: string } | null };
 
 interface GetPostsParams {
   page?: number;
@@ -66,7 +72,7 @@ export async function fetchPosts({
   }
 
   // 블로그 필터 promise 즉시 시작 (waterfall 방지)
-  let blogsPromise: any = null;
+  let blogsPromise: PromiseLike<BlogIdsResult> | null = null;
   if (blogs.length > 0 && !companyId) {
     blogsPromise = supabase.from('companies').select('id').in('name', blogs);
   }
@@ -88,7 +94,7 @@ export async function fetchPosts({
       throw blogsError;
     }
 
-    const companyIds = blogsData?.map((c: { id: string }) => c.id) || [];
+    const companyIds = blogsData?.map((c) => c.id) || [];
     if (companyIds.length > 0) {
       countQuery = countQuery.in('company_id', companyIds);
       postsQuery = postsQuery.in('company_id', companyIds);
@@ -111,9 +117,10 @@ export async function fetchPosts({
   const posts = postsResult.data;
 
   // 응답 형식 변환
-  const typedPosts: PostWithCompany[] = (posts || []).map((post: any) => ({
+  // (생성 타입은 조인을 배열로 추론하지만 to-one 관계라 런타임은 단일 객체이므로 unknown 경유 캐스트)
+  const typedPosts: PostWithCompany[] = ((posts || []) as unknown as PostRow[]).map((post) => ({
     ...post,
-    company: post.company || ({} as any),
+    company: post.company || ({} as Company),
   }));
 
   return {

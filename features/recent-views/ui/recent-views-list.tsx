@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { useIsBookmarked } from '@/features/bookmarks';
 import { useClearAllRecentViews, useDeleteRecentView, useRecentViews } from '../hooks';
 import { RecentViewsActions } from './recent-views-actions';
 import { RecentViewsEmpty } from './recent-views-empty';
@@ -12,6 +13,8 @@ export function RecentViewsList() {
   const { data: views, isLoading, error } = useRecentViews();
   const deleteRecentView = useDeleteRecentView();
   const clearAll = useClearAllRecentViews();
+  // 북마크 여부는 리스트 레벨에서 한 번만 계산하여 카드별로 전달
+  const isBookmarked = useIsBookmarked();
   const [selected, setSelected] = useState<string[]>([]);
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -86,6 +89,7 @@ export function RecentViewsList() {
             isEditMode={isEditMode}
             isSelected={selected.includes(view.post_id)}
             onSelect={handleSelect}
+            isBookmarked={isBookmarked(view.post.id)}
           />
         ))}
       </section>

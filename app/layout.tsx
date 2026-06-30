@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { ParticleBackground } from '@/components/background';
+import { ParticleBackgroundLazy } from '@/components/background';
 import { ToastContainer } from '@/components/toast';
 import { OfflineBanner } from '@/components/ui';
 import { QueryProvider } from '../lib/query-provider';
@@ -81,6 +81,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" className={pretendard.variable} suppressHydrationWarning>
       <head>
+        {/* 테마 초기화 (페인트 전 실행하여 깜빡임 방지) — 저장된 선택이 'light'가 아니면 기본 다크 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'){document.documentElement.classList.add('dark');}}catch(e){document.documentElement.classList.add('dark');}})();`,
+          }}
+        />
         {supabaseHost && (
           <>
             <link rel="preconnect" href={supabaseHost} crossOrigin="anonymous" />
@@ -118,7 +124,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-screen">
-        <ParticleBackground />
+        <ParticleBackgroundLazy />
         <OfflineBanner />
         <ToastContainer />
         <QueryProvider>{children}</QueryProvider>

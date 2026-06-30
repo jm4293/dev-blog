@@ -8,6 +8,26 @@ interface PageProps {
 
 export const revalidate = 1800; // 30분 = 1800초
 
+// 요청과 무관한 정적 스키마는 모듈 스코프에서 1회만 생성
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: APP.URL,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '포스트',
+      item: `${APP.URL}/posts`,
+    },
+  ],
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = '개발블로그·기술블로그 모음';
   const description =
@@ -39,25 +59,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function PostPage({ searchParams }: PageProps) {
   const { page, search, tags, blogs, sort, login, error } = parsePostsSearchParams(await searchParams);
-
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: APP.URL,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: '포스트',
-        item: `${APP.URL}/posts`,
-      },
-    ],
-  };
 
   const postsData = await fetchPosts({ page, search, tags, blogs, sort });
 

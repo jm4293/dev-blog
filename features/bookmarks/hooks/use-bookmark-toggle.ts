@@ -2,17 +2,15 @@
 
 import { useState } from 'react';
 import { useUser } from '@/features/auth';
-import { useAddBookmark, useIsBookmarked, useRemoveBookmark } from './index';
+import { useAddBookmark, useRemoveBookmark } from './index';
 
-export function useBookmarkToggle(postId: string) {
+export function useBookmarkToggle(postId: string, isBookmarked: boolean) {
   const { data: user } = useUser();
   const isLoggedIn = !!user;
 
   const addBookmarkMutation = useAddBookmark();
   const removeBookmarkMutation = useRemoveBookmark();
-  const isBookmarkedFn = useIsBookmarked();
 
-  const isBookmarked = isBookmarkedFn(postId);
   const isLoading = addBookmarkMutation.isPending || removeBookmarkMutation.isPending;
 
   const [showLoginTooltip, setShowLoginTooltip] = useState(false);

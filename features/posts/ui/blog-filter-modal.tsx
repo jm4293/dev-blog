@@ -6,10 +6,10 @@ import { cn } from '@/utils';
 import { Check } from 'lucide-react';
 import { BlogLogoImage } from '@/components/image';
 import { FilterModal } from '@/components/ui';
-import type { Company } from '@/supabase/types.supabase';
+import type { BlogListItem } from '../hooks/use-blogs';
 
 interface BlogFilterModalProps {
-  blogs: Company[];
+  blogs: BlogListItem[];
   selectedBlogs: string[];
   onBlogsApply: (blogs: string[]) => void;
   isOpen: boolean;

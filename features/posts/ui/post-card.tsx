@@ -10,10 +10,11 @@ import { PostCardTags } from './post-card-tags';
 
 interface PostCardProps {
   post: PostWithCompany;
+  isBookmarked: boolean;
 }
 
-export function PostCard({ post }: PostCardProps) {
-  const { bookmark, handlePostClick } = usePostCardInteractions(post);
+export function PostCard({ post, isBookmarked: isBookmarkedProp }: PostCardProps) {
+  const { bookmark, handlePostClick } = usePostCardInteractions(post, isBookmarkedProp);
   const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip } = bookmark;
   const timeDisplay = formatPostDate(post.published_at);
 

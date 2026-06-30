@@ -13,12 +13,12 @@ function subscribeTheme(callback: () => void) {
 
 function getThemeSnapshot(): 'light' | 'dark' {
   const saved = localStorage.getItem(THEME_KEY) as 'light' | 'dark' | null;
-  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return saved ?? (systemDark ? 'dark' : 'light');
+  // 저장된 선택이 없으면 기본값은 다크모드
+  return saved ?? 'dark';
 }
 
 function getServerSnapshot(): 'light' | 'dark' {
-  return 'light';
+  return 'dark';
 }
 
 export function useTheme() {

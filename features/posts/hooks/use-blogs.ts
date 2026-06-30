@@ -4,8 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query-keys';
 import type { Company } from '@/supabase/types.supabase';
 
+// API가 id/name/logo_url 만 반환하므로 그에 맞춰 타입을 좁힘
+export type BlogListItem = Pick<Company, 'id' | 'name' | 'logo_url'>;
+
 interface BlogsResponse {
-  companies: Company[];
+  companies: BlogListItem[];
   total: number;
 }
 

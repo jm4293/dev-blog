@@ -3,8 +3,11 @@ import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG }
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { Company } from '@/supabase/types.supabase';
 
+// 클라이언트(블로그 필터)는 id/name/logo_url 만 사용하므로 해당 컬럼만 직렬화
+type BlogListItem = Pick<Company, 'id' | 'name' | 'logo_url'>;
+
 interface CompaniesResponse {
-  companies: Company[];
+  companies: BlogListItem[];
   total: number;
 }
 
@@ -24,7 +27,7 @@ export async function GET(request: Request) {
     const featured = searchParams.get('featured') === 'true';
     const all = searchParams.get('all') === 'true';
 
-    let query = supabase.from('companies').select('*');
+    let query = supabase.from('companies').select('id, name, logo_url');
 
     // 필터링: featured 또는 활성화된 블로그
     if (featured) {
@@ -40,7 +43,7 @@ export async function GET(request: Request) {
     }
 
     const response: CompaniesResponse = {
-      companies: (companies as Company[]) || [],
+      companies: (companies as BlogListItem[]) || [],
       total: companies?.length || 0,
     };
 
