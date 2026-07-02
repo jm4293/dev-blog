@@ -8,3 +8,4 @@ export * from './posts-container';
 export * from './search-container';
 export * from './search-wrapper';
 export * from './searched-selected';
+export * from './trending-section';

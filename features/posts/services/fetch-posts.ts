@@ -57,6 +57,8 @@ export async function fetchPosts({
       tags,
       published_at,
       scraped_at,
+      view_count,
+      bookmark_count,
       created_at,
       updated_at,
       company:companies(*)

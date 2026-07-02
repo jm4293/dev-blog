@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { APP, parsePostsSearchParams } from '@/utils';
-import { fetchPosts, PostsContainer } from '@/features/posts';
+import { APP, buildPageMetadata, parsePostsSearchParams } from '@/utils';
+import { fetchPosts, fetchTrendingPosts, PostsContainer, TrendingSection } from '@/features/posts';
 
 interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
@@ -29,38 +29,23 @@ const breadcrumbSchema = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = '개발블로그·기술블로그 모음';
-  const description =
-    '토스, 카카오, 네이버 등 32개 기업의 개발블로그·기술블로그·테크블로그를 한 곳에서. 매일 두 번 자동 수집되는 최신 글을 검색하고 태그별로 필터링하세요.';
-  const canonicalUrl = `${APP.URL}/posts`;
-  const fullTitle = `${title} - devBlog.kr`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title: fullTitle,
-      description,
-      url: canonicalUrl,
-      siteName: 'devBlog.kr',
-      type: 'website',
-      locale: 'ko_KR',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: fullTitle,
-      description,
-    },
-  };
+  return buildPageMetadata({
+    title: '기술블로그 모음',
+    description:
+      '토스, 카카오, 네이버 등 32개 기업의 개발블로그·기술블로그·테크블로그를 한 곳에서. 6시간마다 자동 수집되는 최신 글을 검색하고 태그별로 필터링하세요.',
+    path: '/posts',
+  });
 }
 
 export default async function PostPage({ searchParams }: PageProps) {
   const { page, search, tags, blogs, sort, login, error } = parsePostsSearchParams(await searchParams);
 
-  const postsData = await fetchPosts({ page, search, tags, blogs, sort });
+  // 트렌딩은 필터 없는 첫 페이지에서만 노출 (목록 조회와 병렬 실행)
+  const showTrending = page === 1 && !search && tags.length === 0 && blogs.length === 0;
+  const [postsData, trendingPosts] = await Promise.all([
+    fetchPosts({ page, search, tags, blogs, sort }),
+    showTrending ? fetchTrendingPosts({ limit: 4 }) : Promise.resolve([]),
+  ]);
 
   const itemListSchema = {
     '@context': 'https://schema.org',
@@ -104,7 +89,12 @@ export default async function PostPage({ searchParams }: PageProps) {
         </h1>
       </header>
 
+      {showTrending && <TrendingSection posts={trendingPosts} />}
+
       <section aria-label="블로그 게시글 목록">
+        {showTrending && trendingPosts.length > 0 && (
+          <h2 className="mb-4 text-lg font-bold text-foreground md:text-xl">전체 글</h2>
+        )}
         <PostsContainer
           initialData={postsData}
           initialFilters={{ page, search, tags, blogs, sort }}

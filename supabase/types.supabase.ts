@@ -23,6 +23,8 @@ export interface Post {
   tags: string[];
   published_at: string;
   scraped_at: string;
+  view_count: number;
+  bookmark_count: number;
   created_at: string;
   updated_at: string;
 }
