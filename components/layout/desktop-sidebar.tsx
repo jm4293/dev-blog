@@ -6,13 +6,23 @@ import { usePathname } from 'next/navigation';
 import { sidebarHoveredAtom } from '@/atoms';
 import { useTheme } from '@/hooks';
 import { MENU_ITEMS } from '@/utils';
-import gsap from 'gsap';
 import { useSetAtom } from 'jotai';
 import { Code2, Moon, Sun } from 'lucide-react';
 import { useUser } from '@/features/auth';
 
 const COLLAPSED_W = 64;
 const EXPANDED_W = 240;
+
+// GSAP은 hover 애니메이션에만 쓰이므로 초기 번들에서 제외 (마운트 후 비동기 로드)
+type Gsap = typeof import('gsap').default;
+let gsapCache: Gsap | null = null;
+
+async function loadGsap(): Promise<Gsap> {
+  if (!gsapCache) {
+    gsapCache = (await import('gsap')).default;
+  }
+  return gsapCache;
+}
 
 export function DesktopSidebar() {
   const pathname = usePathname();
@@ -38,56 +48,64 @@ export function DesktopSidebar() {
     setSidebarHovered(true);
     const el = sidebarRef.current;
     if (!el) return;
-    if (reducedMotion()) {
-      gsap.set(el, { width: EXPANDED_W });
-      gsap.set(getAllLabels(), { opacity: 1, width: 'auto' });
-      return;
-    }
-    gsap.killTweensOf(el);
-    gsap.killTweensOf(getAllLabels());
-    gsap.to(el, { width: EXPANDED_W, duration: 0.25, ease: 'power2.out' });
-    gsap.to(getAllLabels(), { opacity: 1, width: 'auto', duration: 0.2, stagger: 0.02, ease: 'power2.out' });
+    void loadGsap().then((gsap) => {
+      if (reducedMotion()) {
+        gsap.set(el, { width: EXPANDED_W });
+        gsap.set(getAllLabels(), { opacity: 1, width: 'auto' });
+        return;
+      }
+      gsap.killTweensOf(el);
+      gsap.killTweensOf(getAllLabels());
+      gsap.to(el, { width: EXPANDED_W, duration: 0.25, ease: 'power2.out' });
+      gsap.to(getAllLabels(), { opacity: 1, width: 'auto', duration: 0.2, stagger: 0.02, ease: 'power2.out' });
+    });
   };
 
   const handleMouseLeave = () => {
     setSidebarHovered(false);
     const el = sidebarRef.current;
     if (!el) return;
-    if (reducedMotion()) {
-      gsap.set(el, { width: COLLAPSED_W });
-      gsap.set(getAllLabels(), { opacity: 0, width: 0 });
-      return;
-    }
-    gsap.killTweensOf(el);
-    gsap.killTweensOf(getAllLabels());
-    gsap.to(el, { width: COLLAPSED_W, duration: 0.2, ease: 'power2.in' });
-    gsap.to(getAllLabels(), { opacity: 0, width: 0, duration: 0.15, ease: 'power2.in' });
+    void loadGsap().then((gsap) => {
+      if (reducedMotion()) {
+        gsap.set(el, { width: COLLAPSED_W });
+        gsap.set(getAllLabels(), { opacity: 0, width: 0 });
+        return;
+      }
+      gsap.killTweensOf(el);
+      gsap.killTweensOf(getAllLabels());
+      gsap.to(el, { width: COLLAPSED_W, duration: 0.2, ease: 'power2.in' });
+      gsap.to(getAllLabels(), { opacity: 0, width: 0, duration: 0.15, ease: 'power2.in' });
+    });
   };
 
-  // Set initial GSAP values after mount to ensure pixel-based start point
+  // 마운트 후 GSAP 미리 로드 + 픽셀 기준 초기값 설정 (첫 hover 지연 방지)
   useEffect(() => {
-    if (sidebarRef.current) {
-      gsap.set(sidebarRef.current, { width: COLLAPSED_W });
-    }
-    const labels = getAllLabels();
-    if (labels.length > 0) {
-      gsap.set(labels, { opacity: 0, width: 0 });
-    }
+    void loadGsap().then((gsap) => {
+      if (sidebarRef.current) {
+        gsap.set(sidebarRef.current, { width: COLLAPSED_W });
+      }
+      const labels = getAllLabels();
+      if (labels.length > 0) {
+        gsap.set(labels, { opacity: 0, width: 0 });
+      }
+    });
   }, []);
 
   // Collapse sidebar on route change (e.g., navigating away before mouseleave fires)
   useEffect(() => {
     setSidebarHovered(false);
-    const el = sidebarRef.current;
-    if (el) {
-      gsap.killTweensOf(el);
-      gsap.set(el, { width: COLLAPSED_W });
-    }
-    const labels = getAllLabels();
-    if (labels.length > 0) {
-      gsap.killTweensOf(labels);
-      gsap.set(labels, { opacity: 0, width: 0 });
-    }
+    void loadGsap().then((gsap) => {
+      const el = sidebarRef.current;
+      if (el) {
+        gsap.killTweensOf(el);
+        gsap.set(el, { width: COLLAPSED_W });
+      }
+      const labels = getAllLabels();
+      if (labels.length > 0) {
+        gsap.killTweensOf(labels);
+        gsap.set(labels, { opacity: 0, width: 0 });
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
