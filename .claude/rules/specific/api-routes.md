@@ -46,16 +46,13 @@ export async function GET(request: NextRequest) {
 **모든 API는 try-catch로 감싸야 함**
 
 ```typescript
-import { captureException } from '@/sentry.config';
-
 export async function GET(request: NextRequest) {
   try {
     // ... API 로직
 
     return NextResponse.json({ data: ... });
   } catch (error) {
-    // Sentry에 에러 전송
-    captureException(error);
+    console.error('[API] Error:', error);
 
     return NextResponse.json(
       {
@@ -219,7 +216,6 @@ export async function POST(request: NextRequest) {
 - [ ] 인증 확인 (필요시)
 - [ ] 표준 응답 형식 준수
 - [ ] 민감한 정보 노출 체크
-- [ ] Sentry captureException 추가
 
 ---
 

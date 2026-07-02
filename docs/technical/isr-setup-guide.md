@@ -7,7 +7,7 @@
 ## 작동 방식
 
 ```
-GitHub Actions (매일 15:00, 21:00 KST)
+GitHub Actions (6시간마다, 하루 4회)
   ↓
 scripts/fetch-posts.ts 실행
   ↓

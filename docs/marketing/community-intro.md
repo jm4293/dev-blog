@@ -19,7 +19,7 @@
 
 ### 1️⃣ 자동 수집
 
-- 하루 2번 자동으로 블로그 글 수집 (GitHub Actions, KST 15:00 / 21:00)
+- 6시간마다 자동으로 블로그 글 수집 (GitHub Actions, 하루 4회 — KST 03:00 / 09:00 / 15:00 / 21:00)
 - RSS 피드 기반 실시간 업데이트
 - 중복 감지 & 키워드 기반 자동 태그 분류
 
@@ -37,7 +37,7 @@
 - 최근 본 글 (로컬 저장, 최대 50개)
 - 다크/라이트 모드
 
-### 4️⃣ Push 알림 (계획 중)
+### 4️⃣ Push 알림
 
 - 새 글 등록 시 브라우저 알림
 - 기기별 알림 설정 (OS 단위 그룹화)
@@ -67,11 +67,11 @@
 
 | 분류          | 기술                                           |
 | ------------- | ---------------------------------------------- |
-| **Frontend**  | Next.js 14, React 18, TypeScript, Tailwind CSS |
+| **Frontend**  | Next.js 16, React 18, TypeScript, Tailwind CSS |
 | **상태 관리** | Jotai (최소 사용), TanStack Query (주요)       |
 | **Backend**   | Supabase (PostgreSQL, GitHub OAuth)            |
-| **배포**      | Vercel (Cron Jobs)                             |
-| **모니터링**  | Sentry, Google Analytics                       |
+| **배포**      | Vercel                                         |
+| **모니터링**  | Google Analytics, Vercel Analytics             |
 
 **특징:**
 ✅ 전체 TypeScript  

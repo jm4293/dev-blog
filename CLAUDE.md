@@ -10,7 +10,7 @@
 ### 프로젝트 타입
 
 - **큐레이션 플랫폼**: 외부 블로그를 수집/필터링 (콘텐츠 생성 X)
-- **자동 수집**: 매일 15:00, 21:00 KST, GitHub Actions
+- **자동 수집**: 6시간마다 (하루 4회, KST 03:00/09:00/15:00/21:00), GitHub Actions
 - **32개 기업 블로그**: Toss, Kakao, Naver, 우아한형제들 등
 
 ### 절대 금지 사항 ❌
@@ -119,7 +119,7 @@ dev-blog/
 
 ### Frontend
 
-- Next.js 14.2.0 (App Router), TypeScript 5
+- Next.js 16.1 (App Router), TypeScript 5
 - Tailwind CSS 3.4.0 + shadcn/ui
 - TanStack Query 5.90.16 (주요 상태 관리)
 - Jotai 2.16.1 (UI 상태만)
@@ -136,13 +136,13 @@ dev-blog/
 
 ## 🎯 핵심 기능 (요약)
 
-1. **블로그 자동 수집** - GitHub Actions (매일 15:00, 21:00 KST)
+1. **블로그 자동 수집** - GitHub Actions (6시간마다, 하루 4회)
 2. **태그 자동 선택** - 키워드 기반 (AI 생성 X)
 3. **인증 및 즐겨찾기** - GitHub OAuth + Supabase
 4. **검색 및 필터링** - 텍스트 검색 + 태그/회사 필터
 5. **페이지네이션** - 페이지 번호 기반 (20개/페이지)
 6. **ISR 캐시 갱신** - 새 글 수집 시 즉시 반영
-7. **Push 알림** - Web Push API (계획)
+7. **Push 알림** - Web Push API (구현 완료)
 
 **상세 내용**: [핵심 기능 문서](./docs/core/features.md)
 

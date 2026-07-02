@@ -62,6 +62,8 @@ CREATE TABLE posts (
   tags TEXT[] DEFAULT '{}',                -- 태그 배열 (예: ["React", "Backend"])
   published_at TIMESTAMPTZ NOT NULL,       -- 게시글 작성일
   scraped_at TIMESTAMPTZ DEFAULT NOW(),    -- 수집일
+  view_count INT NOT NULL DEFAULT 0,       -- 전체 읽기 클릭 수 (increment_post_view RPC)
+  bookmark_count INT NOT NULL DEFAULT 0,   -- 북마크 수 (bookmarks 트리거로 동기화)
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -229,7 +231,9 @@ CREATE POLICY "Users can manage own subscriptions" ON push_subscriptions
 CREATE TABLE notification_preferences (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE,
-  new_post_enabled BOOLEAN DEFAULT true,   -- 새 글 알림 전체 on/off
+  new_post_enabled BOOLEAN DEFAULT true,             -- 새 글 알림 전체 on/off
+  subscribed_tags TEXT[] NOT NULL DEFAULT '{}',      -- 관심 태그 (빈 배열 = 전체)
+  subscribed_company_ids UUID[] NOT NULL DEFAULT '{}', -- 관심 회사 (빈 배열 = 전체)
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

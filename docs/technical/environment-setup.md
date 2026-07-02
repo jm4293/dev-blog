@@ -49,12 +49,6 @@ VAPID_SUBJECT=mailto:your-email@example.com
 
 # Google Analytics
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
-
-# Sentry (에러 트래킹)
-SENTRY_AUTH_TOKEN=sntryu_...
-SENTRY_DSN=https://...@o...ingest.us.sentry.io/...
-SENTRY_ORG=your-org
-SENTRY_PROJECT=your-project
 ```
 
 ### 환경 변수 생성 방법
@@ -142,7 +136,7 @@ name: Fetch Blog Posts
 
 on:
   schedule:
-    - cron: '0 15 * * *' # 매일 00:00 KST (15:00 UTC)
+    - cron: '0 */6 * * *' # 6시간마다 (하루 4회)
   workflow_dispatch: # 수동 실행
 
 jobs:
@@ -205,7 +199,6 @@ vercel env pull .env.local
 - [ ] `VAPID_PRIVATE_KEY`
 - [ ] `VAPID_SUBJECT`
 - [ ] `NEXT_PUBLIC_GA_MEASUREMENT_ID` (선택)
-- [ ] `SENTRY_DSN` (선택)
 
 ### GitHub Secrets
 

@@ -212,11 +212,10 @@ const mutation = useMutation({
 - **환경 변수**: Vercel 대시보드에서 설정
 - **Cron Job**: `vercel.json`에 정의
 
-### Sentry 모니터링
+### 모니터링
 
-- **에러 트래킹**: 자동 전송
-- **성능 모니터링**: Core Web Vitals
-- **배포별 추적**: Release 태그
+- **Google Analytics (GA4)**: 페이지 뷰, 이벤트 추적
+- **Vercel Analytics**: 트래픽, Core Web Vitals
 
 ---
 
