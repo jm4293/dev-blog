@@ -2,15 +2,15 @@
 
 echo "🔍 커밋 전 검사를 시작합니다..."
 
-# 1. Console 체크 (console.log, console.error 등이 있으면 커밋 방지)
+# 1. Console 체크 (console.log/debug/info가 있으면 커밋 방지 — error/warn은 에러 로깅용으로 허용)
 echo "📋 콘솔 문장 검사 중..."
 CONSOLE_CHECK=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' | while read file; do
-  grep -n 'console\.' "$file" 2>/dev/null | sed "s|^|$file:|"
+  grep -n 'console\.\(log\|debug\|info\)' "$file" 2>/dev/null | sed "s|^|$file:|"
 done)
 
 if [ -n "$CONSOLE_CHECK" ]; then
   echo "❌ 에러: 스테이징된 파일에서 console 문장을 찾았습니다!"
-  echo "커밋하기 전에 모든 console.log, console.error 등을 제거해주세요."
+  echo "커밋하기 전에 모든 console.log, console.debug, console.info를 제거해주세요."
   echo ""
   echo "📍 console 문장이 있는 파일 위치:"
   echo "$CONSOLE_CHECK" | head -20
