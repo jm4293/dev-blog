@@ -1,30 +1,11 @@
 import { Metadata } from 'next';
-import { APP } from '@/utils';
+import { buildPageMetadata } from '@/utils';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: '이용약관',
   description: 'devBlog.kr의 이용약관을 확인하세요. 서비스 이용 시 준수해야 할 규정을 안내합니다.',
-  alternates: {
-    canonical: `${APP.URL}/terms`,
-  },
-  openGraph: {
-    title: '이용약관 - devBlog.kr',
-    description: 'devBlog.kr의 이용약관을 확인하세요. 서비스 이용 시 준수해야 할 규정을 안내합니다.',
-    url: `${APP.URL}/terms`,
-    siteName: 'devBlog.kr',
-    type: 'website',
-    locale: 'ko_KR',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: '이용약관 - devBlog.kr',
-    description: 'devBlog.kr의 이용약관을 확인하세요.',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+  path: '/terms',
+});
 
 export default function TermsPage() {
   return (

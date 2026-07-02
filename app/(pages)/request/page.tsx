@@ -1,30 +1,13 @@
 import { Metadata } from 'next';
-import { APP } from '@/utils';
+import { buildPageMetadata } from '@/utils';
 import { RequestForm } from '@/features/request';
 
-const DESCRIPTION =
-  '추가했으면 하는 개발블로그·기술블로그나 새로운 태그를 제안해보세요. devBlog.kr은 사용자 요청을 받아 큐레이션 목록을 확장합니다.';
-
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: '요청하기',
-  description: DESCRIPTION,
-  alternates: {
-    canonical: `${APP.URL}/request`,
-  },
-  openGraph: {
-    title: '요청하기 - devBlog.kr',
-    description: DESCRIPTION,
-    url: `${APP.URL}/request`,
-    siteName: 'devBlog.kr',
-    type: 'website',
-    locale: 'ko_KR',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: '요청하기 - devBlog.kr',
-    description: DESCRIPTION,
-  },
-};
+  description:
+    '추가했으면 하는 개발블로그·기술블로그나 새로운 태그를 제안해보세요. devBlog.kr은 사용자 요청을 받아 모아보는 블로그를 늘려갑니다.',
+  path: '/request',
+});
 
 export default function RequestPage() {
   return (

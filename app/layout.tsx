@@ -21,11 +21,11 @@ export const viewport: Viewport = {
 };
 
 const SITE_DESCRIPTION =
-  '토스·카카오·네이버 등 32개 한국 기업의 개발블로그·기술블로그·테크블로그를 한 곳에 모았습니다. 매일 두 번 자동 수집되는 최신 개발자 글을 태그·키워드로 검색하세요.';
+  '토스·카카오·네이버 등 32개 한국 기업의 개발블로그·기술블로그·테크블로그를 한 곳에 모았습니다. 6시간마다 자동 수집되는 최신 개발자 글을 태그·키워드로 검색하세요.';
 
 export const metadata: Metadata = {
   title: {
-    default: '개발블로그·기술블로그 모음 - devBlog.kr',
+    default: '기술블로그 모음 - devBlog.kr',
     template: '%s - devBlog.kr',
   },
   description: SITE_DESCRIPTION,
@@ -49,12 +49,12 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: baseUrl,
     siteName: 'devBlog.kr',
-    title: '개발블로그·기술블로그 모음 - devBlog.kr',
+    title: '기술블로그 모음 - devBlog.kr',
     description: SITE_DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
-    title: '개발블로그·기술블로그 모음 - devBlog.kr',
+    title: '기술블로그 모음 - devBlog.kr',
     description: SITE_DESCRIPTION,
   },
   icons: {

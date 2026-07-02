@@ -1,30 +1,11 @@
 import { Metadata } from 'next';
-import { APP } from '@/utils';
+import { buildPageMetadata } from '@/utils';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: '개인정보 처리방침',
   description: 'devBlog.kr의 개인정보 처리방침을 확인하세요. 이용자의 개인정보 보호를 위한 정책을 안내합니다.',
-  alternates: {
-    canonical: `${APP.URL}/privacy-policy`,
-  },
-  openGraph: {
-    title: '개인정보 처리방침 - devBlog.kr',
-    description: 'devBlog.kr의 개인정보 처리방침을 확인하세요. 이용자의 개인정보 보호를 위한 정책을 안내합니다.',
-    url: `${APP.URL}/privacy-policy`,
-    siteName: 'devBlog.kr',
-    type: 'website',
-    locale: 'ko_KR',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: '개인정보 처리방침 - devBlog.kr',
-    description: 'devBlog.kr의 개인정보 처리방침을 확인하세요.',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+  path: '/privacy-policy',
+});
 
 export default function PrivacyPolicyPage() {
   return (

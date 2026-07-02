@@ -1,32 +1,15 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { APP } from '@/utils';
+import { buildPageMetadata } from '@/utils';
 import { AnnouncementsContainer, fetchAnnouncements } from '@/features/announcements';
 import { SimpleSkeleton } from '@/components/skeleton';
 
-const DESCRIPTION =
-  '개발블로그·기술블로그 큐레이션 플랫폼 devBlog.kr의 최신 기능 업데이트, 새로 추가된 블로그, 버그 수정 등 모든 소식을 한 곳에서 확인하세요.';
-
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: '공지사항',
-  description: DESCRIPTION,
-  alternates: {
-    canonical: `${APP.URL}/announcements`,
-  },
-  openGraph: {
-    title: '공지사항 - devBlog.kr',
-    description: DESCRIPTION,
-    url: `${APP.URL}/announcements`,
-    siteName: 'devBlog.kr',
-    type: 'website',
-    locale: 'ko_KR',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: '공지사항 - devBlog.kr',
-    description: DESCRIPTION,
-  },
-};
+  description:
+    '개발블로그·기술블로그를 한 곳에 모아보는 devBlog.kr의 최신 기능 업데이트, 새로 추가된 블로그, 버그 수정 등 모든 소식을 확인하세요.',
+  path: '/announcements',
+});
 
 interface AnnouncementsPageProps {
   searchParams: Promise<{ page?: string }>;

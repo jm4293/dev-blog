@@ -68,7 +68,7 @@ export default async function OpengraphImage() {
           color: '#6B7390',
         }}
       >
-        <span>매일 두 번 자동 수집 · 무료</span>
+        <span>6시간마다 자동 수집 · 무료</span>
         <span>devblog.kr</span>
       </div>
     </div>,
