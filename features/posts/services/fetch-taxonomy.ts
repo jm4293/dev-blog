@@ -1,3 +1,4 @@
+import { findBySlug, slugify } from '@/utils';
 import { createSupabaseStaticClient } from '@/supabase/static.supabase';
 import type { Company, Tag } from '@/supabase/types.supabase';
 
@@ -37,4 +38,21 @@ export async function fetchActiveCompanies(): Promise<CompanySummary[]> {
   }
 
   return (data as CompanySummary[]) || [];
+}
+
+/** 회사 슬러그 (영문명 우선) */
+export function companySlug(company: { name: string; name_en?: string }): string {
+  return slugify(company.name_en || company.name);
+}
+
+/** 슬러그로 태그 조회 (없으면 undefined) */
+export async function findTagBySlug(slug: string): Promise<Tag | undefined> {
+  const tags = await fetchAllTags();
+  return findBySlug(tags, slug, (tag) => tag.name);
+}
+
+/** 슬러그로 활성 회사 조회 (없으면 undefined) */
+export async function findCompanyBySlug(slug: string): Promise<CompanySummary | undefined> {
+  const companies = await fetchActiveCompanies();
+  return findBySlug(companies, slug, companySlug);
 }

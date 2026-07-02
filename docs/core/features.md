@@ -550,7 +550,8 @@ POST /api/revalidate?secret=xxx&path=/posts
 ### 구현 방식
 
 - **슬러그**: DB 컬럼 없이 `slugify(name)` (utils/slugify.ts)로 변환, 조회 시 전체 목록에서 역매칭 (`findBySlug`)
-- **ISR**: `revalidate = 3600`, `generateStaticParams`로 빌드 시 사전 생성
+- **ISR**: `revalidate = 3600`, `generateStaticParams`로 빌드 시 사전 생성 (완전 정적)
+- **페이지네이션**: 쿼리스트링 대신 경로 세그먼트 (`/tags/react/page/2`) — searchParams/cookies를 읽지 않아 정적 생성 유지, 데이터 조회는 정적 클라이언트(`useStaticClient`) 사용
 - **SEO**: 페이지별 고유 metadata/canonical + BreadcrumbList/ItemList JSON-LD, sitemap.xml에 동적 포함
 - **데이터**: `fetchAllTags`/`fetchActiveCompanies` (정적 클라이언트, `supabase/static.supabase.ts`)
 

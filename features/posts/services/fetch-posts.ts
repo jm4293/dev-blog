@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import { createSupabaseStaticClient } from '@/supabase/static.supabase';
 import type { Company, Post, PostWithCompany } from '@/supabase/types.supabase';
 
 // posts + company 조인 쿼리의 행 타입 (수동 타입 환경이라 명시적으로 선언)
@@ -15,6 +16,12 @@ interface GetPostsParams {
   companyId?: string;
   sort?: 'newest' | 'oldest';
   limit?: number;
+  /**
+   * 쿠키 없는 정적 클라이언트 사용 (ISR/정적 페이지용)
+   * cookies()를 읽는 서버 클라이언트는 라우트를 동적 렌더링으로 만들기 때문에,
+   * 공개 데이터만 필요한 랜딩 페이지는 이 옵션을 켜야 정적 생성이 가능하다.
+   */
+  useStaticClient?: boolean;
 }
 
 interface GetPostsResponse {
@@ -34,8 +41,9 @@ export async function fetchPosts({
   companyId = '',
   sort = 'newest',
   limit = 20,
+  useStaticClient = false,
 }: GetPostsParams = {}): Promise<GetPostsResponse> {
-  const supabase = await createSupabaseServerClient();
+  const supabase = useStaticClient ? createSupabaseStaticClient() : await createSupabaseServerClient();
 
   const offset = (page - 1) * limit;
 

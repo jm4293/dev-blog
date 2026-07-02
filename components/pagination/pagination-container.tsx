@@ -11,13 +11,26 @@ interface PaginationProps {
   totalPages: number;
   totalCount?: number;
   baseUrl: string;
+  /** true면 쿼리스트링(?page=N) 대신 경로 기반 URL 사용 (2페이지 → `${baseUrl}/page/2`, 1페이지 → baseUrl) */
+  usePathPagination?: boolean;
   onPageChange?: (page: number) => void;
 }
 
-export function Pagination({ currentPage, totalPages, totalCount = 0, baseUrl, onPageChange }: PaginationProps) {
+export function Pagination({
+  currentPage,
+  totalPages,
+  totalCount = 0,
+  baseUrl,
+  usePathPagination = false,
+  onPageChange,
+}: PaginationProps) {
   const isMobile = useIsMobile();
 
   const buildUrl = (page: number) => {
+    if (usePathPagination) {
+      return page > 1 ? `${baseUrl}/page/${page}` : baseUrl;
+    }
+
     const params = buildQueryParams({
       page: page > 1 ? page : undefined,
     });

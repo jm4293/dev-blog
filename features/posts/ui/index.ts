@@ -1,5 +1,6 @@
 export * from './searched-result';
 export * from './bookmark-button';
+export * from './company-landing';
 export * from './post-card';
 export * from './post-card-header';
 export * from './post-card-tags';
@@ -8,4 +9,5 @@ export * from './posts-container';
 export * from './search-container';
 export * from './search-wrapper';
 export * from './searched-selected';
+export * from './tag-landing';
 export * from './trending-section';
