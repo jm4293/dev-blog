@@ -41,6 +41,20 @@ export function FilterModal({
     };
   }, [isOpen]);
 
+  // ESC 키로 닫기
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -48,7 +62,12 @@ export function FilterModal({
       <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
       <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
-        <div className="glass-modal flex max-h-[85vh] w-full animate-slide-up flex-col rounded-t-2xl shadow-2xl sm:max-h-[80vh] sm:max-w-lg sm:animate-scale-in sm:rounded-2xl">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={title}
+          className="glass-modal flex max-h-[85vh] w-full animate-slide-up flex-col rounded-t-2xl shadow-2xl sm:max-h-[80vh] sm:max-w-lg sm:animate-scale-in sm:rounded-2xl"
+        >
           {/* 헤더 */}
           <div className="flex flex-shrink-0 items-center justify-between border-b border-border px-6 pb-4 pt-6">
             <div className="flex items-center gap-3">
