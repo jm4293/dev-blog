@@ -4,11 +4,18 @@ import { LoginCard } from '@/features/auth';
 import { CosmicBackground } from '@/components/background';
 
 export const metadata: Metadata = {
-  title: '로그인 | devBlog',
-  description: 'GitHub OAuth를 통해 devBlog.kr에 로그인하세요.',
+  title: '로그인',
+  description: 'GitHub 계정으로 devBlog.kr에 로그인하고 즐겨찾기와 새 글 알림을 이용하세요.',
 };
 
-export default function LoginPage() {
+interface PageProps {
+  searchParams: Promise<Record<string, string | undefined>>;
+}
+
+export default async function LoginPage({ searchParams }: PageProps) {
+  // 콜백 실패 시 /auth/login?error=auth_failed 로 리다이렉트됨
+  const { error } = await searchParams;
+
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
       <CosmicBackground />
@@ -19,7 +26,7 @@ export default function LoginPage() {
             <h1 className="text-4xl font-bold text-white">devBlog.kr</h1>
           </div>
 
-          <LoginCard />
+          <LoginCard callbackError={error} />
 
           <Link
             href="/posts"

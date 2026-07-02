@@ -1,36 +1,61 @@
 'use client';
 
-import { useState } from 'react';
+import { Bell, Bookmark, Sparkles } from 'lucide-react';
 import { useGithubLogin } from '../hooks';
 
-export function LoginCard() {
-  const [isLoading, setIsLoading] = useState(false);
-  const { mutate, error } = useGithubLogin();
+interface LoginCardProps {
+  /** 콜백 실패 시 URL로 전달되는 에러 코드 (예: auth_failed) */
+  callbackError?: string;
+}
 
-  const handleLogin = () => {
-    setIsLoading(true);
-    mutate();
-  };
+const BENEFITS = [
+  { Icon: Bookmark, text: '마음에 드는 글을 즐겨찾기로 저장' },
+  { Icon: Bell, text: '새 글이 올라오면 Push 알림 받기' },
+  { Icon: Sparkles, text: '관심 태그·회사만 골라서 알림 설정' },
+];
+
+export function LoginCard({ callbackError }: LoginCardProps) {
+  const { mutate, error, isPending, isSuccess } = useGithubLogin();
+
+  // isSuccess 이후에도 GitHub으로 리다이렉트될 때까지 잠깐 머무르므로 계속 진행 중으로 표시
+  const isRedirecting = isPending || isSuccess;
+
+  const errorMessage = error
+    ? '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.'
+    : callbackError
+      ? 'GitHub 인증이 완료되지 않았습니다. 다시 시도해주세요.'
+      : null;
 
   return (
     <div className="rounded-lg border border-white/15 bg-white/5 p-8 backdrop-blur-sm">
-      <h2 className="mb-6 text-2xl font-semibold text-white">로그인</h2>
+      <h2 className="mb-2 text-2xl font-semibold text-white">로그인</h2>
+      <p className="mb-6 text-sm text-white/60">GitHub 계정으로 간편하게 시작하세요</p>
 
-      {error && (
-        <div className="mb-6 rounded-lg border border-red-400/40 bg-red-500/15 p-4">
-          <p className="text-sm text-red-200">{error.message}</p>
+      <ul className="mb-6 space-y-3 text-left">
+        {BENEFITS.map(({ Icon, text }) => (
+          <li key={text} className="flex items-center gap-3 text-sm text-white/80">
+            <Icon className="h-4 w-4 shrink-0 text-white/50" aria-hidden />
+            {text}
+          </li>
+        ))}
+      </ul>
+
+      {errorMessage && !isRedirecting && (
+        <div role="alert" className="mb-6 rounded-lg border border-red-400/40 bg-red-500/15 p-4">
+          <p className="text-sm text-red-200">{errorMessage}</p>
         </div>
       )}
 
       <button
-        onClick={handleLogin}
-        disabled={isLoading}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 font-semibold text-black transition-colors hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-50"
+        onClick={() => mutate()}
+        disabled={isRedirecting}
+        aria-busy={isRedirecting}
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 font-semibold text-black transition-colors hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-70"
       >
-        {isLoading ? (
+        {isRedirecting ? (
           <>
             <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-            로그인 중...
+            GitHub으로 이동 중...
           </>
         ) : (
           <>
@@ -45,6 +70,11 @@ export function LoginCard() {
           </>
         )}
       </button>
+
+      {/* 진행 상황 안내 — 클릭 후 GitHub 페이지로 넘어가기까지의 공백을 설명 */}
+      <p aria-live="polite" className="mt-3 min-h-4 text-xs text-white/50">
+        {isRedirecting ? '잠시 후 GitHub 로그인 페이지로 이동합니다. 새로고침하지 마세요.' : ''}
+      </p>
     </div>
   );
 }
