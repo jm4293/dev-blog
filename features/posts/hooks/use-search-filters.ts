@@ -1,34 +1,41 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { buildQueryParams } from '@/utils';
 
-interface InitialFilters {
-  page: number;
-  search: string;
-  tags: string[];
-  blogs: string[];
-  sort: 'newest' | 'oldest';
-}
-
-export function useSearchFilters(initialFilters?: InitialFilters) {
+/**
+ * 검색/필터 상태 훅 — URL 쿼리스트링이 단일 소스
+ * (/posts는 정적 페이지라 서버가 필터를 읽지 않으며, URL 변경 시 클라이언트 쿼리가 다시 조회한다)
+ */
+export function useSearchFilters() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  // 서버에서 전달받은 초기 필터 값 사용
-  const currentPage = initialFilters?.page || 1;
-  const searchQuery = initialFilters?.search || '';
-  const tagsParam = initialFilters?.tags || [];
-  const blogsParam = initialFilters?.blogs || [];
-  const sortParam = initialFilters?.sort || 'newest';
+  // URL에서 현재 필터 파싱
+  const currentPage = Math.max(1, parseInt(searchParams.get('page') || '1', 10) || 1);
+  const searchQuery = searchParams.get('search') || '';
+  const tagsParam = useMemo(() => searchParams.get('tags')?.split(',').filter(Boolean) || [], [searchParams]);
+  const blogsParam = useMemo(() => searchParams.get('blogs')?.split(',').filter(Boolean) || [], [searchParams]);
+  const sortParam = (searchParams.get('sort') as 'newest' | 'oldest') || 'newest';
 
-  // 초기값을 initialFilters에서 직접 사용
+  // 로컬 UI 상태 (검색 입력, 모달 내 선택)
   const [inputValue, setInputValue] = useState(searchQuery);
   const [selectedTags, setSelectedTags] = useState<string[]>(() => tagsParam);
   const [selectedBlogs, setSelectedBlogs] = useState<string[]>(() => blogsParam);
   const [showTagModal, setShowTagModal] = useState(false);
   const [showBlogModal, setShowBlogModal] = useState(false);
+
+  // URL 변경(뒤로가기 등) 시 로컬 상태 동기화 — 렌더 중 상태 조정 패턴
+  const paramsKey = `${searchQuery}|${tagsParam.join(',')}|${blogsParam.join(',')}`;
+  const [prevParamsKey, setPrevParamsKey] = useState(paramsKey);
+  if (prevParamsKey !== paramsKey) {
+    setPrevParamsKey(paramsKey);
+    setInputValue(searchQuery);
+    setSelectedTags(tagsParam);
+    setSelectedBlogs(blogsParam);
+  }
 
   // 최신 값을 읽기 위한 ref (stale closure 방지)
   const selectedTagsRef = useRef(selectedTags);
@@ -54,7 +61,7 @@ export function useSearchFilters(initialFilters?: InitialFilters) {
 
       const newUrl = params.toString() ? `/posts?${params.toString()}` : '/posts';
       startTransition(() => {
-        router.push(newUrl);
+        router.push(newUrl, { scroll: false });
       });
     },
     [router, startTransition],

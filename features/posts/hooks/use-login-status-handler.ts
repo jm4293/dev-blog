@@ -4,15 +4,17 @@ import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks';
 
-interface UseLoginStatusHandlerProps {
-  loginStatus?: string;
-  errorStatus?: string;
-}
-
-export function useLoginStatusHandler({ loginStatus, errorStatus }: UseLoginStatusHandlerProps) {
+/**
+ * 로그인 콜백 결과 토스트 처리
+ * /posts가 정적 페이지라 서버에서 파라미터를 못 받으므로 클라이언트에서 직접 읽는다.
+ */
+export function useLoginStatusHandler() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { showToast } = useToast();
+
+  const loginStatus = searchParams.get('login');
+  const errorStatus = searchParams.get('error');
 
   useEffect(() => {
     if (loginStatus === 'success') {

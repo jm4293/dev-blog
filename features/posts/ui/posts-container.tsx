@@ -1,47 +1,54 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { Pagination } from '@/components/pagination';
 import { PageLoadingSpinner } from '@/components/skeleton';
-import { PostWithCompany } from '@/supabase/types.supabase';
 import { useLoginStatusHandler, useSearchFilters } from '../hooks';
+import { isDefaultFilters, usePosts } from '../hooks/use-posts';
+import type { GetPostsResponse } from '../services/fetch-posts';
 import { PostList } from './post-list';
 import { SearchContainer } from './search-container';
 
-interface InitialFilters {
-  page: number;
-  search: string;
-  tags: string[];
-  blogs: string[];
-  sort: 'newest' | 'oldest';
-}
-
-interface GetPostsResponse {
-  posts: PostWithCompany[];
-  total: number;
-  page: number;
-  totalPages: number;
-}
-
 interface PostsContainerProps {
+  /** 정적 페이지가 빌드 시 내려준 기본 목록 (1페이지, 필터 없음) */
   initialData: GetPostsResponse;
-  initialFilters: InitialFilters;
-  loginStatus?: string;
-  errorStatus?: string;
+  /** 서버에서 렌더링된 인기 글 섹션 (필터 사용 중에는 숨김) */
+  trendingSlot?: ReactNode;
 }
 
-export function PostsContainer({ initialData, initialFilters, loginStatus, errorStatus }: PostsContainerProps) {
-  useLoginStatusHandler({ loginStatus, errorStatus });
+export function PostsContainer({ initialData, trendingSlot }: PostsContainerProps) {
+  useLoginStatusHandler();
 
-  const posts = initialData.posts;
-  const totalPages = initialData.totalPages;
-  const filters = useSearchFilters(initialFilters);
-  const hasFilters = filters.searchQuery !== '' || filters.selectedTags.length > 0 || filters.selectedBlogs.length > 0;
+  const filters = useSearchFilters();
+  const currentFilters = {
+    page: filters.currentPage,
+    search: filters.searchQuery,
+    tags: filters.tagsParam,
+    blogs: filters.blogsParam,
+    sort: filters.sortParam,
+  };
 
-  if (posts.length === 0) {
-    return (
-      <>
-        <SearchContainer filters={filters} />
+  const { data, isFetching } = usePosts(currentFilters, initialData);
 
+  const hasFilters = filters.searchQuery !== '' || filters.tagsParam.length > 0 || filters.blogsParam.length > 0;
+  const showTrending = trendingSlot != null && isDefaultFilters(currentFilters);
+  const isLoading = isFetching || filters.isPending;
+
+  const posts = data?.posts ?? [];
+  const totalPages = data?.totalPages ?? 0;
+
+  return (
+    <>
+      {showTrending && (
+        <>
+          {trendingSlot}
+          <h2 className="mb-4 text-lg font-bold text-foreground md:text-xl">전체 글</h2>
+        </>
+      )}
+
+      <SearchContainer filters={filters} />
+
+      {posts.length === 0 && !isLoading ? (
         <div className="flex flex-col items-center justify-center py-12">
           <div className="text-center">
             <p className="text-lg font-semibold text-foreground">게시글이 없습니다</p>
@@ -50,23 +57,22 @@ export function PostsContainer({ initialData, initialFilters, loginStatus, error
             </p>
           </div>
         </div>
-        {filters.isPending && <PageLoadingSpinner overlay />}
-      </>
-    );
-  }
+      ) : (
+        <>
+          <PostList posts={posts} />
+          {totalPages > 0 && (
+            <Pagination
+              currentPage={filters.currentPage}
+              totalPages={totalPages}
+              totalCount={data?.total ?? 0}
+              baseUrl="/posts"
+              onPageChange={filters.handlePageChange}
+            />
+          )}
+        </>
+      )}
 
-  return (
-    <>
-      <SearchContainer filters={filters} />
-      <PostList posts={posts} />
-      <Pagination
-        currentPage={filters.currentPage}
-        totalPages={totalPages}
-        totalCount={initialData.total}
-        baseUrl="/posts"
-        onPageChange={filters.handlePageChange}
-      />
-      {filters.isPending && <PageLoadingSpinner overlay />}
+      {isLoading && <PageLoadingSpinner overlay />}
     </>
   );
 }

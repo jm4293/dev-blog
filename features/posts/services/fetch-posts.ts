@@ -24,7 +24,7 @@ interface GetPostsParams {
   useStaticClient?: boolean;
 }
 
-interface GetPostsResponse {
+export interface GetPostsResponse {
   posts: PostWithCompany[];
   total: number;
   page: number;

@@ -1,12 +1,9 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { APP, buildPageMetadata, parsePostsSearchParams } from '@/utils';
-import { fetchPosts, fetchTrendingPosts, PostsContainer, TrendingSection } from '@/features/posts';
+import { APP, buildPageMetadata } from '@/utils';
+import { fetchPosts, fetchTrendingPosts, PostsContainer, PostsFallback, TrendingSection } from '@/features/posts';
 
-interface PageProps {
-  searchParams: Promise<Record<string, string | undefined>>;
-}
-
-export const revalidate = 1800; // 30분 = 1800초
+export const revalidate = 1800; // 30분 (새 글 수집 시 /api/revalidate로 즉시 갱신)
 
 // 요청과 무관한 정적 스키마는 모듈 스코프에서 1회만 생성
 const breadcrumbSchema = {
@@ -28,24 +25,22 @@ const breadcrumbSchema = {
   ],
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  return buildPageMetadata({
-    title: '기술블로그 모음',
-    description:
-      '토스, 카카오, 네이버 등 32개 기업의 개발블로그·기술블로그·테크블로그를 한 곳에서. 6시간마다 자동 수집되는 최신 글을 검색하고 태그별로 필터링하세요.',
-    path: '/posts',
-  });
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: '기술블로그 모음',
+  description:
+    '토스, 카카오, 네이버 등 32개 기업의 개발블로그·기술블로그·테크블로그를 한 곳에서. 6시간마다 자동 수집되는 최신 글을 검색하고 태그별로 필터링하세요.',
+  path: '/posts',
+});
 
-export default async function PostPage({ searchParams }: PageProps) {
-  const { page, search, tags, blogs, sort, login, error } = parsePostsSearchParams(await searchParams);
-
-  // 트렌딩은 필터 없는 첫 페이지에서만 노출 (목록 조회와 병렬 실행)
-  const showTrending = page === 1 && !search && tags.length === 0 && blogs.length === 0;
+export default async function PostPage() {
+  // 정적 생성: 기본 목록(1페이지)과 인기 글을 빌드/ISR 시점에 조회
+  // 검색·필터·페이지 이동은 클라이언트에서 /api/posts로 조회한다
   const [postsData, trendingPosts] = await Promise.all([
-    fetchPosts({ page, search, tags, blogs, sort }),
-    showTrending ? fetchTrendingPosts({ limit: 4 }) : Promise.resolve([]),
+    fetchPosts({ useStaticClient: true }),
+    fetchTrendingPosts({ limit: 4 }),
   ]);
+
+  const trendingSlot = trendingPosts.length > 0 ? <TrendingSection posts={trendingPosts} /> : null;
 
   const itemListSchema = {
     '@context': 'https://schema.org',
@@ -89,18 +84,12 @@ export default async function PostPage({ searchParams }: PageProps) {
         </h1>
       </header>
 
-      {showTrending && <TrendingSection posts={trendingPosts} />}
-
       <section aria-label="블로그 게시글 목록">
-        {showTrending && trendingPosts.length > 0 && (
-          <h2 className="mb-4 text-lg font-bold text-foreground md:text-xl">전체 글</h2>
-        )}
-        <PostsContainer
-          initialData={postsData}
-          initialFilters={{ page, search, tags, blogs, sort }}
-          loginStatus={login}
-          errorStatus={error}
-        />
+        {/* useSearchParams를 쓰는 컨테이너는 정적 페이지에서 Suspense 필수.
+            fallback이 곧 정적 HTML이 되므로 스켈레톤 대신 실제 콘텐츠를 렌더링한다. */}
+        <Suspense fallback={<PostsFallback initialData={postsData} trendingSlot={trendingSlot} />}>
+          <PostsContainer initialData={postsData} trendingSlot={trendingSlot} />
+        </Suspense>
       </section>
     </div>
   );

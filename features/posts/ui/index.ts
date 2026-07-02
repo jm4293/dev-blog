@@ -6,6 +6,7 @@ export * from './post-card-header';
 export * from './post-card-tags';
 export * from './post-list';
 export * from './posts-container';
+export * from './posts-fallback';
 export * from './search-container';
 export * from './search-wrapper';
 export * from './searched-selected';

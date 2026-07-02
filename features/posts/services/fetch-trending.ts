@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import { createSupabaseStaticClient } from '@/supabase/static.supabase';
 import type { Company, Post, PostWithCompany } from '@/supabase/types.supabase';
 
 // posts + company 조인 쿼리의 행 타입 (fetch-posts.ts와 동일한 수동 타입 패턴)
@@ -16,7 +16,8 @@ interface FetchTrendingParams {
 export async function fetchTrendingPosts({ days = 7, limit = 4 }: FetchTrendingParams = {}): Promise<
   PostWithCompany[]
 > {
-  const supabase = await createSupabaseServerClient();
+  // 공개 데이터만 조회하므로 정적 클라이언트 사용 (정적 페이지에서 호출 가능)
+  const supabase = createSupabaseStaticClient();
 
   const queryTrending = async (sinceDays: number) => {
     const since = new Date(Date.now() - sinceDays * 24 * 60 * 60 * 1000).toISOString();
