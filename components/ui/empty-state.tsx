@@ -7,17 +7,9 @@ interface EmptyStateProps {
   description?: string;
   actionLabel?: string;
   actionHref?: string;
-  showLoginPrompt?: boolean;
 }
 
-export function EmptyState({
-  icon: Icon,
-  title,
-  description,
-  actionLabel,
-  actionHref,
-  showLoginPrompt = false,
-}: EmptyStateProps) {
+export function EmptyState({ icon: Icon, title, description, actionLabel, actionHref }: EmptyStateProps) {
   return (
     <div className="px-4 py-12 text-center">
       {Icon && (
@@ -31,7 +23,7 @@ export function EmptyState({
       <p className="mb-2 text-lg font-semibold text-foreground">{title}</p>
       {description && <p className="whitespace-pre-line text-sm text-muted-foreground">{description}</p>}
 
-      {showLoginPrompt && actionHref && actionLabel && (
+      {actionHref && actionLabel && (
         <div className="mt-6">
           <Link
             href={actionHref}
