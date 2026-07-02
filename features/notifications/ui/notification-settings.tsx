@@ -4,6 +4,7 @@ import { useToast } from '@/hooks';
 import { Bell, BellOff, Trash2 } from 'lucide-react';
 import { useNotificationPreferences, useNotifications, useNotificationSubscribe } from '../hooks';
 import { groupDevices } from '../services';
+import { NotificationInterests } from './notification-interests';
 
 export function NotificationSettings() {
   const { data, isLoading } = useNotifications();
@@ -98,9 +99,12 @@ export function NotificationSettings() {
         </button>
       </div>
 
+      {/* 관심사 설정 (관심 태그/회사만 알림) */}
+      {isAllEnabled && data && <NotificationInterests preferences={data.preferences} />}
+
       {/* 장치별 설정 */}
       {isAllEnabled && (
-        <div className="border-t border-border pt-3">
+        <div className="mt-3 border-t border-border pt-3">
           <p className="mb-3 text-xs font-medium text-muted-foreground">장치별 설정</p>
 
           {deviceGroups.length === 0 ? (

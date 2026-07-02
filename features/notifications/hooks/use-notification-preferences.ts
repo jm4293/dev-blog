@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query-keys';
 import { removeSubscriptionByOSAction, updatePreferencesAction, updateSubscriptionEnabledAction } from '../actions';
-import type { PreferencesResponse } from '../types';
+import type { PreferencesResponse, UpdatePreferencesInput } from '../types';
 
 /**
  * 알림 설정 조회/변경 훅
@@ -14,7 +14,7 @@ export function useNotificationPreferences() {
   // 전체 알림 on/off 변경 — 낙관적 업데이트
   const toggleAllNotifications = useMutation({
     mutationFn: async (new_post_enabled: boolean) => {
-      const result = await updatePreferencesAction(new_post_enabled);
+      const result = await updatePreferencesAction({ new_post_enabled });
       if (!result.success) {
         throw new Error(result.error);
       }
@@ -87,9 +87,42 @@ export function useNotificationPreferences() {
     },
   });
 
+  // 관심 태그/회사 변경 — 낙관적 업데이트
+  const updateInterests = useMutation({
+    mutationFn: async (input: Pick<UpdatePreferencesInput, 'subscribed_tags' | 'subscribed_company_ids'>) => {
+      const result = await updatePreferencesAction(input);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+    },
+    onMutate: async (input) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.notifications.preferences() });
+      const previous = queryClient.getQueryData<PreferencesResponse>(queryKeys.notifications.preferences());
+
+      queryClient.setQueryData<PreferencesResponse>(queryKeys.notifications.preferences(), (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          preferences: { ...old.preferences, ...input },
+        };
+      });
+
+      return { previous };
+    },
+    onError: (_error, _variables, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(queryKeys.notifications.preferences(), context.previous);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.notifications.preferences() });
+    },
+  });
+
   return {
     toggleAllNotifications,
     toggleDeviceNotification,
     deleteDeviceSubscriptions,
+    updateInterests,
   };
 }

@@ -11,8 +11,37 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import webpush from 'web-push';
 
+interface CreatedPostInfo {
+  tags: string[];
+  company_id: string;
+}
+
 interface SendBody {
   postsCreated: number;
+  /** 새로 저장된 글의 태그/회사 정보 (관심사 필터링용, 없으면 전원에게 발송) */
+  posts?: CreatedPostInfo[];
+}
+
+interface UserPreference {
+  user_id: string;
+  subscribed_tags: string[] | null;
+  subscribed_company_ids: string[] | null;
+}
+
+/** 유저의 관심사와 일치하는 새 글 수 (관심사 미설정 = 전체) */
+function countMatchedPosts(pref: UserPreference, posts: CreatedPostInfo[]): number {
+  const tags = pref.subscribed_tags || [];
+  const companyIds = pref.subscribed_company_ids || [];
+
+  if (tags.length === 0 && companyIds.length === 0) {
+    return posts.length;
+  }
+
+  return posts.filter((post) => {
+    const tagMatched = tags.length > 0 && (post.tags || []).some((tag) => tags.includes(tag));
+    const companyMatched = companyIds.length > 0 && companyIds.includes(post.company_id);
+    return tagMatched || companyMatched;
+  }).length;
 }
 
 function verifyCronSecret(request: NextRequest): boolean {
@@ -39,7 +68,7 @@ export async function POST(request: NextRequest) {
     );
 
     const body: SendBody = await request.json();
-    const { postsCreated } = body;
+    const { postsCreated, posts = [] } = body;
 
     if (!postsCreated || postsCreated <= 0) {
       return NextResponse.json({ success: true, message: 'No posts to notify', sent: 0 });
@@ -48,10 +77,10 @@ export async function POST(request: NextRequest) {
     // Service Role Key로 클라이언트 생성 (RLS 우회 — 모든 유저 조회 필요)
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
-    // 1. new_post_enabled = true인 유저 조회
+    // 1. new_post_enabled = true인 유저의 관심사 조회
     const { data: preferences, error: prefError } = await supabase
       .from('notification_preferences')
-      .select('user_id')
+      .select('user_id, subscribed_tags, subscribed_company_ids')
       .eq('new_post_enabled', true);
 
     if (prefError) {
@@ -62,13 +91,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, message: 'No users with notifications enabled', sent: 0 });
     }
 
-    const userIds = preferences.map((p) => p.user_id);
+    // 2. 유저별 관심사 매칭 (글 상세 정보가 없으면 전원에게 전체 개수로 발송)
+    const matchedCountByUser = new Map<string, number>();
+    for (const pref of preferences as UserPreference[]) {
+      const matched = posts.length > 0 ? countMatchedPosts(pref, posts) : postsCreated;
+      if (matched > 0) {
+        matchedCountByUser.set(pref.user_id, matched);
+      }
+    }
 
-    // 2. 해당 유저들의 enabled = true인 구독 조회
+    if (matchedCountByUser.size === 0) {
+      return NextResponse.json({ success: true, message: 'No users matched by interests', sent: 0 });
+    }
+
+    // 3. 매칭된 유저들의 enabled = true인 구독 조회
     const { data: subscriptions, error: subError } = await supabase
       .from('push_subscriptions')
-      .select('id, endpoint, p256dh, auth')
-      .in('user_id', userIds)
+      .select('id, user_id, endpoint, p256dh, auth')
+      .in('user_id', Array.from(matchedCountByUser.keys()))
       .eq('enabled', true);
 
     if (subError) {
@@ -79,17 +119,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, message: 'No active subscriptions', sent: 0 });
     }
 
-    // 3. 알림 메시지 구성
-    const payload = JSON.stringify({
-      title: 'devBlog.kr',
-      body: `${postsCreated}개의 새 포스트를 확인해보세요!`,
-      icon: '/logo_192.png',
-      badge: '/logo_32.png',
-      tag: 'devblog-new-posts',
-      url: '/posts',
-    });
+    // 4. 유저별 개인화 메시지로 각 구독에 Push 발송
+    const buildPayload = (userId: string) => {
+      const matched = matchedCountByUser.get(userId) || postsCreated;
+      const isFiltered = matched < postsCreated;
 
-    // 4. 각 구독에 Push 발송
+      return JSON.stringify({
+        title: 'devBlog.kr',
+        body: isFiltered
+          ? `관심 분야의 새 글 ${matched}개가 등록되었습니다!`
+          : `${matched}개의 새 포스트를 확인해보세요!`,
+        icon: '/logo_192.png',
+        badge: '/logo_32.png',
+        tag: 'devblog-new-posts',
+        url: '/posts',
+      });
+    };
+
     let sent = 0;
     const failedEndpoints: string[] = [];
 
@@ -104,7 +150,7 @@ export async function POST(request: NextRequest) {
                 auth: sub.auth,
               },
             },
-            payload,
+            buildPayload(sub.user_id),
           );
           sent++;
         } catch (err) {

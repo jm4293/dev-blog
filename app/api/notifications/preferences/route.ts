@@ -48,6 +48,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       preferences: {
         new_post_enabled: preferences?.new_post_enabled ?? false, // 기본값 false
+        subscribed_tags: preferences?.subscribed_tags ?? [], // 빈 배열 = 전체 알림
+        subscribed_company_ids: preferences?.subscribed_company_ids ?? [],
       },
       subscriptions: subscriptions || [],
     });

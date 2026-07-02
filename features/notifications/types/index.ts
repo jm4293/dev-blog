@@ -1,1 +1,1 @@
-export type { Subscription, Preferences, PreferencesResponse } from './types';
+export type { Subscription, Preferences, PreferencesResponse, UpdatePreferencesInput } from './types';

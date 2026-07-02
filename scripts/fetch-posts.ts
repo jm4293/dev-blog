@@ -48,6 +48,9 @@ async function main() {
     duration: 0,
   };
 
+  // 새로 저장된 글의 태그/회사 정보 (Push 알림 관심사 필터링용)
+  const createdPosts: Array<{ tags: string[]; company_id: string }> = [];
+
   try {
     log('info', '🚀 블로그 게시글 수집 시작');
 
@@ -142,6 +145,7 @@ async function main() {
             }
 
             stats.postsCreated++;
+            createdPosts.push({ tags, company_id: company.id });
             log('info', `  ✓ 새 게시글 저장: ${post.title.substring(0, 60)}...`);
           } catch (error) {
             stats.errors++;
@@ -209,7 +213,7 @@ async function main() {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${process.env.CRON_SECRET}`,
             },
-            body: JSON.stringify({ postsCreated: stats.postsCreated }),
+            body: JSON.stringify({ postsCreated: stats.postsCreated, posts: createdPosts }),
           });
 
           const notifyResult = await notifyResponse.json();
