@@ -63,6 +63,18 @@ export function isFutureWeek(range: WeekRange): boolean {
   return range.start.getTime() > Date.now();
 }
 
+/**
+ * 주차 페이지의 발행/수정일 (Article 구조화 데이터용)
+ * 발행일 = 주 시작, 수정일 = 주 종료 (진행 중인 주는 현재 시각으로 클램프)
+ */
+export function getWeekArticleDates(range: WeekRange): { published: string; modified: string } {
+  const modified = Math.min(range.end.getTime(), Date.now());
+  return {
+    published: range.start.toISOString(),
+    modified: new Date(modified).toISOString(),
+  };
+}
+
 /** '2026-W27' → '2026년 27주차' 표시용 라벨 */
 export function formatWeekLabel(weekString: string): string {
   const match = WEEK_PATTERN.exec(weekString);
