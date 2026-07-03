@@ -40,12 +40,12 @@ export function PostCard({ post, isBookmarked: isBookmarkedProp }: PostCardProps
         aria-label={`${post.title} — 원본 글 읽기`}
         className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-foreground/30"
       >
-        <h2 className="mb-3 line-clamp-2 text-lg font-bold text-foreground transition-colors hover:text-muted-foreground">
-          {post.title}
-        </h2>
+        <h2 className="mb-3 line-clamp-2 text-lg font-bold leading-snug text-foreground">{post.title}</h2>
       </a>
 
-      {post.summary && <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>}
+      {post.summary && (
+        <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{post.summary}</p>
+      )}
 
       <PostCardTags tags={post.tags || []} />
     </article>

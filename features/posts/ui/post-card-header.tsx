@@ -19,8 +19,8 @@ export function PostCardHeader({ logoUrl, companyName, timeDisplay, children }: 
         priority={false}
       />
       <div className="flex-1">
-        <p className="text-sm font-semibold text-gray-900 dark:text-white">{companyName}</p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">{timeDisplay}</p>
+        <p className="text-sm font-semibold text-foreground">{companyName}</p>
+        <p className="text-xs text-muted-foreground">{timeDisplay}</p>
       </div>
       {children}
     </div>

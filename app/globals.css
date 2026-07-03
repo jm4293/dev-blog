@@ -98,22 +98,24 @@ button {
     /* Dark mode — paper #07090F, subtle blue ink tilt */
     --background: 225 35% 4%;
     --foreground: 225 10% 94%;
-    --card: 225 25% 9%;
+    /* 카드는 배경과 명도차를 7%p로 벌려 박스가 묻히지 않게 */
+    --card: 225 22% 11%;
     --card-foreground: 225 10% 94%;
-    --popover: 225 25% 9%;
+    --popover: 225 22% 11%;
     --popover-foreground: 225 10% 94%;
     --primary: 225 10% 94%;
     --primary-foreground: 225 35% 4%;
-    --secondary: 225 20% 13%;
+    /* muted/secondary는 카드(11%) 위에서도 구분되도록 카드보다 한 단계 밝게 */
+    --secondary: 225 18% 16%;
     --secondary-foreground: 225 10% 94%;
-    --muted: 225 20% 13%;
-    --muted-foreground: 225 8% 60%;
-    --accent: 225 20% 13%;
+    --muted: 225 18% 16%;
+    --muted-foreground: 225 8% 62%;
+    --accent: 225 18% 16%;
     --accent-foreground: 225 10% 94%;
     --destructive: 0 72% 55%;
     --destructive-foreground: 255 40% 98%;
-    --border: 225 18% 18%;
-    --input: 225 18% 18%;
+    --border: 225 16% 23%;
+    --input: 225 16% 23%;
     --ring: 227 95% 64%;
     --chart-1: 227 95% 70%;
     --chart-2: 260 70% 65%;
@@ -122,6 +124,15 @@ button {
     --chart-5: 340 75% 55%;
     --sapphire: 227 95% 70%;
     --sapphire-foreground: 225 35% 4%;
+  }
+}
+
+@layer base {
+  /* 한글 헤드라인은 살짝 좁힌 자간이 단정하게 읽힌다 (Pretendard 관행) */
+  h1,
+  h2,
+  h3 {
+    @apply tracking-tight;
   }
 }
 
@@ -150,7 +161,7 @@ button {
     @apply border border-border/60 bg-background/70 shadow-sm backdrop-blur-xl;
   }
   .glass-card {
-    @apply border border-border/60 bg-card/80 shadow-sm backdrop-blur-md;
+    @apply border border-border/80 bg-card/80 shadow-sm backdrop-blur-md;
   }
   .glass-modal {
     @apply border border-border/60 bg-background/90 shadow-xl backdrop-blur-2xl;
