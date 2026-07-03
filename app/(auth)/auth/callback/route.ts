@@ -15,16 +15,25 @@ export async function GET(request: Request) {
       const forwardedHost = request.headers.get('x-forwarded-host'); // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === 'development';
 
-      // 로그인 성공 쿼리 파라미터 추가
-      const redirectUrl = `${next}${next.includes('?') ? '&' : '?'}login=success`;
-
+      let redirectBase: string;
       if (isLocalEnv) {
-        return NextResponse.redirect(`${origin}${redirectUrl}`);
+        redirectBase = origin;
       } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${redirectUrl}`);
+        redirectBase = `https://${forwardedHost}`;
       } else {
-        return NextResponse.redirect(`${origin}${redirectUrl}`);
+        redirectBase = origin;
       }
+
+      // 로그인 성공 표시는 URL 파라미터 대신 1회용 쿠키 사용
+      // (URL에 담으면 라우터 캐시/히스토리에 남아 토스트가 재발화하는 문제가 있음)
+      const response = NextResponse.redirect(`${redirectBase}${next}`);
+      response.cookies.set('login_success', '1', {
+        maxAge: 60,
+        path: '/',
+        sameSite: 'lax',
+        httpOnly: false, // 클라이언트에서 읽고 삭제해야 함
+      });
+      return response;
     }
   }
 

@@ -1,46 +1,34 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks';
 
+const LOGIN_COOKIE = 'login_success';
+
 /**
- * 로그인 콜백 결과 토스트 처리
- * /posts가 정적 페이지라 서버에서 파라미터를 못 받으므로 클라이언트에서 직접 읽는다.
+ * 로그인 성공 토스트 처리
+ *
+ * 콜백 라우트가 심어준 1회용 쿠키를 읽고 즉시 삭제한다.
+ * URL 파라미터(?login=success) 방식은 라우터 캐시/히스토리에 남아
+ * 재방문 시 토스트가 다시 뜨는 문제가 있어 쿠키로 대체했다.
  */
 export function useLoginStatusHandler() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const { showToast } = useToast();
 
-  const loginStatus = searchParams.get('login');
-  const errorStatus = searchParams.get('error');
-
   useEffect(() => {
-    if (loginStatus === 'success') {
-      showToast({
-        message: '로그인 성공! devBlog.kr에 오신 것을 환영합니다.',
-        type: 'success',
-        duration: 3000,
-      });
+    const hasLoginCookie = document.cookie.split('; ').some((cookie) => cookie.startsWith(`${LOGIN_COOKIE}=`));
 
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete('login');
-      const newUrl = params.toString() ? `/posts?${params.toString()}` : '/posts';
-      router.replace(newUrl, { scroll: false });
+    if (!hasLoginCookie) {
+      return;
     }
 
-    if (errorStatus === 'auth_failed') {
-      showToast({
-        message: '로그인에 실패했습니다. 다시 시도해주세요.',
-        type: 'error',
-        duration: 3000,
-      });
+    // 먼저 삭제해서 어떤 경우에도 한 번만 발화
+    document.cookie = `${LOGIN_COOKIE}=; Max-Age=0; path=/`;
 
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete('error');
-      const newUrl = params.toString() ? `/posts?${params.toString()}` : '/posts';
-      router.replace(newUrl, { scroll: false });
-    }
-  }, [loginStatus, errorStatus, showToast, router, searchParams]);
+    showToast({
+      message: '로그인 성공! devBlog.kr에 오신 것을 환영합니다.',
+      type: 'success',
+      duration: 3000,
+    });
+  }, [showToast]);
 }
