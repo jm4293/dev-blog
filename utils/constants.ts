@@ -16,7 +16,8 @@ export const MENU_ITEMS = [
 ];
 
 export const PAGINATION = {
-  ITEMS_PER_PAGE: 9,
+  // 3열(데스크탑)·2열(태블릿) 그리드에서 빈 칸 없이 떨어지는 수 (18 = 3×6 = 2×9)
+  ITEMS_PER_PAGE: 18,
   DEFAULT_PAGE: 1,
 };
 

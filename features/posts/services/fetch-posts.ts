@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { createSupabaseStaticClient } from '@/supabase/static.supabase';
 import type { Company, Post, PostWithCompany } from '@/supabase/types.supabase';
+import { PAGINATION } from '@/utils/constants';
 
 // posts + company 조인 쿼리의 행 타입 (수동 타입 환경이라 명시적으로 선언)
 type PostRow = Post & { company: Company | null };
@@ -40,7 +41,7 @@ export async function fetchPosts({
   blogs = [],
   companyId = '',
   sort = 'newest',
-  limit = 20,
+  limit = PAGINATION.ITEMS_PER_PAGE,
   useStaticClient = false,
 }: GetPostsParams = {}): Promise<GetPostsResponse> {
   const supabase = useStaticClient ? createSupabaseStaticClient() : await createSupabaseServerClient();
