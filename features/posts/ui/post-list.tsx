@@ -13,7 +13,7 @@ export function PostList({ posts }: PostListProps) {
   const isBookmarked = useIsBookmarked();
 
   return (
-    <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <section className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} isBookmarked={isBookmarked(post.id)} />
       ))}

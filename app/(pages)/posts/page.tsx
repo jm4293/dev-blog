@@ -37,7 +37,7 @@ export default async function PostPage() {
   // 검색·필터·페이지 이동은 클라이언트에서 /api/posts로 조회한다
   const [postsData, trendingPosts] = await Promise.all([
     fetchPosts({ useStaticClient: true }),
-    fetchTrendingPosts({ limit: 4 }),
+    fetchTrendingPosts({ limit: 3 }),
   ]);
 
   const trendingSlot = trendingPosts.length > 0 ? <TrendingSection posts={trendingPosts} /> : null;

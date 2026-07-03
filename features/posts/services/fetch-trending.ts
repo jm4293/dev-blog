@@ -13,7 +13,7 @@ interface FetchTrendingParams {
 /**
  * 최근 N일 내 인기 글 조회 (북마크 수 → 조회수 → 최신순)
  */
-export async function fetchTrendingPosts({ days = 7, limit = 4 }: FetchTrendingParams = {}): Promise<
+export async function fetchTrendingPosts({ days = 7, limit = 3 }: FetchTrendingParams = {}): Promise<
   PostWithCompany[]
 > {
   // 공개 데이터만 조회하므로 정적 클라이언트 사용 (정적 페이지에서 호출 가능)
