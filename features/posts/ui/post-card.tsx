@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { usePostCardInteractions } from '@/hooks';
 import { formatPostDate } from '@/utils';
 import { PostWithCompany } from '@/supabase/types.supabase';
@@ -19,41 +18,36 @@ export function PostCard({ post, isBookmarked: isBookmarkedProp }: PostCardProps
   const timeDisplay = formatPostDate(post.published_at);
 
   return (
-    <article className="glass-card transform rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <article className="glass-card relative transform rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       <PostCardHeader logoUrl={post.company.logo_url} companyName={post.company.name} timeDisplay={timeDisplay}>
-        <BookmarkButton
-          isBookmarked={isBookmarked}
-          isLoading={isLoading}
-          onToggle={toggleBookmark}
-          showLoginTooltip={showLoginTooltip}
-        />
+        {/* 카드 전체가 링크이므로 하트 버튼은 z-index로 위에 띄워 별도 동작 */}
+        <div className="relative z-10">
+          <BookmarkButton
+            isBookmarked={isBookmarked}
+            isLoading={isLoading}
+            onToggle={toggleBookmark}
+            showLoginTooltip={showLoginTooltip}
+          />
+        </div>
       </PostCardHeader>
 
-      <Link
+      {/* 제목 링크의 after 오버레이가 카드 전체를 덮어 어디를 눌러도 원본 글로 이동 */}
+      <a
         href={post.url}
         target="_blank"
         rel="noopener noreferrer"
         onClick={handlePostClick}
-        className="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-1"
+        aria-label={`${post.title} — 원본 글 읽기`}
+        className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-foreground/30"
       >
         <h2 className="mb-3 line-clamp-2 text-lg font-bold text-foreground transition-colors hover:text-muted-foreground">
           {post.title}
         </h2>
-      </Link>
+      </a>
 
       {post.summary && <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>}
 
       <PostCardTags tags={post.tags || []} />
-
-      <Link
-        href={post.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={handlePostClick}
-        className="inline-flex items-center rounded text-sm font-semibold text-foreground underline-offset-2 transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-1"
-      >
-        전체 읽기 →
-      </Link>
     </article>
   );
 }
