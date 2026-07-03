@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return buildPageMetadata({
     title: `${company.name} 기술 블로그 최신 글 (${page}페이지)`,
-    description: `${company.name} 기술 블로그 글 모음 ${page}페이지입니다. devBlog.kr에서 ${company.name}의 개발 이야기를 확인하세요.`,
+    description: `${company.name} 기술 블로그 글 모음 ${page}페이지입니다.`,
     path: `/companies/${companySlug(company)}/page/${page}`,
   });
 }

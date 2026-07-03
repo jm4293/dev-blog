@@ -7,8 +7,7 @@ export const revalidate = 3600; // 1시간
 
 export const metadata: Metadata = buildPageMetadata({
   title: '태그별 기술 블로그 글 모음',
-  description:
-    'Frontend, Backend, DevOps, AI/ML 등 태그별로 한국 기업 기술 블로그 글을 모아보세요. 관심 있는 기술 주제의 최신 글을 한 곳에서 확인할 수 있습니다.',
+  description: 'Frontend, Backend, DevOps, AI/ML 등 태그별로 기업 기술블로그 글을 모아보세요.',
   path: '/tags',
 });
 

@@ -3,7 +3,7 @@ import { buildPageMetadata } from '@/utils';
 
 export const metadata: Metadata = buildPageMetadata({
   title: '개인정보 처리방침',
-  description: 'devBlog.kr의 개인정보 처리방침을 확인하세요. 이용자의 개인정보 보호를 위한 정책을 안내합니다.',
+  description: 'devBlog.kr의 개인정보 처리방침을 확인하세요.',
   path: '/privacy-policy',
 });
 

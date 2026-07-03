@@ -7,7 +7,7 @@ import { SimpleSkeleton } from '@/components/skeleton';
 export const metadata: Metadata = buildPageMetadata({
   title: '공지사항',
   description:
-    '개발블로그·기술블로그를 한 곳에 모아보는 devBlog.kr의 최신 기능 업데이트, 새로 추가된 블로그, 버그 수정 등 모든 소식을 확인하세요.',
+    '기술블로그를 한 곳에 모아보는 devBlog.kr의 최신 기능 업데이트, 새로 추가된 블로그, 버그 수정 등 모든 소식을 확인하세요.',
   path: '/announcements',
 });
 

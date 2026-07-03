@@ -12,7 +12,7 @@ const OG_IMAGE = {
   url: '/opengraph-image', // metadataBase 기준 절대 URL로 변환됨
   width: 1200,
   height: 630,
-  alt: '개발블로그·기술블로그·테크블로그 모음 — devBlog.kr',
+  alt: '기술블로그 모음 — devBlog.kr',
 };
 
 const TWITTER_IMAGE = '/twitter-image';

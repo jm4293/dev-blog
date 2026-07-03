@@ -7,8 +7,7 @@ export const revalidate = 3600; // 1시간
 
 export const metadata: Metadata = buildPageMetadata({
   title: '주간 인기글',
-  description:
-    '한 주 동안 한국 기업 기술 블로그에서 가장 인기 있었던 글을 주차별로 모았습니다. 놓친 개발 글을 주간 단위로 따라잡아 보세요.',
+  description: '한 주 동안 기업 기술블로그에서 가장 인기 있었던 글을 주차별로 모았습니다.',
   path: '/digest',
 });
 

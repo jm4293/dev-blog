@@ -3,7 +3,7 @@ import { buildPageMetadata } from '@/utils';
 
 export const metadata: Metadata = buildPageMetadata({
   title: '이용약관',
-  description: 'devBlog.kr의 이용약관을 확인하세요. 서비스 이용 시 준수해야 할 규정을 안내합니다.',
+  description: 'devBlog.kr의 이용약관을 확인하세요.',
   path: '/terms',
 });
 

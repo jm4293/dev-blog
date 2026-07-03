@@ -8,8 +8,7 @@ export const revalidate = 3600; // 1시간
 
 export const metadata: Metadata = buildPageMetadata({
   title: '기업별 기술 블로그 모음',
-  description:
-    '토스, 카카오, 네이버, 우아한형제들 등 한국 32개 기업의 기술 블로그를 회사별로 모아보세요. 관심 있는 기업의 최신 개발 글을 한 곳에서 확인할 수 있습니다.',
+  description: '기업 기술블로그를 회사별로 모아보세요.',
   path: '/companies',
 });
 

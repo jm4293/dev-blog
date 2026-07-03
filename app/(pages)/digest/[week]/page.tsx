@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const meta = buildPageMetadata({
     title: `${label} 개발 블로그 인기 글 TOP 10`,
-    description: `${label}에 한국 기업 기술 블로그에서 가장 인기 있었던 글을 모았습니다. 토스, 카카오, 네이버 등 32개 기업의 주간 하이라이트를 확인하세요.`,
+    description: `${label}에 기업 기술블로그에서 가장 인기 있었던 글을 모았습니다.`,
     path: `/digest/${week}`,
     ogType: 'article',
   });

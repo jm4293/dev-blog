@@ -6,8 +6,7 @@ import { GridSkeleton } from '@/components/skeleton';
 
 export const metadata: Metadata = buildPageMetadata({
   title: '즐겨찾기',
-  description:
-    '토스, 카카오, 네이버 등 32개 기업 기술블로그·개발블로그에서 마음에 든 글을 저장하고 한눈에 다시 보세요. GitHub 로그인으로 무료 사용.',
+  description: '기업 기술블로그에서 마음에 든 글을 저장하고 한눈에 다시 보세요.',
   path: '/bookmarks',
 });
 

@@ -4,8 +4,7 @@ import { RecentViewsList } from '@/features/recent-views/ui';
 
 export const metadata: Metadata = buildPageMetadata({
   title: '최근 본 글',
-  description:
-    '최근에 조회한 개발블로그·기술블로그 게시글을 다시 빠르게 찾아보세요. 로컬에 자동 저장되어 로그인 없이도 사용할 수 있습니다.',
+  description: '최근에 본 기술블로그 글을 다시 빠르게 찾아보세요.',
   path: '/recent-views',
 });
 

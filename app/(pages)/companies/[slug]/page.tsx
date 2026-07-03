@@ -23,9 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return buildPageMetadata({
     title: `${company.name} 기술 블로그 최신 글`,
-    description: `${company.name} 기술 블로그의 최신 글을 모았습니다. ${
-      company.description ? `${company.description} ` : ''
-    }devBlog.kr에서 ${company.name}의 개발 이야기를 한 곳에서 확인하세요.`,
+    description: `${company.name} 기술 블로그의 최신 글을 모았습니다.${
+      company.description ? ` ${company.description}` : ''
+    }`,
     path: `/companies/${companySlug(company)}`,
   });
 }

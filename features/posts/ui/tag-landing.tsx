@@ -68,7 +68,7 @@ export async function TagLanding({ slug, page }: TagLandingProps) {
         </nav>
         <h1 className="text-2xl font-bold text-foreground md:text-4xl">{tag.name} 글 모음</h1>
         <p className="mt-2 text-muted-foreground">
-          한국 기업 기술 블로그의 {tag.name} 관련 글 {postsData.total}개
+          기업 기술블로그의 {tag.name} 관련 글 {postsData.total}개
         </p>
       </header>
 

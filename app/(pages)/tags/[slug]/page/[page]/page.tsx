@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return buildPageMetadata({
     title: `${tag.name} 기술 블로그 글 모음 (${page}페이지)`,
-    description: `한국 기업 기술 블로그의 ${tag.name} 관련 글 모음 ${page}페이지입니다. 토스, 카카오, 네이버 등 32개 기업의 ${tag.name} 글을 확인하세요.`,
+    description: `기업 기술블로그의 ${tag.name} 관련 글 모음 ${page}페이지입니다.`,
     path: `/tags/${slugify(tag.name)}/page/${page}`,
   });
 }

@@ -28,7 +28,7 @@ const breadcrumbSchema = {
 export const metadata: Metadata = buildPageMetadata({
   title: '기술블로그 모음',
   description:
-    '토스, 카카오, 네이버 등 32개 기업의 개발블로그·기술블로그·테크블로그를 한 곳에서. 6시간마다 자동 수집되는 최신 글을 검색하고 태그별로 필터링하세요.',
+    '여러 기업 기술블로그의 새 글을 한 곳에서 확인하세요. 6시간마다 자동 수집되며 태그와 회사별로 골라볼 수 있습니다.',
   path: '/posts',
 });
 
@@ -45,8 +45,8 @@ export default async function PostPage() {
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: '개발블로그·기술블로그 모음',
-    description: '한국 32개 기업의 최신 개발자 블로그 글 목록',
+    name: '기술블로그 모음',
+    description: '32개 기업 기술블로그의 최신 글 목록',
     numberOfItems: postsData.total,
     itemListOrder: 'https://schema.org/ItemListOrderDescending',
     itemListElement: postsData.posts.slice(0, 20).map((post, index) => ({
@@ -75,11 +75,7 @@ export default async function PostPage() {
 
       <header className="mb-6">
         <h1 className="text-2xl font-bold text-foreground md:text-4xl">
-          <span className="sr-only">
-            한국 개발블로그·기술블로그·테크블로그 모음 — 토스, 카카오, 네이버, 우아한형제들 등 32개 기업의 최신 개발자
-            블로그 글을 매일 자동 수집하여 한 곳에서 보여드립니다. Frontend, Backend, DevOps, AI/ML 등 카테고리별 검색
-            가능.
-          </span>
+          <span className="sr-only">기술블로그 모음 — 여러 기업의 새 글을 한 곳에서 보여드립니다.</span>
           포스트
         </h1>
       </header>

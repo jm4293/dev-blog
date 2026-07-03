@@ -4,8 +4,7 @@ import { RequestForm } from '@/features/request';
 
 export const metadata: Metadata = buildPageMetadata({
   title: '요청하기',
-  description:
-    '추가했으면 하는 개발블로그·기술블로그나 새로운 태그를 제안해보세요. devBlog.kr은 사용자 요청을 받아 모아보는 블로그를 늘려갑니다.',
+  description: '추가했으면 하는 기술블로그나 새로운 태그를 제안해보세요.',
   path: '/request',
 });
 
