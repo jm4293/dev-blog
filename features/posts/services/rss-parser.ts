@@ -11,6 +11,8 @@ const parser = new Parser({
   timeout: 15000, // 15초 타임아웃
   headers: {
     'User-Agent': 'devBlog/1.0 (+https://devblog.kr)',
+    // 일부 피드(네이버 D2, 지마켓 등)는 XML 전용 Accept 헤더에 406을 반환하므로 */* 허용
+    Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
   },
 });
 

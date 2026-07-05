@@ -37,6 +37,22 @@ const log = (level: 'info' | 'warn' | 'error', message: string, data?: LogData) 
   }
 };
 
+// 동시성 제한 병렬 처리 헬퍼
+async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
+  const results: R[] = new Array(items.length);
+  let cursor = 0;
+
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (cursor < items.length) {
+      const index = cursor++;
+      results[index] = await fn(items[index], index);
+    }
+  });
+
+  await Promise.all(workers);
+  return results;
+}
+
 // 메인 함수
 async function main() {
   const startTime = Date.now();
@@ -47,6 +63,9 @@ async function main() {
     errors: 0,
     duration: 0,
   };
+
+  // RSS 파싱에 실패한 블로그 목록 (실행 결과에서 한눈에 확인용)
+  const failedCompanies: Array<{ name: string; reason: string }> = [];
 
   // 새로 저장된 글의 태그/회사 정보 (Push 알림 관심사 필터링용)
   const createdPosts: Array<{ tags: string[]; company_id: string }> = [];
@@ -97,66 +116,131 @@ async function main() {
     const allTags = await getAllTagsFromDatabase(supabase);
     log('info', `✓ 총 ${allTags.length}개 태그 로드 완료`);
 
-    // 3. 각 기업의 RSS 피드 파싱 및 저장
+    // 3. 각 기업의 RSS 피드 병렬 파싱
+    // 같은 호스트(medium.com 등)는 순차 처리해서 rate limit(429) 방지, 호스트 간에는 동시 8개
     log('info', '📡 RSS 피드 수집 시작...\n');
+    const byHost = new Map<string, typeof typedCompanies>();
     for (const company of typedCompanies) {
+      let host = '';
+      try {
+        host = new URL(company.rss_url).hostname;
+      } catch {
+        host = company.rss_url;
+      }
+      byHost.set(host, [...(byHost.get(host) || []), company]);
+    }
+
+    // Medium 커스텀 도메인(techblog.lotteon.com 등)도 medium.com 인프라라 429가 날 수 있어
+    // 429/타임아웃은 점증 백오프(10초 → 30초)로 최대 2회 재시도
+    const parseWithRetry = async (rssUrl: string) => {
+      const delays = [10000, 30000];
+      for (let attempt = 0; ; attempt++) {
+        try {
+          return await parseRssFeed(rssUrl);
+        } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          const retryable = errorMsg.includes('429') || errorMsg.includes('timed out');
+          if (!retryable || attempt >= delays.length) {
+            throw error;
+          }
+          await new Promise((resolve) => setTimeout(resolve, delays[attempt]));
+        }
+      }
+    };
+
+    const feedResults = (
+      await mapLimit(Array.from(byHost.values()), 8, async (group) => {
+        const results = [];
+        for (const company of group) {
+          try {
+            results.push({ company, posts: await parseWithRetry(company.rss_url) });
+          } catch (error) {
+            const errorMsg = error instanceof Error ? error.message : String(error);
+            results.push({ company, posts: null, reason: errorMsg });
+          }
+        }
+        return results;
+      })
+    ).flat();
+
+    // 4. 기업별로 중복 제거 후 저장
+    for (const result of feedResults) {
+      const { company, posts } = result;
       stats.companiesProcessed++;
       log('info', `[${stats.companiesProcessed}/${typedCompanies.length}] 처리 중: ${company.name}`);
 
+      if (!posts) {
+        stats.errors++;
+        failedCompanies.push({ name: company.name, reason: result.reason || '알 수 없는 오류' });
+        log('error', `  ✗ ${company.name} RSS 파싱 실패: ${result.reason}`);
+        continue;
+      }
+
+      stats.postsFound += posts.length;
+      log('info', `  └─ ${posts.length}개 게시글 발견`);
+
+      if (posts.length === 0) {
+        continue;
+      }
+
       try {
-        // RSS 피드 파싱
-        const posts = await parseRssFeed(company.rss_url);
-        stats.postsFound += posts.length;
+        // 피드 내 중복 URL 제거
+        const uniquePosts = Array.from(new Map(posts.map((post) => [post.url, post])).values());
 
-        log('info', `  └─ ${posts.length}개 게시글 발견`);
+        // 중복 체크 (URL 기반, 배치 조회)
+        const urls = uniquePosts.map((post) => post.url);
+        const { data: existing, error: existingError } = await supabase.from('posts').select('url').in('url', urls);
 
-        if (posts.length === 0) {
+        if (existingError) {
+          throw existingError;
+        }
+
+        const existingUrls = new Set((existing || []).map((row: { url: string }) => row.url));
+        const newPosts = uniquePosts.filter((post) => !existingUrls.has(post.url));
+
+        if (newPosts.length === 0) {
           continue;
         }
 
-        // 4. 각 게시글 처리
-        for (const post of posts) {
+        // 태그 생성 (OpenAI, 동시 5개) — 본문은 태그 생성에만 사용하고 저장하지 않음 (저작권)
+        const rows = await mapLimit(newPosts, 5, async (post) => {
+          let tags: string[] = [];
           try {
-            // 중복 체크 (URL 기반)
-            const { data: existing } = await supabase.from('posts').select('id').eq('url', post.url).single();
-
-            if (existing) {
-              continue; // 이미 존재하는 게시글은 스킵
-            }
-
-            // 태그 생성 (OpenAI 사용)
-            const tags = await generateTags(post.title, post.summary || post.content?.substring(0, 500) || '', allTags);
-
-            // 게시글 저장
-            const { error: insertError } = await supabase.from('posts').insert({
-              company_id: company.id,
-              title: post.title,
-              url: post.url,
-              content: post.content,
-              summary: post.summary,
-              author: post.author,
-              tags: tags.length > 0 ? tags : null,
-              published_at: post.publishedAt,
-              scraped_at: new Date().toISOString(),
-            } as any);
-
-            if (insertError) {
-              throw insertError;
-            }
-
-            stats.postsCreated++;
-            createdPosts.push({ tags, company_id: company.id });
-            log('info', `  ✓ 새 게시글 저장: ${post.title.substring(0, 60)}...`);
+            tags = await generateTags(post.title, post.summary || post.content?.substring(0, 500) || '', allTags);
           } catch (error) {
-            stats.errors++;
             const errorMsg = error instanceof Error ? error.message : String(error);
-            log('error', `  ✗ 게시글 처리 실패: ${errorMsg}`, { title: post.title });
+            log('warn', `  ⚠️ 태그 생성 실패 (태그 없이 저장): ${errorMsg}`, { title: post.title });
           }
+
+          return {
+            company_id: company.id,
+            title: post.title,
+            url: post.url,
+            summary: post.summary,
+            author: post.author,
+            tags: tags.length > 0 ? tags : null,
+            published_at: post.publishedAt,
+            scraped_at: new Date().toISOString(),
+          };
+        });
+
+        // 게시글 배치 저장 (URL 충돌 시 무시)
+        const { error: insertError } = await supabase
+          .from('posts')
+          .upsert(rows as any, { onConflict: 'url', ignoreDuplicates: true });
+
+        if (insertError) {
+          throw insertError;
         }
+
+        stats.postsCreated += rows.length;
+        createdPosts.push(...rows.map((row) => ({ tags: row.tags || [], company_id: company.id })));
+        log('info', `  ✓ 새 게시글 ${rows.length}개 저장`);
       } catch (error) {
         stats.errors++;
         const errorMsg = error instanceof Error ? error.message : String(error);
-        log('error', `  ✗ ${company.name} RSS 파싱 실패: ${errorMsg}`);
+        failedCompanies.push({ name: company.name, reason: errorMsg });
+        log('error', `  ✗ ${company.name} 게시글 저장 실패: ${errorMsg}`);
       }
     }
 
@@ -170,6 +254,13 @@ async function main() {
       '에러 수': stats.errors,
       '소요 시간': `${(stats.duration / 1000).toFixed(2)}초`,
     });
+
+    // RSS가 죽은 블로그를 놓치지 않도록 실패 목록을 명시적으로 출력
+    if (failedCompanies.length > 0) {
+      log('warn', `⚠️ 수집 실패 블로그 ${failedCompanies.length}개 — RSS URL 점검 필요:`, {
+        failed: failedCompanies,
+      });
+    }
 
     // 새 글이 저장된 경우 ISR 캐시 갱신 및 Push 알림 발송
     if (stats.postsCreated > 0) {
