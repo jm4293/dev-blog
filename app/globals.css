@@ -170,3 +170,12 @@ button {
     @apply border-r border-border/50 bg-background/85 shadow-lg backdrop-blur-xl;
   }
 }
+
+/* iOS Safari는 16px 미만 input에 포커스하면 화면을 자동 확대함 — 모바일에서만 16px 강제 */
+@media (max-width: 767px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
