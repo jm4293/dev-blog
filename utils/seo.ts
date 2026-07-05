@@ -36,6 +36,10 @@ export function buildPageMetadata({ title, description, path, ogType = 'website'
     description,
     alternates: {
       canonical: url,
+      // 페이지 단위 alternates가 루트 설정을 대체하므로 RSS 자동탐지 링크를 함께 유지
+      types: {
+        'application/rss+xml': `${APP.URL}/feed.xml`,
+      },
     },
     openGraph: {
       title: fullTitle,
