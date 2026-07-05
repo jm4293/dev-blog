@@ -1,6 +1,8 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { useToast } from '@/hooks';
+import { Search } from 'lucide-react';
 import { useInterestCompanyOptions, useInterestTagOptions, useNotificationPreferences } from '../hooks';
 import type { Preferences } from '../types';
 
@@ -13,6 +15,9 @@ interface InterestChipProps {
   isSelected: boolean;
   onToggle: () => void;
 }
+
+// 접힌 상태에서 보여줄 회사 칩 개수
+const COMPANY_PREVIEW_COUNT = 24;
 
 function InterestChip({ label, isSelected, onToggle }: InterestChipProps) {
   return (
@@ -34,6 +39,7 @@ function InterestChip({ label, isSelected, onToggle }: InterestChipProps) {
 /**
  * 관심 태그/회사 설정 — 선택하면 해당 항목의 새 글만 Push 알림을 받는다.
  * 아무것도 선택하지 않으면 모든 새 글 알림을 받는다.
+ * 회사는 140개+라 선택 항목 상단 고정 + 검색 + 더보기로 접어서 보여준다.
  */
 export function NotificationInterests({ preferences }: NotificationInterestsProps) {
   const { updateInterests } = useNotificationPreferences();
@@ -41,9 +47,37 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
   const { data: companiesData } = useInterestCompanyOptions();
   const { showToast } = useToast();
 
+  const [companyQuery, setCompanyQuery] = useState('');
+  const [showAllCompanies, setShowAllCompanies] = useState(false);
+
   const selectedTags = preferences.subscribed_tags;
   const selectedCompanyIds = preferences.subscribed_company_ids;
   const isAllSelected = selectedTags.length === 0 && selectedCompanyIds.length === 0;
+
+  const companies = companiesData?.companies || [];
+
+  const selectedCompanies = useMemo(
+    () => companies.filter((company) => selectedCompanyIds.includes(company.id)),
+    [companies, selectedCompanyIds],
+  );
+
+  // 검색어 필터 (미선택 회사만 — 선택된 회사는 상단에 항상 표시)
+  const filteredCompanies = useMemo(() => {
+    const unselected = companies.filter((company) => !selectedCompanyIds.includes(company.id));
+    const query = companyQuery.trim().toLowerCase();
+    if (!query) {
+      return unselected;
+    }
+    return unselected.filter(
+      (company) => company.name.toLowerCase().includes(query) || (company.name_en || '').toLowerCase().includes(query),
+    );
+  }, [companies, selectedCompanyIds, companyQuery]);
+
+  // 검색 중이면 결과 전체, 아니면 접힘/펼침 상태에 따라 노출
+  const isSearching = companyQuery.trim().length > 0;
+  const visibleCompanies =
+    isSearching || showAllCompanies ? filteredCompanies : filteredCompanies.slice(0, COMPANY_PREVIEW_COUNT);
+  const hiddenCount = filteredCompanies.length - visibleCompanies.length;
 
   const mutateInterests = (input: { subscribed_tags?: string[]; subscribed_company_ids?: string[] }) => {
     updateInterests.mutate(input, {
@@ -88,8 +122,11 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
       </p>
 
       {tagsData && tagsData.tags.length > 0 && (
-        <div className="mb-3">
-          <p className="mb-2 text-xs text-muted-foreground">태그</p>
+        <div className="mb-4">
+          <p className="mb-2 text-xs text-muted-foreground">
+            태그
+            {selectedTags.length > 0 && <span className="ml-1 text-foreground">({selectedTags.length}개 선택)</span>}
+          </p>
           <div className="flex flex-wrap gap-1.5">
             {tagsData.tags.map((tag) => (
               <InterestChip
@@ -103,19 +140,78 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
         </div>
       )}
 
-      {companiesData && companiesData.companies.length > 0 && (
+      {companies.length > 0 && (
         <div>
-          <p className="mb-2 text-xs text-muted-foreground">회사</p>
-          <div className="flex flex-wrap gap-1.5">
-            {companiesData.companies.map((company) => (
-              <InterestChip
-                key={company.id}
-                label={company.name}
-                isSelected={selectedCompanyIds.includes(company.id)}
-                onToggle={() => toggleCompany(company.id)}
-              />
-            ))}
+          <p className="mb-2 text-xs text-muted-foreground">
+            회사{' '}
+            {selectedCompanyIds.length > 0 ? (
+              <span className="text-foreground">({selectedCompanyIds.length}개 선택)</span>
+            ) : (
+              <span>({companies.length}개)</span>
+            )}
+          </p>
+
+          {/* 선택된 회사는 항상 상단에 고정 */}
+          {selectedCompanies.length > 0 && (
+            <div className="mb-2 flex flex-wrap gap-1.5">
+              {selectedCompanies.map((company) => (
+                <InterestChip
+                  key={company.id}
+                  label={company.name}
+                  isSelected
+                  onToggle={() => toggleCompany(company.id)}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* 회사 검색 */}
+          <div className="relative mb-2">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={companyQuery}
+              onChange={(event) => setCompanyQuery(event.target.value)}
+              placeholder="회사 검색"
+              className="w-full rounded-lg border border-border bg-card py-1.5 pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-foreground/30"
+            />
           </div>
+
+          {visibleCompanies.length > 0 ? (
+            <div
+              className={`flex flex-wrap gap-1.5 ${isSearching || showAllCompanies ? 'max-h-64 overflow-y-auto pr-1' : ''}`}
+            >
+              {visibleCompanies.map((company) => (
+                <InterestChip
+                  key={company.id}
+                  label={company.name}
+                  isSelected={false}
+                  onToggle={() => toggleCompany(company.id)}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="py-2 text-xs text-muted-foreground">검색 결과가 없습니다.</p>
+          )}
+
+          {!isSearching && hiddenCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAllCompanies(true)}
+              className="mt-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              + {hiddenCount}개 회사 더보기
+            </button>
+          )}
+          {!isSearching && showAllCompanies && (
+            <button
+              type="button"
+              onClick={() => setShowAllCompanies(false)}
+              className="mt-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              접기
+            </button>
+          )}
         </div>
       )}
     </div>

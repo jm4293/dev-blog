@@ -14,7 +14,7 @@ interface TagsResponse {
   total: number;
 }
 
-type CompanyOption = Pick<Company, 'id' | 'name' | 'logo_url'>;
+type CompanyOption = Pick<Company, 'id' | 'name' | 'name_en' | 'logo_url'>;
 
 interface CompaniesResponse {
   companies: CompanyOption[];
