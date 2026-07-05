@@ -12,10 +12,9 @@ export function useNotificationSubscribe() {
   const queryClient = useQueryClient();
   const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
 
-  // Service Worker 등록
+  // Service Worker 등록 — 미지원 브라우저는 조용히 건너뛰고, 구독 시도 시점에 안내
   useEffect(() => {
     if (!('serviceWorker' in navigator)) {
-      alert('해당 브라우저는 알림 기능을 지원하지 않습니다.');
       return;
     }
 
@@ -24,8 +23,13 @@ export function useNotificationSubscribe() {
     });
   }, []);
 
+  const isSupported = typeof navigator !== 'undefined' && 'serviceWorker' in navigator;
+
   const subscribeMutation = useMutation({
     mutationFn: async () => {
+      if (!isSupported) {
+        throw new Error('이 브라우저는 알림 기능을 지원하지 않습니다.');
+      }
       if (!VAPID_PUBLIC_KEY) {
         throw new Error('VAPID_PUBLIC_KEY is not defined');
       }

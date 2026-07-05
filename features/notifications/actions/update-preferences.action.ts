@@ -10,7 +10,8 @@ interface UpdatePreferencesResult {
   error?: string;
 }
 
-const MAX_INTERESTS = 50;
+// 회사 140개+, 태그 56개 규모에 맞춰 상향 (모두 선택해도 걸리지 않게)
+const MAX_INTERESTS = 300;
 
 function isValidStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.length <= MAX_INTERESTS && value.every((item) => typeof item === 'string');
