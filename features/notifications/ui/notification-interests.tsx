@@ -16,8 +16,8 @@ interface InterestChipProps {
   onToggle: () => void;
 }
 
-// 접힌 상태에서 보여줄 회사 칩 개수
-const COMPANY_PREVIEW_COUNT = 24;
+// 접힌 상태에서 보여줄 칩 개수
+const CHIP_PREVIEW_COUNT = 24;
 
 function InterestChip({ label, isSelected, onToggle }: InterestChipProps) {
   return (
@@ -49,12 +49,15 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
 
   const [companyQuery, setCompanyQuery] = useState('');
   const [showAllCompanies, setShowAllCompanies] = useState(false);
+  const [tagQuery, setTagQuery] = useState('');
+  const [showAllTags, setShowAllTags] = useState(false);
 
   const selectedTags = preferences.subscribed_tags;
   const selectedCompanyIds = preferences.subscribed_company_ids;
   const isAllSelected = selectedTags.length === 0 && selectedCompanyIds.length === 0;
 
   const companies = companiesData?.companies || [];
+  const tags = tagsData?.tags || [];
 
   const selectedCompanies = useMemo(
     () => companies.filter((company) => selectedCompanyIds.includes(company.id)),
@@ -73,11 +76,27 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
     );
   }, [companies, selectedCompanyIds, companyQuery]);
 
+  // 태그도 동일한 방식 (선택된 태그 상단 고정 + 검색)
+  const selectedTagItems = useMemo(() => tags.filter((tag) => selectedTags.includes(tag.name)), [tags, selectedTags]);
+
+  const filteredTags = useMemo(() => {
+    const unselected = tags.filter((tag) => !selectedTags.includes(tag.name));
+    const query = tagQuery.trim().toLowerCase();
+    if (!query) {
+      return unselected;
+    }
+    return unselected.filter((tag) => tag.name.toLowerCase().includes(query));
+  }, [tags, selectedTags, tagQuery]);
+
   // 검색 중이면 결과 전체, 아니면 접힘/펼침 상태에 따라 노출
-  const isSearching = companyQuery.trim().length > 0;
+  const isSearchingCompanies = companyQuery.trim().length > 0;
   const visibleCompanies =
-    isSearching || showAllCompanies ? filteredCompanies : filteredCompanies.slice(0, COMPANY_PREVIEW_COUNT);
-  const hiddenCount = filteredCompanies.length - visibleCompanies.length;
+    isSearchingCompanies || showAllCompanies ? filteredCompanies : filteredCompanies.slice(0, CHIP_PREVIEW_COUNT);
+  const hiddenCompanyCount = filteredCompanies.length - visibleCompanies.length;
+
+  const isSearchingTags = tagQuery.trim().length > 0;
+  const visibleTags = isSearchingTags || showAllTags ? filteredTags : filteredTags.slice(0, CHIP_PREVIEW_COUNT);
+  const hiddenTagCount = filteredTags.length - visibleTags.length;
 
   const mutateInterests = (input: { subscribed_tags?: string[]; subscribed_company_ids?: string[] }) => {
     updateInterests.mutate(input, {
@@ -121,22 +140,68 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
           : '선택한 태그/회사의 새 글이 있을 때만 알림을 받습니다.'}
       </p>
 
-      {tagsData && tagsData.tags.length > 0 && (
+      {tags.length > 0 && (
         <div className="mb-4">
           <p className="mb-2 text-xs text-muted-foreground">
-            태그
-            {selectedTags.length > 0 && <span className="ml-1 text-foreground">({selectedTags.length}개 선택)</span>}
+            태그{' '}
+            {selectedTags.length > 0 ? (
+              <span className="text-foreground">({selectedTags.length}개 선택)</span>
+            ) : (
+              <span>({tags.length}개)</span>
+            )}
           </p>
-          <div className="flex flex-wrap gap-1.5">
-            {tagsData.tags.map((tag) => (
-              <InterestChip
-                key={tag.id}
-                label={tag.name}
-                isSelected={selectedTags.includes(tag.name)}
-                onToggle={() => toggleTag(tag.name)}
-              />
-            ))}
+
+          {/* 선택된 태그는 항상 상단에 고정 */}
+          {selectedTagItems.length > 0 && (
+            <div className="mb-2 flex flex-wrap gap-1.5">
+              {selectedTagItems.map((tag) => (
+                <InterestChip key={tag.id} label={tag.name} isSelected onToggle={() => toggleTag(tag.name)} />
+              ))}
+            </div>
+          )}
+
+          {/* 태그 검색 */}
+          <div className="relative mb-2">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={tagQuery}
+              onChange={(event) => setTagQuery(event.target.value)}
+              placeholder="태그 검색"
+              className="w-full rounded-lg border border-border bg-card py-1.5 pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-foreground/30"
+            />
           </div>
+
+          {visibleTags.length > 0 ? (
+            <div
+              className={`flex flex-wrap gap-1.5 ${isSearchingTags || showAllTags ? 'max-h-64 overflow-y-auto pr-1' : ''}`}
+            >
+              {visibleTags.map((tag) => (
+                <InterestChip key={tag.id} label={tag.name} isSelected={false} onToggle={() => toggleTag(tag.name)} />
+              ))}
+            </div>
+          ) : (
+            <p className="py-2 text-xs text-muted-foreground">검색 결과가 없습니다.</p>
+          )}
+
+          {!isSearchingTags && hiddenTagCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAllTags(true)}
+              className="mt-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              + {hiddenTagCount}개 태그 더보기
+            </button>
+          )}
+          {!isSearchingTags && showAllTags && (
+            <button
+              type="button"
+              onClick={() => setShowAllTags(false)}
+              className="mt-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              접기
+            </button>
+          )}
         </div>
       )}
 
@@ -179,7 +244,7 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
 
           {visibleCompanies.length > 0 ? (
             <div
-              className={`flex flex-wrap gap-1.5 ${isSearching || showAllCompanies ? 'max-h-64 overflow-y-auto pr-1' : ''}`}
+              className={`flex flex-wrap gap-1.5 ${isSearchingCompanies || showAllCompanies ? 'max-h-64 overflow-y-auto pr-1' : ''}`}
             >
               {visibleCompanies.map((company) => (
                 <InterestChip
@@ -194,16 +259,16 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
             <p className="py-2 text-xs text-muted-foreground">검색 결과가 없습니다.</p>
           )}
 
-          {!isSearching && hiddenCount > 0 && (
+          {!isSearchingCompanies && hiddenCompanyCount > 0 && (
             <button
               type="button"
               onClick={() => setShowAllCompanies(true)}
               className="mt-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
-              + {hiddenCount}개 회사 더보기
+              + {hiddenCompanyCount}개 회사 더보기
             </button>
           )}
-          {!isSearching && showAllCompanies && (
+          {!isSearchingCompanies && showAllCompanies && (
             <button
               type="button"
               onClick={() => setShowAllCompanies(false)}

@@ -56,7 +56,8 @@ export async function parseRssFeed(rssUrl: string): Promise<ParsedPost[]> {
     const posts: ParsedPost[] = feed.items
       .slice(0, 50) // 최대 50개만 처리
       .map((item) => ({
-        title: item.title || 'No Title',
+        // 일부 피드는 제목에 개행/연속 공백이 섞여 있어 정규화
+        title: (item.title || 'No Title').replace(/\s+/g, ' ').trim(),
         url: item.link || '',
         summary: extractTextFromHtml(item.content || item.description),
         author: item.creator || item.author,
