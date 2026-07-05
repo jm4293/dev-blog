@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 };
 
 const SITE_DESCRIPTION =
-  '여러 기업의 기술블로그를 한 곳에 모았습니다. 6시간마다 자동 수집되는 최신 개발 블로그 글을 태그와 키워드로 찾아보세요.';
+  '여러 기업의 기술블로그를 한 곳에 모았습니다. 최신 개발 블로그 글을 태그와 키워드로 찾아보세요.';
 
 export const metadata: Metadata = {
   title: {

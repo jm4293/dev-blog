@@ -27,8 +27,7 @@ const breadcrumbSchema = {
 
 export const metadata: Metadata = buildPageMetadata({
   title: '기술블로그 모음',
-  description:
-    '여러 기업 기술블로그의 새 글을 한 곳에서 확인하세요. 6시간마다 자동 수집되며 태그와 회사별로 골라볼 수 있습니다.',
+  description: '여러 기업 기술블로그의 새 글을 한 곳에서 확인하세요. 태그와 회사별로 골라볼 수 있습니다.',
   path: '/posts',
 });
 
