@@ -15,6 +15,8 @@ interface FilterModalProps {
   emptyMessage?: string;
   selectedCount?: number;
   icon?: ReactNode;
+  /** 검색 등으로 콘텐츠 양이 수시로 변하는 모달은 높이를 고정해 흔들림 방지 */
+  fixedHeight?: boolean;
 }
 
 export function FilterModal({
@@ -29,6 +31,7 @@ export function FilterModal({
   emptyMessage = '데이터가 없습니다.',
   selectedCount = 0,
   icon,
+  fixedHeight = false,
 }: FilterModalProps) {
   useEffect(() => {
     if (isOpen) {
@@ -66,7 +69,9 @@ export function FilterModal({
           role="dialog"
           aria-modal="true"
           aria-label={title}
-          className="glass-modal flex max-h-[85vh] w-full animate-slide-up flex-col rounded-t-2xl shadow-2xl sm:max-h-[80vh] sm:max-w-lg sm:animate-scale-in sm:rounded-2xl"
+          className={`glass-modal flex w-full animate-slide-up flex-col rounded-t-2xl shadow-2xl sm:max-w-lg sm:animate-scale-in sm:rounded-2xl ${
+            fixedHeight ? 'h-[85vh] sm:h-[80vh]' : 'max-h-[85vh] sm:max-h-[80vh]'
+          }`}
         >
           {/* 헤더 */}
           <div className="flex flex-shrink-0 items-center justify-between border-b border-border px-6 pb-4 pt-6">
