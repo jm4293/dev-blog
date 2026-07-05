@@ -9,7 +9,23 @@
  */
 import { createClient } from '@supabase/supabase-js';
 import { generateTags, getAllTagsFromDatabase } from '@/features/ai';
-import { parseRssFeed } from '@/features/posts/services/rss-parser';
+import { FeedFetchError, parseRssFeed } from '@/features/posts/services/rss-parser';
+
+// Medium 인프라를 쓰는 커스텀 도메인 — medium.com과 rate limit을 공유하므로 같은 레인에서 순차 처리
+// (피드 <generator>Medium</generator>으로 판별, 새 Medium 블로그 추가 시 여기에도 등록)
+const MEDIUM_CUSTOM_HOSTS = new Set([
+  'techblog.gccompany.co.kr', // 여기어때
+  'teamblog.joonggonara.co.kr', // 중고나라
+  'techblog.lotteon.com', // 롯데온
+  'techblog.yogiyo.co.kr', // 요기요
+  'tech.remember.co.kr', // 리멤버
+  'blog.mathpresso.com', // 매스프레소
+  'team.modusign.co.kr', // 모두싸인
+  'techblog.pet-friends.co.kr', // 펫프렌즈
+  'techblog.catenoid.net', // 카테노이드
+]);
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // 환경 변수 검증
 function validateEnv() {
@@ -117,9 +133,10 @@ async function main() {
     log('info', `✓ 총 ${allTags.length}개 태그 로드 완료`);
 
     // 3. 각 기업의 RSS 피드 병렬 파싱
-    // 같은 호스트(medium.com 등)는 순차 처리해서 rate limit(429) 방지, 호스트 간에는 동시 8개
+    // 같은 레인(호스트)은 순차 처리해서 rate limit(429) 방지, 레인 간에는 동시 8개
+    // Medium 커스텀 도메인(techblog.lotteon.com 등)은 medium.com과 rate limit을 공유하므로 한 레인으로 묶음
     log('info', '📡 RSS 피드 수집 시작...\n');
-    const byHost = new Map<string, typeof typedCompanies>();
+    const byLane = new Map<string, typeof typedCompanies>();
     for (const company of typedCompanies) {
       let host = '';
       try {
@@ -127,36 +144,58 @@ async function main() {
       } catch {
         host = company.rss_url;
       }
-      byHost.set(host, [...(byHost.get(host) || []), company]);
+      const lane = host === 'medium.com' || MEDIUM_CUSTOM_HOSTS.has(host) ? 'medium' : host;
+      byLane.set(lane, [...(byLane.get(lane) || []), company]);
     }
 
-    // Medium 커스텀 도메인(techblog.lotteon.com 등)도 medium.com 인프라라 429가 날 수 있어
-    // 429/타임아웃은 점증 백오프(10초 → 30초)로 최대 2회 재시도
+    // 재시도 정책:
+    // - 429: Retry-After 헤더 우선(최대 60초), 없으면 점증 백오프(10초 → 30초)
+    // - 타임아웃: 점증 백오프(10초 → 30초)
+    // - 404/5xx: 간헐 장애(flex 등)일 수 있어 3초 후 재시도
+    // - 403/406은 rss-parser가 브라우저 헤더로 이미 폴백했으므로 재시도 없이 실패 처리
     const parseWithRetry = async (rssUrl: string) => {
-      const delays = [10000, 30000];
+      const backoffDelays = [10000, 30000];
       for (let attempt = 0; ; attempt++) {
         try {
           return await parseRssFeed(rssUrl);
         } catch (error) {
-          const errorMsg = error instanceof Error ? error.message : String(error);
-          const retryable = errorMsg.includes('429') || errorMsg.includes('timed out');
-          if (!retryable || attempt >= delays.length) {
+          if (attempt >= backoffDelays.length) {
             throw error;
           }
-          await new Promise((resolve) => setTimeout(resolve, delays[attempt]));
+
+          const status = error instanceof FeedFetchError ? error.status : 0;
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          const isRateLimited = status === 429;
+          const isTransient = status === 404 || status >= 500 || errorMsg.includes('timed out');
+
+          if (!isRateLimited && !isTransient) {
+            throw error;
+          }
+
+          let waitMs = isRateLimited || errorMsg.includes('timed out') ? backoffDelays[attempt] : 3000;
+          if (isRateLimited && error instanceof FeedFetchError && error.retryAfterSeconds) {
+            waitMs = Math.min(error.retryAfterSeconds * 1000, 60000);
+          }
+          await sleep(waitMs);
         }
       }
     };
 
     const feedResults = (
-      await mapLimit(Array.from(byHost.values()), 8, async (group) => {
+      await mapLimit(Array.from(byLane.entries()), 8, async ([lane, group]) => {
+        // Medium은 연속 요청에 민감해서 성공해도 요청 간 3초 간격 유지
+        const requestGapMs = lane === 'medium' ? 3000 : 500;
         const results = [];
-        for (const company of group) {
+        for (let i = 0; i < group.length; i++) {
+          const company = group[i];
           try {
             results.push({ company, posts: await parseWithRetry(company.rss_url) });
           } catch (error) {
             const errorMsg = error instanceof Error ? error.message : String(error);
             results.push({ company, posts: null, reason: errorMsg });
+          }
+          if (i < group.length - 1) {
+            await sleep(requestGapMs);
           }
         }
         return results;

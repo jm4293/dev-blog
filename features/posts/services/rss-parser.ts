@@ -7,14 +7,38 @@
 import * as cheerio from 'cheerio';
 import Parser from 'rss-parser';
 
-const parser = new Parser({
-  timeout: 15000, // 15초 타임아웃
-  headers: {
-    'User-Agent': 'devBlog/1.0 (+https://devblog.kr)',
-    // 일부 피드(네이버 D2, 지마켓 등)는 XML 전용 Accept 헤더에 406을 반환하므로 */* 허용
-    Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
-  },
-});
+const FETCH_TIMEOUT_MS = 15000;
+
+const DEFAULT_HEADERS = {
+  'User-Agent': 'devBlog/1.0 (+https://devblog.kr)',
+  // 일부 피드(네이버 D2, 지마켓 등)는 XML 전용 Accept 헤더에 406을 반환하므로 */* 허용
+  Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
+};
+
+// WAF(봇 차단)에 403/406으로 거부당했을 때 폴백용 브라우저 헤더 (우아한형제들 등)
+const BROWSER_HEADERS = {
+  'User-Agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+  Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
+};
+
+const parser = new Parser();
+
+/**
+ * HTTP 레벨 실패 (상태 코드 기반 재시도 판단용)
+ * - retryAfterSeconds: 429 응답의 Retry-After 헤더 값
+ */
+export class FeedFetchError extends Error {
+  readonly status: number;
+  readonly retryAfterSeconds?: number;
+
+  constructor(status: number, retryAfterSeconds?: number) {
+    super(`RSS 파싱 실패: Status code ${status}`);
+    this.name = 'FeedFetchError';
+    this.status = status;
+    this.retryAfterSeconds = retryAfterSeconds;
+  }
+}
 
 interface ParsedPost {
   title: string;
@@ -23,6 +47,57 @@ interface ParsedPost {
   author?: string;
   publishedAt: string;
   content?: string;
+}
+
+function parseRetryAfter(response: Response): number | undefined {
+  const header = response.headers.get('retry-after');
+  if (!header) {
+    return undefined;
+  }
+
+  const seconds = Number(header);
+  if (Number.isFinite(seconds) && seconds >= 0) {
+    return seconds;
+  }
+
+  // HTTP-date 형식 (예: Wed, 21 Oct 2026 07:28:00 GMT)
+  const date = Date.parse(header);
+  if (!Number.isNaN(date)) {
+    return Math.max(0, Math.round((date - Date.now()) / 1000));
+  }
+
+  return undefined;
+}
+
+async function fetchWithTimeout(rssUrl: string, headers: Record<string, string>): Promise<Response> {
+  try {
+    return await fetch(rssUrl, {
+      headers,
+      redirect: 'follow',
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+    });
+  } catch (error) {
+    if (error instanceof Error && (error.name === 'TimeoutError' || error.name === 'AbortError')) {
+      throw new Error(`RSS 파싱 실패: Request timed out after ${FETCH_TIMEOUT_MS}ms`);
+    }
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`RSS 파싱 실패: ${errorMessage}`);
+  }
+}
+
+async function fetchFeedXml(rssUrl: string): Promise<string> {
+  let response = await fetchWithTimeout(rssUrl, DEFAULT_HEADERS);
+
+  // 봇 차단(403/406)은 브라우저 헤더로 1회 재요청
+  if (response.status === 403 || response.status === 406) {
+    response = await fetchWithTimeout(rssUrl, BROWSER_HEADERS);
+  }
+
+  if (!response.ok) {
+    throw new FeedFetchError(response.status, parseRetryAfter(response));
+  }
+
+  return response.text();
 }
 
 /**
@@ -46,8 +121,10 @@ function extractTextFromHtml(html: string | undefined): string {
  * RSS 피드에서 게시글 파싱
  */
 export async function parseRssFeed(rssUrl: string): Promise<ParsedPost[]> {
+  const xml = await fetchFeedXml(rssUrl);
+
   try {
-    const feed = await parser.parseURL(rssUrl);
+    const feed = await parser.parseString(xml);
 
     if (!feed.items || feed.items.length === 0) {
       return [];
