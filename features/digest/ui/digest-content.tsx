@@ -66,7 +66,16 @@ export function DigestContent({ digest }: DigestContentProps) {
             <ul className="flex flex-col gap-2">
               {digest.companyStats.map((stat) => (
                 <li key={stat.name} className="flex items-center justify-between text-sm">
-                  <span className="text-foreground">{stat.name}</span>
+                  {stat.slug ? (
+                    <Link
+                      href={`/companies/${stat.slug}`}
+                      className="text-foreground transition-colors hover:underline"
+                    >
+                      {stat.name}
+                    </Link>
+                  ) : (
+                    <span className="text-foreground">{stat.name}</span>
+                  )}
                   <span className="text-muted-foreground">{stat.count}개</span>
                 </li>
               ))}
