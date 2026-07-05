@@ -23,10 +23,14 @@ export function formatPostDate(date: Date | string): string {
   const publishedDate = typeof date === 'string' ? new Date(date) : date;
 
   const formattedDate = format(publishedDate, 'yyyy-MM-dd');
-  const relativeTime = formatDistanceToNow(publishedDate, {
-    addSuffix: true,
-    locale: ko,
-  });
+  // RSS pubDate가 미래 시각이거나 기기 시계가 느린 경우 "n분 후"로 표시되는 것을 방지
+  const relativeTime =
+    publishedDate > new Date()
+      ? '방금 전'
+      : formatDistanceToNow(publishedDate, {
+          addSuffix: true,
+          locale: ko,
+        });
 
   return `${formattedDate} · ${relativeTime}`;
 }
