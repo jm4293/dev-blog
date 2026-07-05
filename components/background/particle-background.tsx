@@ -94,14 +94,7 @@ export function ParticleBackground({
       }
     }
 
-    function rescatterOffscreenParticles() {
-      const particles = particlesRef.current;
-      for (let i = 0; i < particles.length; i += 1) {
-        const p = particles[i];
-        if (p.x > width) p.x = Math.random() * width;
-        if (p.y > height) p.y = Math.random() * height;
-      }
-    }
+    let densityTimer: number | null = null;
 
     function resize() {
       const newWidth = window.innerWidth;
@@ -110,11 +103,16 @@ export function ParticleBackground({
 
       const widthChanged = newWidth !== lastWidth;
       const dprChanged = newDpr !== dpr;
+      const heightGrew = newHeight > lockedHeight;
 
-      // On touch devices, ignore height-only changes triggered by URL bar collapse on scroll.
-      if (isTouchDevice && !widthChanged && !dprChanged) {
+      // On touch devices, ignore height-only shrinks triggered by URL bar show/hide on scroll.
+      // Height growth (e.g. real window resize) must still pass through.
+      if (isTouchDevice && !widthChanged && !dprChanged && !heightGrew) {
         return;
       }
+
+      const prevWidth = width;
+      const prevHeight = height;
 
       width = newWidth;
       lastWidth = newWidth;
@@ -124,44 +122,78 @@ export function ParticleBackground({
       height = isTouchDevice ? lockedHeight : newHeight;
 
       applyCanvasSize();
-      // Width or DPR changed: keep existing particles, just rescatter any that fell offscreen.
-      rescatterOffscreenParticles();
+
+      // Stretch existing particles with the viewport instead of reshuffling them —
+      // re-randomizing on every resize event is visually jarring while dragging.
+      const scaleX = width / prevWidth;
+      const scaleY = height / prevHeight;
+      const particles = particlesRef.current;
+      for (let i = 0; i < particles.length; i += 1) {
+        particles[i].x *= scaleX;
+        particles[i].y *= scaleY;
+      }
+
+      // Top up / trim particle count only after the resize settles.
+      if (densityTimer !== null) window.clearTimeout(densityTimer);
+      densityTimer = window.setTimeout(syncParticleDensity, 300);
+    }
+
+    function makeParticle(): Particle {
+      const radius = Math.random() * 1.6 + 0.4;
+      const baseOpacity = Math.random() * 0.6 + 0.3;
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+        radius,
+        baseOpacity,
+        twinkle: baseOpacity,
+      };
+    }
+
+    function addTwinkleTween(particle: Particle) {
+      if (reduceMotion) return;
+      const tween = gsap.to(particle, {
+        twinkle: particle.baseOpacity * 0.2,
+        duration: 1.5 + Math.random() * 3.2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        delay: Math.random() * 2,
+      });
+      tweensRef.current.push(tween);
+    }
+
+    // Match particle count to the current area: new ones spawn faded via their
+    // twinkle tween, extras are dropped from the end. tweensRef stays index-aligned
+    // with particlesRef (both only ever append / truncate).
+    function syncParticleDensity() {
+      const target = Math.floor(width * height * density);
+      const particles = particlesRef.current;
+      if (particles.length < target) {
+        for (let i = particles.length; i < target; i += 1) {
+          const particle = makeParticle();
+          particles.push(particle);
+          addTwinkleTween(particle);
+        }
+      } else if (particles.length > target) {
+        tweensRef.current.splice(target).forEach((tween) => tween.kill());
+        particles.length = target;
+      }
     }
 
     function generateParticles() {
-      const count = Math.floor(width * height * density);
-      const particles: Particle[] = [];
-      for (let i = 0; i < count; i += 1) {
-        const radius = Math.random() * 1.6 + 0.4;
-        const baseOpacity = Math.random() * 0.6 + 0.3;
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.12,
-          vy: (Math.random() - 0.5) * 0.12,
-          radius,
-          baseOpacity,
-          twinkle: baseOpacity,
-        });
-      }
-      particlesRef.current = particles;
-
       tweensRef.current.forEach((tween) => tween.kill());
       tweensRef.current = [];
+      particlesRef.current = [];
 
-      if (reduceMotion) return;
-
-      particles.forEach((particle) => {
-        const tween = gsap.to(particle, {
-          twinkle: particle.baseOpacity * 0.2,
-          duration: 1.5 + Math.random() * 3.2,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-          delay: Math.random() * 2,
-        });
-        tweensRef.current.push(tween);
-      });
+      const count = Math.floor(width * height * density);
+      for (let i = 0; i < count; i += 1) {
+        const particle = makeParticle();
+        particlesRef.current.push(particle);
+        addTwinkleTween(particle);
+      }
     }
 
     function step() {
@@ -227,6 +259,7 @@ export function ParticleBackground({
       window.removeEventListener('mouseleave', handleMouseLeave);
       tweensRef.current.forEach((tween) => tween.kill());
       tweensRef.current = [];
+      if (densityTimer !== null) window.clearTimeout(densityTimer);
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
   }, [density, lightModeOpacity, darkModeOpacity, mouseRadius, mouseStrength, isCosmicPath]);
