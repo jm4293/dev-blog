@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { APP, buildPageMetadata, formatWeekLabel, getRecentWeeks, toISOWeekString } from '@/utils';
+import { APP, buildPageMetadata, formatWeekLabel, formatWeekRange, getRecentWeeks, toISOWeekString } from '@/utils';
 import { CalendarDays } from 'lucide-react';
 
 export const revalidate = 3600; // 1시간
@@ -48,10 +48,7 @@ export default function DigestIndexPage() {
                     {formatWeekLabel(week.week)}
                     {isCurrent && <span className="ml-2 text-xs font-normal text-muted-foreground">(진행 중)</span>}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {week.start.getMonth() + 1}월 {week.start.getDate()}일 ~ {week.end.getMonth() + 1}월{' '}
-                    {week.end.getDate()}일
-                  </p>
+                  <p className="text-xs text-muted-foreground">{formatWeekRange(week)}</p>
                 </div>
               </Link>
             </li>

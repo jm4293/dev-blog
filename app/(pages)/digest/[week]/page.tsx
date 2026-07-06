@@ -5,6 +5,7 @@ import {
   APP,
   buildPageMetadata,
   formatWeekLabel,
+  formatWeekRange,
   getRecentWeeks,
   getWeekArticleDates,
   isFutureWeek,
@@ -117,8 +118,7 @@ export default async function DigestWeekPage({ params }: PageProps) {
         </nav>
         <h1 className="text-2xl font-bold text-foreground md:text-4xl">{label} 인기 글</h1>
         <p className="mt-2 text-muted-foreground">
-          {range.start.getMonth() + 1}월 {range.start.getDate()}일 ~ {range.end.getMonth() + 1}월 {range.end.getDate()}
-          일 · 새 글 {digest.totalCount}개
+          {formatWeekRange(range)} · 새 글 {digest.totalCount}개
         </p>
       </header>
 
