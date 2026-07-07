@@ -33,28 +33,31 @@ export default function DigestIndexPage() {
         <p className="mt-2 text-muted-foreground">한 주 동안 가장 인기 있었던 기술 블로그 글을 모아봤어요.</p>
       </header>
 
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {weeks.map((week) => {
-          const isCurrent = week.week === currentWeek;
-          return (
-            <li key={week.week}>
-              <Link
-                href={`/digest/${week.week}`}
-                className="flex items-center gap-3 rounded-xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <CalendarDays className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
-                <div>
-                  <p className="font-semibold text-foreground">
-                    {formatWeekLabel(week.week)}
-                    {isCurrent && <span className="ml-2 text-xs font-normal text-muted-foreground">(진행 중)</span>}
-                  </p>
-                  <p className="text-xs text-muted-foreground">{formatWeekRange(week)}</p>
-                </div>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      {/* data-nosnippet: 검색 스니펫에 주차 목록이 발췌되지 않도록 제외 → meta description이 노출됨 */}
+      <section aria-label="주차 목록" data-nosnippet="">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {weeks.map((week) => {
+            const isCurrent = week.week === currentWeek;
+            return (
+              <li key={week.week}>
+                <Link
+                  href={`/digest/${week.week}`}
+                  className="flex items-center gap-3 rounded-xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <CalendarDays className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden />
+                  <div>
+                    <p className="font-semibold text-foreground">
+                      {formatWeekLabel(week.week)}
+                      {isCurrent && <span className="ml-2 text-xs font-normal text-muted-foreground">(진행 중)</span>}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{formatWeekRange(week)}</p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
     </div>
   );
 }

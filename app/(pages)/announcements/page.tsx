@@ -25,9 +25,11 @@ export default async function AnnouncementsPage({ searchParams }: AnnouncementsP
     <div className="container mx-auto px-4 py-8">
       <header className="mb-6">
         <h1 className="text-2xl font-bold text-foreground md:text-4xl">새로운 소식</h1>
+        <p className="mt-2 text-muted-foreground">devBlog.kr의 기능 업데이트와 새 소식을 전해드립니다.</p>
       </header>
 
-      <section aria-label="공지사항 목록">
+      {/* data-nosnippet: 검색 스니펫에 공지 목록이 발췌되지 않도록 제외 → meta description이 노출됨 */}
+      <section aria-label="공지사항 목록" data-nosnippet="">
         <Suspense fallback={<SimpleSkeleton />}>
           <AnnouncementsContainer data={announcementsPromise} />
         </Suspense>

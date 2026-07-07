@@ -41,7 +41,8 @@ export default async function TagsPage() {
         <p className="mt-2 text-muted-foreground">관심 있는 기술 주제의 글만 골라 읽어보세요.</p>
       </header>
 
-      <div className="flex flex-col gap-8">
+      {/* data-nosnippet: 검색 스니펫에 태그 목록이 발췌되지 않도록 제외 → meta description이 노출됨 */}
+      <div data-nosnippet="" className="flex flex-col gap-8">
         {Array.from(grouped.entries()).map(([category, categoryTags]) => (
           <section key={category} aria-label={`${category} 태그 목록`}>
             <h2 className="mb-3 text-lg font-semibold text-foreground">{category}</h2>

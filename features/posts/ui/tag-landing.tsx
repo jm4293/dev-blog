@@ -72,7 +72,8 @@ export async function TagLanding({ slug, page }: TagLandingProps) {
         </p>
       </header>
 
-      <section aria-label={`${tag.name} 게시글 목록`}>
+      {/* data-nosnippet: 검색 스니펫에 게시글 목록이 발췌되지 않도록 제외 → meta description이 노출됨 */}
+      <section aria-label={`${tag.name} 게시글 목록`} data-nosnippet="">
         {postsData.posts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <p className="text-lg font-semibold text-foreground">아직 등록된 글이 없습니다</p>

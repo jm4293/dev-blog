@@ -73,13 +73,12 @@ export default async function PostPage() {
       />
 
       <header className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground md:text-4xl">
-          <span className="sr-only">기술블로그 모음 — 여러 기업의 새 글을 한 곳에서 보여드립니다.</span>
-          포스트
-        </h1>
+        <h1 className="text-2xl font-bold text-foreground md:text-4xl">포스트</h1>
+        <p className="mt-2 text-muted-foreground">여러 기업 기술블로그의 새 글을 한 곳에서 확인하세요.</p>
       </header>
 
-      <section aria-label="블로그 게시글 목록">
+      {/* data-nosnippet: 검색 스니펫에 게시글 목록이 발췌되지 않도록 제외 → meta description이 노출됨 */}
+      <section aria-label="블로그 게시글 목록" data-nosnippet="">
         {/* useSearchParams를 쓰는 컨테이너는 정적 페이지에서 Suspense 필수.
             fallback이 곧 정적 HTML이 되므로 스켈레톤 대신 실제 콘텐츠를 렌더링한다. */}
         <Suspense fallback={<PostsFallback initialData={postsData} trendingSlot={trendingSlot} />}>

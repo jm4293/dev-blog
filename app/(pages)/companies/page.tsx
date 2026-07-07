@@ -33,22 +33,27 @@ export default async function CompaniesPage() {
         <p className="mt-2 text-muted-foreground">{companies.length}개 기업의 기술 블로그를 회사별로 모아보세요.</p>
       </header>
 
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {companies.map((company) => (
-          <li key={company.id}>
-            <Link
-              href={`/companies/${slugify(company.name_en || company.name)}`}
-              className="flex h-full items-center gap-3 rounded-xl border border-border bg-card p-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <BlogLogoImage logoUrl={company.logo_url} companyName={company.name} width={40} height={40} />
-              <div className="min-w-0">
-                <p className="truncate font-semibold text-foreground">{company.name}</p>
-                {company.description && <p className="truncate text-xs text-muted-foreground">{company.description}</p>}
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {/* data-nosnippet: 검색 스니펫에 목록이 발췌되지 않도록 제외 → meta description이 노출됨 */}
+      <section aria-label="기업 목록" data-nosnippet="">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {companies.map((company) => (
+            <li key={company.id}>
+              <Link
+                href={`/companies/${slugify(company.name_en || company.name)}`}
+                className="flex h-full items-center gap-3 rounded-xl border border-border bg-card p-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <BlogLogoImage logoUrl={company.logo_url} companyName={company.name} width={40} height={40} />
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-foreground">{company.name}</p>
+                  {company.description && (
+                    <p className="truncate text-xs text-muted-foreground">{company.description}</p>
+                  )}
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

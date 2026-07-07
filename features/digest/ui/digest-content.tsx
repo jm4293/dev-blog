@@ -14,7 +14,8 @@ interface DigestContentProps {
  */
 export function DigestContent({ digest }: DigestContentProps) {
   return (
-    <div className="flex flex-col gap-10">
+    // data-nosnippet: 검색 스니펫에 순위·통계가 발췌되지 않도록 제외 → meta description이 노출됨
+    <div data-nosnippet="" className="flex flex-col gap-10">
       {/* 인기 글 순위 */}
       <section aria-label="주간 인기 글 순위">
         <h2 className="mb-4 text-lg font-bold text-foreground md:text-xl">인기 글 TOP {digest.topPosts.length}</h2>
