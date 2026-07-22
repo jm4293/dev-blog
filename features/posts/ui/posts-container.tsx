@@ -2,7 +2,6 @@
 
 import type { ReactNode } from 'react';
 import { Pagination } from '@/components/pagination';
-import { PageLoadingSpinner } from '@/components/skeleton';
 import { useLoginStatusHandler, useSearchFilters } from '../hooks';
 import { isDefaultFilters, usePosts } from '../hooks/use-posts';
 import type { GetPostsResponse } from '../services/fetch-posts';
@@ -58,7 +57,12 @@ export function PostsContainer({ initialData, trendingSlot }: PostsContainerProp
           </div>
         </div>
       ) : (
-        <>
+        // 재조회 중에는 keepPreviousData로 유지된 이전 목록을 가리지 않고
+        // 살짝 흐리게만 처리한다 (전체 화면 블로킹 금지 — 사용자는 계속 읽을 수 있어야 함)
+        <div
+          aria-busy={isLoading}
+          className={`transition-opacity duration-200 ${isLoading ? 'pointer-events-none opacity-60' : ''}`}
+        >
           <PostList posts={posts} />
           {totalPages > 0 && (
             <Pagination
@@ -69,10 +73,8 @@ export function PostsContainer({ initialData, trendingSlot }: PostsContainerProp
               onPageChange={filters.handlePageChange}
             />
           )}
-        </>
+        </div>
       )}
-
-      {isLoading && <PageLoadingSpinner overlay />}
     </>
   );
 }
