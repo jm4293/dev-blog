@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    name: 린트 · 타입 검사 · 빌드
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 저장소 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: Node.js 20 설치
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 패키지 설치
+        run: npm ci
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: TypeScript 타입 검사
+        run: npm run type-check
+
+      # SSG 페이지가 빌드 시 Supabase를 조회하므로 공개 env가 필요함
+      - name: 프로덕션 빌드
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}

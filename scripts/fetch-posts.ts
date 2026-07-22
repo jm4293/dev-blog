@@ -363,6 +363,20 @@ async function main() {
       }
     }
 
+    // 실패율이 임계치를 넘으면 워크플로우가 실패로 표시되도록 비정상 종료
+    // (개별 피드 실패가 조용히 누적되어 특정 블로그 수집이 장기간 끊기는 것을 방지)
+    const FAILURE_RATE_THRESHOLD = 0.3;
+    const failureRate = stats.companiesProcessed > 0 ? failedCompanies.length / stats.companiesProcessed : 0;
+
+    if (failureRate >= FAILURE_RATE_THRESHOLD) {
+      log(
+        'error',
+        `❌ 수집 실패율 ${(failureRate * 100).toFixed(0)}%가 임계치(${FAILURE_RATE_THRESHOLD * 100}%) 이상 — 비정상 종료`,
+        { failed: failedCompanies },
+      );
+      process.exit(1);
+    }
+
     // 정상 종료
     process.exit(0);
   } catch (error) {

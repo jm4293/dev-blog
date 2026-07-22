@@ -14,6 +14,9 @@ jobs:
   fetch-posts:
     name: 블로그 게시글 수집
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
 
     steps:
       # 1단계: 저장소 코드 체크아웃
@@ -42,12 +45,24 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
 
-      # 5단계: 실패 시 로그 파일 업로드
-      - name: 실패 시 로그 업로드
+      # 5단계: 실패 시 GitHub 이슈 생성 (같은 라벨의 열린 이슈가 있으면 중복 생성하지 않음)
+      - name: 실패 시 이슈 생성
         if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fetch-posts-logs
-          path: |
-            *.log
-          retention-days: 7
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create collection-failure --repo "$GITHUB_REPOSITORY" --color D93F0B --description "자동 수집 실패" --force
+          EXISTING=$(gh issue list --repo "$GITHUB_REPOSITORY" --label collection-failure --state open --json number --jq 'length')
+          if [ "$EXISTING" -gt 0 ]; then
+            echo "열린 수집 실패 이슈가 이미 있어 코멘트만 추가합니다."
+            ISSUE=$(gh issue list --repo "$GITHUB_REPOSITORY" --label collection-failure --state open --json number --jq '.[0].number')
+            gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body "수집이 다시 실패했습니다: $RUN_URL"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" \
+              --title "🚨 블로그 게시글 수집 실패 ($(date -u +%Y-%m-%d))" \
+              --label collection-failure \
+              --body "자동 수집 워크플로우가 실패했습니다. 실행 로그에서 실패한 블로그 목록(⚠️ 수집 실패 블로그)을 확인하세요.
+
+          실행 로그: $RUN_URL"
+          fi
