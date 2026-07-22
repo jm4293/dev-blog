@@ -9,7 +9,7 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
   if (announcements.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-lg text-gray-500 dark:text-gray-400">공지사항이 없습니다.</p>
+        <p className="text-lg text-muted-foreground">공지사항이 없습니다.</p>
       </div>
     );
   }

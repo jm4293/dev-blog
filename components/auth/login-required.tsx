@@ -10,15 +10,15 @@ export function LoginRequired({
   description = 'GitHub 계정으로 로그인하고 서비스를 이용하세요',
 }: LoginRequiredProps) {
   return (
-    <div className="mx-auto max-w-md rounded-lg border border-gray-200 bg-gray-50 p-8 dark:border-gray-800 dark:bg-gray-900">
+    <div className="mx-auto max-w-md rounded-lg border border-border bg-card p-8">
       <div className="mb-6 flex flex-col items-center">
-        <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">{title}</h2>
-        <p className="text-center text-gray-600 dark:text-gray-400">{description}</p>
+        <h2 className="mb-2 text-2xl font-bold text-foreground">{title}</h2>
+        <p className="text-center text-muted-foreground">{description}</p>
       </div>
 
       <Link
         href="/auth/login"
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 py-3 font-semibold text-background transition-opacity hover:opacity-90"
       >
         <>
           <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

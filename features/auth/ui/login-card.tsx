@@ -41,8 +41,8 @@ export function LoginCard({ callbackError }: LoginCardProps) {
       </ul>
 
       {errorMessage && !isRedirecting && (
-        <div role="alert" className="mb-6 rounded-lg border border-red-400/40 bg-red-500/15 p-4">
-          <p className="text-sm text-red-200">{errorMessage}</p>
+        <div role="alert" className="mb-6 rounded-lg border border-destructive/40 bg-destructive/15 p-4">
+          <p className="text-sm text-destructive-foreground">{errorMessage}</p>
         </div>
       )}
 

@@ -93,6 +93,8 @@ button {
     /* Studied tokens from parallax.kr DNA */
     --sapphire: 227 95% 64%;
     --sapphire-foreground: 0 0% 100%;
+    --success: 152 55% 36%;
+    --success-foreground: 0 0% 100%;
   }
   .dark {
     /* Dark mode — paper #07090F, subtle blue ink tilt */
@@ -124,6 +126,8 @@ button {
     --chart-5: 340 75% 55%;
     --sapphire: 227 95% 70%;
     --sapphire-foreground: 225 35% 4%;
+    --success: 152 50% 52%;
+    --success-foreground: 225 35% 4%;
   }
 }
 

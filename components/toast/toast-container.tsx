@@ -26,18 +26,18 @@ export function ToastContainer() {
         <div key={toast.id} className="pointer-events-auto duration-300 animate-in fade-in slide-in-from-top-2">
           <div
             className={cn(
-              'flex items-center gap-3 rounded-lg px-4 py-3 shadow-lg',
-              toast.type === 'success' && 'border border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950',
-              toast.type === 'error' && 'border border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950',
-              toast.type === 'info' && 'border border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950',
+              'flex items-center gap-3 rounded-lg border bg-card px-4 py-3 shadow-lg',
+              toast.type === 'success' && 'border-success/40',
+              toast.type === 'error' && 'border-destructive/40',
+              toast.type === 'info' && 'border-sapphire/40',
             )}
           >
             <div
               className={cn(
                 'flex-shrink-0',
-                toast.type === 'success' && 'text-green-600 dark:text-green-400',
-                toast.type === 'error' && 'text-red-600 dark:text-red-400',
-                toast.type === 'info' && 'text-blue-600 dark:text-blue-400',
+                toast.type === 'success' && 'text-success',
+                toast.type === 'error' && 'text-destructive',
+                toast.type === 'info' && 'text-sapphire',
               )}
             >
               {toast.type === 'success' && <CheckCircle size={20} />}
@@ -45,27 +45,11 @@ export function ToastContainer() {
               {toast.type === 'info' && <Info size={20} />}
             </div>
 
-            <p
-              className={cn(
-                'flex-1 text-sm font-medium',
-                toast.type === 'success' && 'text-green-800 dark:text-green-200',
-                toast.type === 'error' && 'text-red-800 dark:text-red-200',
-                toast.type === 'info' && 'text-blue-800 dark:text-blue-200',
-              )}
-            >
-              {toast.message}
-            </p>
+            <p className="flex-1 text-sm font-medium text-foreground">{toast.message}</p>
 
             <button
               onClick={() => removeToast(toast.id)}
-              className={cn(
-                'flex-shrink-0 transition-colors',
-                toast.type === 'success' &&
-                  'text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300',
-                toast.type === 'error' && 'text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300',
-                toast.type === 'info' &&
-                  'text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300',
-              )}
+              className="flex-shrink-0 text-muted-foreground transition-colors hover:text-foreground"
             >
               <X size={18} />
             </button>
