@@ -48,13 +48,25 @@ export default function PrivacyPolicyPage() {
                 <li>GitHub 사용자 ID</li>
               </ul>
             </div>
-            <div className="rounded-lg bg-muted p-4">
+            <div className="mb-4 rounded-lg bg-muted p-4">
               <h3 className="mb-2 font-semibold text-foreground">자동 수집 정보</h3>
               <ul className="list-inside list-disc text-muted-foreground">
                 <li>서비스 이용 기록 (접속 로그, IP 주소)</li>
                 <li>쿠키 및 기기 정보</li>
                 <li>즐겨찾기 목록 및 검색 기록</li>
+                <li>서비스 이용 통계를 위한 행태 정보 (Google Analytics 쿠키 기반)</li>
               </ul>
+            </div>
+            <div className="rounded-lg bg-muted p-4">
+              <h3 className="mb-2 font-semibold text-foreground">선택 항목 (새 글 알림 신청 시 수집)</h3>
+              <ul className="list-inside list-disc text-muted-foreground">
+                <li>웹 푸시 구독 정보 (브라우저 푸시 endpoint, 암호화 키)</li>
+                <li>알림 수신 기기의 운영체제·브라우저 종류</li>
+                <li>관심 태그 및 관심 기업 설정</li>
+              </ul>
+              <p className="mt-2 text-sm text-muted-foreground">
+                푸시 구독 정보는 알림 발송 목적으로만 사용되며, 알림 해제 또는 회원 탈퇴 시 즉시 삭제됩니다.
+              </p>
             </div>
           </section>
 
@@ -131,9 +143,13 @@ export default function PrivacyPolicyPage() {
                     <td className="py-2">Supabase Inc.</td>
                     <td className="py-2">데이터베이스 호스팅, 사용자 인증 서비스</td>
                   </tr>
-                  <tr>
+                  <tr className="border-b border-border">
                     <td className="py-2">Vercel Inc.</td>
                     <td className="py-2">웹 애플리케이션 호스팅, CDN 서비스</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2">Google LLC</td>
+                    <td className="py-2">서비스 이용 통계 분석 (Google Analytics)</td>
                   </tr>
                 </tbody>
               </table>

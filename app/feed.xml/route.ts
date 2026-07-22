@@ -79,11 +79,11 @@ function generateRSS(posts: RSSPost[], baseUrl: string): string {
       const content = post.summary || '';
 
       return `    <item>
-      <title><![CDATA[${escapeXml(post.title)}]]></title>
+      <title><![CDATA[${cdata(post.title)}]]></title>
       <link>${escapeXml(post.url)}</link>
-      <description><![CDATA[${escapeXml(content)}]]></description>
+      <description><![CDATA[${cdata(content)}]]></description>
       <author>${escapeXml(post.author || companyName)}</author>
-      <category><![CDATA[${escapeXml(companyName)}]]></category>
+      <category><![CDATA[${cdata(companyName)}]]></category>
       <pubDate>${pubDate}</pubDate>
       <guid isPermaLink="true">${escapeXml(post.url)}</guid>
     </item>`;
@@ -118,4 +118,14 @@ function escapeXml(text: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
+}
+
+/**
+ * CDATA 섹션용 원문 처리
+ * CDATA 안에서는 XML 이스케이프가 불필요하며(이중 이스케이프되어 리더에 &amp;로 표시됨),
+ * 종료 시퀀스 `]]>`만 CDATA를 분할해 무력화한다.
+ */
+function cdata(text: string): string {
+  if (!text) return '';
+  return text.split(']]>').join(']]]]><![CDATA[>');
 }

@@ -1,11 +1,17 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { buildPageMetadata } from '@/utils';
 import { LoginCard } from '@/features/auth';
 import { CosmicBackground } from '@/components/background';
 
 export const metadata: Metadata = {
-  title: '로그인',
-  description: 'GitHub 계정으로 devBlog.kr에 로그인하고 즐겨찾기와 새 글 알림을 이용하세요.',
+  ...buildPageMetadata({
+    title: '로그인',
+    description: 'GitHub 계정으로 devBlog.kr에 로그인하고 즐겨찾기와 새 글 알림을 이용하세요.',
+    path: '/auth/login',
+  }),
+  // 로그인 페이지는 검색 결과에 노출할 필요가 없음
+  robots: { index: false, follow: true },
 };
 
 interface PageProps {

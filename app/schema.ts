@@ -28,7 +28,7 @@ export const websiteSchema = {
   description: '개발/기술 블로그를 한 곳에서 모아보는 플랫폼',
   potentialAction: {
     '@type': 'SearchAction',
-    target: `${baseUrl}/?search={search_term_string}`,
+    target: `${baseUrl}/posts?search={search_term_string}`,
     'query-input': 'required name=search_term_string',
   },
 } as const;
