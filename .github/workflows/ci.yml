@@ -7,7 +7,9 @@ on:
 
 jobs:
   quality:
-    name: 린트 · 타입 검사 · 빌드
+    # 빌드·타입 검사는 Vercel 배포 파이프라인이 push마다 수행하므로 여기서는 중복하지 않는다.
+    # CI는 Vercel이 하지 않는 검증(ESLint, 향후 테스트)을 담당한다.
+    name: 린트 · 타입 검사
     runs-on: ubuntu-latest
 
     steps:
@@ -28,11 +30,3 @@ jobs:
 
       - name: TypeScript 타입 검사
         run: npm run type-check
-
-      # SSG 페이지가 빌드 시 Supabase를 조회하므로 공개 env가 필요함
-      - name: 프로덕션 빌드
-        run: npm run build
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
