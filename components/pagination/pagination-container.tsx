@@ -67,7 +67,7 @@ export function Pagination({
 
   return (
     <div className="mt-12 flex flex-col items-center gap-6">
-      <nav className="flex items-center justify-center gap-2">
+      <nav aria-label="페이지네이션" className="flex items-center justify-center gap-2">
         <PaginationButton
           page={1}
           isDisabled={currentPage === 1}

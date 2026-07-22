@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useFocusTrap } from '@/hooks';
 import { UserX } from 'lucide-react';
 
 interface DeleteAccountConfirmModalProps {
@@ -13,16 +17,40 @@ export function DeleteAccountConfirmModal({
   onOpenChange,
   onConfirm,
 }: DeleteAccountConfirmModalProps) {
+  const dialogRef = useFocusTrap<HTMLDivElement>(open);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onOpenChange(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onOpenChange]);
+
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-2xl">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-account-title"
+        tabIndex={-1}
+        className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-2xl"
+      >
         <div className="mb-4 flex items-center gap-3">
           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-destructive/10">
-            <UserX className="h-6 w-6 text-destructive" />
+            <UserX className="h-6 w-6 text-destructive" aria-hidden="true" />
           </div>
-          <h3 className="text-xl font-bold text-foreground">회원탈퇴 확인</h3>
+          <h3 id="delete-account-title" className="text-xl font-bold text-foreground">
+            회원탈퇴 확인
+          </h3>
         </div>
 
         <div className="mb-6 space-y-2">

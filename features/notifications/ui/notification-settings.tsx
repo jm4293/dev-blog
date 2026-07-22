@@ -86,6 +86,8 @@ export function NotificationSettings() {
         </div>
         <button
           onClick={handleToggleAll}
+          role="switch"
+          aria-checked={isAllEnabled}
           className={`relative h-6 w-11 rounded-full transition-colors duration-200 focus:ring-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 ${
             isAllEnabled ? 'bg-foreground' : 'bg-border'
           }`}
@@ -135,6 +137,8 @@ export function NotificationSettings() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleToggleDevice(group.device_os, group.enabled)}
+                        role="switch"
+                        aria-checked={group.enabled}
                         className={`relative h-5 w-9 rounded-full transition-colors duration-200 focus:ring-offset-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 ${
                           group.enabled ? 'bg-foreground' : 'bg-border'
                         }`}

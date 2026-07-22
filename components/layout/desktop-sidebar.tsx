@@ -116,6 +116,13 @@ export function DesktopSidebar() {
       style={{ width: COLLAPSED_W }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onFocus={handleMouseEnter}
+      onBlur={(event) => {
+        // 포커스가 사이드바 밖으로 나갈 때만 접기 (키보드 사용자도 라벨을 볼 수 있게)
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          handleMouseLeave();
+        }
+      }}
     >
       {/* Logo */}
       <div className="flex h-16 items-center px-4 py-3">

@@ -54,8 +54,22 @@ export function RecentViewPostCard({
       {/* Post Card */}
       <article
         onClick={handleCardClick}
+        role={isEditMode ? 'checkbox' : undefined}
+        aria-checked={isEditMode ? isSelected : undefined}
+        aria-label={isEditMode ? `${view.post.title} 선택` : undefined}
+        tabIndex={isEditMode ? 0 : undefined}
+        onKeyDown={
+          isEditMode
+            ? (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onSelect(view.post_id);
+                }
+              }
+            : undefined
+        }
         className={cn(
-          'glass-card rounded-xl p-6 transition-all',
+          'glass-card rounded-xl p-6 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30',
           isEditMode
             ? isSelected
               ? 'cursor-pointer ring-2 ring-foreground'

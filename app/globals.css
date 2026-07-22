@@ -7,7 +7,30 @@
 }
 
 html {
-  @apply scroll-smooth bg-background;
+  @apply bg-background;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* 부드러운 스크롤은 모션 축소 선호가 아닐 때만 */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+/* 모션 축소 선호 시 CSS 애니메이션/트랜지션 최소화 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
@@ -172,6 +195,10 @@ button {
   }
   .glass-sidebar {
     @apply border-r border-border/50 bg-background/85 shadow-lg backdrop-blur-xl;
+  }
+  /* iOS 홈 인디케이터 등 safe area를 고려한 하단 패딩 */
+  .pb-safe-6 {
+    padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 1rem));
   }
 }
 

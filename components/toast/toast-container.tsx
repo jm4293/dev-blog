@@ -21,7 +21,11 @@ export function ToastContainer() {
   }
 
   return createPortal(
-    <div className="pointer-events-none fixed left-1/2 top-20 z-[999] flex w-full max-w-md -translate-x-1/2 transform flex-col gap-3 px-4">
+    <div
+      role="status"
+      aria-live="polite"
+      className="pointer-events-none fixed left-1/2 top-20 z-[999] flex w-full max-w-md -translate-x-1/2 transform flex-col gap-3 px-4"
+    >
       {toasts.map((toast) => (
         <div key={toast.id} className="pointer-events-auto duration-300 animate-in fade-in slide-in-from-top-2">
           <div
@@ -49,9 +53,10 @@ export function ToastContainer() {
 
             <button
               onClick={() => removeToast(toast.id)}
+              aria-label="알림 닫기"
               className="flex-shrink-0 text-muted-foreground transition-colors hover:text-foreground"
             >
-              <X size={18} />
+              <X size={18} aria-hidden="true" />
             </button>
           </div>
         </div>

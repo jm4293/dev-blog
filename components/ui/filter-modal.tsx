@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect } from 'react';
+import { useFocusTrap } from '@/hooks';
 import { X } from 'lucide-react';
 
 interface FilterModalProps {
@@ -33,6 +34,8 @@ export function FilterModal({
   icon,
   fixedHeight = false,
 }: FilterModalProps) {
+  const dialogRef = useFocusTrap<HTMLDivElement>(isOpen);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -62,13 +65,15 @@ export function FilterModal({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div aria-hidden="true" className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
       <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label={title}
+          tabIndex={-1}
           className={`glass-modal flex w-full animate-slide-up flex-col rounded-t-2xl shadow-2xl sm:max-w-lg sm:animate-scale-in sm:rounded-2xl ${
             fixedHeight ? 'h-[85vh] sm:h-[80vh]' : 'max-h-[85vh] sm:max-h-[80vh]'
           }`}
@@ -98,7 +103,7 @@ export function FilterModal({
           </div>
 
           {/* 콘텐츠 */}
-          <div className="flex-1 overflow-y-auto px-6 py-4">
+          <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-4">
             {isLoading ? (
               <div className="flex flex-col items-center justify-center gap-3 py-12">
                 <div className="h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />

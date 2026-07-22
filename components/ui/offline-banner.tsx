@@ -25,10 +25,11 @@ export function OfflineBanner() {
   if (isOnline) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div role="alert" className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
       <div className="mx-4 flex max-w-sm flex-col items-center gap-4 rounded-2xl bg-card p-8 text-center shadow-2xl">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
           <svg
+            aria-hidden="true"
             className="h-8 w-8 text-destructive"
             fill="none"
             viewBox="0 0 24 24"

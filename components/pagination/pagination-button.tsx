@@ -21,7 +21,8 @@ export function PaginationButton({
   className = '',
   ariaLabel,
 }: PaginationButtonProps) {
-  const baseStyles = 'rounded-lg font-semibold transition-colors';
+  const baseStyles =
+    'rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30';
 
   const getStyles = () => {
     if (isActive) {

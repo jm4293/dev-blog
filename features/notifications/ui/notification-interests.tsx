@@ -168,7 +168,8 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
               value={tagQuery}
               onChange={(event) => setTagQuery(event.target.value)}
               placeholder="태그 검색"
-              className="w-full rounded-lg border border-border bg-card py-1.5 pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-foreground/30"
+              aria-label="태그 검색"
+              className="w-full rounded-lg border border-border bg-card py-1.5 pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
             />
           </div>
 
@@ -238,7 +239,8 @@ export function NotificationInterests({ preferences }: NotificationInterestsProp
               value={companyQuery}
               onChange={(event) => setCompanyQuery(event.target.value)}
               placeholder="회사 검색"
-              className="w-full rounded-lg border border-border bg-card py-1.5 pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-foreground/30"
+              aria-label="회사 검색"
+              className="w-full rounded-lg border border-border bg-card py-1.5 pl-8 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
             />
           </div>
 

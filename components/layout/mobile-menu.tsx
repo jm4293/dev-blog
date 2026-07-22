@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { toggleMobileMenuAtom } from '@/atoms';
@@ -27,11 +27,27 @@ export function MobileMenu() {
   useBackClose(isOpen, toggle);
   useClickOutside(menuRef, isOpen, toggle);
 
+  // 열릴 때 첫 메뉴 항목으로 포커스 이동, ESC로 닫기
+  useEffect(() => {
+    if (!isOpen) return;
+
+    menuRef.current?.querySelector<HTMLElement>('a[href]')?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        toggle();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, toggle]);
+
   return (
     <div
       ref={menuRef}
       role="dialog"
-      aria-modal="true"
+      aria-modal={isOpen || undefined}
       aria-label="내비게이션 메뉴"
       aria-hidden={!isOpen}
       className={cn(

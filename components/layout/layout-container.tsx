@@ -18,6 +18,12 @@ export function LayoutContainer({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="relative z-10 min-h-screen">
+      <a
+        href="#main-content"
+        className="sr-only z-[100] rounded-lg bg-foreground px-4 py-2 font-medium text-background focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        본문 바로가기
+      </a>
       <DesktopSidebar />
       <MobileHeader />
 
@@ -25,7 +31,9 @@ export function LayoutContainer({ children }: { children: React.ReactNode }) {
         className="pt-16 transition-[padding-left] duration-300 ease-out md:pt-0"
         data-sidebar-expanded={isSidebarHovered}
       >
-        <main className="min-h-screen">{children}</main>
+        <main id="main-content" className="min-h-screen">
+          {children}
+        </main>
         <FooterContainer />
       </div>
     </div>

@@ -4,7 +4,7 @@ interface PageLoadingSpinnerProps {
 
 export function PageLoadingSpinner({ overlay = false }: PageLoadingSpinnerProps) {
   const content = (
-    <div className="flex items-center gap-1">
+    <div aria-hidden="true" className="flex items-center gap-1">
       <span className="animate-pulse-fast text-2xl font-bold text-foreground [animation-delay:-0.4s]">d</span>
       <span className="animate-pulse-fast text-2xl font-bold text-foreground [animation-delay:-0.3s]">e</span>
       <span className="animate-pulse-fast text-2xl font-bold text-foreground [animation-delay:-0.2s]">v</span>
@@ -17,11 +17,19 @@ export function PageLoadingSpinner({ overlay = false }: PageLoadingSpinnerProps)
 
   if (overlay) {
     return (
-      <div className="fixed inset-x-0 bottom-0 top-0 z-30 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div
+        role="status"
+        aria-label="불러오는 중"
+        className="fixed inset-x-0 bottom-0 top-0 z-30 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+      >
         {content}
       </div>
     );
   }
 
-  return <div className="flex h-screen items-center justify-center">{content}</div>;
+  return (
+    <div role="status" aria-label="불러오는 중" className="flex h-screen items-center justify-center">
+      {content}
+    </div>
+  );
 }

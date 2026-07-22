@@ -8,13 +8,15 @@ interface PaginationPageNumberProps {
 }
 
 export function PaginationPageNumber({ pageNum, isCurrentPage, url, onClick }: PaginationPageNumberProps) {
-  const styles = `px-4 py-2 rounded-lg font-semibold transition-colors ${
+  const styles = `px-4 py-2 rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 ${
     isCurrentPage ? 'bg-foreground text-background' : 'glass-card text-foreground hover:bg-muted/60'
   }`;
+  const ariaCurrent = isCurrentPage ? ('page' as const) : undefined;
+  const ariaLabel = `${pageNum}페이지`;
 
   if (onClick) {
     return (
-      <button onClick={() => onClick(pageNum)} className={styles}>
+      <button onClick={() => onClick(pageNum)} className={styles} aria-current={ariaCurrent} aria-label={ariaLabel}>
         {pageNum}
       </button>
     );
@@ -22,7 +24,7 @@ export function PaginationPageNumber({ pageNum, isCurrentPage, url, onClick }: P
 
   if (url) {
     return (
-      <Link href={url} className={styles}>
+      <Link href={url} className={styles} aria-current={ariaCurrent} aria-label={ariaLabel}>
         {pageNum}
       </Link>
     );

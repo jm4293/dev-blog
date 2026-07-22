@@ -66,30 +66,48 @@ export function RequestForm() {
         {requestType === 'company' && (
           <div className="space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-medium text-foreground">요청하는 블로그명 *</label>
+              <label htmlFor="request-company-name" className="mb-2 block text-sm font-medium text-foreground">
+                요청하는 블로그명 *
+              </label>
               <input
+                id="request-company-name"
                 type="text"
                 autoComplete="organization"
+                aria-invalid={!!errors.companyName}
+                aria-describedby={errors.companyName ? 'request-company-name-error' : undefined}
                 {...register('companyName', {
                   validate: (value) => (requestType === 'company' && !value.trim() ? '블로그명은 필수입니다.' : true),
                 })}
                 className={inputClass(!!errors.companyName)}
                 placeholder="예: 토스, 카카오, 네이버"
               />
-              {errors.companyName && <p className="mt-1 text-sm text-destructive">{errors.companyName.message}</p>}
+              {errors.companyName && (
+                <p id="request-company-name-error" className="mt-1 text-sm text-destructive">
+                  {errors.companyName.message}
+                </p>
+              )}
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-foreground">요청하는 블로그 URL *</label>
+              <label htmlFor="request-blog-url" className="mb-2 block text-sm font-medium text-foreground">
+                요청하는 블로그 URL *
+              </label>
               <input
+                id="request-blog-url"
                 type="url"
                 autoComplete="url"
+                aria-invalid={!!errors.blogUrl}
+                aria-describedby={errors.blogUrl ? 'request-blog-url-error' : undefined}
                 {...register('blogUrl', {
                   validate: (value) => (requestType === 'company' && !value.trim() ? 'URL은 필수입니다.' : true),
                 })}
                 className={inputClass(!!errors.blogUrl)}
                 placeholder="https://tech.kakao.com"
               />
-              {errors.blogUrl && <p className="mt-1 text-sm text-destructive">{errors.blogUrl.message}</p>}
+              {errors.blogUrl && (
+                <p id="request-blog-url-error" className="mt-1 text-sm text-destructive">
+                  {errors.blogUrl.message}
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -97,24 +115,38 @@ export function RequestForm() {
         {/* 태그 추가 필드 */}
         {requestType === 'tag' && (
           <div>
-            <label className="mb-2 block text-sm font-medium text-foreground">요청하는 태그명 *</label>
+            <label htmlFor="request-tag-name" className="mb-2 block text-sm font-medium text-foreground">
+              요청하는 태그명 *
+            </label>
             <input
+              id="request-tag-name"
               type="text"
               autoComplete="off"
+              aria-invalid={!!errors.tagName}
+              aria-describedby={errors.tagName ? 'request-tag-name-error' : undefined}
               {...register('tagName', {
                 validate: (value) => (requestType === 'tag' && !value.trim() ? '태그명은 필수입니다.' : true),
               })}
               className={inputClass(!!errors.tagName)}
               placeholder="예: React, TypeScript, DevOps"
             />
-            {errors.tagName && <p className="mt-1 text-sm text-destructive">{errors.tagName.message}</p>}
+            {errors.tagName && (
+              <p id="request-tag-name-error" className="mt-1 text-sm text-destructive">
+                {errors.tagName.message}
+              </p>
+            )}
           </div>
         )}
 
         {/* 메시지 */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-foreground">메시지 *</label>
+          <label htmlFor="request-message" className="mb-2 block text-sm font-medium text-foreground">
+            메시지 *
+          </label>
           <textarea
+            id="request-message"
+            aria-invalid={!!errors.message}
+            aria-describedby={errors.message ? 'request-message-error' : undefined}
             {...register('message', {
               required: '메시지는 필수입니다.',
               minLength: { value: 10, message: '메시지는 최소 10자 이상이어야 합니다.' },
@@ -124,23 +156,36 @@ export function RequestForm() {
             className={inputClass(!!errors.message) + ' resize-none'}
             placeholder="추가 요청에 대한 자세한 설명이나 이유를 적어주세요."
           />
-          {errors.message && <p className="mt-1 text-sm text-destructive">{errors.message.message}</p>}
+          {errors.message && (
+            <p id="request-message-error" className="mt-1 text-sm text-destructive">
+              {errors.message.message}
+            </p>
+          )}
         </div>
 
         {/* 이메일 */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-foreground">이메일 (선택사항)</label>
+          <label htmlFor="request-email" className="mb-2 block text-sm font-medium text-foreground">
+            이메일 (선택사항)
+          </label>
           <input
+            id="request-email"
             type="email"
             autoComplete="email"
             spellCheck={false}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? 'request-email-error' : undefined}
             {...register('email', {
               pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: '유효한 이메일을 입력해주세요.' },
             })}
             className={inputClass(!!errors.email)}
             placeholder="답변을 받을 이메일 주소"
           />
-          {errors.email && <p className="mt-1 text-sm text-destructive">{errors.email.message}</p>}
+          {errors.email && (
+            <p id="request-email-error" className="mt-1 text-sm text-destructive">
+              {errors.email.message}
+            </p>
+          )}
           <p className="mt-1 text-xs text-muted-foreground">답변을 받으려면 이메일을 입력해주세요.</p>
         </div>
 
@@ -165,7 +210,10 @@ export function RequestForm() {
 
         {/* 성공 메시지 */}
         {mutation.isSuccess && (
-          <div className="flex items-center gap-2 rounded-lg border border-border bg-muted p-4 text-foreground">
+          <div
+            role="status"
+            className="flex items-center gap-2 rounded-lg border border-border bg-muted p-4 text-foreground"
+          >
             <CheckCircle size={20} className="flex-shrink-0 text-foreground" />
             <span>요청이 성공적으로 전송되었습니다! 검토 후 연락드리겠습니다.</span>
           </div>
@@ -173,7 +221,10 @@ export function RequestForm() {
 
         {/* 에러 메시지 */}
         {mutation.isError && (
-          <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-destructive">
+          <div
+            role="alert"
+            className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-destructive"
+          >
             <AlertCircle size={20} className="flex-shrink-0" />
             <span>
               {mutation.error instanceof Error
