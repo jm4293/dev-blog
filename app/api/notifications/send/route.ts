@@ -10,6 +10,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import webpush from 'web-push';
+import { secureCompare } from '@/utils/secure-compare';
 
 interface CreatedPostInfo {
   tags: string[];
@@ -49,7 +50,7 @@ function verifyCronSecret(request: NextRequest): boolean {
   if (!authHeader || !authHeader.startsWith('Bearer ')) return false;
 
   const token = authHeader.substring(7);
-  return token === process.env.CRON_SECRET;
+  return secureCompare(token, process.env.CRON_SECRET);
 }
 
 // POST — Push 알림 발송

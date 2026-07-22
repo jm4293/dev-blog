@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server';
+import { isSafeRedirectPath } from '@/utils';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
 
-  let next = searchParams.get('next') ?? '/posts';
+  // 오픈 리다이렉트 방지: 내부 경로만 허용
+  const nextParam = searchParams.get('next');
+  const next = isSafeRedirectPath(nextParam) ? nextParam : '/posts';
 
   if (code) {
     const supabase = await createSupabaseServerClient();

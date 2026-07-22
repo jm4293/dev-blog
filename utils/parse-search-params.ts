@@ -12,6 +12,6 @@ export function parsePostsSearchParams(params: Record<string, string | undefined
     search: params.search || '',
     tags: params.tags ? params.tags.split(',').filter(Boolean) : [],
     blogs: params.blogs ? params.blogs.split(',').filter(Boolean) : [],
-    sort: (params.sort as 'newest' | 'oldest') || 'newest',
+    sort: params.sort === 'oldest' ? 'oldest' : 'newest',
   };
 }

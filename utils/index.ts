@@ -8,3 +8,4 @@ export * from './parse-search-params';
 export * from './slugify';
 export * from './week';
 export * from './seo';
+export * from './redirect';

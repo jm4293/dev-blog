@@ -1,12 +1,16 @@
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { secureCompare } from '@/utils/secure-compare';
 
 export async function POST(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const secret = searchParams.get('secret');
   const path = searchParams.get('path');
 
-  if (secret !== process.env.REVALIDATE_SECRET) {
+  // 시크릿은 URL 쿼리(로그에 평문으로 남음) 대신 Authorization 헤더로 받는다
+  const authHeader = request.headers.get('authorization');
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : null;
+
+  if (!secureCompare(token, process.env.REVALIDATE_SECRET)) {
     return NextResponse.json({ message: 'Invalid secret' }, { status: 401 });
   }
 

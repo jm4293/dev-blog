@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { isSafeRedirectPath } from '@/utils/redirect';
 
 export default async function proxy(request: NextRequest) {
   let response = NextResponse.next({
@@ -28,10 +29,11 @@ export default async function proxy(request: NextRequest) {
     },
   );
 
-  // 세션 확인
+  // 사용자 확인 — getSession()은 쿠키의 JWT를 검증 없이 신뢰하므로
+  // 라우트 보호 판단에는 서버 검증을 거치는 getUser()를 사용한다 (Supabase 공식 권장)
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (request.nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL('/posts', request.url), { status: 301 });
@@ -41,7 +43,7 @@ export default async function proxy(request: NextRequest) {
   const protectedRoutes = ['/bookmarks', '/profile'];
   const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
 
-  if (isProtectedRoute && !session) {
+  if (isProtectedRoute && !user) {
     const redirectUrl = new URL('/auth/login', request.url);
     // 로그인 후 원래 페이지로 돌아가기 위한 redirect 파라미터
     redirectUrl.searchParams.set('redirect', request.nextUrl.pathname);
@@ -49,9 +51,10 @@ export default async function proxy(request: NextRequest) {
   }
 
   // 3. 로그인 페이지 접근 시 이미 로그인된 경우 /posts로 리다이렉트
-  if (request.nextUrl.pathname === '/auth/login' && session) {
-    // redirect 파라미터가 있으면 해당 페이지로, 없으면 /posts로
-    const redirectPath = request.nextUrl.searchParams.get('redirect') || '/posts';
+  if (request.nextUrl.pathname === '/auth/login' && user) {
+    // redirect 파라미터가 있으면 해당 페이지로, 없으면 /posts로 (오픈 리다이렉트 방지: 내부 경로만 허용)
+    const redirectParam = request.nextUrl.searchParams.get('redirect');
+    const redirectPath = isSafeRedirectPath(redirectParam) ? redirectParam : '/posts';
     return NextResponse.redirect(new URL(redirectPath, request.url));
   }
 

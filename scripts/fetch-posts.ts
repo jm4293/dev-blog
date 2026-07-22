@@ -313,8 +313,10 @@ async function main() {
         if (!siteUrl || !revalidateSecret) {
           log('warn', '⚠️ ISR 갱신 설정 미완료 (NEXT_PUBLIC_SITE_URL 또는 REVALIDATE_SECRET 미설정)');
         } else {
-          const revalidateResponse = await fetch(`${siteUrl}/api/revalidate?secret=${revalidateSecret}&path=/posts`, {
+          // 시크릿은 URL 쿼리(액세스 로그에 평문으로 남음) 대신 Authorization 헤더로 전달
+          const revalidateResponse = await fetch(`${siteUrl}/api/revalidate?path=/posts`, {
             method: 'POST',
+            headers: { Authorization: `Bearer ${revalidateSecret}` },
           });
 
           if (revalidateResponse.ok) {
