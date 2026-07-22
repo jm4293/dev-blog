@@ -34,11 +34,12 @@
 
 ## 🔧 즉시 참고할 Skills
 
-프로젝트에 설치된 Vercel 베스트 프랙티스 Skills:
+사용자 레벨(`~/.claude/skills/`)에 설치된 Vercel 베스트 프랙티스 Skills:
 
-- `.claude/skills/vercel-react-best-practices/` - React 성능 최적화
-- `.claude/skills/vercel-composition-patterns/` - 컴포넌트 패턴
-- `.claude/skills/web-design-guidelines/` - UI/UX 가이드라인
+- `~/.claude/skills/vercel-react-best-practices/` - React 성능 최적화
+- `~/.claude/skills/vercel-composition-patterns/` - 컴포넌트 패턴
+- `~/.claude/skills/web-design-guidelines/` - UI/UX 가이드라인
+- `~/.claude/skills/vercel-optimize/` - Vercel 비용/성능/캐싱 감사
 
 **작업 전 확인**: 해당 skills 폴더의 SKILL.md 읽고 적용
 
