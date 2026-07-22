@@ -40,7 +40,7 @@ export async function fetchTrendingPosts({ days = 7, limit = 3 }: FetchTrendingP
         bookmark_count,
         created_at,
         updated_at,
-        company:companies(*)
+        company:companies(id, name, name_en, logo_url)
       `,
         )
         .gte('published_at', since)

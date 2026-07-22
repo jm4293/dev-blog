@@ -16,28 +16,29 @@ export async function fetchAnnouncements({
 }: FetchAnnouncementsOptions = {}): Promise<AnnouncementsResponse> {
   const supabase = await createSupabaseServerClient();
 
-  // 1. 전체 공지사항 수 조회
-  const { count, error: countError } = await supabase.from('announcements').select('*', { count: 'exact', head: true });
+  const offset = (page - 1) * limit;
+
+  // 전체 수 + 목록 병렬 조회 (서로 독립인 쿼리)
+  const [{ count, error: countError }, { data, error }] = await Promise.all([
+    supabase.from('announcements').select('*', { count: 'exact', head: true }),
+    supabase
+      .from('announcements')
+      .select('*')
+      .order('is_pinned', { ascending: false }) // 상단 고정 먼저
+      .order('created_at', { ascending: false }) // 그 다음 최신순
+      .range(offset, offset + limit - 1),
+  ]);
 
   if (countError) {
     throw new Error('Failed to fetch announcements count');
   }
 
-  const total = count || 0;
-  const totalPages = Math.ceil(total / limit);
-  const offset = (page - 1) * limit;
-
-  // 2. 공지사항 조회 (상단 고정 먼저, 최신순)
-  const { data, error } = await supabase
-    .from('announcements')
-    .select('*')
-    .order('is_pinned', { ascending: false }) // 상단 고정 먼저
-    .order('created_at', { ascending: false }) // 그 다음 최신순
-    .range(offset, offset + limit - 1);
-
   if (error) {
     throw new Error('Failed to fetch announcements');
   }
+
+  const total = count || 0;
+  const totalPages = Math.ceil(total / limit);
 
   return {
     announcements: (data || []) as Announcement[],

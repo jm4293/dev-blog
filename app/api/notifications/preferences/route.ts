@@ -27,19 +27,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // 알림 설정 조회 (없으면 기본값 반환)
-    const { data: preferences } = await supabase
-      .from('notification_preferences')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
-
-    // 등록된 기기 목록 조회
-    const { data: subscriptions, error: subError } = await supabase
-      .from('push_subscriptions')
-      .select('id, endpoint, device_os, browser, enabled, created_at')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: true });
+    // 알림 설정 + 등록된 기기 목록 병렬 조회 (서로 독립인 쿼리)
+    const [{ data: preferences }, { data: subscriptions, error: subError }] = await Promise.all([
+      supabase.from('notification_preferences').select('*').eq('user_id', user.id).single(),
+      supabase
+        .from('push_subscriptions')
+        .select('id, endpoint, device_os, browser, enabled, created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: true }),
+    ]);
 
     if (subError) {
       throw subError;

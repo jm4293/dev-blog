@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
           scraped_at,
           created_at,
           updated_at,
-          company:companies(*)
+          company:companies(id, name, name_en, logo_url)
         )
       `,
       )

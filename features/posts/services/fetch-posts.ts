@@ -70,7 +70,7 @@ export async function fetchPosts({
       bookmark_count,
       created_at,
       updated_at,
-      company:companies(*)
+      company:companies(id, name, name_en, logo_url)
     `,
     )
     .order('published_at', { ascending: isAscending });

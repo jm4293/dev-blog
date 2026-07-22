@@ -49,7 +49,7 @@ export async function fetchBookmarks(): Promise<BookmarksResponse> {
         scraped_at,
         created_at,
         updated_at,
-        company:companies(*)
+        company:companies(id, name, name_en, logo_url)
       )
     `,
     )

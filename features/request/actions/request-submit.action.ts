@@ -71,25 +71,29 @@ export const submitRequestAction = async (formData: RequestFormData) => {
 
     const supabase = await createSupabaseServerClient();
 
-    // 최근 요청 수 확인 (Rate Limiting)
+    // 스팸 검사 2건 병렬 조회 (서로 독립인 쿼리)
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-    const { data: recentRequests, error: countError } = await supabase
-      .from('requests' as any)
-      .select('id', { count: 'exact' })
-      .gte('created_at', oneHourAgo);
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+
+    const [{ data: recentRequests, error: countError }, { data: duplicateRequests, error: duplicateError }] =
+      await Promise.all([
+        // 최근 요청 수 확인 (Rate Limiting)
+        supabase
+          .from('requests' as any)
+          .select('id', { count: 'exact' })
+          .gte('created_at', oneHourAgo),
+        // 중복 요청 방지 (같은 내용의 최근 요청 확인)
+        supabase
+          .from('requests' as any)
+          .select('id')
+          .eq('message', sanitizedData.message)
+          .gte('created_at', fiveMinutesAgo),
+      ]);
 
     if (countError) {
     } else if (recentRequests && recentRequests.length >= 10) {
       throw new Error('너무 많은 요청이 접수되었습니다. 1시간 후에 다시 시도해주세요.');
     }
-
-    // 중복 요청 방지 (같은 내용의 최근 요청 확인)
-    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
-    const { data: duplicateRequests, error: duplicateError } = await supabase
-      .from('requests' as any)
-      .select('id')
-      .eq('message', sanitizedData.message)
-      .gte('created_at', fiveMinutesAgo);
 
     if (duplicateError) {
     } else if (duplicateRequests && duplicateRequests.length > 0) {

@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { findBySlug, slugify } from '@/utils';
 import { createSupabaseStaticClient } from '@/supabase/static.supabase';
 import type { Company, Tag } from '@/supabase/types.supabase';
@@ -5,9 +6,10 @@ import type { Company, Tag } from '@/supabase/types.supabase';
 /**
  * 태그/회사 전체 목록 조회 (랜딩 페이지, sitemap, generateStaticParams용)
  * 쿠키가 필요 없는 공개 데이터이므로 정적 클라이언트를 사용한다.
+ * generateMetadata와 페이지 본문이 같은 요청 안에서 중복 호출하므로 React.cache로 요청 단위 dedupe.
  */
 
-export async function fetchAllTags(): Promise<Tag[]> {
+export const fetchAllTags = cache(async (): Promise<Tag[]> => {
   const supabase = createSupabaseStaticClient();
 
   const { data, error } = await supabase
@@ -20,11 +22,11 @@ export async function fetchAllTags(): Promise<Tag[]> {
   }
 
   return (data as Tag[]) || [];
-}
+});
 
 export type CompanySummary = Pick<Company, 'id' | 'name' | 'name_en' | 'logo_url' | 'blog_url' | 'description'>;
 
-export async function fetchActiveCompanies(): Promise<CompanySummary[]> {
+export const fetchActiveCompanies = cache(async (): Promise<CompanySummary[]> => {
   const supabase = createSupabaseStaticClient();
 
   const { data, error } = await supabase
@@ -38,7 +40,7 @@ export async function fetchActiveCompanies(): Promise<CompanySummary[]> {
   }
 
   return (data as CompanySummary[]) || [];
-}
+});
 
 /** 회사 슬러그 (영문명 우선) */
 export function companySlug(company: { name: string; name_en?: string }): string {

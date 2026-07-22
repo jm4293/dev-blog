@@ -28,8 +28,6 @@ export async function withdrawAction() {
     }
 
     // 2. Admin 클라이언트로 사용자 계정 삭제
-    const { data } = await supabase.auth.getSession();
-
     const adminSupabase = await createSupabaseAdminClient();
     const { error: authError } = await adminSupabase.auth.admin.deleteUser(userId);
 
