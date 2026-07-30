@@ -1,9 +1,9 @@
 'use client';
 
-import { useToast } from '@/hooks';
-import { Bell, BellOff, Trash2 } from 'lucide-react';
+import { usePwaInstall, useToast } from '@/hooks';
+import { Bell, BellOff, PlusSquare, Share, Trash2 } from 'lucide-react';
 import { useNotificationPreferences, useNotifications, useNotificationSubscribe } from '../hooks';
-import { groupDevices } from '../services';
+import { detectDevice, groupDevices } from '../services';
 import { NotificationInterests } from './notification-interests';
 
 export function NotificationSettings() {
@@ -11,9 +11,15 @@ export function NotificationSettings() {
   const { toggleAllNotifications, toggleDeviceNotification, deleteDeviceSubscriptions } = useNotificationPreferences();
   const { subscribeMutation } = useNotificationSubscribe();
   const { showToast } = useToast();
+  const { isStandalone, canInstall, promptInstall } = usePwaInstall();
 
   const isAllEnabled = data?.preferences.new_post_enabled;
   const deviceGroups = groupDevices(data?.subscriptions || []);
+
+  // iOS Safari는 홈 화면에 추가(PWA 설치)해야만 푸시를 지원한다 —
+  // 구독을 시도해 실패한 뒤에야 알게 하지 말고 사전에 안내한다
+  // (SSR 시점엔 navigator가 없지만, 이 값을 쓰는 UI는 클라이언트 조회 완료 후에만 렌더됨)
+  const needsIOSInstall = typeof navigator !== 'undefined' && detectDevice().device_os === 'ios' && !isStandalone;
 
   const handleSubscribe = async () => {
     if (typeof Notification !== 'undefined' && Notification.permission === 'denied') {
@@ -47,8 +53,16 @@ export function NotificationSettings() {
 
     // 토글만 켜면 알림이 오지 않는다 — 등록된 장치가 없으면 현재 기기 등록(권한 요청)까지 이어서 진행
     // (실패해도 토글은 켜진 상태로 남고, 아래 "현재 장치 등록" 버튼으로 재시도할 수 있다)
-    if (enabling && deviceGroups.length === 0) {
+    // iOS 미설치 상태에서는 구독이 반드시 실패하므로 시도하지 않는다 (설치 안내 박스가 대신 표시됨)
+    if (enabling && deviceGroups.length === 0 && !needsIOSInstall) {
       await handleSubscribe();
+    }
+  };
+
+  const handleInstall = async () => {
+    const accepted = await promptInstall();
+    if (accepted) {
+      showToast({ message: '앱 설치가 시작되었습니다.', type: 'success' });
     }
   };
 
@@ -121,16 +135,33 @@ export function NotificationSettings() {
         <div className="mt-3 border-t border-border pt-3">
           <p className="mb-3 text-xs font-medium text-muted-foreground">장치별 설정</p>
 
+          {needsIOSInstall && (
+            <div className="mb-3 rounded-lg border border-border bg-muted/50 p-3">
+              <p className="text-sm font-medium text-foreground">iOS는 홈 화면에 추가한 뒤 알림을 받을 수 있어요</p>
+              <ol className="mt-2 space-y-1 text-xs text-muted-foreground">
+                <li className="flex items-center gap-1.5">
+                  1. Safari 하단의 공유 버튼 <Share className="h-3.5 w-3.5" aria-label="공유" /> 을 누르세요
+                </li>
+                <li className="flex items-center gap-1.5">
+                  2. <PlusSquare className="h-3.5 w-3.5" aria-hidden /> &quot;홈 화면에 추가&quot;를 선택하세요
+                </li>
+                <li>3. 추가된 devBlog.kr 앱을 열어 이 화면에서 장치를 등록하세요</li>
+              </ol>
+            </div>
+          )}
+
           {deviceGroups.length === 0 ? (
             <div className="py-4 text-center">
               <p className="mb-3 text-sm text-muted-foreground">등록된 장치가 없습니다.</p>
-              <button
-                onClick={handleSubscribe}
-                disabled={subscribeMutation.isPending}
-                className="rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {subscribeMutation.isPending ? '등록 중...' : '현재 장치 등록'}
-              </button>
+              {!needsIOSInstall && (
+                <button
+                  onClick={handleSubscribe}
+                  disabled={subscribeMutation.isPending}
+                  className="rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {subscribeMutation.isPending ? '등록 중...' : '현재 장치 등록'}
+                </button>
+              )}
             </div>
           ) : (
             <div className="flex flex-col gap-2">
@@ -174,14 +205,26 @@ export function NotificationSettings() {
                 );
               })}
 
-              <button
-                onClick={handleSubscribe}
-                disabled={subscribeMutation.isPending}
-                className="mt-2 text-left text-xs text-muted-foreground transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {subscribeMutation.isPending ? '등록 중...' : '+ 현재 장치 추가'}
-              </button>
+              {!needsIOSInstall && (
+                <button
+                  onClick={handleSubscribe}
+                  disabled={subscribeMutation.isPending}
+                  className="mt-2 text-left text-xs text-muted-foreground transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {subscribeMutation.isPending ? '등록 중...' : '+ 현재 장치 추가'}
+                </button>
+              )}
             </div>
+          )}
+
+          {/* Chrome 계열에서 설치 프롬프트가 가능하면 앱 설치 유도 (설치하면 홈 화면에서 바로 진입) */}
+          {canInstall && (
+            <button
+              onClick={handleInstall}
+              className="mt-3 text-left text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              + devBlog.kr 앱으로 설치하기 — 홈 화면에서 바로 열 수 있어요
+            </button>
           )}
         </div>
       )}
