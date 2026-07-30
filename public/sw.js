@@ -5,11 +5,20 @@ const CACHE_VERSION = 'v1';
 const PAGES_CACHE = `devblog-pages-${CACHE_VERSION}`;
 const ASSETS_CACHE = `devblog-assets-${CACHE_VERSION}`;
 const MAX_PAGE_ENTRIES = 30;
+const MAX_ASSET_ENTRIES = 200;
+
+// 로컬 개발 서버는 청크 URL에 콘텐츠 해시가 없어 캐시가 수정 전 코드를 계속 서빙하게 된다
+// → 개발 환경에서는 오프라인 캐시를 완전히 끈다 (push 핸들러는 그대로 동작)
+const IS_DEV = self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1';
 
 // 오프라인 폴백으로 쓸 기본 페이지 (설치 시점에 미리 캐시 — 실패해도 설치는 계속)
 const FALLBACK_URL = '/posts';
 
 self.addEventListener('install', function (event) {
+  if (IS_DEV) {
+    event.waitUntil(self.skipWaiting());
+    return;
+  }
   event.waitUntil(
     caches
       .open(PAGES_CACHE)
@@ -19,7 +28,7 @@ self.addEventListener('install', function (event) {
   );
 });
 
-// 이전 버전 캐시 정리
+// 이전 버전 캐시 정리 (개발 환경에서는 devblog 캐시 전체 삭제 — 오염된 청크 캐시 자가 복구)
 self.addEventListener('activate', function (event) {
   event.waitUntil(
     caches
@@ -27,7 +36,7 @@ self.addEventListener('activate', function (event) {
       .then((keys) =>
         Promise.all(
           keys
-            .filter((key) => key.startsWith('devblog-') && key !== PAGES_CACHE && key !== ASSETS_CACHE)
+            .filter((key) => key.startsWith('devblog-') && (IS_DEV || (key !== PAGES_CACHE && key !== ASSETS_CACHE)))
             .map((key) => caches.delete(key)),
         ),
       )
@@ -44,6 +53,9 @@ async function trimCache(cacheName, maxEntries) {
 }
 
 self.addEventListener('fetch', function (event) {
+  // 개발 환경에서는 캐시를 사용하지 않는다 (네트워크 직행)
+  if (IS_DEV) return;
+
   const request = event.request;
 
   // GET + 같은 오리진만 처리. API/인증 요청은 캐시하지 않는다 (개인 데이터·최신성)
@@ -99,6 +111,8 @@ self.addEventListener('fetch', function (event) {
               caches
                 .open(ASSETS_CACHE)
                 .then((cache) => cache.put(request, copy))
+                // 배포마다 해시가 바뀌어 옛 자산이 무한히 쌓이므로 상한 유지
+                .then(() => trimCache(ASSETS_CACHE, MAX_ASSET_ENTRIES))
                 .catch(() => undefined);
             }
             return response;
