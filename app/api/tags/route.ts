@@ -9,7 +9,7 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, createRateLimitResponse, extractIP, RATE_LIMIT_CONFIG } from '@/utils';
-import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import { createSupabaseStaticClient } from '@/supabase/static.supabase';
 import { Tag } from '@/supabase/types.supabase';
 
 interface TagsResponse {
@@ -27,7 +27,8 @@ export async function GET(request: NextRequest) {
       return createRateLimitResponse('Too many requests. Rate limit: 100 requests per hour');
     }
 
-    const supabase = await createSupabaseServerClient();
+    // 100% 공개 데이터 — 정적 클라이언트로 CDN 캐시 가능하게 (사전정의 태그는 거의 안 바뀜)
+    const supabase = createSupabaseStaticClient();
 
     const searchParams = request.nextUrl.searchParams;
     const featured = searchParams.get('featured') === 'true';
@@ -66,7 +67,12 @@ export async function GET(request: NextRequest) {
       total: tags?.length || 0,
     };
 
-    return NextResponse.json(response);
+    return NextResponse.json(response, {
+      headers: {
+        // 필터 모달을 열 때마다 원본(DB)까지 가지 않도록 CDN 캐시 (1시간 + SWR 하루)
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      },
+    });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
 

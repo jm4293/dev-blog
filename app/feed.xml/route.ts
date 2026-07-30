@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createSupabaseServerClient } from '@/supabase/server.supabase';
+import { createSupabaseStaticClient } from '@/supabase/static.supabase';
 
 /**
  * GET /feed.xml
@@ -8,7 +8,8 @@ import { createSupabaseServerClient } from '@/supabase/server.supabase';
  */
 export async function GET() {
   try {
-    const supabase = await createSupabaseServerClient();
+    // 공개 데이터만 사용 — 쿠키를 읽지 않아야 CDN 캐시 헤더가 실효를 가진다
+    const supabase = createSupabaseStaticClient();
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://devblog.kr';
 
     // 최근 100개 게시글 조회

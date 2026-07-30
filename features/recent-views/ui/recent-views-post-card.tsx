@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { cn, formatPostDate } from '@/utils';
+import { cn, formatPostDate, slugify } from '@/utils';
 import { Check } from 'lucide-react';
 import { useBookmarkToggle } from '@/features/bookmarks';
 import { BookmarkButton, PostCardHeader, PostCardTags } from '@/features/posts';
@@ -81,6 +81,7 @@ export function RecentViewPostCard({
           logoUrl={view.post.company.logo_url}
           companyName={view.post.company.name}
           timeDisplay={timeDisplay}
+          companySlug={isEditMode ? undefined : slugify(view.post.company.name_en || view.post.company.name)}
         >
           {!isEditMode && (
             <BookmarkButton
@@ -116,8 +117,8 @@ export function RecentViewPostCard({
         {/* Summary */}
         {view.post.summary && <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">{view.post.summary}</p>}
 
-        {/* Tags */}
-        <PostCardTags tags={view.post.tags || []} />
+        {/* Tags — 편집 모드에서는 링크 클릭이 선택 동작과 겹치므로 비활성 */}
+        <PostCardTags tags={view.post.tags || []} linked={!isEditMode} />
 
         {/* Link Button - 편집 모드가 아닐 때만 */}
         {!isEditMode && (

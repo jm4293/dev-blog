@@ -1,7 +1,7 @@
 'use client';
 
 import { usePostCardInteractions } from '@/hooks';
-import { cn, formatPostDate } from '@/utils';
+import { cn, formatPostDate, slugify } from '@/utils';
 import { PostWithCompany } from '@/supabase/types.supabase';
 import { BookmarkButton } from './bookmark-button';
 import { PostCardHeader } from './post-card-header';
@@ -23,7 +23,12 @@ export function PostCard({ post, isBookmarked: isBookmarkedProp, isViewed = fals
 
   return (
     <article className="glass-card relative transform rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-      <PostCardHeader logoUrl={post.company.logo_url} companyName={post.company.name} timeDisplay={timeDisplay}>
+      <PostCardHeader
+        logoUrl={post.company.logo_url}
+        companyName={post.company.name}
+        timeDisplay={timeDisplay}
+        companySlug={slugify(post.company.name_en || post.company.name)}
+      >
         {/* 카드 전체가 링크이므로 하트 버튼은 z-index로 위에 띄워 별도 동작 */}
         <div className="relative z-10">
           <BookmarkButton
