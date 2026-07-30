@@ -15,9 +15,9 @@ export function NotificationSettings() {
   const isAllEnabled = data?.preferences.new_post_enabled;
   const deviceGroups = groupDevices(data?.subscriptions || []);
 
-  const handleToggleAll = () => {
+  const handleToggleAll = async () => {
     try {
-      toggleAllNotifications.mutate(!isAllEnabled);
+      await toggleAllNotifications.mutateAsync(!isAllEnabled);
     } catch {
       showToast({ message: '알림 설정 변경에 실패했습니다.', type: 'error' });
     }
@@ -32,26 +32,24 @@ export function NotificationSettings() {
       await subscribeMutation.mutateAsync();
       showToast({ message: '알림 구독이 완료되었습니다.', type: 'success' });
     } catch (error) {
-      if (error instanceof Error && error.message.includes('denied')) {
-        showToast({ message: '브라우저에서 알림 권한을 허용해주세요.', type: 'error' });
-      } else {
-        showToast({ message: '알림 구독에 실패했습니다.', type: 'error' });
-      }
+      // 훅에서 사용자 안내용 한국어 메시지를 던짐 (권한 거부, iOS 미설치 안내 등)
+      const message = error instanceof Error && error.message ? error.message : '알림 구독에 실패했습니다.';
+      showToast({ message, type: 'error' });
     }
   };
 
-  const handleToggleDevice = (device_os: string, currentEnabled: boolean) => {
+  const handleToggleDevice = async (device_os: string, currentEnabled: boolean) => {
     try {
-      toggleDeviceNotification.mutate({ device_os, enabled: !currentEnabled });
+      await toggleDeviceNotification.mutateAsync({ device_os, enabled: !currentEnabled });
     } catch {
       showToast({ message: '기기 알림 설정 변경에 실패했습니다.', type: 'error' });
     }
   };
 
-  const handleDeleteDevice = (device_os: string, label: string) => {
+  const handleDeleteDevice = async (device_os: string, label: string) => {
     if (!confirm(`${label} 장치를 삭제할까요?\n삭제하면 해당 장치에서 알림을 받지 못합니다.`)) return;
     try {
-      deleteDeviceSubscriptions.mutate(device_os);
+      await deleteDeviceSubscriptions.mutateAsync(device_os);
       showToast({ message: `${label} 장치가 삭제되었습니다.`, type: 'success' });
     } catch {
       showToast({ message: `${label} 장치 삭제에 실패했습니다.`, type: 'error' });

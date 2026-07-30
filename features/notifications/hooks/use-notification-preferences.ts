@@ -81,7 +81,12 @@ export function useNotificationPreferences() {
 
   // OS 단위 장치 삭제
   const deleteDeviceSubscriptions = useMutation({
-    mutationFn: async (device_os: string) => await removeSubscriptionByOSAction(device_os),
+    mutationFn: async (device_os: string) => {
+      const result = await removeSubscriptionByOSAction(device_os);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.notifications.preferences() });
     },
