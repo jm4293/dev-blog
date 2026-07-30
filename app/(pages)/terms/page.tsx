@@ -14,7 +14,7 @@ export default function TermsPage() {
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-3xl font-bold text-foreground">이용약관</h1>
           <p className="text-lg text-muted-foreground">devBlog 서비스 이용약관입니다.</p>
-          <p className="mt-2 text-sm text-muted-foreground">최종 수정일: 2026년 1월 14일</p>
+          <p className="mt-2 text-sm text-muted-foreground">최종 수정일: 2026년 7월 31일</p>
         </div>
 
         <div className="prose prose-lg dark:prose-invert max-w-none text-muted-foreground">
@@ -163,18 +163,34 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-foreground">제12조 (분쟁해결)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제12조 (알림 서비스)</h2>
+            <p className="mb-4">
+              ① 서비스는 회원이 신청한 경우에 한하여 새 게시글 등록 등을 웹 푸시(Web Push)로 알려주는 알림 서비스를
+              제공합니다.
+            </p>
+            <p className="mb-4">
+              ② 알림 서비스는 회원의 명시적인 수신 동의(브라우저 알림 권한 허용 및 구독 신청)를 받은 후에만 제공되며,
+              회원은 언제든지 서비스 내 설정 또는 브라우저 설정을 통해 알림 수신을 해제할 수 있습니다.
+            </p>
+            <p>
+              ③ 알림 수신 해제 또는 회원 탈퇴 시 푸시 구독 정보는 즉시 삭제되며, 상세한 내용은 개인정보 처리방침을
+              따릅니다.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제13조 (분쟁해결)</h2>
             <p>서비스 이용으로 발생한 분쟁에 대해 소송이 제기될 경우 관할 법원은 민사소송법에 따라 정합니다.</p>
           </section>
 
           <section className="mb-8">
-            <h2 className="mb-4 text-2xl font-semibold text-foreground">제13조 (서비스 이용 약관 동의)</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-foreground">제14조 (서비스 이용 약관 동의)</h2>
             <p>이용자가 서비스를 이용함으로써 본 약관의 내용을 모두 읽었으며 이에 동의하는 것으로 간주됩니다.</p>
           </section>
         </div>
 
         <div className="mt-12 text-center text-muted-foreground">
-          <p>이 약관은 2026년 1월 14일부터 시행됩니다.</p>
+          <p>이 약관은 2026년 8월 7일부터 시행됩니다.</p>
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ export default function PrivacyPolicyPage() {
           <p className="text-lg text-muted-foreground">
             devBlog는 이용자의 개인정보를 중요하게 생각하며, 개인정보 보호법을 준수합니다.
           </p>
-          <p className="mt-2 text-sm text-muted-foreground">최종 수정일: 2026년 1월 14일</p>
+          <p className="mt-2 text-sm text-muted-foreground">최종 수정일: 2026년 7월 31일</p>
         </div>
 
         <div className="prose prose-lg dark:prose-invert max-w-none text-muted-foreground">
@@ -29,7 +29,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <ul className="list-inside list-disc space-y-2">
               <li>회원 가입 및 관리: 회원 식별, 로그인 인증, 계정 관리</li>
-              <li>서비스 제공: 즐겨찾기 저장 및 관리, 개인화된 서비스 제공</li>
+              <li>서비스 제공: 즐겨찾기·최근 본 글 저장 및 관리, 개인화된 서비스 제공</li>
               <li>고객 문의 응대: 요청 및 문의사항 처리, 답변 제공</li>
               <li>서비스 개선: 서비스 이용 통계 분석, 사용자 경험 개선</li>
               <li>법적 의무: 관련 법령이 요구하는 범위 내에서의 정보 보관</li>
@@ -53,7 +53,7 @@ export default function PrivacyPolicyPage() {
               <ul className="list-inside list-disc text-muted-foreground">
                 <li>서비스 이용 기록 (접속 로그, IP 주소)</li>
                 <li>쿠키 및 기기 정보</li>
-                <li>즐겨찾기 목록 및 검색 기록</li>
+                <li>즐겨찾기 목록, 최근 본 글 기록 및 검색 기록</li>
                 <li>서비스 이용 통계를 위한 행태 정보 (Google Analytics 쿠키 기반)</li>
               </ul>
             </div>
@@ -81,6 +81,7 @@ export default function PrivacyPolicyPage() {
               <li>서비스 이용 기록: 3년 (통신비밀보호법에 따름)</li>
               <li>요청 및 문의 기록: 1년</li>
               <li>즐겨찾기 정보: 회원 탈퇴 시까지</li>
+              <li>최근 본 글 기록: 회원 탈퇴 시까지</li>
             </ul>
             <p className="mb-4">다만, 다음의 사유에 해당하는 경우에는 해당 사유 종료 시까지 보유합니다:</p>
             <ul className="list-inside list-disc space-y-2">
@@ -221,7 +222,7 @@ export default function PrivacyPolicyPage() {
           <section className="mb-8">
             <h2 className="mb-4 text-2xl font-semibold text-foreground">12. 개인정보 처리방침의 변경</h2>
             <p className="mb-4">
-              이 개인정보 처리방침은 2026년 1월 14일부터 적용됩니다. 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이
+              이 개인정보 처리방침은 2026년 8월 7일부터 적용됩니다. 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이
               있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다.
             </p>
             <p>
@@ -240,7 +241,7 @@ export default function PrivacyPolicyPage() {
         </div>
 
         <div className="mt-12 text-center text-muted-foreground">
-          <p>이 방침은 2026년 1월 14일부터 시행됩니다.</p>
+          <p>이 방침은 2026년 8월 7일부터 시행됩니다.</p>
         </div>
       </div>
     </div>

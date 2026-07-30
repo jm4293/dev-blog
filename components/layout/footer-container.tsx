@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import packageJson from '@/package.json';
 
 export function FooterContainer() {
   return (
@@ -58,8 +59,10 @@ export function FooterContainer() {
           </div>
         </nav>
 
-        <div className="mt-4 flex items-center justify-center text-sm text-muted-foreground">
+        <div className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <p>&copy; 2026 devBlog.kr. All rights reserved.</p>
+          <span aria-hidden="true">·</span>
+          <p>v{packageJson.version}</p>
         </div>
       </div>
     </footer>
