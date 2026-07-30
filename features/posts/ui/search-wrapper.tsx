@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import type { PostSortOption } from '@/utils';
 import { Search, X } from 'lucide-react';
 import { SortButton } from './sort-button';
@@ -77,12 +76,6 @@ export function SearchWrapper({
       <div className="hidden gap-4 md:flex">
         <SortButton currentSort={currentSort} onSortChange={onSortChange} />
         <SearchInputField value={value} onChange={onChange} onSearch={onSearch} onClear={onClear} />
-        <Link
-          href="/recent-views"
-          className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-foreground px-4 py-3 font-semibold text-background transition-colors hover:bg-foreground/90"
-        >
-          최근 본 글
-        </Link>
         <button
           onClick={onBlogFilterClick}
           className="glass-card flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-6 py-3 font-semibold text-foreground transition-colors hover:bg-muted/60"
@@ -104,12 +97,6 @@ export function SearchWrapper({
           <SearchInputField value={value} onChange={onChange} onSearch={onSearch} onClear={onClear} />
         </div>
         <div className="flex gap-2">
-          <Link
-            href="/recent-views"
-            className="flex items-center justify-center whitespace-nowrap rounded-lg bg-foreground px-3 py-3 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
-          >
-            최근 본 글
-          </Link>
           <button
             onClick={onBlogFilterClick}
             className="glass-card flex flex-1 items-center justify-center whitespace-nowrap rounded-lg px-3 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted/60"
