@@ -67,7 +67,9 @@ export function useNotificationSubscribe() {
       const permission = await Notification.requestPermission();
 
       if (permission !== 'granted') {
-        throw new Error('브라우저에서 알림 권한을 허용해주세요.');
+        throw new Error(
+          '알림 권한이 허용되지 않았습니다. 주소창의 자물쇠(사이트 설정) → 알림에서 허용으로 변경해주세요.',
+        );
       }
 
       // 등록 완료된 registration을 기다림 (페이지 진입 직후 클릭해도 레이스 없음)

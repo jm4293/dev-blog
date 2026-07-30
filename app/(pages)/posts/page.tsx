@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { APP, buildPageMetadata, serializeJsonLd } from '@/utils';
+import { NotificationPromoBanner } from '@/features/notifications';
 import { fetchPosts, fetchTrendingPosts, PostsContainer, PostsFallback, TrendingSection } from '@/features/posts';
 
 export const revalidate = 1800; // 30분 (새 글 수집 시 /api/revalidate로 즉시 갱신)
@@ -76,6 +77,9 @@ export default async function PostPage() {
         <h1 className="text-2xl font-bold text-foreground md:text-4xl">포스트</h1>
         <p className="mt-2 text-muted-foreground">여러 기업 기술블로그의 새 글을 한 곳에서 확인하세요.</p>
       </header>
+
+      {/* 로그인했지만 알림 미설정인 사용자에게만 표시 (닫으면 재표시 안 함) */}
+      <NotificationPromoBanner />
 
       {/* data-nosnippet: 검색 스니펫에 게시글 목록이 발췌되지 않도록 제외 → meta description이 노출됨 */}
       <section aria-label="블로그 게시글 목록" data-nosnippet="">

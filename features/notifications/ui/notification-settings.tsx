@@ -15,17 +15,14 @@ export function NotificationSettings() {
   const isAllEnabled = data?.preferences.new_post_enabled;
   const deviceGroups = groupDevices(data?.subscriptions || []);
 
-  const handleToggleAll = async () => {
-    try {
-      await toggleAllNotifications.mutateAsync(!isAllEnabled);
-    } catch {
-      showToast({ message: '알림 설정 변경에 실패했습니다.', type: 'error' });
-    }
-  };
-
   const handleSubscribe = async () => {
     if (typeof Notification !== 'undefined' && Notification.permission === 'denied') {
-      showToast({ message: '브라우저에서 알림 권한을 허용해주세요.', type: 'error' });
+      // 이미 거부한 상태에서는 requestPermission이 다시 묻지 않으므로 해제 경로를 안내
+      showToast({
+        message: '알림 권한이 차단되어 있습니다. 주소창의 자물쇠(사이트 설정) → 알림에서 허용으로 변경해주세요.',
+        type: 'error',
+        duration: 5000,
+      });
       return;
     }
     try {
@@ -35,6 +32,23 @@ export function NotificationSettings() {
       // 훅에서 사용자 안내용 한국어 메시지를 던짐 (권한 거부, iOS 미설치 안내 등)
       const message = error instanceof Error && error.message ? error.message : '알림 구독에 실패했습니다.';
       showToast({ message, type: 'error' });
+    }
+  };
+
+  const handleToggleAll = async () => {
+    const enabling = !isAllEnabled;
+
+    try {
+      await toggleAllNotifications.mutateAsync(enabling);
+    } catch {
+      showToast({ message: '알림 설정 변경에 실패했습니다.', type: 'error' });
+      return;
+    }
+
+    // 토글만 켜면 알림이 오지 않는다 — 등록된 장치가 없으면 현재 기기 등록(권한 요청)까지 이어서 진행
+    // (실패해도 토글은 켜진 상태로 남고, 아래 "현재 장치 등록" 버튼으로 재시도할 수 있다)
+    if (enabling && deviceGroups.length === 0) {
+      await handleSubscribe();
     }
   };
 
