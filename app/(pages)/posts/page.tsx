@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { APP, buildPageMetadata } from '@/utils';
+import { APP, buildPageMetadata, serializeJsonLd } from '@/utils';
 import { fetchPosts, fetchTrendingPosts, PostsContainer, PostsFallback, TrendingSection } from '@/features/posts';
 
 export const revalidate = 1800; // 30분 (새 글 수집 시 /api/revalidate로 즉시 갱신)
@@ -61,14 +61,14 @@ export default async function PostPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema),
+          __html: serializeJsonLd(breadcrumbSchema),
         }}
       />
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(itemListSchema),
+          __html: serializeJsonLd(itemListSchema),
         }}
       />
 

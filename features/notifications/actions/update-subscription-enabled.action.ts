@@ -2,7 +2,7 @@
 
 import { headers } from 'next/headers';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import { checkRateLimit, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
+import { checkRateLimit, extractIPFromHeaders, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 
 interface UpdateSubscriptionEnabledResult {
   success: boolean;
@@ -16,7 +16,7 @@ export async function updateSubscriptionEnabledAction(
   try {
     const headersList = await headers();
 
-    const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown';
+    const ip = extractIPFromHeaders(headersList);
     if (!checkRateLimit(ip, RATE_LIMIT_CONFIG.AUTHENTICATED)) {
       return { success: false, error: 'Too many requests' };
     }

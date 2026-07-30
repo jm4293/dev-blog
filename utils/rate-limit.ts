@@ -49,7 +49,6 @@ export function checkRateLimit(
   config?: { readonly WINDOW: number; readonly MAX_REQUESTS: number } | { limit: number; window: number },
 ): boolean {
   const now = Date.now();
-  const record = rateLimitStore.get(ip);
 
   // config 정규화
   const limit =
@@ -58,9 +57,21 @@ export function checkRateLimit(
       : (config?.['limit'] ?? RATE_LIMIT_CONFIG.PUBLIC.MAX_REQUESTS);
   const window = config && 'WINDOW' in config ? config.WINDOW : (config?.['window'] ?? RATE_LIMIT_CONFIG.PUBLIC.WINDOW);
 
+  // 설정(limit/window)별로 카운터를 분리한다 — IP만 키로 쓰면
+  // PUBLIC(100/h)과 AUTHENTICATED(1000/h)가 같은 레코드를 공유해 서로의 한도를 오염시킨다
+  const key = `${limit}:${window}:${ip}`;
+
+  // 장수 인스턴스에서 만료 레코드가 무한 누적되지 않도록 확률적으로 정리
+  // (별도 타이머 없이 요청 경로에서 1% 확률 + 상한 초과 시 즉시)
+  if (rateLimitStore.size > 10_000 || Math.random() < 0.01) {
+    cleanupExpiredRecords();
+  }
+
+  const record = rateLimitStore.get(key);
+
   if (!record || now > record.resetTime) {
     // 새로운 기간 시작
-    rateLimitStore.set(ip, { count: 1, resetTime: now + window });
+    rateLimitStore.set(key, { count: 1, resetTime: now + window });
     return true;
   }
 
@@ -75,23 +86,37 @@ export function checkRateLimit(
 }
 
 /**
+ * 요청 헤더에서 클라이언트 IP 추출 (Server Action의 headers()용)
+ *
+ * x-vercel-forwarded-for는 Vercel 플랫폼이 덮어쓰므로 클라이언트가 위조할 수 없다.
+ * x-forwarded-for만 신뢰하면 헤더 위조로 rate limit을 우회할 수 있어 우선순위를 둔다.
+ */
+export function extractIPFromHeaders(headersList: Headers): string {
+  const vercelForwarded = headersList.get('x-vercel-forwarded-for');
+  if (vercelForwarded) {
+    return vercelForwarded.split(',')[0].trim();
+  }
+
+  const realIP = headersList.get('x-real-ip');
+  if (realIP) {
+    return realIP;
+  }
+
+  const forwardedFor = headersList.get('x-forwarded-for');
+  if (forwardedFor) {
+    return forwardedFor.split(',')[0].trim();
+  }
+
+  return 'unknown';
+}
+
+/**
  * IP 주소 추출
  * @param request - NextRequest 또는 일반 Request 객체
  * @returns IP 주소
  */
 export function extractIP(request: Request): string {
-  // NextRequest의 경우 request.ip 사용
-  if ('ip' in request) {
-    return (request as any).ip || 'unknown';
-  }
-
-  // 일반 Request의 경우 헤더에서 추출
-  const forwardedFor = request.headers.get('x-forwarded-for');
-  if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
-  }
-
-  return request.headers.get('x-real-ip') || 'unknown';
+  return extractIPFromHeaders(request.headers);
 }
 
 /**

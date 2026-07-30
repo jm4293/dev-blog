@@ -26,6 +26,22 @@ interface BuildPageMetadataInput {
   ogType?: 'website' | 'article';
 }
 
+/**
+ * JSON-LD 안전 직렬화
+ *
+ * JSON.stringify는 `</script>` 시퀀스를 이스케이프하지 않아, 외부 RSS에서 수집한
+ * 제목에 해당 문자열이 들어오면 인라인 스크립트를 조기 종료시켜 XSS로 이어질 수 있다.
+ * JSON-LD를 dangerouslySetInnerHTML에 넣을 때는 반드시 이 함수를 거쳐야 한다.
+ */
+export function serializeJsonLd(schema: unknown): string {
+  return JSON.stringify(schema)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+}
+
 /** 페이지 공통 metadata 생성 — canonical, OG(이미지 포함), 트위터 카드 */
 export function buildPageMetadata({ title, description, path, ogType = 'website' }: BuildPageMetadataInput): Metadata {
   const fullTitle = `${title} - devBlog.kr`;

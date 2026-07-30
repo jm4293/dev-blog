@@ -2,7 +2,7 @@
 
 import { headers } from 'next/headers';
 import { createSupabaseServerClient } from '@/supabase/server.supabase';
-import { checkRateLimit, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
+import { checkRateLimit, extractIPFromHeaders, RATE_LIMIT_CONFIG } from '@/utils/rate-limit';
 
 interface AddBookmarkResult {
   success: boolean;
@@ -19,7 +19,7 @@ export async function createBookmarkAction(postId: string): Promise<AddBookmarkR
   try {
     // Rate Limiting (인증 필요 API)
     const headersList = await headers();
-    const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown';
+    const ip = extractIPFromHeaders(headersList);
     const isAllowed = checkRateLimit(ip, RATE_LIMIT_CONFIG.AUTHENTICATED);
 
     if (!isAllowed) {

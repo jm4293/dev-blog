@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { APP, slugify } from '@/utils';
+import { APP, serializeJsonLd, slugify } from '@/utils';
 import { Pagination } from '@/components/pagination';
 import { fetchPosts } from '../services/fetch-posts';
 import { findTagBySlug } from '../services/fetch-taxonomy';
@@ -55,8 +55,8 @@ export async function TagLanding({ slug, page }: TagLandingProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListSchema) }} />
 
       <header className="mb-6">
         <nav aria-label="브레드크럼" className="mb-2 text-sm text-muted-foreground">

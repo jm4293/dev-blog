@@ -1,6 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { APP, buildPageMetadata, formatWeekLabel, formatWeekRange, getRecentWeeks, toISOWeekString } from '@/utils';
+import {
+  APP,
+  buildPageMetadata,
+  formatWeekLabel,
+  formatWeekRange,
+  getRecentWeeks,
+  serializeJsonLd,
+  toISOWeekString,
+} from '@/utils';
 import { CalendarDays } from 'lucide-react';
 
 export const revalidate = 3600; // 1시간
@@ -26,7 +34,7 @@ export default function DigestIndexPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }} />
 
       <header className="mb-8">
         <h1 className="text-2xl font-bold text-foreground md:text-4xl">주간 인기글</h1>
