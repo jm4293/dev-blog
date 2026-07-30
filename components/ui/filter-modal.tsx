@@ -128,7 +128,7 @@ export function FilterModal({
             </button>
             <button
               onClick={onComplete || onClose}
-              className="flex-2 rounded-xl bg-foreground px-8 py-3 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
+              className="flex-[2] rounded-xl bg-foreground px-8 py-3 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
             >
               {selectedCount > 0 ? `${selectedCount}개 적용` : '완료'}
             </button>

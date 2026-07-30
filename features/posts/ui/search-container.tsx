@@ -12,8 +12,9 @@ interface SearchContainerProps {
 }
 
 export function SearchContainer({ filters }: SearchContainerProps) {
-  const { data: allBlogsData, isLoading: isLoadingAllBlogs } = useBlogs();
-  const { data: allTagsData, isLoading: isLoadingAllTags } = useTags({ sort: 'name' });
+  // 모달을 열기 전까지는 전체 블로그/태그 목록을 가져오지 않음 (방문자 대부분은 필터를 열지 않음)
+  const { data: allBlogsData, isLoading: isLoadingAllBlogs } = useBlogs({ enabled: filters.showBlogModal });
+  const { data: allTagsData, isLoading: isLoadingAllTags } = useTags({ sort: 'name', enabled: filters.showTagModal });
 
   const allBlogs = allBlogsData?.companies || [];
   const allTags = allTagsData?.tags || [];

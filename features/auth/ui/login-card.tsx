@@ -72,7 +72,7 @@ export function LoginCard({ callbackError }: LoginCardProps) {
       </button>
 
       {/* 진행 상황 안내 — 클릭 후 GitHub 페이지로 넘어가기까지의 공백을 설명 */}
-      <p aria-live="polite" className="mt-3 min-h-4 text-xs text-white/50">
+      <p aria-live="polite" className="mt-3 min-h-4 text-xs text-white/60">
         {isRedirecting ? '잠시 후 GitHub 로그인 페이지로 이동합니다. 새로고침하지 마세요.' : ''}
       </p>
     </div>

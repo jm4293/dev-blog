@@ -4,6 +4,24 @@ import { createServerClient } from '@supabase/ssr';
 import { isSafeRedirectPath } from '@/utils/redirect';
 
 export default async function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/posts', request.url), { status: 301 });
+  }
+
+  const protectedRoutes = ['/bookmarks', '/profile'];
+  const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
+  const isLoginPage = request.nextUrl.pathname === '/auth/login';
+
+  // 세션 판단이 필요 없는 공개 경로는 Supabase Auth 왕복 없이 즉시 통과
+  // (getUser()는 매 요청 네트워크 호출이므로 보호 라우트/로그인 페이지에서만 수행)
+  if (!isProtectedRoute && !isLoginPage) {
+    return NextResponse.next({
+      request: {
+        headers: request.headers,
+      },
+    });
+  }
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -35,14 +53,7 @@ export default async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (request.nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/posts', request.url), { status: 301 });
-  }
-
-  // 2. 인증 필요 라우트 보호
-  const protectedRoutes = ['/bookmarks', '/profile'];
-  const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route));
-
+  // 인증 필요 라우트 보호
   if (isProtectedRoute && !user) {
     const redirectUrl = new URL('/auth/login', request.url);
     // 로그인 후 원래 페이지로 돌아가기 위한 redirect 파라미터
@@ -50,8 +61,8 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  // 3. 로그인 페이지 접근 시 이미 로그인된 경우 /posts로 리다이렉트
-  if (request.nextUrl.pathname === '/auth/login' && user) {
+  // 로그인 페이지 접근 시 이미 로그인된 경우 /posts로 리다이렉트
+  if (isLoginPage && user) {
     // redirect 파라미터가 있으면 해당 페이지로, 없으면 /posts로 (오픈 리다이렉트 방지: 내부 경로만 허용)
     const redirectParam = request.nextUrl.searchParams.get('redirect');
     const redirectPath = isSafeRedirectPath(redirectParam) ? redirectParam : '/posts';

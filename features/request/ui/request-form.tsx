@@ -51,7 +51,7 @@ export function RequestForm() {
             ].map(({ value, Icon, label }) => (
               <label key={value} className="relative cursor-pointer">
                 <input type="radio" value={value} {...register('type')} className="peer sr-only" />
-                <div className="rounded-lg border-2 border-border p-4 transition-all peer-checked:border-foreground peer-checked:bg-muted">
+                <div className="rounded-lg border-2 border-border p-4 transition-all peer-checked:border-foreground peer-checked:bg-muted peer-focus-visible:ring-2 peer-focus-visible:ring-foreground/30 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background">
                   <div className="flex flex-col items-center text-center">
                     <Icon className="mb-2 h-6 w-6 text-muted-foreground" strokeWidth={1.75} aria-hidden="true" />
                     <div className="font-medium text-foreground">{label}</div>

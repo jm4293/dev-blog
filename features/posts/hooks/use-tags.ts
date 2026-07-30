@@ -13,11 +13,14 @@ interface UseTagsOptions {
   featured?: boolean;
   category?: string;
   sort?: 'name' | 'usage' | 'featured';
+  /** false면 요청을 보류 (예: 필터 모달이 열리기 전까지) */
+  enabled?: boolean;
 }
 
-export function useTags({ featured = false, category = '', sort = 'usage' }: UseTagsOptions = {}) {
+export function useTags({ featured = false, category = '', sort = 'usage', enabled = true }: UseTagsOptions = {}) {
   return useQuery<TagsResponse>({
     queryKey: queryKeys.tags.list({ featured, category, sort }),
+    enabled,
     queryFn: async () => {
       const params = new URLSearchParams();
       if (featured) params.set('featured', 'true');

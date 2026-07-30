@@ -96,6 +96,19 @@ export function Select<T extends string = string>({
       return;
     }
 
+    if (event.key === 'Home' || event.key === 'End') {
+      if (!isOpen) return;
+      event.preventDefault();
+      setActiveIndex(event.key === 'Home' ? 0 : options.length - 1);
+      return;
+    }
+
+    // Tab은 기본 동작(포커스 이동)을 유지하되 열린 리스트박스만 닫는다
+    if (event.key === 'Tab') {
+      if (isOpen) setIsOpen(false);
+      return;
+    }
+
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       if (!isOpen) {
@@ -119,6 +132,7 @@ export function Select<T extends string = string>({
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-controls={listboxId}
+        aria-activedescendant={isOpen ? `${listboxId}-opt-${activeIndex}` : undefined}
         aria-label={ariaLabel}
         disabled={disabled}
         onClick={() => {
@@ -155,6 +169,7 @@ export function Select<T extends string = string>({
             return (
               <li
                 key={option.value}
+                id={`${listboxId}-opt-${index}`}
                 role="option"
                 aria-selected={isSelected}
                 onMouseEnter={() => setActiveIndex(index)}

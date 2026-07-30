@@ -1,12 +1,17 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useUser } from '@/features/auth';
 import { queryKeys } from '@/lib/query-keys';
 import { BookmarkWithPost } from '@/supabase/types.supabase';
 
 export function useBookmarksList() {
+  const { data: user } = useUser();
+
   return useQuery({
     queryKey: queryKeys.bookmarks.list(),
+    // 비로그인 사용자는 항상 빈 목록이므로 요청 자체를 생략
+    enabled: !!user,
     queryFn: async () => {
       const response = await fetch('/api/bookmarks');
 

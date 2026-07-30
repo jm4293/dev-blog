@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { buildPageMetadata } from '@/utils';
 import { LoginCard } from '@/features/auth';
-import { CosmicBackground } from '@/components/background';
+import { CosmicBackgroundLazy } from '@/components/background';
 
 export const metadata: Metadata = {
   ...buildPageMetadata({
@@ -24,7 +24,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
-      <CosmicBackground />
+      <CosmicBackgroundLazy />
 
       <div className="relative z-50 w-full max-w-md duration-1000 animate-in fade-in">
         <div className="space-y-8 text-center">

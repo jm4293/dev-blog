@@ -15,11 +15,14 @@ interface BlogsResponse {
 interface UseBlogsOptions {
   featured?: boolean;
   all?: boolean;
+  /** false면 요청을 보류 (예: 필터 모달이 열리기 전까지) */
+  enabled?: boolean;
 }
 
-export function useBlogs({ featured = false, all = false }: UseBlogsOptions = {}) {
+export function useBlogs({ featured = false, all = false, enabled = true }: UseBlogsOptions = {}) {
   return useQuery<BlogsResponse>({
     queryKey: queryKeys.blogs.list({ featured, all }),
+    enabled,
     queryFn: async () => {
       const params = new URLSearchParams();
       if (featured) params.set('featured', 'true');

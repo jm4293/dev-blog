@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { Home, RotateCw } from 'lucide-react';
-import { CosmicBackground } from '@/components/background';
+import { CosmicBackgroundLazy } from '@/components/background';
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -18,7 +18,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
-      <CosmicBackground />
+      <CosmicBackgroundLazy />
 
       <div className="relative z-50 w-full max-w-md duration-1000 animate-in fade-in">
         <div className="space-y-8 text-center">
@@ -50,7 +50,7 @@ export default function Error({ error, reset }: ErrorProps) {
             </span>
           </Link>
 
-          {error.digest && <p className="font-mono text-xs text-white/40">오류 코드: {error.digest}</p>}
+          {error.digest && <p className="font-mono text-xs text-white/60">오류 코드: {error.digest}</p>}
         </div>
       </div>
     </div>

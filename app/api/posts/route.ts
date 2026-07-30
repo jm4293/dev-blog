@@ -22,9 +22,15 @@ export async function GET(request: NextRequest) {
       Object.fromEntries(request.nextUrl.searchParams.entries()),
     );
 
-    const data = await fetchPosts({ page, search, tags, blogs, sort });
+    // 공개 데이터라 사용자 구분이 없음 — 쿠키 없는 정적 클라이언트 사용
+    const data = await fetchPosts({ page, search, tags, blogs, sort, useStaticClient: true });
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        // 데이터는 6시간 주기 수집으로만 변함 — CDN 5분 캐시 + 30분 stale-while-revalidate
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=1800',
+      },
+    });
   } catch (error) {
     console.error(error, { method: 'GET', endpoint: '/api/posts' });
     return NextResponse.json({ error: 'Internal server error', details: 'Failed to fetch posts' }, { status: 500 });
