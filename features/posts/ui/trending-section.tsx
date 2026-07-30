@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { TrendingUp } from 'lucide-react';
 import type { PostWithCompany } from '@/supabase/types.supabase';
 import { PostList } from './post-list';
@@ -17,9 +18,17 @@ export function TrendingSection({ posts }: TrendingSectionProps) {
 
   return (
     <section aria-label="이번 주 인기 글" className="mb-8 border-b border-border pb-8">
-      <div className="mb-1 flex items-center gap-2">
-        <TrendingUp className="h-5 w-5 text-foreground" aria-hidden />
-        <h2 className="text-lg font-bold text-foreground md:text-xl">이번 주 인기 글</h2>
+      <div className="mb-1 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <TrendingUp className="h-5 w-5 text-foreground" aria-hidden />
+          <h2 className="text-lg font-bold text-foreground md:text-xl">이번 주 인기 글</h2>
+        </div>
+        <Link
+          href="/digest"
+          className="shrink-0 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          주간 인기글 전체 보기 →
+        </Link>
       </div>
       <p className="mb-4 text-sm text-muted-foreground">최근 일주일간 북마크와 조회가 많았던 글이에요.</p>
       <PostList posts={posts} />

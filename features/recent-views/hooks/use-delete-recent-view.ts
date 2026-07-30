@@ -5,9 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUser } from '@/features/auth';
 import { queryKeys } from '@/lib/query-keys';
 import { clearAllRecentViews, deleteRecentViewAction } from '../actions';
-import type { RecentView } from '../services/local-storage.types';
-
-const STORAGE_KEY = 'recent-posts';
+import { RECENT_VIEWS_STORAGE_KEY, type RecentView } from '../services/local-storage.types';
 
 export function useDeleteRecentView() {
   const { data: user } = useUser();
@@ -17,9 +15,9 @@ export function useDeleteRecentView() {
   return useMutation({
     mutationFn: async (postIds: string[]) => {
       // localStorage에서 삭제
-      const views = getLocalStorage<RecentView[]>(STORAGE_KEY, []);
+      const views = getLocalStorage<RecentView[]>(RECENT_VIEWS_STORAGE_KEY, []);
       const filtered = views.filter((v) => !postIds.includes(v.postId));
-      setLocalStorage(STORAGE_KEY, filtered);
+      setLocalStorage(RECENT_VIEWS_STORAGE_KEY, filtered);
 
       // 로그인 시 DB에서도 삭제
       if (isLoggedIn) {
@@ -41,7 +39,7 @@ export function useClearAllRecentViews() {
   return useMutation({
     mutationFn: async () => {
       // localStorage 전체 삭제
-      removeLocalStorage(STORAGE_KEY);
+      removeLocalStorage(RECENT_VIEWS_STORAGE_KEY);
 
       // 로그인 시 DB에서도 전체 삭제
       if (isLoggedIn) {

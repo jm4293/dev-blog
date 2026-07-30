@@ -5,20 +5,21 @@ import { useQuery } from '@tanstack/react-query';
 import { useUser } from '@/features/auth';
 import { queryKeys } from '@/lib/query-keys';
 import { RecentViewsResponse } from '@/supabase/types.supabase';
-import type { RecentView } from '../services/local-storage.types';
-
-const STORAGE_KEY = 'recent-posts';
+import { RECENT_VIEWS_STORAGE_KEY, type RecentView } from '../services/local-storage.types';
 
 export function useRecentViews() {
-  const { data: user } = useUser();
+  const { data: user, isPending: isUserPending } = useUser();
   const isLoggedIn = !!user;
 
   return useQuery({
     queryKey: queryKeys.recentViews.list(isLoggedIn),
+    // 로그인 여부가 확정되기 전에 조회하면 localStorage 목록이 먼저 떴다가
+    // DB 목록으로 통째로 교체되는 깜빡임이 생기므로, useUser 완료를 기다린다
+    enabled: !isUserPending,
     queryFn: async () => {
       if (!isLoggedIn) {
         // 비로그인: localStorage에서 조회 (전체 Post 데이터 포함)
-        const localViews = getLocalStorage<RecentView[]>(STORAGE_KEY, []);
+        const localViews = getLocalStorage<RecentView[]>(RECENT_VIEWS_STORAGE_KEY, []);
 
         // localStorage 데이터를 API 응답 형식에 맞게 변환
         return localViews.map((view) => ({

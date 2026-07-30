@@ -10,7 +10,9 @@ import { RecentViewsListSkeleton } from './recent-views-list-skeleton';
 import { RecentViewPostCard } from './recent-views-post-card';
 
 export function RecentViewsList() {
-  const { data: views, isLoading, error } = useRecentViews();
+  // isPending 사용: 로그인 확정 대기(enabled=false) 동안 isLoading은 false라
+  // 빈 상태 화면으로 잘못 빠지기 때문에, 데이터가 확정될 때까지 스켈레톤을 유지한다
+  const { data: views, isPending, error } = useRecentViews();
   const deleteRecentView = useDeleteRecentView();
   const clearAll = useClearAllRecentViews();
   // 북마크 여부는 리스트 레벨에서 한 번만 계산하여 카드별로 전달
@@ -53,7 +55,7 @@ export function RecentViewsList() {
     setSelected([]);
   }, []);
 
-  if (isLoading) {
+  if (isPending) {
     return <RecentViewsListSkeleton />;
   }
 

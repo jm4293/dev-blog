@@ -3,8 +3,9 @@
 echo "🔍 커밋 전 검사를 시작합니다..."
 
 # 1. Console 체크 (console.log/debug/info가 있으면 커밋 방지 — error/warn은 에러 로깅용으로 허용)
+# 예외: components/branding/console-branding.tsx 는 개발자도구 콘솔 브랜딩이 목적인 파일
 echo "📋 콘솔 문장 검사 중..."
-CONSOLE_CHECK=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' | while read file; do
+CONSOLE_CHECK=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' | grep -v '^components/branding/console-branding\.tsx$' | while read file; do
   grep -n 'console\.\(log\|debug\|info\)' "$file" 2>/dev/null | sed "s|^|$file:|"
 done)
 

@@ -9,6 +9,7 @@ export const queryKeys = {
    */
   posts: {
     all: ['posts'] as const,
+    newThreshold: () => ['posts', 'new-threshold'] as const,
     list: (params: {
       page: number;
       search?: string;
@@ -62,6 +63,7 @@ export const queryKeys = {
   recentViews: {
     all: ['recent-views'] as const,
     list: (isLoggedIn: boolean) => ['recent-views', isLoggedIn] as const,
+    viewedIds: () => ['recent-views', 'viewed-ids'] as const,
   },
 
   /**

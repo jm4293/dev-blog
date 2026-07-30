@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { Pagination } from '@/components/pagination';
-import { useLoginStatusHandler, useSearchFilters } from '../hooks';
+import { useSearchFilters } from '../hooks';
 import { isDefaultFilters, usePosts } from '../hooks/use-posts';
 import type { GetPostsResponse } from '../services/fetch-posts';
 import { PostList } from './post-list';
@@ -16,8 +16,6 @@ interface PostsContainerProps {
 }
 
 export function PostsContainer({ initialData, trendingSlot }: PostsContainerProps) {
-  useLoginStatusHandler();
-
   const filters = useSearchFilters();
   const currentFilters = {
     page: filters.currentPage,
@@ -27,7 +25,7 @@ export function PostsContainer({ initialData, trendingSlot }: PostsContainerProp
     sort: filters.sortParam,
   };
 
-  const { data, isFetching } = usePosts(currentFilters, initialData);
+  const { data, isFetching, isError, refetch } = usePosts(currentFilters, initialData);
 
   const hasFilters = filters.searchQuery !== '' || filters.tagsParam.length > 0 || filters.blogsParam.length > 0;
   const showTrending = trendingSlot != null && isDefaultFilters(currentFilters);
@@ -47,13 +45,35 @@ export function PostsContainer({ initialData, trendingSlot }: PostsContainerProp
 
       <SearchContainer filters={filters} />
 
-      {posts.length === 0 && !isLoading ? (
+      {isError && posts.length === 0 ? (
+        // 조회 실패를 "결과 없음"으로 위장하지 않는다 — 사용자가 재시도할 수 있어야 함
+        <div className="flex flex-col items-center justify-center py-12">
+          <div className="text-center">
+            <p className="text-lg font-semibold text-foreground">게시글을 불러오지 못했습니다</p>
+            <p className="mt-2 text-muted-foreground">일시적인 오류일 수 있습니다. 잠시 후 다시 시도해주세요.</p>
+            <button
+              onClick={() => refetch()}
+              className="mt-4 rounded-lg bg-foreground px-4 py-2 font-semibold text-background transition-opacity hover:opacity-90"
+            >
+              다시 시도
+            </button>
+          </div>
+        </div>
+      ) : posts.length === 0 && !isLoading ? (
         <div className="flex flex-col items-center justify-center py-12">
           <div className="text-center">
             <p className="text-lg font-semibold text-foreground">게시글이 없습니다</p>
             <p className="mt-2 text-muted-foreground">
               {hasFilters ? '검색 조건을 변경해주세요' : '새로운 게시글이 곧 추가될 예정입니다'}
             </p>
+            {hasFilters && (
+              <button
+                onClick={filters.handleReset}
+                className="mt-4 rounded-lg bg-foreground px-4 py-2 font-semibold text-background transition-opacity hover:opacity-90"
+              >
+                필터 초기화
+              </button>
+            )}
           </div>
         </div>
       ) : (

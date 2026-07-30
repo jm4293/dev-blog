@@ -21,7 +21,7 @@ export function RecentViewPostCard({
   onSelect,
   isBookmarked: isBookmarkedProp,
 }: RecentViewPostCardProps) {
-  const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip } = useBookmarkToggle(
+  const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip, loginUrl } = useBookmarkToggle(
     view.post.id,
     isBookmarkedProp,
   );
@@ -91,6 +91,7 @@ export function RecentViewPostCard({
                 toggleBookmark();
               }}
               showLoginTooltip={showLoginTooltip}
+              loginUrl={loginUrl}
             />
           )}
         </PostCardHeader>

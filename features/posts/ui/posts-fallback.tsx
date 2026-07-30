@@ -36,6 +36,7 @@ export function PostsFallback({ initialData, trendingSlot }: PostsFallbackProps)
           value=""
           onChange={noop}
           onSearch={noop}
+          onClear={noop}
           onBlogFilterClick={noop}
           onTagFilterClick={noop}
           currentSort="newest"

@@ -34,6 +34,20 @@ export interface GetPostsResponse {
   hasPrevPage: boolean;
 }
 
+/**
+ * 검색어 → PostgREST or() 필터 문자열 (제목 + 요약 ilike)
+ *
+ * - 길이 100자 제한 (비정상 입력으로 인한 풀스캔 방지)
+ * - LIKE 와일드카드(%, _)와 역슬래시 이스케이프 (패턴 인젝션 방지)
+ * - or() 구문 예약문자(쉼표 등)가 섞여도 안전하도록 값을 쌍따옴표로 감싼다
+ */
+function buildSearchFilter(search: string): string {
+  const escaped = search.slice(0, 100).replace(/[\\%_]/g, '\\$&');
+  const pattern = `%${escaped}%`;
+  const quoted = `"${pattern.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+  return `title.ilike.${quoted},summary.ilike.${quoted}`;
+}
+
 export async function fetchPosts({
   page = 1,
   search = '',
@@ -75,11 +89,11 @@ export async function fetchPosts({
     )
     .order('published_at', { ascending: isAscending });
 
-  // 검색 필터 (제목 기반)
+  // 검색 필터 (제목 + 요약)
   if (search) {
-    const searchTerm = `%${search}%`;
-    countQuery = countQuery.ilike('title', searchTerm);
-    postsQuery = postsQuery.ilike('title', searchTerm);
+    const searchFilter = buildSearchFilter(search);
+    countQuery = countQuery.or(searchFilter);
+    postsQuery = postsQuery.or(searchFilter);
   }
 
   // 블로그 필터 promise 즉시 시작 (waterfall 방지)

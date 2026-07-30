@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next';
+import { serializeJsonLd } from '@/utils';
 import { ParticleBackgroundLazy } from '@/components/background';
+import { ConsoleBranding } from '@/components/branding';
 import { RegisterServiceWorker } from '@/components/pwa/register-service-worker';
 import { ToastContainer } from '@/components/toast';
 import { OfflineBanner } from '@/components/ui';
@@ -157,7 +159,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
+            __html: serializeJsonLd(organizationSchema),
           }}
         />
 
@@ -165,11 +167,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteSchema),
+            __html: serializeJsonLd(websiteSchema),
           }}
         />
       </head>
       <body className="min-h-screen">
+        <ConsoleBranding />
         <RegisterServiceWorker />
         <ParticleBackgroundLazy />
         <OfflineBanner />

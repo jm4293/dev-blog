@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { buildPageMetadata } from '@/utils';
+import { buildPageMetadata, isSafeRedirectPath } from '@/utils';
 import { LoginCard } from '@/features/auth';
 import { CosmicBackgroundLazy } from '@/components/background';
 
@@ -20,7 +20,9 @@ interface PageProps {
 
 export default async function LoginPage({ searchParams }: PageProps) {
   // 콜백 실패 시 /auth/login?error=auth_failed 로 리다이렉트됨
-  const { error } = await searchParams;
+  // redirect: 보호 라우트 진입 시 proxy가 심어주는 복귀 경로 (오픈 리다이렉트 방지: 내부 경로만 허용)
+  const { error, redirect } = await searchParams;
+  const next = isSafeRedirectPath(redirect) ? redirect : undefined;
 
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4 py-8">
@@ -32,13 +34,13 @@ export default async function LoginPage({ searchParams }: PageProps) {
             <h1 className="text-4xl font-bold text-white">devBlog.kr</h1>
           </div>
 
-          <LoginCard callbackError={error} />
+          <LoginCard callbackError={error} next={next} />
 
           <Link
             href="/posts"
             className="block w-full rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center font-semibold text-white/80 backdrop-blur-sm transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
           >
-            뒤로가기
+            포스트로 돌아가기
           </Link>
         </div>
       </div>

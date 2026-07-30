@@ -117,6 +117,12 @@ export function useSearchFilters() {
     [updateUrl, searchQuery, selectedTags, selectedBlogs],
   );
 
+  // 검색어만 지우기 (태그/블로그 필터는 유지)
+  const handleSearchClear = useCallback(() => {
+    setInputValue('');
+    updateUrl(1, '', selectedTagsRef.current, selectedBlogsRef.current, sortParamRef.current);
+  }, [updateUrl]);
+
   const handleReset = useCallback(() => {
     setInputValue('');
     setSelectedTags([]);
@@ -127,6 +133,9 @@ export function useSearchFilters() {
   const handlePageChange = useCallback(
     (page: number) => {
       updateUrl(page, searchQuery, selectedTags, selectedBlogs, sortParam);
+      // 페이지네이션은 화면 하단에 있으므로 새 목록의 처음부터 보이도록 상단으로 복귀
+      // (검색/필터 변경은 scroll:false 유지 — 보던 위치를 지킨다)
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     [updateUrl, searchQuery, selectedTags, selectedBlogs, sortParam],
   );
@@ -150,6 +159,7 @@ export function useSearchFilters() {
     setShowBlogModal,
     handleSearchChange,
     handleSearchSubmit,
+    handleSearchClear,
     handleTagToggle,
     handleBlogToggle,
     handleTagsApply,

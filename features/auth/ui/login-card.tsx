@@ -6,6 +6,8 @@ import { useGithubLogin } from '../hooks';
 interface LoginCardProps {
   /** 콜백 실패 시 URL로 전달되는 에러 코드 (예: auth_failed) */
   callbackError?: string;
+  /** 로그인 완료 후 돌아갈 내부 경로 (예: /bookmarks) */
+  next?: string;
 }
 
 const BENEFITS = [
@@ -14,7 +16,7 @@ const BENEFITS = [
   { Icon: Sparkles, text: '관심 태그·회사만 골라서 알림 설정' },
 ];
 
-export function LoginCard({ callbackError }: LoginCardProps) {
+export function LoginCard({ callbackError, next }: LoginCardProps) {
   const { mutate, error, isPending, isSuccess } = useGithubLogin();
 
   // isSuccess 이후에도 GitHub으로 리다이렉트될 때까지 잠깐 머무르므로 계속 진행 중으로 표시
@@ -47,7 +49,7 @@ export function LoginCard({ callbackError }: LoginCardProps) {
       )}
 
       <button
-        onClick={() => mutate()}
+        onClick={() => mutate(next)}
         disabled={isRedirecting}
         aria-busy={isRedirecting}
         className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 font-semibold text-black transition-colors hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-70"

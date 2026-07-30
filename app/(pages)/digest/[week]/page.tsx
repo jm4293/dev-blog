@@ -10,6 +10,8 @@ import {
   getWeekArticleDates,
   isFutureWeek,
   parseISOWeekString,
+  serializeJsonLd,
+  toISOWeekString,
 } from '@/utils';
 import { DigestContent, fetchWeeklyDigest } from '@/features/digest';
 
@@ -66,6 +68,13 @@ export default async function DigestWeekPage({ params }: PageProps) {
   const label = formatWeekLabel(week);
   const { published, modified } = getWeekArticleDates(range);
 
+  // 이전/다음 주차 (주 중간 시각으로 계산해 경계·서머타임 이슈 회피)
+  const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+  const prevWeek = toISOWeekString(new Date(range.start.getTime() - MS_PER_WEEK / 2));
+  const nextWeekString = toISOWeekString(new Date(range.start.getTime() + MS_PER_WEEK * 1.5));
+  const nextRange = parseISOWeekString(nextWeekString);
+  const nextWeek = nextRange && !isFutureWeek(nextRange) ? nextWeekString : null;
+
   // 발행일이 있는 콘텐츠성 페이지 — 검색 결과 날짜 스니펫('N일 전') 대상
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -103,10 +112,10 @@ export default async function DigestWeekPage({ params }: PageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListSchema) }} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleSchema) }} />
 
       <header className="mb-8">
         <nav aria-label="브레드크럼" className="mb-2 text-sm text-muted-foreground">
@@ -132,6 +141,28 @@ export default async function DigestWeekPage({ params }: PageProps) {
       ) : (
         <DigestContent digest={digest} />
       )}
+
+      {/* 주차 이동 — 매번 목록으로 돌아가지 않고 앞뒤 주를 바로 탐색 */}
+      <nav aria-label="주차 이동" className="mt-10 flex items-center justify-between border-t border-border pt-6">
+        <Link
+          href={`/digest/${prevWeek}`}
+          className="rounded-lg px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+        >
+          ← 이전 주
+        </Link>
+        {nextWeek ? (
+          <Link
+            href={`/digest/${nextWeek}`}
+            className="rounded-lg px-3 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
+          >
+            다음 주 →
+          </Link>
+        ) : (
+          <span aria-hidden className="px-3 py-2 text-sm text-muted-foreground/50">
+            다음 주 →
+          </span>
+        )}
+      </nav>
     </div>
   );
 }

@@ -25,24 +25,25 @@ export function useRemoveBookmark() {
       // 이전 데이터 백업
       const previousData = queryClient.getQueryData<{ bookmarks: BookmarkWithPost[] }>(queryKeys.bookmarks.list());
 
-      // 낙관적 업데이트: 해당 postId의 북마크 제거
-      if (previousData) {
-        queryClient.setQueryData(queryKeys.bookmarks.list(), {
-          bookmarks: previousData.bookmarks.filter((b) => b.post_id !== postId),
-        });
-      }
+      // 낙관적 업데이트 — updater 함수 형태 (목록 쿼리가 로드 전이면 no-op)
+      queryClient.setQueryData<{ bookmarks: BookmarkWithPost[] }>(queryKeys.bookmarks.list(), (old) =>
+        old ? { bookmarks: old.bookmarks.filter((b) => b.post_id !== postId) } : old,
+      );
 
       return { previousData };
-    },
-    onSuccess: () => {
-      // 서버에서 정확한 데이터 다시 가져오기
-      queryClient.invalidateQueries({ queryKey: queryKeys.bookmarks.all });
     },
     onError: (_error, _postId, context) => {
       // 에러 발생 시 이전 데이터로 롤백
       if (context?.previousData) {
         queryClient.setQueryData(queryKeys.bookmarks.list(), context.previousData);
       }
+    },
+    onSettled: (_data, error) => {
+      // 성공 시에는 낙관적 캐시가 이미 정확하므로 즉시 재조회하지 않고 stale 표시만 한다
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.bookmarks.all,
+        refetchType: error ? 'active' : 'none',
+      });
     },
   });
 }

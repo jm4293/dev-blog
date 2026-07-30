@@ -25,6 +25,7 @@ export function SearchContainer({ filters }: SearchContainerProps) {
         value={filters.inputValue}
         onChange={filters.handleSearchChange}
         onSearch={filters.handleSearchSubmit}
+        onClear={filters.handleSearchClear}
         onBlogFilterClick={() => filters.setShowBlogModal(true)}
         onTagFilterClick={() => filters.setShowTagModal(true)}
         currentSort={filters.sortParam}

@@ -6,10 +6,7 @@ import { useUser } from '@/features/auth';
 import { queryKeys } from '@/lib/query-keys';
 import type { PostWithCompany } from '@/supabase/types.supabase';
 import { createRecentViewAction } from '../actions';
-import type { RecentView } from '../services/local-storage.types';
-
-const MAX_RECENT_VIEWS = 20;
-const STORAGE_KEY = 'recent-posts';
+import { MAX_LOCAL_RECENT_VIEWS, RECENT_VIEWS_STORAGE_KEY, type RecentView } from '../services/local-storage.types';
 
 export function useAddRecentView() {
   const { data: user } = useUser();
@@ -19,7 +16,7 @@ export function useAddRecentView() {
   return useMutation({
     mutationFn: async (post: PostWithCompany) => {
       // localStorage에 항상 저장 (전체 Post 데이터)
-      const views = getLocalStorage<RecentView[]>(STORAGE_KEY, []);
+      const views = getLocalStorage<RecentView[]>(RECENT_VIEWS_STORAGE_KEY, []);
 
       // 기존 기록 제거 (중복 방지)
       const filtered = views.filter((v) => v.postId !== post.id);
@@ -27,10 +24,10 @@ export function useAddRecentView() {
       // 최신 기록 추가
       const updated: RecentView[] = [{ postId: post.id, viewedAt: new Date().toISOString(), post }, ...filtered].slice(
         0,
-        MAX_RECENT_VIEWS,
+        MAX_LOCAL_RECENT_VIEWS,
       );
 
-      setLocalStorage(STORAGE_KEY, updated);
+      setLocalStorage(RECENT_VIEWS_STORAGE_KEY, updated);
 
       // 로그인 시 DB에도 저장
       if (isLoggedIn) {
