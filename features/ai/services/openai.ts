@@ -11,9 +11,23 @@ interface CompletionResult {
   model: string;
 }
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// 클라이언트는 최초 사용 시점에 생성한다.
+// 모듈 스코프에서 생성하면 OPENAI_API_KEY 미설정 시 import만으로 throw되어
+// 수집 스크립트의 main() 에러 핸들링/환경 변수 검증이 전부 우회되는 문제가 있다.
+let openaiClient: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error('OPENAI_API_KEY 환경 변수가 설정되지 않았습니다');
+    }
+    // SDK 자체 재시도(기본 2회)를 끄고 callOpenAI의 재시도 루프만 사용
+    // (켜두면 루프 3회 × SDK 3회 = 요청당 최대 9회 호출로 증폭됨)
+    openaiClient = new OpenAI({ apiKey, maxRetries: 0 });
+  }
+  return openaiClient;
+}
 
 /**
  * OpenAI API 호출 (재시도 로직 포함)
@@ -26,11 +40,12 @@ async function callOpenAI(
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const response = await openai.chat.completions.create(
+      const response = await getOpenAIClient().chat.completions.create(
         {
           model: 'gpt-4o-mini',
           messages,
-          temperature: 0.7,
+          // 태그 선택은 분류 작업이므로 결정적으로 (같은 글 = 같은 태그)
+          temperature: 0,
           max_tokens: 200,
         },
         { timeout: 30000 }, // 30초 타임아웃
@@ -45,6 +60,12 @@ async function callOpenAI(
       };
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
+
+      // 4xx는 재시도해도 결과가 같으므로 즉시 실패 (429 rate limit 제외)
+      const status = (error as { status?: number })?.status;
+      if (typeof status === 'number' && status >= 400 && status < 500 && status !== 429) {
+        throw lastError;
+      }
 
       // 마지막 시도가 아니면 2초 대기 후 재시도
       if (attempt < maxRetries) {

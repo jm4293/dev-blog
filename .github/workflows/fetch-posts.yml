@@ -10,10 +10,18 @@ on:
   # GitHub UI에서 수동 실행 가능
   workflow_dispatch:
 
+# 동시 실행 방지 — 스케줄 실행이 길어진 상태에서 수동 dispatch/다음 스케줄이 겹치면
+# 같은 RSS를 이중으로 긁고(429 악화), select→upsert 경합으로 푸시 알림이 중복 발송된다
+concurrency:
+  group: fetch-posts
+  cancel-in-progress: false # 수집은 취소보다 대기가 안전
+
 jobs:
   fetch-posts:
     name: 블로그 게시글 수집
     runs-on: ubuntu-latest
+    # 기본값 360분 방지 — 백오프가 겹쳐도 이 시간 안에는 끝나야 정상
+    timeout-minutes: 30
     permissions:
       contents: read
       issues: write

@@ -5,8 +5,14 @@ on:
     branches: [main]
   pull_request:
 
+# 같은 브랜치에 연속 푸시 시 낡은 실행은 취소 (Actions 분 절약)
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality:
+    timeout-minutes: 15
     # 빌드·타입 검사는 Vercel 배포 파이프라인이 push마다 수행하므로 여기서는 중복하지 않는다.
     # CI는 Vercel이 하지 않는 검증(ESLint, 향후 테스트)을 담당한다.
     name: 린트 · 타입 검사

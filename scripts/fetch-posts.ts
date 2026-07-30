@@ -10,6 +10,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { generateTags, getAllTagsFromDatabase } from '@/features/ai';
 import { FeedFetchError, parseRssFeed } from '@/features/posts/services/rss-parser';
+// utils 배럴(@/utils)은 next/server 의존이 섞여 있어 CLI에서는 개별 모듈로 import
+import { slugify } from '@/utils/slugify';
 
 // Medium 인프라를 쓰는 커스텀 도메인 — medium.com과 rate limit을 공유하므로 같은 레인에서 순차 처리
 // (피드 <generator>Medium</generator>으로 판별, 새 Medium 블로그 추가 시 여기에도 등록)
@@ -34,6 +36,14 @@ function validateEnv() {
 
   if (missing.length > 0) {
     throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+  }
+
+  // 선택 변수 — 없으면 해당 단계(태깅/ISR 갱신/푸시)만 건너뛰므로 시작 시점에 명시적으로 경고
+  const optional = ['OPENAI_API_KEY', 'NEXT_PUBLIC_SITE_URL', 'REVALIDATE_SECRET', 'CRON_SECRET'];
+  const missingOptional = optional.filter((key) => !process.env[key]);
+
+  if (missingOptional.length > 0) {
+    log('warn', `⚠️ 선택 환경 변수 미설정 (해당 단계 건너뜀): ${missingOptional.join(', ')}`);
   }
 }
 
@@ -83,8 +93,11 @@ async function main() {
   // RSS 파싱에 실패한 블로그 목록 (실행 결과에서 한눈에 확인용)
   const failedCompanies: Array<{ name: string; reason: string }> = [];
 
-  // 새로 저장된 글의 태그/회사 정보 (Push 알림 관심사 필터링용)
-  const createdPosts: Array<{ tags: string[]; company_id: string }> = [];
+  // 새로 저장된 글의 정보 (Push 알림 관심사 필터링 + 단건일 때 원문 딥링크용)
+  const createdPosts: Array<{ tags: string[]; company_id: string; url: string; title: string }> = [];
+
+  // 새 글이 실제로 저장된 회사 (ISR 캐시 갱신 대상 경로 계산용)
+  const affectedCompanies = new Map<string, { name: string; name_en?: string }>();
 
   try {
     log('info', '🚀 블로그 게시글 수집 시작');
@@ -106,7 +119,7 @@ async function main() {
     log('info', '📋 활성화된 블로그 목록 조회 중...');
     const { data: companies, error: companiesError } = await supabase
       .from('companies')
-      .select('id, name, rss_url')
+      .select('id, name, name_en, rss_url')
       .eq('is_active', true);
 
     if (companiesError) {
@@ -124,6 +137,7 @@ async function main() {
     const typedCompanies = companies as Array<{
       id: string;
       name: string;
+      name_en?: string;
       rss_url: string;
     }>;
 
@@ -131,6 +145,12 @@ async function main() {
     log('info', '🏷️  태그 목록 조회 중...');
     const allTags = await getAllTagsFromDatabase(supabase);
     log('info', `✓ 총 ${allTags.length}개 태그 로드 완료`);
+
+    // OpenAI 키가 없어도 수집 자체는 계속한다 (태그만 비워서 저장)
+    const canGenerateTags = !!process.env.OPENAI_API_KEY;
+    if (!canGenerateTags) {
+      log('warn', '⚠️ OPENAI_API_KEY 미설정 — 태그 생성 없이 수집만 진행합니다');
+    }
 
     // 3. 각 기업의 RSS 피드 병렬 파싱
     // 같은 레인(호스트)은 순차 처리해서 rate limit(429) 방지, 레인 간에는 동시 8개
@@ -244,11 +264,13 @@ async function main() {
         // 태그 생성 (OpenAI, 동시 5개) — 본문은 태그 생성에만 사용하고 저장하지 않음 (저작권)
         const rows = await mapLimit(newPosts, 5, async (post) => {
           let tags: string[] = [];
-          try {
-            tags = await generateTags(post.title, post.summary || post.content?.substring(0, 500) || '', allTags);
-          } catch (error) {
-            const errorMsg = error instanceof Error ? error.message : String(error);
-            log('warn', `  ⚠️ 태그 생성 실패 (태그 없이 저장): ${errorMsg}`, { title: post.title });
+          if (canGenerateTags) {
+            try {
+              tags = await generateTags(post.title, post.summary || post.content?.substring(0, 500) || '', allTags);
+            } catch (error) {
+              const errorMsg = error instanceof Error ? error.message : String(error);
+              log('warn', `  ⚠️ 태그 생성 실패 (태그 없이 저장): ${errorMsg}`, { title: post.title });
+            }
           }
 
           return {
@@ -264,17 +286,34 @@ async function main() {
         });
 
         // 게시글 배치 저장 (URL 충돌 시 무시)
-        const { error: insertError } = await supabase
+        // .select()로 "실제 삽입된" 행만 받는다 — 시도한 행 수를 그대로 세면
+        // 동시 실행/경합 시 존재하지 않는 글 개수가 푸시 알림 문구에 실리게 된다
+        const { data: inserted, error: insertError } = await supabase
           .from('posts')
-          .upsert(rows as any, { onConflict: 'url', ignoreDuplicates: true });
+          .upsert(rows as any, { onConflict: 'url', ignoreDuplicates: true })
+          .select('url, title, tags');
 
         if (insertError) {
           throw insertError;
         }
 
-        stats.postsCreated += rows.length;
-        createdPosts.push(...rows.map((row) => ({ tags: row.tags || [], company_id: company.id })));
-        log('info', `  ✓ 새 게시글 ${rows.length}개 저장`);
+        const insertedRows = (inserted || []) as Array<{ url: string; title: string; tags: string[] | null }>;
+        stats.postsCreated += insertedRows.length;
+        createdPosts.push(
+          ...insertedRows.map((row) => ({
+            tags: row.tags || [],
+            company_id: company.id,
+            url: row.url,
+            title: row.title,
+          })),
+        );
+
+        if (insertedRows.length > 0) {
+          affectedCompanies.set(company.id, { name: company.name, name_en: company.name_en });
+        }
+
+        const skipped = rows.length - insertedRows.length;
+        log('info', `  ✓ 새 게시글 ${insertedRows.length}개 저장${skipped > 0 ? ` (중복 ${skipped}개 제외)` : ''}`);
       } catch (error) {
         stats.errors++;
         const errorMsg = error instanceof Error ? error.message : String(error);
@@ -313,18 +352,43 @@ async function main() {
         if (!siteUrl || !revalidateSecret) {
           log('warn', '⚠️ ISR 갱신 설정 미완료 (NEXT_PUBLIC_SITE_URL 또는 REVALIDATE_SECRET 미설정)');
         } else {
-          // 시크릿은 URL 쿼리(액세스 로그에 평문으로 남음) 대신 Authorization 헤더로 전달
-          const revalidateResponse = await fetch(`${siteUrl}/api/revalidate?path=/posts`, {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${revalidateSecret}` },
-          });
+          // /posts만 갱신하면 회사 랜딩(1시간)·사이트맵(24시간)은 새 글이 한참 늦게 반영된다.
+          // 새 글이 저장된 회사의 랜딩 페이지까지 함께 갱신 (슬러그 규칙은 companySlug와 동일: 영문명 우선)
+          const revalidatePaths = [
+            '/posts',
+            '/tags',
+            '/companies',
+            '/digest',
+            '/sitemap.xml',
+            ...Array.from(affectedCompanies.values()).map(
+              (affected) => `/companies/${slugify(affected.name_en || affected.name)}`,
+            ),
+          ];
 
-          if (revalidateResponse.ok) {
-            const revalidateResult = await revalidateResponse.json();
-            log('info', '✅ ISR 캐시 갱신 완료', revalidateResult);
-          } else {
-            const revalidateError = await revalidateResponse.json();
-            log('error', '❌ ISR 캐시 갱신 실패', revalidateError);
+          // 시크릿은 URL 쿼리(액세스 로그에 평문으로 남음) 대신 Authorization 헤더로 전달
+          // 일시적 실패(콜드스타트 등)에 대비해 1회 재시도
+          let revalidated = false;
+          for (let attempt = 0; attempt < 2 && !revalidated; attempt++) {
+            if (attempt > 0) {
+              await sleep(3000);
+            }
+
+            const revalidateResponse = await fetch(
+              `${siteUrl}/api/revalidate?paths=${encodeURIComponent(revalidatePaths.join(','))}`,
+              {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${revalidateSecret}` },
+              },
+            );
+
+            if (revalidateResponse.ok) {
+              const revalidateResult = await revalidateResponse.json();
+              log('info', '✅ ISR 캐시 갱신 완료', revalidateResult);
+              revalidated = true;
+            } else {
+              const revalidateError = await revalidateResponse.json();
+              log('error', `❌ ISR 캐시 갱신 실패 (시도 ${attempt + 1}/2)`, revalidateError);
+            }
           }
         }
       } catch (revalidateError) {

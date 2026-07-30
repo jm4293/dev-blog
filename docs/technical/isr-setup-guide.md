@@ -15,7 +15,7 @@ Supabase에 새 게시글 저장
   ↓
 stats.postsCreated > 0 확인
   ↓
-POST /api/revalidate?secret=xxx&path=/posts
+POST /api/revalidate?paths=/posts,... (Authorization: Bearer 헤더로 시크릿 전달)
   ↓
 revalidatePath('/posts') 실행
   ↓
@@ -107,12 +107,16 @@ npx tsx scripts/fetch-posts.ts
 
 ### API 직접 테스트
 
+시크릿은 URL 쿼리가 아니라 **Authorization 헤더**로 전달합니다 (쿼리는 액세스 로그에 평문으로 남음).
+
 ```bash
 # 로컬 환경
-curl -X POST "http://localhost:3000/api/revalidate?secret=YOUR_SECRET&path=/posts"
+curl -X POST "http://localhost:3000/api/revalidate?paths=/posts" \
+  -H "Authorization: Bearer YOUR_SECRET"
 
-# 프로덕션 환경
-curl -X POST "https://devblog.kr/api/revalidate?secret=YOUR_SECRET&path=/posts"
+# 프로덕션 환경 (여러 경로는 쉼표로 구분)
+curl -X POST "https://devblog.kr/api/revalidate?paths=/posts,/tags,/companies" \
+  -H "Authorization: Bearer YOUR_SECRET"
 ```
 
 **예상 응답:**
@@ -120,10 +124,12 @@ curl -X POST "https://devblog.kr/api/revalidate?secret=YOUR_SECRET&path=/posts"
 ```json
 {
   "revalidated": true,
-  "path": "/posts",
+  "paths": ["/posts"],
   "timestamp": "2024-02-26T12:34:56.789Z"
 }
 ```
+
+허용 경로는 화이트리스트로 제한됩니다: `/posts`, `/tags`, `/companies`, `/digest`, `/sitemap.xml` 및 `/tags/*`, `/companies/*`, `/digest/*` 하위 경로.
 
 ## 6. ISR 설정 확인
 
@@ -150,7 +156,7 @@ export const revalidate = 1800; // 30분 = 1800초
 
 1. `.env.local`, Vercel, GitHub Actions의 값이 모두 동일한지 확인
 2. 값 앞뒤 공백 제거
-3. 특수문자가 URL 인코딩되지 않았는지 확인
+3. 요청이 `Authorization: Bearer <시크릿>` 헤더를 사용하는지 확인 (`?secret=` 쿼리 방식은 지원하지 않음)
 
 ### "Error revalidating" 오류
 
@@ -199,7 +205,7 @@ export const revalidate = 1800; // 30분 = 1800초
 ### Vercel 로그
 
 ```
-POST /api/revalidate?secret=***&path=/posts
+POST /api/revalidate?paths=/posts,/tags,...
 Status: 200
 Response: { "revalidated": true, ... }
 ```
@@ -208,17 +214,20 @@ Response: { "revalidated": true, ... }
 
 다른 페이지도 ISR 갱신이 필요한 경우:
 
-### scripts/fetch-posts.ts 수정
+`paths` 파라미터에 쉼표로 구분해 한 번에 여러 경로를 갱신할 수 있습니다.
+`scripts/fetch-posts.ts`는 이미 `/posts`, `/tags`, `/companies`, `/digest`, `/sitemap.xml`과
+새 글이 저장된 회사의 랜딩 페이지(`/companies/{slug}`)를 함께 갱신합니다.
 
 ```typescript
-// 여러 경로 갱신
-const pathsToRevalidate = ['/posts', '/bookmarks', '/companies'];
+const paths = ['/posts', '/tags', '/companies'];
 
-for (const path of pathsToRevalidate) {
-  const response = await fetch(`${siteUrl}/api/revalidate?secret=${revalidateSecret}&path=${path}`, { method: 'POST' });
-  // ...
-}
+await fetch(`${siteUrl}/api/revalidate?paths=${encodeURIComponent(paths.join(','))}`, {
+  method: 'POST',
+  headers: { Authorization: `Bearer ${revalidateSecret}` },
+});
 ```
+
+새 경로를 추가할 때는 `app/api/revalidate/route.ts`의 화이트리스트에도 등록해야 합니다.
 
 ## 10. 참고 자료
 
