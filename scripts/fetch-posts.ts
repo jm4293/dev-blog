@@ -11,6 +11,7 @@ import { createClient } from '@supabase/supabase-js';
 import { generateTags, getAllTagsFromDatabase } from '@/features/ai';
 import { FeedFetchError, parseRssFeed } from '@/features/posts/services/rss-parser';
 // utils 배럴(@/utils)은 next/server 의존이 섞여 있어 CLI에서는 개별 모듈로 import
+import { normalizeUrl } from '@/utils/normalize-url';
 import { slugify } from '@/utils/slugify';
 
 // Medium 인프라를 쓰는 커스텀 도메인 — medium.com과 rate limit을 공유하므로 같은 레인에서 순차 처리
@@ -243,19 +244,22 @@ async function main() {
       }
 
       try {
-        // 피드 내 중복 URL 제거
-        const uniquePosts = Array.from(new Map(posts.map((post) => [post.url, post])).values());
+        // 피드 내 중복 제거 — 정규화 URL 기준 (트래킹 파라미터·슬래시 차이만으로 중복 저장 방지)
+        const uniquePosts = Array.from(new Map(posts.map((post) => [normalizeUrl(post.url), post])).values());
 
-        // 중복 체크 (URL 기반, 배치 조회)
-        const urls = uniquePosts.map((post) => post.url);
-        const { data: existing, error: existingError } = await supabase.from('posts').select('url').in('url', urls);
+        // 중복 체크 (정규화 URL 기반, 배치 조회)
+        const canonicalUrls = uniquePosts.map((post) => normalizeUrl(post.url));
+        const { data: existing, error: existingError } = await supabase
+          .from('posts')
+          .select('canonical_url')
+          .in('canonical_url', canonicalUrls);
 
         if (existingError) {
           throw existingError;
         }
 
-        const existingUrls = new Set((existing || []).map((row: { url: string }) => row.url));
-        const newPosts = uniquePosts.filter((post) => !existingUrls.has(post.url));
+        const existingUrls = new Set((existing || []).map((row: { canonical_url: string }) => row.canonical_url));
+        const newPosts = uniquePosts.filter((post) => !existingUrls.has(normalizeUrl(post.url)));
 
         if (newPosts.length === 0) {
           continue;
@@ -277,6 +281,7 @@ async function main() {
             company_id: company.id,
             title: post.title,
             url: post.url,
+            canonical_url: normalizeUrl(post.url),
             summary: post.summary,
             author: post.author,
             tags: tags.length > 0 ? tags : null,
@@ -290,7 +295,7 @@ async function main() {
         // 동시 실행/경합 시 존재하지 않는 글 개수가 푸시 알림 문구에 실리게 된다
         const { data: inserted, error: insertError } = await supabase
           .from('posts')
-          .upsert(rows as any, { onConflict: 'url', ignoreDuplicates: true })
+          .upsert(rows as any, { onConflict: 'canonical_url', ignoreDuplicates: true })
           .select('url, title, tags');
 
         if (insertError) {

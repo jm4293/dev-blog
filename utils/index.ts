@@ -6,6 +6,7 @@ export * from './local-storage';
 export * from './url';
 export * from './parse-search-params';
 export * from './slugify';
+export * from './normalize-url';
 export * from './week';
 export * from './seo';
 export * from './redirect';
