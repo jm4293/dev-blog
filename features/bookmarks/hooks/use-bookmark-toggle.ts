@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useToast } from '@/hooks';
 import { useUser } from '@/features/auth';
 import { useAddBookmark, useRemoveBookmark } from './index';
@@ -12,7 +12,6 @@ export function useBookmarkToggle(postId: string, isBookmarked: boolean) {
   const { data: user } = useUser();
   const isLoggedIn = !!user;
 
-  const router = useRouter();
   const pathname = usePathname();
   const { showToast } = useToast();
 
@@ -40,11 +39,8 @@ export function useBookmarkToggle(postId: string, isBookmarked: boolean) {
 
     if (isBookmarked) {
       removeBookmarkMutation.mutate(postId, {
+        // /bookmarks 목록도 같은 쿼리 캐시를 쓰므로 낙관적 갱신만으로 카드/개수가 즉시 사라진다
         onSuccess: () => {
-          // /bookmarks 목록은 서버 컴포넌트가 렌더하므로 refresh로 카드/개수를 즉시 반영
-          if (pathname === '/bookmarks') {
-            router.refresh();
-          }
           showToast({ message: '즐겨찾기에서 제거했습니다.', type: 'success', duration: 2000 });
         },
         onError: () => {
