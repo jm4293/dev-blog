@@ -24,6 +24,25 @@ export function isDefaultFilters(filters: PostsFilters): boolean {
   );
 }
 
+/** /api/posts 클라이언트 조회 — usePosts와 "더 보기"(useLoadMorePosts)가 공유 */
+export async function fetchPostsFromApi(filters: PostsFilters): Promise<GetPostsResponse> {
+  const params = buildQueryParams({
+    page: filters.page > 1 ? filters.page : undefined,
+    search: filters.search || undefined,
+    tags: filters.tags.length > 0 ? filters.tags.join(',') : undefined,
+    blogs: filters.blogs.length > 0 ? filters.blogs.join(',') : undefined,
+    sort: filters.sort !== 'newest' ? filters.sort : undefined,
+  });
+
+  const response = await fetch(`/api/posts${params.toString() ? `?${params.toString()}` : ''}`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch posts: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 /**
  * 게시글 목록 조회 훅
  * 기본 상태는 정적 페이지가 내려준 initialData를 그대로 쓰고,
@@ -32,23 +51,7 @@ export function isDefaultFilters(filters: PostsFilters): boolean {
 export function usePosts(filters: PostsFilters, initialData: GetPostsResponse) {
   return useQuery<GetPostsResponse>({
     queryKey: queryKeys.posts.list(filters),
-    queryFn: async () => {
-      const params = buildQueryParams({
-        page: filters.page > 1 ? filters.page : undefined,
-        search: filters.search || undefined,
-        tags: filters.tags.length > 0 ? filters.tags.join(',') : undefined,
-        blogs: filters.blogs.length > 0 ? filters.blogs.join(',') : undefined,
-        sort: filters.sort !== 'newest' ? filters.sort : undefined,
-      });
-
-      const response = await fetch(`/api/posts${params.toString() ? `?${params.toString()}` : ''}`);
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch posts: ${response.status}`);
-      }
-
-      return response.json();
-    },
+    queryFn: () => fetchPostsFromApi(filters),
     initialData: isDefaultFilters(filters) ? initialData : undefined,
     staleTime: 5 * 60 * 1000, // 5분 (ISR 30분과 별개로 클라이언트 캐시)
     placeholderData: keepPreviousData, // 페이지 이동 시 이전 목록 유지 (깜빡임 방지)
