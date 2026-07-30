@@ -1,6 +1,6 @@
 'use client';
 
-import { buildQueryParams } from '@/utils';
+import { buildQueryParams, type PostSortOption } from '@/utils';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query-keys';
 import type { GetPostsResponse } from '../services/fetch-posts';
@@ -10,7 +10,7 @@ export interface PostsFilters {
   search: string;
   tags: string[];
   blogs: string[];
-  sort: 'newest' | 'oldest';
+  sort: PostSortOption;
 }
 
 /** 필터가 정적 페이지의 기본 상태(1페이지, 필터 없음)와 같은지 */

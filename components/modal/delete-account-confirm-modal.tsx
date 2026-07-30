@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useFocusTrap } from '@/hooks';
 import { UserX } from 'lucide-react';
+import { ConfirmModal } from './confirm-modal';
 
 interface DeleteAccountConfirmModalProps {
   open: boolean;
@@ -17,72 +16,28 @@ export function DeleteAccountConfirmModal({
   onOpenChange,
   onConfirm,
 }: DeleteAccountConfirmModalProps) {
-  const dialogRef = useFocusTrap<HTMLDivElement>(open);
-
-  useEffect(() => {
-    if (!open) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onOpenChange(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [open, onOpenChange]);
-
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="delete-account-title"
-        tabIndex={-1}
-        className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-2xl"
-      >
-        <div className="mb-4 flex items-center gap-3">
-          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-destructive/10">
-            <UserX className="h-6 w-6 text-destructive" aria-hidden="true" />
-          </div>
-          <h3 id="delete-account-title" className="text-xl font-bold text-foreground">
-            회원탈퇴 확인
-          </h3>
-        </div>
-
-        <div className="mb-6 space-y-2">
-          <p className="font-medium text-foreground">정말로 회원탈퇴 하시겠습니까?</p>
-          <ul className="space-y-1 text-sm text-muted-foreground">
-            <li className="flex items-start gap-2">
-              <span className="text-destructive">•</span>
-              <span>모든 북마크가 영구 삭제됩니다</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-destructive">•</span>
-              <span>이 작업은 복구할 수 없습니다</span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="flex gap-3">
-          <button
-            onClick={() => onOpenChange(false)}
-            className="flex-1 rounded-lg border border-border px-4 py-2.5 font-medium text-foreground transition-colors hover:bg-muted"
-          >
-            취소
-          </button>
-          <button
-            onClick={onConfirm}
-            disabled={isDeleting}
-            className="flex-1 rounded-lg bg-destructive px-4 py-2.5 font-medium text-destructive-foreground transition-colors hover:bg-destructive/90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {isDeleting ? '진행 중...' : '탈퇴하기'}
-          </button>
-        </div>
-      </div>
-    </div>
+    <ConfirmModal
+      open={open}
+      title="회원탈퇴 확인"
+      icon={UserX}
+      destructive
+      isPending={isDeleting}
+      confirmLabel="탈퇴하기"
+      onOpenChange={onOpenChange}
+      onConfirm={onConfirm}
+    >
+      <p className="font-medium text-foreground">정말로 회원탈퇴 하시겠습니까?</p>
+      <ul className="space-y-1 text-sm text-muted-foreground">
+        <li className="flex items-start gap-2">
+          <span className="text-destructive">•</span>
+          <span>모든 북마크가 영구 삭제됩니다</span>
+        </li>
+        <li className="flex items-start gap-2">
+          <span className="text-destructive">•</span>
+          <span>이 작업은 복구할 수 없습니다</span>
+        </li>
+      </ul>
+    </ConfirmModal>
   );
 }

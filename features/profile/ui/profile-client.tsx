@@ -4,25 +4,13 @@ import { useState } from 'react';
 import { LogOut, Trash2 } from 'lucide-react';
 import { useDeleteAccount } from '@/features/auth/hooks/use-delete-account';
 import { useLogout } from '@/features/auth/hooks/use-logout';
-import { DeleteAccountConfirmModal } from '@/components/modal';
+import { ConfirmModal, DeleteAccountConfirmModal } from '@/components/modal';
 
 export function ProfileClient() {
   const { mutate: logout, isPending } = useLogout();
   const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-
-  const handleLogout = () => {
-    if (confirm('로그아웃 하시겠습니까?')) {
-      logout();
-    }
-  };
-
-  const handleDeleteAccount = () => {
-    if (!confirm('정말로 회원탈퇴 하시겠습니까?\n계정과 모든 북마크가 삭제되며 복구할 수 없습니다.')) {
-      return;
-    }
-    setShowDeleteConfirm(true);
-  };
 
   return (
     <>
@@ -31,7 +19,7 @@ export function ProfileClient() {
         <h3 className="mb-1 text-sm font-semibold text-foreground">로그아웃</h3>
         <p className="mb-4 text-sm text-muted-foreground">현재 기기에서 로그아웃합니다.</p>
         <button
-          onClick={handleLogout}
+          onClick={() => setShowLogoutConfirm(true)}
           disabled={isPending}
           className="flex w-full items-center justify-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -47,7 +35,7 @@ export function ProfileClient() {
           회원탈퇴 시 모든 데이터가 영구 삭제되며 복구할 수 없습니다.
         </p>
         <button
-          onClick={handleDeleteAccount}
+          onClick={() => setShowDeleteConfirm(true)}
           disabled={isDeleting || showDeleteConfirm}
           className="flex w-full items-center justify-center gap-2 rounded-lg border border-destructive/50 px-4 py-2.5 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -56,6 +44,22 @@ export function ProfileClient() {
         </button>
       </div>
 
+      <ConfirmModal
+        open={showLogoutConfirm}
+        title="로그아웃"
+        description="현재 기기에서 로그아웃할까요?"
+        confirmLabel="로그아웃"
+        icon={LogOut}
+        isPending={isPending}
+        pendingLabel="로그아웃 중..."
+        onOpenChange={setShowLogoutConfirm}
+        onConfirm={() => {
+          setShowLogoutConfirm(false);
+          logout();
+        }}
+      />
+
+      {/* 탈퇴는 파괴적 동작이므로 상세 안내가 있는 전용 모달 1회 확인 (confirm 중복 확인 제거) */}
       <DeleteAccountConfirmModal
         open={showDeleteConfirm}
         isDeleting={isDeleting}

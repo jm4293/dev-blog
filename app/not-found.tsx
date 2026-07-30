@@ -20,13 +20,27 @@ export default function NotFound() {
             <h2 className="mb-2 text-lg font-semibold text-white">페이지가 없어요</h2>
             <p className="mb-6 text-sm text-white/70">요청하신 페이지가 존재하지 않거나 이동되었습니다.</p>
 
+            {/* /는 /posts로 301되므로 직행 (리다이렉트 1회 절약) */}
             <Link
-              href="/"
+              href="/posts"
               className="mx-auto mb-4 flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 font-semibold text-black transition-colors hover:bg-white/90"
             >
               <Home className="h-4 w-4" />
-              홈으로 돌아가기
+              포스트로 돌아가기
             </Link>
+
+            {/* 이 페이지는 사이드바/헤더가 없는 전체 화면이라 주요 메뉴로 가는 탈출구를 함께 제공 */}
+            <nav aria-label="주요 메뉴" className="flex justify-center gap-4 text-sm text-white/60">
+              <Link href="/digest" className="transition-colors hover:text-white">
+                주간 인기글
+              </Link>
+              <Link href="/tags" className="transition-colors hover:text-white">
+                태그
+              </Link>
+              <Link href="/companies" className="transition-colors hover:text-white">
+                기업
+              </Link>
+            </nav>
           </div>
 
           <button

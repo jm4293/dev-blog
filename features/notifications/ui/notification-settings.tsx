@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { usePwaInstall, useToast } from '@/hooks';
 import { Bell, BellOff, PlusSquare, Share, Trash2 } from 'lucide-react';
+import { ConfirmModal } from '@/components/modal';
 import { useNotificationPreferences, useNotifications, useNotificationSubscribe } from '../hooks';
 import { detectDevice, groupDevices } from '../services';
 import { NotificationInterests } from './notification-interests';
@@ -74,13 +76,19 @@ export function NotificationSettings() {
     }
   };
 
-  const handleDeleteDevice = async (device_os: string, label: string) => {
-    if (!confirm(`${label} 장치를 삭제할까요?\n삭제하면 해당 장치에서 알림을 받지 못합니다.`)) return;
+  // 삭제 확인 모달 대상 장치
+  const [deleteTarget, setDeleteTarget] = useState<{ device_os: string; label: string } | null>(null);
+
+  const handleConfirmDeleteDevice = async () => {
+    if (!deleteTarget) return;
+    const { device_os, label } = deleteTarget;
     try {
       await deleteDeviceSubscriptions.mutateAsync(device_os);
       showToast({ message: `${label} 장치가 삭제되었습니다.`, type: 'success' });
     } catch {
       showToast({ message: `${label} 장치 삭제에 실패했습니다.`, type: 'error' });
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -194,7 +202,7 @@ export function NotificationSettings() {
                         />
                       </button>
                       <button
-                        onClick={() => handleDeleteDevice(group.device_os, group.label)}
+                        onClick={() => setDeleteTarget({ device_os: group.device_os, label: group.label })}
                         className="p-1 text-muted-foreground transition-colors hover:text-destructive"
                         aria-label={`${group.label} 장치 삭제`}
                       >
@@ -228,6 +236,21 @@ export function NotificationSettings() {
           )}
         </div>
       )}
+
+      <ConfirmModal
+        open={deleteTarget !== null}
+        title="장치 삭제"
+        description={`${deleteTarget?.label ?? ''} 장치를 삭제할까요? 삭제하면 해당 장치에서 알림을 받지 못합니다.`}
+        confirmLabel="삭제"
+        destructive
+        icon={Trash2}
+        isPending={deleteDeviceSubscriptions.isPending}
+        pendingLabel="삭제 중..."
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+        onConfirm={handleConfirmDeleteDevice}
+      />
     </div>
   );
 }

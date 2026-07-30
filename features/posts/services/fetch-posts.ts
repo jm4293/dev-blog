@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from '@/supabase/server.supabase';
 import { createSupabaseStaticClient } from '@/supabase/static.supabase';
 import type { Company, Post, PostWithCompany } from '@/supabase/types.supabase';
 import { PAGINATION } from '@/utils/constants';
+import type { PostSortOption } from '@/utils/parse-search-params';
 
 // posts + company 조인 쿼리의 행 타입 (수동 타입 환경이라 명시적으로 선언)
 type PostRow = Post & { company: Company | null };
@@ -15,7 +16,7 @@ interface GetPostsParams {
   tags?: string[];
   blogs?: string[];
   companyId?: string;
-  sort?: 'newest' | 'oldest';
+  sort?: PostSortOption;
   limit?: number;
   /**
    * 쿠키 없는 정적 클라이언트 사용 (ISR/정적 페이지용)
@@ -66,11 +67,8 @@ export async function fetchPosts({
   let countQuery = supabase.from('posts').select('id', { count: 'exact', head: true });
 
   // 2. 게시글 목록 조회 (정렬: 기본값은 최신순)
-  const isAscending = sort === 'oldest';
-  let postsQuery = supabase
-    .from('posts')
-    .select(
-      `
+  let postsQuery = supabase.from('posts').select(
+    `
       id,
       company_id,
       title,
@@ -86,8 +84,17 @@ export async function fetchPosts({
       updated_at,
       company:companies(id, name, name_en, logo_url)
     `,
-    )
-    .order('published_at', { ascending: isAscending });
+  );
+
+  if (sort === 'popular') {
+    // 인기순: 북마크(강한 신호) → 조회수 → 최신 순으로 폴백
+    postsQuery = postsQuery
+      .order('bookmark_count', { ascending: false })
+      .order('view_count', { ascending: false })
+      .order('published_at', { ascending: false });
+  } else {
+    postsQuery = postsQuery.order('published_at', { ascending: sort === 'oldest' });
+  }
 
   // 검색 필터 (제목 + 요약)
   if (search) {

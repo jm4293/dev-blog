@@ -40,15 +40,29 @@ export default function Error({ error, reset }: ErrorProps) {
             </button>
           </div>
 
+          {/* /는 /posts로 301되므로 직행 (리다이렉트 1회 절약) */}
           <Link
-            href="/"
+            href="/posts"
             className="block w-full rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-center font-semibold text-white/80 backdrop-blur-sm transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
           >
             <span className="flex items-center justify-center gap-2">
               <Home className="h-4 w-4" />
-              홈으로 돌아가기
+              포스트로 돌아가기
             </span>
           </Link>
+
+          {/* 이 페이지는 사이드바/헤더가 없는 전체 화면이라 주요 메뉴로 가는 탈출구를 함께 제공 */}
+          <nav aria-label="주요 메뉴" className="flex justify-center gap-4 text-sm text-white/60">
+            <Link href="/digest" className="transition-colors hover:text-white">
+              주간 인기글
+            </Link>
+            <Link href="/tags" className="transition-colors hover:text-white">
+              태그
+            </Link>
+            <Link href="/companies" className="transition-colors hover:text-white">
+              기업
+            </Link>
+          </nav>
 
           {error.digest && <p className="font-mono text-xs text-white/60">오류 코드: {error.digest}</p>}
         </div>

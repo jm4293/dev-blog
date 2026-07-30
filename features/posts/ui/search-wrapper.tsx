@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { PostSortOption } from '@/utils';
 import { Search, X } from 'lucide-react';
 import { SortButton } from './sort-button';
 
@@ -9,8 +10,8 @@ interface SearchInputProps {
   onClear: () => void;
   onBlogFilterClick: () => void;
   onTagFilterClick: () => void;
-  currentSort: 'newest' | 'oldest';
-  onSortChange: (sort: 'newest' | 'oldest') => void;
+  currentSort: PostSortOption;
+  onSortChange: (sort: PostSortOption) => void;
 }
 
 interface SearchInputFieldProps {

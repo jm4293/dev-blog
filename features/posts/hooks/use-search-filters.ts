@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { buildQueryParams } from '@/utils';
+import { buildQueryParams, type PostSortOption } from '@/utils';
 
 /**
  * 검색/필터 상태 훅 — URL 쿼리스트링이 단일 소스
@@ -18,7 +18,8 @@ export function useSearchFilters() {
   const searchQuery = searchParams.get('search') || '';
   const tagsParam = useMemo(() => searchParams.get('tags')?.split(',').filter(Boolean) || [], [searchParams]);
   const blogsParam = useMemo(() => searchParams.get('blogs')?.split(',').filter(Boolean) || [], [searchParams]);
-  const sortParam = (searchParams.get('sort') as 'newest' | 'oldest') || 'newest';
+  const rawSort = searchParams.get('sort');
+  const sortParam: PostSortOption = rawSort === 'oldest' || rawSort === 'popular' ? rawSort : 'newest';
 
   // 로컬 UI 상태 (검색 입력, 모달 내 선택)
   const [inputValue, setInputValue] = useState(searchQuery);
@@ -50,7 +51,7 @@ export function useSearchFilters() {
 
   // URL 업데이트 함수
   const updateUrl = useCallback(
-    (page: number, search: string, tags: string[], blogs: string[], sort: 'newest' | 'oldest') => {
+    (page: number, search: string, tags: string[], blogs: string[], sort: PostSortOption) => {
       const params = buildQueryParams({
         page: page > 1 ? page : undefined,
         search,
@@ -111,7 +112,7 @@ export function useSearchFilters() {
   );
 
   const handleSortChange = useCallback(
-    (sort: 'newest' | 'oldest') => {
+    (sort: PostSortOption) => {
       updateUrl(1, searchQuery, selectedTags, selectedBlogs, sort);
     },
     [updateUrl, searchQuery, selectedTags, selectedBlogs],

@@ -1,4 +1,4 @@
-import { Bell, Bookmark, CalendarDays, FileText, PlusCircle, User } from 'lucide-react';
+import { Bell, Bookmark, CalendarDays, FileText, History, PlusCircle, User } from 'lucide-react';
 
 export const APP = {
   NAME: 'devBlog.kr',
@@ -9,6 +9,7 @@ export const APP = {
 export const MENU_ITEMS = [
   { href: '/posts', label: '포스트', icon: FileText },
   { href: '/digest', label: '주간 인기글', icon: CalendarDays },
+  { href: '/recent-views', label: '최근 본 글', icon: History },
   { href: '/bookmarks', label: '즐겨찾기', icon: Bookmark },
   { href: '/profile', label: '프로필', icon: User },
   { href: '/announcements', label: '새로운 소식', icon: Bell },
