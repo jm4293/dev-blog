@@ -1,21 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import { sidebarHoveredAtom } from '@/atoms';
-import { useAtom } from 'jotai';
 import { DesktopSidebar } from './desktop-sidebar';
 import { FooterContainer } from './footer-container';
 import { MobileHeader } from './mobile-header';
 
 export function LayoutContainer({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const [isSidebarHovered, setSidebarHovered] = useAtom(sidebarHoveredAtom);
-
-  useEffect(() => {
-    setSidebarHovered(false);
-  }, [pathname, setSidebarHovered]);
-
   return (
     <div className="relative z-10 min-h-screen">
       <a
@@ -27,10 +16,8 @@ export function LayoutContainer({ children }: { children: React.ReactNode }) {
       <DesktopSidebar />
       <MobileHeader />
 
-      <div
-        className="pt-16 transition-[padding-left] duration-300 ease-out md:pt-0"
-        data-sidebar-expanded={isSidebarHovered}
-      >
+      {/* 사이드바 호버 확장은 오버레이 방식이므로 본문 패딩은 접힌 폭(64px)으로 고정 */}
+      <div className="with-sidebar-offset pt-16 md:pt-0">
         <main id="main-content" className="min-h-screen">
           {children}
         </main>

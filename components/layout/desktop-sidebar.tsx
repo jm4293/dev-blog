@@ -3,10 +3,8 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { sidebarHoveredAtom } from '@/atoms';
 import { useTheme } from '@/hooks';
 import { MENU_ITEMS } from '@/utils';
-import { useSetAtom } from 'jotai';
 import { Code2, Moon, Sun } from 'lucide-react';
 import { useUser } from '@/features/auth';
 
@@ -29,7 +27,6 @@ export function DesktopSidebar() {
   const { theme, toggleTheme } = useTheme();
   const { data: user } = useUser();
   const isLoggedIn = !!user;
-  const setSidebarHovered = useSetAtom(sidebarHoveredAtom);
 
   const sidebarRef = useRef<HTMLDivElement>(null);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -45,7 +42,6 @@ export function DesktopSidebar() {
   const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const handleMouseEnter = () => {
-    setSidebarHovered(true);
     const el = sidebarRef.current;
     if (!el) return;
     void loadGsap().then((gsap) => {
@@ -62,7 +58,6 @@ export function DesktopSidebar() {
   };
 
   const handleMouseLeave = () => {
-    setSidebarHovered(false);
     const el = sidebarRef.current;
     if (!el) return;
     void loadGsap().then((gsap) => {
@@ -93,7 +88,6 @@ export function DesktopSidebar() {
 
   // Collapse sidebar on route change (e.g., navigating away before mouseleave fires)
   useEffect(() => {
-    setSidebarHovered(false);
     void loadGsap().then((gsap) => {
       const el = sidebarRef.current;
       if (el) {
@@ -106,7 +100,6 @@ export function DesktopSidebar() {
         gsap.set(labels, { opacity: 0, width: 0 });
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   return (

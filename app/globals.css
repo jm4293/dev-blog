@@ -172,13 +172,12 @@ button {
   padding-inline: 0.15em;
 }
 
-/* Sidebar-driven content shift (desktop only) */
+/* Sidebar width offset (desktop only)
+   호버 확장은 오버레이(사이드바만 위로 펼침)로 처리한다 — 본문 패딩까지 함께 밀면
+   마우스가 왼쪽 가장자리를 스칠 때마다 콘텐츠 전체가 176px 이동하는 레이아웃 점프가 생긴다 */
 @media (min-width: 768px) {
-  [data-sidebar-expanded='false'] {
+  .with-sidebar-offset {
     padding-left: var(--sidebar-collapsed-width);
-  }
-  [data-sidebar-expanded='true'] {
-    padding-left: var(--sidebar-width);
   }
 }
 
