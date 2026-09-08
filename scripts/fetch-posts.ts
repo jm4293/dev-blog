@@ -100,6 +100,9 @@ async function main() {
   // 새 글이 실제로 저장된 회사 (ISR 캐시 갱신 대상 경로 계산용)
   const affectedCompanies = new Map<string, { name: string; name_en?: string }>();
 
+  // 새 글이 실제로 저장된 태그 (태그 랜딩 페이지 ISR 갱신 대상 — 시간 기반 갱신 주기가 길어 즉시 갱신이 필요)
+  const affectedTags = new Set<string>();
+
   try {
     log('info', '🚀 블로그 게시글 수집 시작');
 
@@ -315,6 +318,7 @@ async function main() {
 
         if (insertedRows.length > 0) {
           affectedCompanies.set(company.id, { name: company.name, name_en: company.name_en });
+          insertedRows.forEach((row) => (row.tags || []).forEach((tag) => affectedTags.add(tag)));
         }
 
         const skipped = rows.length - insertedRows.length;
@@ -357,8 +361,8 @@ async function main() {
         if (!siteUrl || !revalidateSecret) {
           log('warn', '⚠️ ISR 갱신 설정 미완료 (NEXT_PUBLIC_SITE_URL 또는 REVALIDATE_SECRET 미설정)');
         } else {
-          // /posts만 갱신하면 회사 랜딩(1시간)·사이트맵(24시간)은 새 글이 한참 늦게 반영된다.
-          // 새 글이 저장된 회사의 랜딩 페이지까지 함께 갱신 (슬러그 규칙은 companySlug와 동일: 영문명 우선)
+          // 회사/태그 랜딩은 시간 기반 갱신이 1일이므로(ISR Write 절감) 새 글이 저장된 경로는 여기서 즉시 갱신한다.
+          // 슬러그 규칙은 companySlug / slugify(tag.name)과 동일
           const revalidatePaths = [
             '/posts',
             '/tags',
@@ -368,6 +372,7 @@ async function main() {
             ...Array.from(affectedCompanies.values()).map(
               (affected) => `/companies/${slugify(affected.name_en || affected.name)}`,
             ),
+            ...Array.from(affectedTags).map((tag) => `/tags/${slugify(tag)}`),
           ];
 
           // 시크릿은 URL 쿼리(액세스 로그에 평문으로 남음) 대신 Authorization 헤더로 전달

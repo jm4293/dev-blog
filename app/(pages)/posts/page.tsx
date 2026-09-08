@@ -4,7 +4,9 @@ import { APP, buildPageMetadata, serializeJsonLd } from '@/utils';
 import { NotificationPromoBanner } from '@/features/notifications';
 import { fetchPosts, fetchTrendingPosts, PostsContainer, PostsFallback, TrendingSection } from '@/features/posts';
 
-export const revalidate = 1800; // 30분 (새 글 수집 시 /api/revalidate로 즉시 갱신)
+// 데이터는 6시간 주기 수집으로만 바뀌고, 수집 직후 /api/revalidate로 즉시 갱신되므로 시간 기반 갱신은 안전망 역할만 한다.
+// 짧은 주기는 Vercel ISR Write(8KB 단위 과금)만 늘린다.
+export const revalidate = 21600; // 6시간
 
 // 요청과 무관한 정적 스키마는 모듈 스코프에서 1회만 생성
 const breadcrumbSchema = {

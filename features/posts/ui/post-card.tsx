@@ -1,7 +1,7 @@
 'use client';
 
-import { usePostCardInteractions } from '@/hooks';
-import { cn, formatPostDate, slugify } from '@/utils';
+import { usePostCardInteractions, usePostDate } from '@/hooks';
+import { cn, slugify } from '@/utils';
 import { PostWithCompany } from '@/supabase/types.supabase';
 import { BookmarkButton } from './bookmark-button';
 import { PostCardHeader } from './post-card-header';
@@ -19,7 +19,8 @@ interface PostCardProps {
 export function PostCard({ post, isBookmarked: isBookmarkedProp, isViewed = false, isNew = false }: PostCardProps) {
   const { bookmark, handlePostClick } = usePostCardInteractions(post, isBookmarkedProp);
   const { isBookmarked, isLoading, toggleBookmark, showLoginTooltip, loginUrl } = bookmark;
-  const timeDisplay = formatPostDate(post.published_at);
+  // 상대 시간은 클라이언트에서만 계산 — ISR 출력이 재생성마다 달라지는 것을 방지
+  const timeDisplay = usePostDate(post.published_at);
 
   return (
     <article className="glass-card relative transform rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">

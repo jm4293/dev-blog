@@ -11,7 +11,18 @@ export function formatDateKo(date: Date | string): string {
 }
 
 /**
- * 게시글 날짜를 포맷팅합니다.
+ * 게시글 날짜의 고정 부분만 포맷팅합니다 (서버 렌더링/ISR 출력용).
+ * 상대 시간("n시간 전")은 렌더 시각에 따라 달라져 ISR 페이지 출력이 매번 바뀌고,
+ * Vercel이 "내용 변경"으로 판단해 ISR Write가 발생하므로 서버 출력에는 포함하지 않는다.
+ * @example formatPostDateStatic('2024-01-15') // "2024-01-15"
+ */
+export function formatPostDateStatic(date: Date | string): string {
+  const publishedDate = typeof date === 'string' ? new Date(date) : date;
+  return format(publishedDate, 'yyyy-MM-dd');
+}
+
+/**
+ * 게시글 날짜를 포맷팅합니다. 상대 시간이 포함되므로 클라이언트에서만 호출한다 (usePostDate 참고).
  * @param date - 포맷팅할 날짜
  * @returns "yyyy-MM-dd · n시간 전" 형식의 문자열
  *

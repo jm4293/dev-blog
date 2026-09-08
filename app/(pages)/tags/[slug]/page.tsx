@@ -6,7 +6,7 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export const revalidate = 3600; // 1시간
+export const revalidate = 86400; // 1일 (새 글이 저장된 태그는 수집 스크립트가 즉시 갱신 — ISR Write 절감)
 
 export async function generateStaticParams() {
   const tags = await fetchAllTags();

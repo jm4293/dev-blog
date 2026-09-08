@@ -7,3 +7,4 @@ export * from './use-click-outside';
 export * from './use-post-card-interactions';
 export * from './use-reset-key';
 export * from './use-focus-trap';
+export * from './use-post-date';

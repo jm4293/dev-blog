@@ -19,7 +19,7 @@ interface PageProps {
   params: Promise<{ week: string }>;
 }
 
-export const revalidate = 3600; // 1시간 (지난 주차 데이터는 거의 변하지 않음)
+export const revalidate = 21600; // 6시간 (지난 주차 데이터는 거의 변하지 않음 — ISR Write 절감)
 
 export function generateStaticParams() {
   return getRecentWeeks(8).map((range) => ({ week: range.week }));

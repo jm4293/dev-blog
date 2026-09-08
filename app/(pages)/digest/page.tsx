@@ -11,7 +11,7 @@ import {
 } from '@/utils';
 import { CalendarDays } from 'lucide-react';
 
-export const revalidate = 3600; // 1시간
+export const revalidate = 21600; // 6시간 (수집 직후 /api/revalidate로 갱신 — ISR Write 절감)
 
 export const metadata: Metadata = buildPageMetadata({
   title: '주간 인기글',

@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
-import { cn, formatPostDate, slugify } from '@/utils';
+import { usePostDate } from '@/hooks';
+import { cn, slugify } from '@/utils';
 import { Check } from 'lucide-react';
 import { useBookmarkToggle } from '@/features/bookmarks';
 import { BookmarkButton, PostCardHeader, PostCardTags } from '@/features/posts';
@@ -26,7 +29,7 @@ export function RecentViewPostCard({
     isBookmarkedProp,
   );
   const addRecentView = useAddRecentView();
-  const timeDisplay = formatPostDate(view.post.published_at);
+  const timeDisplay = usePostDate(view.post.published_at);
 
   const handleCardClick = () => {
     if (isEditMode) {

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { APP, buildPageMetadata, serializeJsonLd, slugify } from '@/utils';
 import { fetchAllTags } from '@/features/posts';
 
-export const revalidate = 3600; // 1시간
+export const revalidate = 86400; // 1일 (새 글 수집 시 /api/revalidate로 즉시 갱신 — ISR Write 절감)
 
 export const metadata: Metadata = buildPageMetadata({
   title: '태그별 기술 블로그 글 모음',

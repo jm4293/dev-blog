@@ -5,7 +5,8 @@ import { secureCompare } from '@/utils/secure-compare';
 // 갱신 허용 경로 화이트리스트 — 시크릿이 유출되더라도 임의 경로 대량 무효화(캐시 스탬피드)를 막는다
 const ALLOWED_EXACT = new Set(['/posts', '/tags', '/companies', '/digest', '/sitemap.xml']);
 const ALLOWED_PATTERN = /^\/(tags|companies|digest)\/[^/]{1,100}$/;
-const MAX_PATHS = 50;
+// 수집 1회당 회사 + 태그 경로가 함께 오므로 여유 있게 (140개 회사 중 1회 수집에 새 글이 있는 곳은 보통 수십 개 이내)
+const MAX_PATHS = 100;
 
 function isAllowedPath(path: string): boolean {
   return ALLOWED_EXACT.has(path) || ALLOWED_PATTERN.test(path);

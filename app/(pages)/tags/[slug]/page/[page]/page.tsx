@@ -7,12 +7,10 @@ interface PageProps {
   params: Promise<{ slug: string; page: string }>;
 }
 
-export const revalidate = 3600; // 1시간 (첫 요청 시 생성 후 ISR 캐시)
-
-// 페이지 번호는 요청 시점에 생성 (태그 수 × 페이지 수를 빌드 타임에 모두 만들 필요 없음)
-export function generateStaticParams() {
-  return [];
-}
+// 페이지 번호 URL은 태그 수 × 페이지 수로 사실상 무한하고 크롤러가 주로 방문한다.
+// ISR로 두면 URL마다(존재하지 않는 페이지 포함) 내구 캐시 쓰기가 발생해 Vercel ISR Write 한도를 소진하므로
+// 요청 시 렌더링(함수 호출은 무료 한도가 훨씬 넉넉함)으로 처리한다.
+export const dynamic = 'force-dynamic';
 
 function parsePage(raw: string): number | null {
   if (!/^\d+$/.test(raw)) {

@@ -4,7 +4,7 @@ import { APP, buildPageMetadata, serializeJsonLd, slugify } from '@/utils';
 import { fetchActiveCompanies } from '@/features/posts';
 import { BlogLogoImage } from '@/components/image';
 
-export const revalidate = 3600; // 1시간
+export const revalidate = 86400; // 1일 (새 글 수집 시 /api/revalidate로 즉시 갱신 — ISR Write 절감)
 
 export const metadata: Metadata = buildPageMetadata({
   title: '기업별 기술 블로그 모음',

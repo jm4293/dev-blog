@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { formatPostDate, slugify } from '@/utils';
+import { slugify } from '@/utils';
 import { Bookmark, Eye } from 'lucide-react';
+import { PostDate } from '@/components/date';
 import { BlogLogoImage } from '@/components/image';
 import type { WeeklyDigest } from '../services/fetch-digest';
 
@@ -36,7 +37,7 @@ export function DigestContent({ digest }: DigestContentProps) {
                   <p className="line-clamp-2 font-semibold text-foreground">{post.title}</p>
                   <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
                     <span>{post.company.name}</span>
-                    <span>{formatPostDate(post.published_at)}</span>
+                    <PostDate date={post.published_at} />
                     {post.bookmark_count > 0 && (
                       <span className="inline-flex items-center gap-1">
                         <Bookmark className="h-3 w-3" aria-hidden />
